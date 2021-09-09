@@ -47,12 +47,14 @@ implementation change:
  (this is an anti-pattern on its own by the way).
 2. If you are confident that you implemented the requirements correctly, you can advise the framework to update all the 
 persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
+
 ```java
 @SnapshotAssertions(updateSnapshots = true)
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
 `.justUpdateSnapshot()`:
+
 ```java
     snapshot.assertThat(actual).asJson().justUpdateSnapshot();
 ```
