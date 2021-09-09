@@ -2,7 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests)
 [![JavaDoc](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests.svg?label=JavaDoc)](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests)
-[![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-test/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-test?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
 # snapshot-tests

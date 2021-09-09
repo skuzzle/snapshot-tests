@@ -29,8 +29,8 @@
         <!-- All the remaining spring-boot versions we run the tests against (comma separated) -->
         <compatible-spring-boot-versions>2.3.12.RELEASE, 2.4.10, 2.5.4</compatible-spring-boot-versions>
 
-        <site.name>snapshot-test</site.name>
-        <github.name>snapshot-test</github.name>
+        <site.name>snapshot-tests</site.name>
+        <github.name>snapshot-tests</github.name>
     </properties>
 
     <scm>
