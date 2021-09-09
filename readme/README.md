@@ -9,7 +9,7 @@
 
 
 ## Compatibility
-- [x] Requires Java ${java.version}
+- [x] Requires Java ${version.java}
 - [x] Tested against Spring-Boot `${version.spring-boot}, ${compatible-spring-boot-versions}`
 
 ## Changelog

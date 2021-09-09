@@ -9,7 +9,7 @@
 
 
 ## Compatibility
-- [x] Requires Java 15.0.1
+- [x] Requires Java 11
 - [x] Tested against Spring-Boot `2.2.13.RELEASE, 2.3.12.RELEASE, 2.4.10, 2.5.4`
 
 ## Changelog
