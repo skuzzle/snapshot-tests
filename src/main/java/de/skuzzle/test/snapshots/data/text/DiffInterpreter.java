@@ -1,10 +1,10 @@
-package name.fraser.neil.plaintext;
+package de.skuzzle.test.snapshots.data.text;
 
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import name.fraser.neil.plaintext.diff_match_patch.Diff;
-import name.fraser.neil.plaintext.diff_match_patch.Operation;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
 
 class DiffInterpreter {
 

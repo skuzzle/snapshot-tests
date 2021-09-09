@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.jupiter.api.Test;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+
 @SnapshotAssertions
 public class SnapshotsTest {
 
