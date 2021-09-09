@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
+
 /**
  * Enables the snapshot-test capabilities.
  *
@@ -42,6 +44,7 @@ public @interface SnapshotAssertions {
      * and run the tests again before checking your code into any SCM.
      *
      * @return Whether to update the stored snapshots.
+     * @see ChoseAssertions#justUpdateSnapshot()
      * @since ever.
      */
     boolean updateSnapshots() default false;
