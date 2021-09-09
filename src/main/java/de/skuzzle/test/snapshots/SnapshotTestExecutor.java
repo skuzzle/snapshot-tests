@@ -42,11 +42,11 @@ class SnapshotTestExecutor {
         final Path snapshotFile = snapshot.determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
-        if (Files.exists(snapshotFile)) {
+        if (snapshot.updateSnapshots() || !Files.exists(snapshotFile)) {
+            Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
+        } else {
             final String storedSnapshot = Files.readString(snapshotFile, StandardCharsets.UTF_8);
             assertEquality(storedSnapshot, serializedActual);
-        } else {
-            Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
         }
     }
 

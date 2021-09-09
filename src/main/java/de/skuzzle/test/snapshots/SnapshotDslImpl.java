@@ -3,17 +3,14 @@ package de.skuzzle.test.snapshots;
 import javax.xml.bind.JAXBContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
 import de.skuzzle.test.snapshots.data.SnapshotSerializer;
 import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.json.JacksonJsonSnapshotSerializer;
-import de.skuzzle.test.snapshots.data.json.JsonAssertStructuralAssertions;
+import de.skuzzle.test.snapshots.data.StructuredData;
+import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
 import de.skuzzle.test.snapshots.data.xml.CachedJAXBContexts;
 import de.skuzzle.test.snapshots.data.xml.JaxbXmlSnapshotSerializer;
@@ -42,24 +39,23 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
 
     @Override
     public ChoseStructure asJson() {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.registerModules(new Jdk8Module(), new JavaTimeModule());
-
-        return asJsonUsing(objectMapper);
+        return as(JacksonStructuredData.withDefaultObjectMapper().build());
     }
 
     public ChoseStructure asJsonUsing(ObjectMapper objectMapper) {
-        this.snapshotSerializer = new JacksonJsonSnapshotSerializer(objectMapper);
-        this.structuralAssertions = new JsonAssertStructuralAssertions();
-        return this;
+        return as(JacksonStructuredData.withObjectMapper(objectMapper).build());
     }
 
     @Override
     public ChoseAssertions as(SnapshotSerializer serializer) {
         this.snapshotSerializer = serializer;
+        return this;
+    }
+
+    @Override
+    public ChoseStructure as(StructuredData structure) {
+        this.snapshotSerializer = structure.snapshotSerializer();
+        this.structuralAssertions = structure.structuralAssertions();
         return this;
     }
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.skuzzle.test.snapshots.data.SnapshotSerializer;
 
-public class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
+class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
 
     private final ObjectMapper objectMapper;
 

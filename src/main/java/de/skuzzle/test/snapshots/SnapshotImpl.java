@@ -22,6 +22,16 @@ class SnapshotImpl implements Snapshot {
         return new SnapshotDslImpl(this, actual);
     }
 
+    boolean updateSnapshots() {
+        return extensionContext.getRequiredTestClass()
+                .getAnnotation(SnapshotAssertions.class)
+                .updateSnapshots();
+    }
+
+    String getTestClassName() {
+        return extensionContext.getRequiredTestClass().getName();
+    }
+
     String determineNextSnapshotName() {
         return extensionContext.getRequiredTestMethod().getName() + "_" + counter++;
     }
