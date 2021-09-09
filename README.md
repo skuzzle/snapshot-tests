@@ -39,6 +39,18 @@ that file.
 
 ## Usage
 
+### Updating existing snapshots
+There are basically two different approaches to updating persisted snapshots when the requirements for your 
+implementation change:
+1. Using a test driven approach, you can of course always modify the snapshots manually to reflect the new requirements
+ before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files 
+ (this is an anti-pattern on its own by the way).
+2. If you are confident that you implemented the requirements correctly, you can advise the framework to update the 
+persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
+`@SnapshotAssertions(updateSnapshots = true)` 
+**Warning** While `updateSnapshots` is set to true, all test cases containing snapshot assertions will fail. 
+
+
 ### Defining the serialized format
 Snapshots can be serialized into any format. By default, this library ships with serializers for json 
 (relying on the jackson object mapping framework) and xm (relying on jaxb). You can also provide your own 
