@@ -30,8 +30,8 @@ class ComplexTest {
 ```
 During first test execution, this will create a file named `testCreateComplexObject_0.snapshot` somewhere below 
 `src/test/resources` containing the json serialized object.
-On every subsequent execution, the json representation of the `actual` object will be compared against the contents of
-that file.
+On every subsequent test execution, the json representation of the `actual` object will be compared against the 
+contents of that file.
 
 ## Compatibility
 - [x] Requires Java ${version.java}
@@ -45,9 +45,18 @@ implementation change:
 1. Using a test driven approach, you can of course always modify the snapshots manually to reflect the new requirements
  before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files 
  (this is an anti-pattern on its own by the way).
-2. If you are confident that you implemented the requirements correctly, you can advise the framework to update the 
+2. If you are confident that you implemented the requirements correctly, you can advise the framework to update all the 
 persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
-`@SnapshotAssertions(updateSnapshots = true)` 
+```java
+@SnapshotAssertions(updateSnapshots = true)
+```
+
+You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
+`.justUpdateSnapshot()`:
+```java
+    snapshot.assertThat(actual).asJson().justUpdateSnapshot();
+```
+
 **Warning** While `updateSnapshots` is set to true, all test cases containing snapshot assertions will fail. 
 
 

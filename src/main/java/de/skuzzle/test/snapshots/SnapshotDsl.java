@@ -69,12 +69,17 @@ public interface SnapshotDsl {
 
     public interface ChoseAssertions {
 
+        ChoseAssertions justUpdateSnapshot() throws Exception;
+
         void matchesSnapshotText() throws Exception;
 
         void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
     }
 
     public interface ChoseStructure extends ChoseAssertions {
+
+        @Override
+        ChoseStructure justUpdateSnapshot() throws Exception;
 
         void matchesSnapshotStructure() throws Exception;
 

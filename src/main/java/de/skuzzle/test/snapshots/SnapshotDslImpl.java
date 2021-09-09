@@ -76,4 +76,12 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
         new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
                 .matchesSnapshotStructure();
     }
+
+    @Override
+    public ChoseStructure justUpdateSnapshot() throws Exception {
+        new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
+                .justUpdateSnapshot();
+        // actually not reachable as updating snapshots will always fail the test.
+        return this;
+    }
 }

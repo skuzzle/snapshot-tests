@@ -50,4 +50,14 @@ class SnapshotTestExecutor {
         }
     }
 
+    public void justUpdateSnapshot() throws Exception {
+        final String snapshotName = snapshot.determineNextSnapshotName();
+        final Path snapshotFile = snapshot.determineSnapshotFile(snapshotName);
+        final String serializedActual = snapshotSerializer.serialize(actual);
+
+        Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
+        throw new AssertionError(String.format(
+                "Snapshot has been updated! %nRemove the '.justUpdateSnapshot()' call from the snapshot assertion to make the test pass again"));
+    }
+
 }
