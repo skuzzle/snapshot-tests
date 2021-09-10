@@ -12,6 +12,15 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compares the
 actual object against the stored snapshot.
 
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>${project.artifactId}</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
 ## Quick start
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
 
