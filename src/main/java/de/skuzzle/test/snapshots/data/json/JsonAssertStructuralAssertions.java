@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.data.json;
 
-import org.json.JSONException;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
@@ -13,7 +12,7 @@ class JsonAssertStructuralAssertions implements StructuralAssertions {
     public void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException {
         try {
             JSONAssert.assertEquals(storedSnapshot, serializedActual, JSONCompareMode.STRICT);
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             throw new SnapshotException("Error while asserting for json equality", e);
         }
     }
