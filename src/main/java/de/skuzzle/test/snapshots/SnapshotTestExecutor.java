@@ -44,6 +44,7 @@ class SnapshotTestExecutor {
 
         if (snapshot.updateSnapshots() || !Files.exists(snapshotFile)) {
             Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
+            snapshot.setSnapshotsUpdated();
         } else {
             final String storedSnapshot = Files.readString(snapshotFile, StandardCharsets.UTF_8);
             assertEquality(storedSnapshot, serializedActual);
@@ -56,8 +57,7 @@ class SnapshotTestExecutor {
         final String serializedActual = snapshotSerializer.serialize(actual);
 
         Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
-        throw new AssertionError(String.format(
-                "Snapshot has been updated! %nRemove the '.justUpdateSnapshot()' call from the snapshot assertion to make the test pass again"));
+        snapshot.setSnapshotsUpdated();
     }
 
 }

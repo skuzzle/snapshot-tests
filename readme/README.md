@@ -32,6 +32,10 @@ During first test execution, this will create a file named `testCreateComplexObj
 `src/test/resources` containing the json serialized object.
 On every subsequent test execution, the json representation of the `actual` object will be compared against the 
 contents of that file.
+**Note**: During first execution, when snapshots are created the first time, the test will always fail. This enforces
+a flow of running the test again to check whether your code under test deterministically produces the identical result. 
+It also prevents from forgetting to check the snapshot files into your SCM. See also the section about
+ [updating snapshots](#updating-existing-snapshots).
 
 ## Compatibility
 - [x] Requires Java ${version.java}
@@ -89,6 +93,10 @@ Once serialized, the library uses `StructuralAssertions` to compare two serializ
 awesome `diff_match_patch` class from Neil Fraser.
 When using a custom `SnapshotSerializer` you can also supply a custom `StructuralAssertions` implementation to implement
 comparisons specific to your serialization format.
+
+### Multiple snapshots in same test case
+You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
+assign each snapshot a consecutive number.
 
 ## Changelog
 

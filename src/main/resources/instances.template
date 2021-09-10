@@ -1,7 +1,0 @@
-With globals.template
-
-Instances:
-Case T1: { "Shipment": $Transfer("27-10-2020" $Hasi) }-
-Case T2:
-{ "Shipment": $Transfer("19-09-1998" $Simon) }
--

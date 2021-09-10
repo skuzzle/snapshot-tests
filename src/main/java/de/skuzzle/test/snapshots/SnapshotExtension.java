@@ -34,9 +34,9 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
     public void afterEach(ExtensionContext context) throws Exception {
         // TODO Auto-generated method stub
         final SnapshotImpl snapshotImpl = context.getStore(NAMESPACE).get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
-        if (snapshotImpl.updateSnapshots()) {
+        if (snapshotImpl.snapshotsUpdated()) {
             throw new AssertionError(String.format(
-                    "Snapshots have been updated. Remove 'updateSnapshots = true' attribute from your test class %s",
+                    "Snapshots have been updated or created the first time.%nRemove 'updateSnapshots = true'  attribute from your test class %s and calls to 'justUpdateSnapshot()' and run the tests again.",
                     snapshotImpl.getTestClassName()));
         }
     }

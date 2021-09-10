@@ -12,6 +12,7 @@ class SnapshotImpl implements Snapshot {
 
     private final ExtensionContext extensionContext;
     private int counter;
+    private boolean snapshotsUpdated;
 
     public SnapshotImpl(ExtensionContext extensionContext) {
         this.extensionContext = extensionContext;
@@ -20,6 +21,14 @@ class SnapshotImpl implements Snapshot {
     @Override
     public ChoseDataFormat assertThat(Object actual) {
         return new SnapshotDslImpl(this, actual);
+    }
+
+    boolean snapshotsUpdated() {
+        return this.snapshotsUpdated;
+    }
+
+    void setSnapshotsUpdated() {
+        this.snapshotsUpdated = true;
     }
 
     boolean updateSnapshots() {
