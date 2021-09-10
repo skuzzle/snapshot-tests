@@ -1,9 +1,5 @@
 package de.skuzzle.test.snapshots;
 
-import javax.xml.bind.JAXBContext;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
@@ -12,9 +8,7 @@ import de.skuzzle.test.snapshots.data.StructuralAssertions;
 import de.skuzzle.test.snapshots.data.StructuredData;
 import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
-import de.skuzzle.test.snapshots.data.xml.CachedJAXBContexts;
-import de.skuzzle.test.snapshots.data.xml.JaxbXmlSnapshotSerializer;
-import de.skuzzle.test.snapshots.data.xml.XmlUnitStructuralAssertions;
+import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
 class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertions {
 
@@ -30,20 +24,12 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
 
     @Override
     public ChoseStructure asXml() {
-        final JAXBContext jaxbContext = CachedJAXBContexts.getOrCreateContext(actual);
-        this.snapshotSerializer = new JaxbXmlSnapshotSerializer(jaxbContext);
-        this.structuralAssertions = new XmlUnitStructuralAssertions();
-
-        return this;
+        return as(JaxbStructuredData.inferJaxbContext(actual).build());
     }
 
     @Override
     public ChoseStructure asJson() {
         return as(JacksonStructuredData.withDefaultObjectMapper().build());
-    }
-
-    public ChoseStructure asJsonUsing(ObjectMapper objectMapper) {
-        return as(JacksonStructuredData.withObjectMapper(objectMapper).build());
     }
 
     @Override
@@ -81,7 +67,6 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
     public ChoseStructure justUpdateSnapshot() throws Exception {
         new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
                 .justUpdateSnapshot();
-        // actually not reachable as updating snapshots will always fail the test.
         return this;
     }
 }
