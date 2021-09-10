@@ -18,12 +18,12 @@
 
 /**
  * Compile from diff-match-patch/java with:
- * javac -d classes src/name/fraser/neil/plaintext/diff_match_patch.java tests/name/fraser/neil/plaintext/diff_match_patch_test.java
+ * javac -d classes src/name/fraser/neil/plaintext/diff_match_patch.java tests/name/fraser/neil/plaintext/diff_match_patch_Test.java
  * Execute with:
- * java -classpath classes name/fraser/neil/plaintext/diff_match_patch_test
+ * java -classpath classes name/fraser/neil/plaintext/diff_match_patch_Test
  */
 
-package name.fraser.neil.plaintext;
+package de.skuzzle.test.snapshots.data.text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,11 +34,12 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import name.fraser.neil.plaintext.diff_match_patch.Diff;
-import name.fraser.neil.plaintext.diff_match_patch.LinesToCharsResult;
-import name.fraser.neil.plaintext.diff_match_patch.Patch;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.LinesToCharsResult;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Patch;
 
-public class diff_match_patch_test {
+public class diff_match_patch_Test {
 
     private final diff_match_patch dmp = new diff_match_patch();;
     private final diff_match_patch.Operation DELETE = diff_match_patch.Operation.DELETE;

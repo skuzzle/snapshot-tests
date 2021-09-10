@@ -9,8 +9,8 @@
     </parent>
 
     <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-test</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>snapshot-tests</artifactId>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>Snapshot Test</name>
@@ -18,8 +18,9 @@
 
     <properties>
         <coveralls.skip>false</coveralls.skip>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <version.java>11</version.java>
+        <maven.compiler.target>${version.java}</maven.compiler.target>
+        <maven.compiler.source>${version.java}</maven.compiler.source>
 
         <!-- Minimal compatible Spring-Boot version. Newer versions are tested during Jenkins build. -->
         <version.spring-boot>2.2.13.RELEASE</version.spring-boot>
@@ -28,8 +29,8 @@
         <!-- All the remaining spring-boot versions we run the tests against (comma separated) -->
         <compatible-spring-boot-versions>2.3.12.RELEASE, 2.4.10, 2.5.4</compatible-spring-boot-versions>
 
-        <site.name>snapshot-test</site.name>
-        <github.name>snapshot-test</github.name>
+        <site.name>snapshot-tests</site.name>
+        <github.name>snapshot-tests</github.name>
     </properties>
 
     <scm>
@@ -62,6 +63,10 @@
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

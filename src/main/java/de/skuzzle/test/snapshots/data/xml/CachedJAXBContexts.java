@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.data.xml;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-final class CachedJAXBContexts {
+public final class CachedJAXBContexts {
 
     private static final Map<Class<?>, JAXBContext> cache = new ConcurrentHashMap<>();
 

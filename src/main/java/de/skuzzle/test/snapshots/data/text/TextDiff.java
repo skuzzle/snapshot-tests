@@ -1,10 +1,10 @@
-package name.fraser.neil.plaintext;
+package de.skuzzle.test.snapshots.data.text;
 
 import java.util.LinkedList;
 
-import name.fraser.neil.plaintext.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
 
-public final class TextDiff {
+final class TextDiff {
 
     private final DiffInterpreter diffInterpreter = new DiffInterpreter().withIgnoreWhitespaceChanges(true);
     private final LinkedList<Diff> diffs;

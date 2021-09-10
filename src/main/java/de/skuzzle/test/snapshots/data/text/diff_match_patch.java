@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package name.fraser.neil.plaintext;
+package de.skuzzle.test.snapshots.data.text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
