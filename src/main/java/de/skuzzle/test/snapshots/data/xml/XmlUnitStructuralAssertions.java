@@ -7,7 +7,7 @@ import de.skuzzle.test.snapshots.data.StructuralAssertions;
 public class XmlUnitStructuralAssertions implements StructuralAssertions {
 
     @Override
-    public void assertEquals(String storedSnapshot, String serializedActual) throws Exception {
+    public void assertEquals(String storedSnapshot, String serializedActual) {
         XmlAssert.assertThat(serializedActual).and(storedSnapshot).areIdentical();
     }
 

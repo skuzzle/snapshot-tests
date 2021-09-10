@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import de.skuzzle.test.snapshots.data.SnapshotException;
 import de.skuzzle.test.snapshots.data.SnapshotSerializer;
 
 public class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
@@ -17,7 +18,7 @@ public class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
     }
 
     @Override
-    public String serialize(Object testResult) throws Exception {
+    public String serialize(Object testResult) throws SnapshotException {
         try {
             final StringWriter writer = new StringWriter();
             final Marshaller marshaller = jaxb.createMarshaller();
@@ -25,7 +26,7 @@ public class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
             marshaller.marshal(testResult, writer);
             return writer.toString();
         } catch (final JAXBException e) {
-            throw new RuntimeException(e);
+            throw new SnapshotException("Error serializing object to XML: " + testResult, e);
         }
     }
 

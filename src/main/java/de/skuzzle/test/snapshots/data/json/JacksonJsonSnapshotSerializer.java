@@ -1,7 +1,9 @@
 package de.skuzzle.test.snapshots.data.json;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.skuzzle.test.snapshots.data.SnapshotException;
 import de.skuzzle.test.snapshots.data.SnapshotSerializer;
 
 class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
@@ -13,8 +15,12 @@ class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
     }
 
     @Override
-    public String serialize(Object testResult) throws Exception {
-        return objectMapper.writeValueAsString(testResult);
+    public String serialize(Object testResult) throws SnapshotException {
+        try {
+            return objectMapper.writeValueAsString(testResult);
+        } catch (final JsonProcessingException e) {
+            throw new SnapshotException("Error serializing object to json: " + testResult, e);
+        }
     }
 
 }
