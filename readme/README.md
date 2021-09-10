@@ -98,6 +98,15 @@ comparisons specific to your serialization format.
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
 
+### Dealing with random values
+A common source of problems are random values within the snapshoted data such as dates or generated ids. This framework
+comes with no means to resolve those issues. Instead you should design your code so that such randomness can easily be 
+mocked away. For example:
+* Instead of using `LocalDateTime.now()` make your code use a shared `Clock` instance that is replacible in tests and 
+use `LocalDateTime.now(clock)`
+* More generally put: If your code uses random values in any place, consider to use a strategy interface instead which 
+can be replaced with a deterministic mock during testing.
+
 ## Changelog
 
 ### Version 0.0.1
