@@ -9,7 +9,7 @@
 Convenient snapshot testing for JUnit5.
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
-serialized version of the object during the first test execution and during subsequent test executions, compares the
+serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
 ```xml
@@ -37,15 +37,13 @@ class ComplexTest {
     }
 }
 ```
-During first test execution, this will create a file named `testCreateComplexObject_0.snapshot` somewhere below 
-`src/test/resources` containing the json serialized object.
-On every subsequent test execution, the json representation of the `actual` object will be compared against the 
-contents of that file.
-
-**Note**: During first execution, when snapshots are created the first time, the test will always fail. This enforces
-a flow of running the test again to check whether your code under test deterministically produces the identical result. 
-It also prevents from forgetting to check the snapshot files into your SCM. See also the section about
- [updating snapshots](#updating-existing-snapshots).
+Snapshot testing workflow:
+1. Implement your test cases and add one ore more snapshot assertions as shown above.
+2. When you now execute these tests the first time, serialized snapshots of your test results will be persisted 
+**and the tests will fail**
+3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. 
+If your code under test produces deterministic results, tests should now be green
+4. Check in the persisted snapshots into your SCM
 
 ## Compatibility
 - [x] Requires Java 11
