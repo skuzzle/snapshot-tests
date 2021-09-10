@@ -32,6 +32,7 @@ During first test execution, this will create a file named `testCreateComplexObj
 `src/test/resources` containing the json serialized object.
 On every subsequent test execution, the json representation of the `actual` object will be compared against the 
 contents of that file.
+
 **Note**: During first execution, when snapshots are created the first time, the test will always fail. This enforces
 a flow of running the test again to check whether your code under test deterministically produces the identical result. 
 It also prevents from forgetting to check the snapshot files into your SCM. See also the section about
@@ -106,6 +107,18 @@ mocked away. For example:
 use `LocalDateTime.now(clock)`
 * More generally put: If your code uses random values in any place, consider to use a strategy interface instead which 
 can be replaced with a deterministic mock during testing.
+
+### Changing the snapshot directory
+By default, snapshots are stored in a directory structure according to their test-class's package name relative to 
+`src/main/resources`. You can change the relative path using 
+
+```java
+@SnapshotAssertions(snapshotDirectory = "snapshots")
+```
+Currently it is not possible to use a directory outside `src/main/resources`.
+
+Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
+test methods, snapshots might get overridden unintentionally.
 
 ## Changelog
 
