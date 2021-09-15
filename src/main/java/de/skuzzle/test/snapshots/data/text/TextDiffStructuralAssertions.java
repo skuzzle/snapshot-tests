@@ -2,7 +2,7 @@ package de.skuzzle.test.snapshots.data.text;
 
 import org.assertj.core.api.Assertions;
 
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuralAssertions;
 
 public class TextDiffStructuralAssertions implements StructuralAssertions {
 

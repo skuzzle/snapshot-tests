@@ -1,10 +1,11 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import de.skuzzle.test.snapshots.SnapshotAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 

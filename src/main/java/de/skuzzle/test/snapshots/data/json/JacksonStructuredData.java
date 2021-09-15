@@ -8,9 +8,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.StructuredData;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuredData;
 
 public final class JacksonStructuredData {
 

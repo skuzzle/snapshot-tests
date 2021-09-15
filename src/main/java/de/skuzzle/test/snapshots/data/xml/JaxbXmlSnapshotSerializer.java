@@ -6,8 +6,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import de.skuzzle.test.snapshots.data.SnapshotException;
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
+import de.skuzzle.test.snapshots.SnapshotException;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData.MarshallerSupplier;
 
 class JaxbXmlSnapshotSerializer implements SnapshotSerializer {

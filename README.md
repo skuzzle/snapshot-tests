@@ -129,11 +129,16 @@ test methods, snapshots might get overridden unintentionally.
 
 ## Changelog
 
-### Version 0.0.1
-* Initial
+## Version 0.0.2
+* Restructure packages
 
 <details>
   <summary><b>Previous releases</b></summary>
+  
+### Version 0.0.1
+* Initial
+
+
   None
 
 </details>

@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -32,7 +32,6 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        // TODO Auto-generated method stub
         final SnapshotImpl snapshotImpl = context.getStore(NAMESPACE).get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
         if (snapshotImpl.snapshotsUpdated()) {
             throw new AssertionError(String.format(

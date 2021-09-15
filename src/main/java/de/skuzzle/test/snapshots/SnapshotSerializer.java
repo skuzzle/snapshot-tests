@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.data;
+package de.skuzzle.test.snapshots;
 
 /**
  * Defines how an object is serialized into a persistable String.

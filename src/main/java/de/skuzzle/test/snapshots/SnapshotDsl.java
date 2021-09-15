@@ -4,9 +4,6 @@ import javax.xml.bind.JAXBContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.StructuredData;
 import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 

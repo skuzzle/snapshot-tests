@@ -1,4 +1,4 @@
-* Initial
+* Restructure packages
 
 Maven Central coordinates for this release:
 

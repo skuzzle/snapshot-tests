@@ -6,9 +6,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.StructuredData;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuredData;
 
 public final class JaxbStructuredData {
 

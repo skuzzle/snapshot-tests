@@ -1,11 +1,11 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.StructuredData;
 import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
@@ -47,18 +47,17 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
 
     @Override
     public void matchesSnapshotText() throws Exception {
-        this.structuralAssertions = new TextDiffStructuralAssertions();
-        this.matchesSnapshotStructure();
-    }
-
-    @Override
-    public void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception {
-        this.structuralAssertions = structuralAssertions;
-        this.matchesSnapshotStructure();
+        this.matchesAccordingTo(new TextDiffStructuralAssertions());
     }
 
     @Override
     public void matchesSnapshotStructure() throws Exception {
+        this.matchesAccordingTo(structuralAssertions);
+
+    }
+
+    @Override
+    public void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception {
         new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
                 .matchesSnapshotStructure();
     }

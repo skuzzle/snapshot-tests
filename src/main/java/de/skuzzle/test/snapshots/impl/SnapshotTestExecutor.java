@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -6,8 +6,8 @@ import java.nio.file.Path;
 
 import org.assertj.core.api.Assertions;
 
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
 
 class SnapshotTestExecutor {
 

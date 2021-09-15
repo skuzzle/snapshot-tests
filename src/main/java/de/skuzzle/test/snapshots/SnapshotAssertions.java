@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
+import de.skuzzle.test.snapshots.impl.SnapshotExtension;
 
 /**
  * Enables the snapshot-test capabilities.

@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.data;
+package de.skuzzle.test.snapshots;
 
 import java.util.Objects;
 
