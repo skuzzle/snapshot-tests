@@ -9,6 +9,7 @@ pipeline {
     COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
     GPG_SECRET = credentials('gpg_password')
   }
+  stages {
     stage('Build') {
       steps {
         sh 'mvn -B clean verify'
