@@ -45,6 +45,7 @@ public class SnapshotsTest {
     void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) throws Throwable {
         final Person myself = person;
         snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
+        myself.setName("Phil");
         snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
     }
 
