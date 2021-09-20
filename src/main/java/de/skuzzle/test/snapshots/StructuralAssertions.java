@@ -25,7 +25,7 @@ public interface StructuralAssertions {
      *           AssertionError. IDEs, when they encounter a certain error message format,
      *           allow to view a diff of the actual vs. expected String. This framework
      *           already takes care of providing an error message in the proper format.
-     *           Idealy, you should just use {@link Assertions#fail(String)} or throw an
+     *           Ideally, you should just use {@link Assertions#fail(String)} or throw an
      *           AssertionError with a plain error message.
      */
     void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException;

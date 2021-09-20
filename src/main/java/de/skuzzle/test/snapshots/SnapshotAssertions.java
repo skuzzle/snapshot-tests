@@ -35,7 +35,7 @@ public @interface SnapshotAssertions {
 
     /**
      * Can be set to <code>true</code> <b>temporarily</b> in order to force to update the
-     * stored snapshot with the current test results.
+     * persisted snapshots with the current test results.
      * <p>
      * <b>Warning:</b> While this is attribute is set to true, all snapshot assertions
      * will fail with an error. This is to prevent accidentally checking in disabled
@@ -46,7 +46,17 @@ public @interface SnapshotAssertions {
      *
      * @return Whether to update the stored snapshots.
      * @see ChoseAssertions#justUpdateSnapshot()
-     * @since ever.
+     * @since 0.0.2 (renamed from updateSnapshots)
      */
-    boolean updateSnapshots() default false;
+    boolean forceUpdateSnapshots() default false;
+
+    /**
+     * When enabled, a test method using snapshot assertions will continue to execute,
+     * even if the snapshot execution failed. This allows to collect multiple failing
+     * snapshots with a single test execution.
+     *
+     * @return Whether to enable soft assertions. Defaults to <code>false</code>.
+     * @since 0.0.2
+     */
+    boolean softAssertions() default false;
 }

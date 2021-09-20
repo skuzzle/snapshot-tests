@@ -90,14 +90,14 @@ public interface SnapshotDsl {
          * This method just updates the persisted snapshot with the current actual test
          * result. <b>It will always make the test fail with an assertion failure.</b>
          *
-         * @return this for chaining fluent API calls.
+         * @return Details about the snapshot.
          * @throws AssertionError Always thrown by this method to indicate that a call to
          *             this method must be removed to enable snapshot assertions.
          * @throws Exception If any kind of technical exception (except assertion failure)
          *             occurred.
          * @since ever
          */
-        ChoseAssertions justUpdateSnapshot() throws Exception;
+        SnapshotResult justUpdateSnapshot() throws Throwable;
 
         /**
          * Asserts that the serialized actual test result matches the persisted snapshot
@@ -105,40 +105,37 @@ public interface SnapshotDsl {
          * comparison it can be used regardless which {@link SnapshotSerializer} has been
          * used.
          *
+         * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
          * @throws Exception If any kind of technical exception (except assertion failure)
          *             occurred.
          * @since ever
          */
-        void matchesSnapshotText() throws Exception;
+        SnapshotResult matchesSnapshotText() throws Throwable;
 
         /**
          * Asserts that the serialized actual test result structurally matches the
          * persisted snapshot. This method delegates to given {@link StructuralAssertions}
          * instance.
          *
+         * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)}.
          * @throws Exception If any kind of technical exception (except assertion failure)
          *             occurred.
          * @since ever
          */
-        void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
+        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Throwable;
     }
 
     public interface ChoseStructure extends ChoseAssertions {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        ChoseStructure justUpdateSnapshot() throws Exception;
 
         /**
          * Asserts that the serialized actual test result structurally matches the
          * persisted snapshot. This method delegates to the {@link StructuralAssertions}
          * instance in place
          *
+         * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)} or if
          *             snapshots have been updated.
@@ -146,7 +143,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        void matchesSnapshotStructure() throws Exception;
+        SnapshotResult matchesSnapshotStructure() throws Throwable;
 
     }
 }

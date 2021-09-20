@@ -23,11 +23,14 @@
         <maven.compiler.source>${version.java}</maven.compiler.source>
 
         <!-- Minimal compatible Spring-Boot version. Newer versions are tested during Jenkins build. -->
-        <version.spring-boot>2.2.13.RELEASE</version.spring-boot>
-        <version.wiremock>2.27.2</version.wiremock>
+        <version.jaxb-api>2.3.1</version.jaxb-api>
+        <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
         <version.guava>30.1.1-jre</version.guava>
-        <!-- All the remaining spring-boot versions we run the tests against (comma separated) -->
-        <compatible-spring-boot-versions>2.3.12.RELEASE, 2.4.10, 2.5.4</compatible-spring-boot-versions>
+        <version.junit>5.8.0</version.junit>
+        <version.jackson>2.10.5.20201202</version.jackson>
+        <version.xmlunit>2.6.4</version.xmlunit>
+        <version.jsonassert>1.5.0</version.jsonassert>
+        <version.assertj>3.13.2</version.assertj>
 
         <site.name>snapshot-tests</site.name>
         <github.name>snapshot-tests</github.name>
@@ -41,16 +44,48 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${version.spring-boot}</version>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${version.junit}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${version.jackson}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${version.jaxb-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${version.glassfish-jaxb}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${version.guava}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.skyscreamer</groupId>
+                <artifactId>jsonassert</artifactId>
+                <version>${version.jsonassert}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xmlunit</groupId>
+                <artifactId>xmlunit-assertj</artifactId>
+                <version>${version.xmlunit}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${version.assertj}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -95,6 +130,22 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+            <scope>test</scope>
+
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-testkit</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

@@ -1,11 +1,14 @@
 package de.skuzzle.test.snapshots.impl;
 
-import de.skuzzle.test.snapshots.SnapshotSerializer;
-import de.skuzzle.test.snapshots.StructuralAssertions;
-import de.skuzzle.test.snapshots.StructuredData;
+import java.util.Objects;
+
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
+import de.skuzzle.test.snapshots.SnapshotResult;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
@@ -34,38 +37,36 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
 
     @Override
     public ChoseAssertions as(SnapshotSerializer serializer) {
-        this.snapshotSerializer = serializer;
+        this.snapshotSerializer = Objects.requireNonNull(serializer, "serializer must not be null");
         return this;
     }
 
     @Override
     public ChoseStructure as(StructuredData structure) {
+        Objects.requireNonNull(structure, "structure must not be null");
         this.snapshotSerializer = structure.snapshotSerializer();
         this.structuralAssertions = structure.structuralAssertions();
         return this;
     }
 
     @Override
-    public void matchesSnapshotText() throws Exception {
-        this.matchesAccordingTo(new TextDiffStructuralAssertions());
+    public SnapshotResult matchesSnapshotText() throws Throwable {
+        return this.matchesAccordingTo(new TextDiffStructuralAssertions());
     }
 
     @Override
-    public void matchesSnapshotStructure() throws Exception {
-        this.matchesAccordingTo(structuralAssertions);
-
+    public SnapshotResult matchesSnapshotStructure() throws Throwable {
+        return this.matchesAccordingTo(structuralAssertions);
     }
 
     @Override
-    public void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception {
-        new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
-                .matchesSnapshotStructure();
+    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Throwable {
+        Objects.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
+        return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
     }
 
     @Override
-    public ChoseStructure justUpdateSnapshot() throws Exception {
-        new SnapshotTestExecutor(snapshot, snapshotSerializer, structuralAssertions, actual)
-                .justUpdateSnapshot();
-        return this;
+    public SnapshotResult justUpdateSnapshot() throws Exception {
+        return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
     }
 }

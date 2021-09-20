@@ -45,6 +45,9 @@ Snapshot testing workflow:
 If your code under test produces deterministic results, tests should now be green
 4. Check in the persisted snapshots into your SCM
 
+## Rationale
+
+
 ## Compatibility
 - [x] Requires Java ${version.java}
 - [x] Tested against Spring-Boot `${version.spring-boot}, ${compatible-spring-boot-versions}`

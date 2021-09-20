@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,31 +10,35 @@ import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@SnapshotAssertions(updateSnapshots = false)
+@SnapshotAssertions(forceUpdateSnapshots = false)
 public class SnapshotsTest {
 
     @Test
-    void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
+    void testAsJsonTextCompare(Snapshot snapshot) throws Throwable {
         final Person myself = person;
-        snapshot.assertThat(myself).asJson().matchesSnapshotText();
+        final SnapshotResult snapshotResult = snapshot.assertThat(myself).asJson().matchesSnapshotText();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
+    void testAsJsonStructureCompare(Snapshot snapshot) throws Throwable {
         final Person myself = person;
-        snapshot.assertThat(myself).asJson().matchesSnapshotStructure();
+        final SnapshotResult snapshotResult = snapshot.assertThat(myself).asJson().matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsXmlTextCompare(Snapshot snapshot) throws Exception {
+    void testAsXmlTextCompare(Snapshot snapshot) throws Throwable {
         final Person myself = person;
-        snapshot.assertThat(myself).asXml().matchesSnapshotText();
+        final SnapshotResult snapshotResult = snapshot.assertThat(myself).asXml().matchesSnapshotText();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsXmlStructureCompare(Snapshot snapshot) throws Exception {
+    void testAsXmlStructureCompare(Snapshot snapshot) throws Throwable {
         final Person myself = person;
-        snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
+        final SnapshotResult snapshotResult = snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     private final Person person = new Person()
