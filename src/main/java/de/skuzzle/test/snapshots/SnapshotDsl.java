@@ -43,6 +43,7 @@ public interface SnapshotDsl {
          * @since ever
          */
         ChoseDataFormat assertThat(Object actual);
+
     }
 
     /**
@@ -97,7 +98,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        SnapshotResult justUpdateSnapshot() throws Throwable;
+        SnapshotResult justUpdateSnapshot() throws Exception;
 
         /**
          * Asserts that the serialized actual test result matches the persisted snapshot
@@ -111,7 +112,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        SnapshotResult matchesSnapshotText() throws Throwable;
+        SnapshotResult matchesSnapshotText() throws Exception;
 
         /**
          * Asserts that the serialized actual test result structurally matches the
@@ -125,7 +126,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Throwable;
+        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
     }
 
     public interface ChoseStructure extends ChoseAssertions {
@@ -143,7 +144,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        SnapshotResult matchesSnapshotStructure() throws Throwable;
+        SnapshotResult matchesSnapshotStructure() throws Exception;
 
     }
 }

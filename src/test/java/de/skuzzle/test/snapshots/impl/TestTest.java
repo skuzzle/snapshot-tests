@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 

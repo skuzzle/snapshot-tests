@@ -25,23 +25,16 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
 
-        return extensionContext.getStore(NAMESPACE).getOrComputeIfAbsent(KEY_SNAPSHOT_INSTANCE,
-                k -> new SnapshotImpl(extensionContext));
+        final SnapshotConfiguration configuration = SnapshotConfiguration.fromExtensionContext(extensionContext);
+        return extensionContext.getStore(NAMESPACE)
+                .getOrComputeIfAbsent(KEY_SNAPSHOT_INSTANCE, k -> new SnapshotImpl(configuration, extensionContext));
     }
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
         final SnapshotImpl snapshotImpl = context.getStore(NAMESPACE).get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
-        if (snapshotImpl.wasUpdatedForcefully()) {
-            throw new AssertionError(String.format(
-                    "Snapshots have been updated forcefully.%n"
-                            + "Remove 'updateSnapshots = true' attribute from your test class %s and calls to 'justUpdateSnapshot()' and run the tests again.",
-                    snapshotImpl.getTestClassName()));
-        }
-        if (snapshotImpl.wasCreatedInitially()) {
-            throw new AssertionError(String.format(
-                    "Snapshots have been created the first time.%nRun the test again and you should see it succeed."));
-        }
+
+        snapshotImpl.finalizeAssertions();
     }
 
 }

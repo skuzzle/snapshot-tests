@@ -50,17 +50,17 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
     }
 
     @Override
-    public SnapshotResult matchesSnapshotText() throws Throwable {
+    public SnapshotResult matchesSnapshotText() throws Exception {
         return this.matchesAccordingTo(new TextDiffStructuralAssertions());
     }
 
     @Override
-    public SnapshotResult matchesSnapshotStructure() throws Throwable {
+    public SnapshotResult matchesSnapshotStructure() throws Exception {
         return this.matchesAccordingTo(structuralAssertions);
     }
 
     @Override
-    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Throwable {
+    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception {
         Objects.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
         return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
     }

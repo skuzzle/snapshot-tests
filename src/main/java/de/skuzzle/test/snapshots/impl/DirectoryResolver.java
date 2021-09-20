@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-
-import de.skuzzle.test.snapshots.SnapshotAssertions;
-
 final class DirectoryResolver {
 
     // FIXME: https://github.com/skuzzle/snapshot-tests/issues/3
@@ -16,14 +12,8 @@ final class DirectoryResolver {
     // this might give some problems
     private final static Path BASE = Path.of("src/test/resources");
 
-    public static Path resolveSnapshotDirectory(ExtensionContext extensionContext) throws IOException {
-        final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestInstance().getClass()
-                .getAnnotation(SnapshotAssertions.class);
-        final Class<?> testClass = extensionContext.getRequiredTestClass();
-
-        final String testDirName = snapshotAssertions.snapshotDirectory().isEmpty()
-                ? testClass.getName().replace('.', '/') + "_snapshots"
-                : snapshotAssertions.snapshotDirectory();
+    public static Path resolveSnapshotDirectory(SnapshotConfiguration configuration) throws IOException {
+        final String testDirName = configuration.snapshotDirecotry();
 
         final Path testDirectory = BASE.resolve(testDirName);
         Files.createDirectories(testDirectory);

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@SnapshotAssertions(forceUpdateSnapshots = false)
+@SnapshotAssertions(forceUpdateSnapshots = false, softAssertions = false)
 public class SnapshotsTest {
 
     @Test
@@ -39,6 +39,13 @@ public class SnapshotsTest {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) throws Throwable {
+        final Person myself = person;
+        snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
+        snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
     }
 
     private final Person person = new Person()
