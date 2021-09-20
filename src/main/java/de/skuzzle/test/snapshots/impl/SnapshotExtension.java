@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.impl;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -25,20 +25,16 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
 
-        final Object snapshotInstance = new SnapshotImpl(extensionContext);
-        extensionContext.getStore(NAMESPACE).put(KEY_SNAPSHOT_INSTANCE, snapshotInstance);
-        return snapshotInstance;
+        final SnapshotConfiguration configuration = SnapshotConfiguration.fromExtensionContext(extensionContext);
+        return extensionContext.getStore(NAMESPACE)
+                .getOrComputeIfAbsent(KEY_SNAPSHOT_INSTANCE, k -> new SnapshotImpl(configuration, extensionContext));
     }
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        // TODO Auto-generated method stub
         final SnapshotImpl snapshotImpl = context.getStore(NAMESPACE).get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
-        if (snapshotImpl.snapshotsUpdated()) {
-            throw new AssertionError(String.format(
-                    "Snapshots have been updated or created the first time.%nRemove 'updateSnapshots = true'  attribute from your test class %s and calls to 'justUpdateSnapshot()' and run the tests again.",
-                    snapshotImpl.getTestClassName()));
-        }
+
+        snapshotImpl.finalizeAssertions();
     }
 
 }

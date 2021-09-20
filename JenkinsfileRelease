@@ -38,20 +38,6 @@ pipeline {
         sh 'mvn -B -Prelease gitflow:release-start'
       }
     }
-    
-    stage ('Test Spring-Boot Compatibility') {
-      steps {
-        script {
-            def versionsAsString = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=compatible-spring-boot-versions -q -DforceStdout', returnStdout:true).trim()
-            def versionsArray = versionsAsString.split(',')
-            versionsArray.each {
-                stage("Verify against Spring-Boot ${it}") {
-                    sh "mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} clean verify -Dversion.spring-boot=${it.trim()}"
-                }
-            }
-        }
-      }
-    }
     stage('Verify Release') {
       steps {
         sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} verify'

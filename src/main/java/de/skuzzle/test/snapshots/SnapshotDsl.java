@@ -1,8 +1,11 @@
 package de.skuzzle.test.snapshots;
 
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
-import de.skuzzle.test.snapshots.data.StructuralAssertions;
-import de.skuzzle.test.snapshots.data.StructuredData;
+import javax.xml.bind.JAXBContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
+import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
 /**
  * DSL for defining snapshot tests.
@@ -36,10 +39,11 @@ public interface SnapshotDsl {
          * it on disk.
          *
          * @param actual The actual test result.
-         * @return TBD
+         * @return Fluent API object for chosing the snapshot format.
          * @since ever
          */
         ChoseDataFormat assertThat(Object actual);
+
     }
 
     /**
@@ -52,36 +56,95 @@ public interface SnapshotDsl {
     public interface ChoseDataFormat {
 
         /**
-         * Serializes the actual test result into an XML string.
+         * Serializes the actual test result into an XML string. This will try to infer a
+         * proper {@link JAXBContext} from the provided actual test result.
+         * <p>
+         * If you need to customize XML related snapshot tests, you should use
+         * {@link #as(StructuredData)} together with {@link JaxbStructuredData}.
          *
-         * @return TBD
+         * @return Fluent API object for performing the snapshot assertion.
          * @since ever
          */
         ChoseStructure asXml();
 
+        /**
+         * Serializes the actual test result into a json string. This will use an
+         * {@link ObjectMapper} with a default configuration suitable for most use cases.
+         * <p>
+         * If you need to customize json related snapshot tests, you should use
+         * {@link #as(StructuredData)} together with {@link JacksonStructuredData}.
+         *
+         * @return Fluent API object for performing the snapshot assertion.
+         * @since ever
+         */
         ChoseStructure asJson();
 
-        ChoseAssertions as(SnapshotSerializer serializer);
-
         ChoseStructure as(StructuredData structure);
+
+        ChoseAssertions as(SnapshotSerializer serializer);
 
     }
 
     public interface ChoseAssertions {
 
-        ChoseAssertions justUpdateSnapshot() throws Exception;
+        /**
+         * This method just updates the persisted snapshot with the current actual test
+         * result. <b>It will always make the test fail with an assertion failure.</b>
+         *
+         * @return Details about the snapshot.
+         * @throws AssertionError Always thrown by this method to indicate that a call to
+         *             this method must be removed to enable snapshot assertions.
+         * @throws Exception If any kind of technical exception (except assertion failure)
+         *             occurred.
+         * @since ever
+         */
+        SnapshotResult justUpdateSnapshot() throws Exception;
 
-        void matchesSnapshotText() throws Exception;
+        /**
+         * Asserts that the serialized actual test result matches the persisted snapshot
+         * using a generic String diff algorithm. As this assertions only does a String
+         * comparison it can be used regardless which {@link SnapshotSerializer} has been
+         * used.
+         *
+         * @return Details about the snapshot.
+         * @throws AssertionError If the serialized objects do not match.
+         * @throws Exception If any kind of technical exception (except assertion failure)
+         *             occurred.
+         * @since ever
+         */
+        SnapshotResult matchesSnapshotText() throws Exception;
 
-        void matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
+        /**
+         * Asserts that the serialized actual test result structurally matches the
+         * persisted snapshot. This method delegates to given {@link StructuralAssertions}
+         * instance.
+         *
+         * @return Details about the snapshot.
+         * @throws AssertionError If the serialized objects do not match according to
+         *             {@link StructuralAssertions#assertEquals(String, String)}.
+         * @throws Exception If any kind of technical exception (except assertion failure)
+         *             occurred.
+         * @since ever
+         */
+        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
     }
 
     public interface ChoseStructure extends ChoseAssertions {
 
-        @Override
-        ChoseStructure justUpdateSnapshot() throws Exception;
-
-        void matchesSnapshotStructure() throws Exception;
+        /**
+         * Asserts that the serialized actual test result structurally matches the
+         * persisted snapshot. This method delegates to the {@link StructuralAssertions}
+         * instance in place
+         *
+         * @return Details about the snapshot.
+         * @throws AssertionError If the serialized objects do not match according to
+         *             {@link StructuralAssertions#assertEquals(String, String)} or if
+         *             snapshots have been updated.
+         * @throws Exception If any kind of technical exception (except assertion failure)
+         *             occurred.
+         * @since ever
+         */
+        SnapshotResult matchesSnapshotStructure() throws Exception;
 
     }
 }

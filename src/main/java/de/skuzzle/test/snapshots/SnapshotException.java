@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.data;
+package de.skuzzle.test.snapshots;
 
 public class SnapshotException extends Exception {
 

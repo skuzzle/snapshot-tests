@@ -6,23 +6,25 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import de.skuzzle.test.snapshots.data.SnapshotException;
-import de.skuzzle.test.snapshots.data.SnapshotSerializer;
+import de.skuzzle.test.snapshots.SnapshotException;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData.MarshallerSupplier;
 
-public class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
+class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
 
     private final JAXBContext jaxb;
+    private final MarshallerSupplier marshallerSupplier;
 
-    public JaxbXmlSnapshotSerializer(JAXBContext jaxb) {
+    public JaxbXmlSnapshotSerializer(JAXBContext jaxb, MarshallerSupplier marshallerSupplier) {
         this.jaxb = jaxb;
+        this.marshallerSupplier = marshallerSupplier;
     }
 
     @Override
     public String serialize(Object testResult) throws SnapshotException {
         try {
             final StringWriter writer = new StringWriter();
-            final Marshaller marshaller = jaxb.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            final Marshaller marshaller = marshallerSupplier.createMarshaller(jaxb);
             marshaller.marshal(testResult, writer);
             return writer.toString();
         } catch (final JAXBException e) {

@@ -9,8 +9,17 @@
 Convenient snapshot testing for JUnit5.
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
-serialized version of the object during the first test execution and during subsequent test executions, compares the
+serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>${project.artifactId}</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
 
 ## Quick start
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
@@ -28,19 +37,20 @@ class ComplexTest {
     }
 }
 ```
-During first test execution, this will create a file named `testCreateComplexObject_0.snapshot` somewhere below 
-`src/test/resources` containing the json serialized object.
-On every subsequent test execution, the json representation of the `actual` object will be compared against the 
-contents of that file.
+Snapshot testing workflow:
+1. Implement your test cases and add one ore more snapshot assertions as shown above.
+2. When you now execute these tests the first time, serialized snapshots of your test results will be persisted 
+**and the tests will fail**
+3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. 
+If your code under test produces deterministic results, tests should now be green
+4. Check in the persisted snapshots into your SCM
 
-**Note**: During first execution, when snapshots are created the first time, the test will always fail. This enforces
-a flow of running the test again to check whether your code under test deterministically produces the identical result. 
-It also prevents from forgetting to check the snapshot files into your SCM. See also the section about
- [updating snapshots](#updating-existing-snapshots).
+## Rationale
+
 
 ## Compatibility
 - [x] Requires Java ${version.java}
-- [x] Tested against Spring-Boot `${version.spring-boot}, ${compatible-spring-boot-versions}`
+- [x] Tested against JUnit5 `${version.junit}`
 
 ## Usage
 
@@ -48,13 +58,12 @@ It also prevents from forgetting to check the snapshot files into your SCM. See 
 There are basically two different approaches to updating persisted snapshots when the requirements for your 
 implementation change:
 1. Using a test driven approach, you can of course always modify the snapshots manually to reflect the new requirements
- before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files 
- (this is an anti-pattern on its own by the way).
+ before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files.
 2. If you are confident that you implemented the requirements correctly, you can advise the framework to update all the 
 persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
 
 ```java
-@SnapshotAssertions(updateSnapshots = true)
+@SnapshotAssertions(forceUpdateSnapshots = true)
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
@@ -64,13 +73,16 @@ You can also update snapshots for individual assertions by replacing any of the 
     snapshot.assertThat(actual).asJson().justUpdateSnapshot();
 ```
 
-**Warning** While `updateSnapshots` is set to true, all test cases containing snapshot assertions will fail. 
+**Warning** While updating snapshots, all test cases containing snapshot assertions will fail (for the 
+same reason that they are failing the first time the snapshot is created: because no assertion has been 
+performed during this run). 
+
 
 
 ### Defining the serialized format
 Snapshots can be serialized into any format. By default, this library ships with serializers for json 
-(relying on the jackson object mapping framework) and xm (relying on jaxb). You can also provide your own 
-`SnapshotSerializer`.
+(relying on the jackson object mapping framework) and xml (relying on jaxb). You can also provide your own 
+`SnapshotSerializer`:
 
 ```java
 @Test
@@ -89,7 +101,7 @@ void testSnapshotToString(Snapshot snapshot) throws Exception {
 ```
 
 ### Structural assertions
-Once serialized, the library uses `StructuralAssertions` to compare two serialized objects. By default, we user 
+Once serialized, the library uses `StructuralAssertions` to compare two serialized objects. By default, we use 
 `xml-unit` for comparing xmls and `jsonassert` for comparing jsons. Generic text comparison is implemented using the 
 awesome `diff_match_patch` class from Neil Fraser.
 When using a custom `SnapshotSerializer` you can also supply a custom `StructuralAssertions` implementation to implement
@@ -122,11 +134,19 @@ test methods, snapshots might get overridden unintentionally.
 
 ## Changelog
 
-### Version 0.0.1
-* Initial
+## Version 0.0.2
+* [#2](https://github.com/skuzzle/snapshot-tests/issues/2): Allow to access some snapshot information from within the test case.
+* [#4](https://github.com/skuzzle/snapshot-tests/issues/4): Retain original stack trace on assertion failure
+* Internal refactoring
+* Don't rely on spring-boot dependency management anymore
 
 <details>
   <summary><b>Previous releases</b></summary>
+  
+### Version 0.0.1
+* Initial
+
+
   None
 
 </details>

@@ -10,9 +10,23 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
+import de.skuzzle.test.snapshots.impl.SnapshotExtension;
 
 /**
- * Enables the snapshot-test capabilities.
+ * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
+ * can use snapshot assertions like this:
+ *
+ * <pre>
+ * &#64;SnapshotAssertions
+ * class MyTestClass {
+ *
+ *     &#64;Test
+ *     void testSomething(Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *         snapshot.assertThat(actual).asXml().matchesSnapshot();
+ *     }
+ * }
+ * </pre>
  *
  * @author Simon Taddiken
  * @since ever.
@@ -34,7 +48,7 @@ public @interface SnapshotAssertions {
 
     /**
      * Can be set to <code>true</code> <b>temporarily</b> in order to force to update the
-     * stored snapshot with the current test results.
+     * persisted snapshots with the current test results.
      * <p>
      * <b>Warning:</b> While this is attribute is set to true, all snapshot assertions
      * will fail with an error. This is to prevent accidentally checking in disabled
@@ -45,7 +59,20 @@ public @interface SnapshotAssertions {
      *
      * @return Whether to update the stored snapshots.
      * @see ChoseAssertions#justUpdateSnapshot()
-     * @since ever.
+     * @since 0.0.2 (renamed from updateSnapshots)
      */
-    boolean updateSnapshots() default false;
+    boolean forceUpdateSnapshots() default false;
+
+    /**
+     * When enabled, a test method using snapshot assertions will continue to execute,
+     * even if the snapshot execution failed. This allows to collect multiple failing
+     * snapshots with a single test execution.
+     * <p>
+     * The failures from all snapshot comparisons within the single test methods will be
+     * collected and reported after the test method completed.
+     *
+     * @return Whether to enable soft assertions. Defaults to <code>false</code>.
+     * @since 0.0.2
+     */
+    boolean softAssertions() default false;
 }
