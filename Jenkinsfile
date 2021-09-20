@@ -9,21 +9,7 @@ pipeline {
     COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
     GPG_SECRET = credentials('gpg_password')
   }
-  stages {
-    stage ('Test Spring-Boot Compatibility') {
-      steps {
-        script {
-            def versionsAsString = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=compatible-spring-boot-versions -q -DforceStdout', returnStdout:true).trim()
-            def versionsArray = versionsAsString.split(',')
-            versionsArray.each {
-                stage("Verify against Spring-Boot ${it}") {
-                    sh "mvn -B clean verify -Dversion.spring-boot=${it.trim()}"
-                }
-            }
-        }
-      }
-    }
-    stage('Build Final') {
+    stage('Build') {
       steps {
         sh 'mvn -B clean verify'
       }
