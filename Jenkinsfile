@@ -17,7 +17,7 @@ pipeline {
     }
     stage('Coverage') {
       steps {
-        sh 'mvn -B jacoco:report jacoco:report-integration coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN'
+        //sh 'mvn -B jacoco:report jacoco:report-integration coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN'
       }
     }
     stage('javadoc') {
