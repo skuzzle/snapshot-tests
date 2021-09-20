@@ -16,7 +16,7 @@ actual object against the stored snapshot.
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <scope>test</scope>
 </dependency>
 ```
