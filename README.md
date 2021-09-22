@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests)
-[![JavaDoc](http://javadoc-emblem.rhcloud.com/doc/de.skuzzle.test/snapshot-tests/badge.svg)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests)
+[![Maven Central](https://img.shields.io/badge/Maven Central-0.0.3-SNAPSHOT-green)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.3-SNAPSHOT/jar)
+[![JavaDoc](https://img.shields.io/badge/JavaDoc-0.0.3-SNAPSHOT-green)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
