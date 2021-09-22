@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests)
-[![JavaDoc](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests.svg?label=JavaDoc)](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests)
+[![JavaDoc](http://javadoc-emblem.rhcloud.com/doc/de.skuzzle.test/snapshot-tests/badge.svg)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -16,7 +16,7 @@ actual object against the stored snapshot.
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
