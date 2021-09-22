@@ -1,7 +1,6 @@
-* [#2](https://github.com/skuzzle/snapshot-tests/issues/2): Allow to access some snapshot information from within the test case.
-* [#4](https://github.com/skuzzle/snapshot-tests/issues/4): Retain original stack trace on assertion failure
-* Internal refactoring
-* Don't rely on spring-boot dependency management anymore
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.3-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.3-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.3-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests/0.0.3-SNAPSHOT)
+
+
 
 Maven Central coordinates for this release:
 
