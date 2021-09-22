@@ -131,22 +131,3 @@ Currently it is not possible to use a directory outside `src/main/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
-
-## Changelog
-
-## Version 0.0.2
-* [#2](https://github.com/skuzzle/snapshot-tests/issues/2): Allow to access some snapshot information from within the test case.
-* [#4](https://github.com/skuzzle/snapshot-tests/issues/4): Retain original stack trace on assertion failure
-* Internal refactoring
-* Don't rely on spring-boot dependency management anymore
-
-<details>
-  <summary><b>Previous releases</b></summary>
-  
-### Version 0.0.1
-* Initial
-
-
-  None
-
-</details>
