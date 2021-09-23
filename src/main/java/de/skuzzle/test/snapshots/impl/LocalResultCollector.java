@@ -2,6 +2,8 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,13 +11,17 @@ import java.util.Optional;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotStatus;
 
-class ResultCollector {
+class LocalResultCollector {
 
     private final List<SnapshotResult> results = new ArrayList<>();
 
     public SnapshotResult add(SnapshotResult result) {
         this.results.add(Objects.requireNonNull(result));
         return result;
+    }
+
+    public Collection<SnapshotResult> results() {
+        return Collections.unmodifiableList(results);
     }
 
     public int size() {

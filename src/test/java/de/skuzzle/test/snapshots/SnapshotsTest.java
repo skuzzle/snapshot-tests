@@ -14,28 +14,28 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 public class SnapshotsTest {
 
     @Test
-    void testAsJsonTextCompare(Snapshot snapshot) throws Throwable {
+    void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asJson().matchesSnapshotText();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsJsonStructureCompare(Snapshot snapshot) throws Throwable {
+    void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asJson().matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsXmlTextCompare(Snapshot snapshot) throws Throwable {
+    void testAsXmlTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asXml().matchesSnapshotText();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsXmlStructureCompare(Snapshot snapshot) throws Throwable {
+    void testAsXmlStructureCompare(Snapshot snapshot) throws Exception {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asXml().matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);

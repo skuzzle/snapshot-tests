@@ -21,7 +21,7 @@ class SnapshotImpl implements Snapshot {
 
     private final ExtensionContext extensionContext;
     private final SnapshotConfiguration configuration;
-    private final ResultCollector resultCollector = new ResultCollector();
+    private final LocalResultCollector localResultCollector = new LocalResultCollector();
 
     public SnapshotImpl(SnapshotConfiguration configuration, ExtensionContext extensionContext) {
         this.configuration = configuration;
@@ -34,7 +34,7 @@ class SnapshotImpl implements Snapshot {
     }
 
     private String determineNextSnapshotName() {
-        return extensionContext.getRequiredTestMethod().getName() + "_" + resultCollector.size();
+        return extensionContext.getRequiredTestMethod().getName() + "_" + localResultCollector.size();
     }
 
     private Path determineSnapshotDirectory() throws IOException {
@@ -49,8 +49,8 @@ class SnapshotImpl implements Snapshot {
         return configuration;
     }
 
-    public ResultCollector results() {
-        return this.resultCollector;
+    public LocalResultCollector results() {
+        return this.localResultCollector;
     }
 
     SnapshotResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
@@ -62,7 +62,7 @@ class SnapshotImpl implements Snapshot {
         final SnapshotResult result = SnapshotResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
                 serializedActual);
 
-        return this.resultCollector.add(result);
+        return this.localResultCollector.add(result);
     }
 
     SnapshotResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
@@ -90,17 +90,18 @@ class SnapshotImpl implements Snapshot {
                     .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, storedSnapshot, assertionError))
                     .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, storedSnapshot));
         }
-        this.resultCollector.add(result);
+        this.localResultCollector.add(result);
 
         if (!configuration.isSoftAssertions()) {
-            resultCollector.assertSuccessOther();
+            localResultCollector.assertSuccessOther();
         }
 
         return result;
     }
 
-    void finalizeAssertions() throws Exception {
-        resultCollector.assertSuccess();
+    void finalizeAssertions(GlobalResultCollector globalResultCollector) throws Exception {
+        globalResultCollector.addAllFrom(localResultCollector);
+        localResultCollector.assertSuccess();
     }
 
     private Optional<Throwable> assertEquality(StructuralAssertions structuralAssertions, String storedSnapshot,
