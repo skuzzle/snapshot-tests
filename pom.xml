@@ -22,7 +22,6 @@
         <maven.compiler.target>${version.java}</maven.compiler.target>
         <maven.compiler.source>${version.java}</maven.compiler.source>
 
-        <!-- Minimal compatible Spring-Boot version. Newer versions are tested during Jenkins build. -->
         <version.jaxb-api>2.3.1</version.jaxb-api>
         <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
         <version.guava>30.1.1-jre</version.guava>

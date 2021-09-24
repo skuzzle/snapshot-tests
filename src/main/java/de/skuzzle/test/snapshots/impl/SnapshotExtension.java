@@ -74,7 +74,7 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
         orphanedSnapshots
                 .forEach(orphaned -> {
                     if (snapshotConfiguration.isForceUpdateSnapshots()) {
-                        UncheckedIO.delete(snapshotDirectory);
+                        UncheckedIO.delete(orphaned);
                     } else {
                         System.out.println(
                                 "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: "

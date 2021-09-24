@@ -46,15 +46,17 @@ class GlobalResultCollector {
     public Collection<Path> findOrphanedSnapshotsIn(Path snapshotDirectory) {
         try (final var files = UncheckedIO.list(snapshotDirectory)) {
             return files
-                    .filter(existingSnapshot -> isOrphaned(existingSnapshot))
+                    .filter(existingSnapshot -> isOrphanedSnapshot(existingSnapshot))
                     .collect(Collectors.toList());
         }
     }
 
-    public boolean isOrphaned(Path potentialSnapshotFile) {
+    public boolean isOrphanedSnapshot(Path potentialSnapshotFile) {
         if (!SnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
             return false;
         }
+        // we can not detect orphaned snapshots for failed tests because the test might
+        // have failed before creating the snapshot
         final boolean pertainsToFailedTests = failedTestMethods.stream()
                 .anyMatch(failedTestMethod -> SnapshotNaming.isSnapshotFileForMethod(potentialSnapshotFile,
                         failedTestMethod));

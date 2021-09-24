@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@SnapshotAssertions(forceUpdateSnapshots = true, softAssertions = false)
+@SnapshotAssertions(forceUpdateSnapshots = false, softAssertions = false)
 public class SnapshotsTest {
 
     @Test
     void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = person;
         final SnapshotResult snapshotResult = snapshot.assertThat(myself).asJson().matchesSnapshotText();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
