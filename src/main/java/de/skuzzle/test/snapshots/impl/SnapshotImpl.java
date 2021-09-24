@@ -34,7 +34,7 @@ class SnapshotImpl implements Snapshot {
     }
 
     private String determineNextSnapshotName() {
-        return extensionContext.getRequiredTestMethod().getName() + "_" + localResultCollector.size();
+        return SnapshotNaming.getSnapshotName(extensionContext.getRequiredTestMethod(), localResultCollector.size());
     }
 
     private Path determineSnapshotDirectory() throws IOException {
@@ -42,7 +42,7 @@ class SnapshotImpl implements Snapshot {
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
-        return determineSnapshotDirectory().resolve(snapshotName + ".snapshot");
+        return determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
     }
 
     public SnapshotConfiguration configuration() {

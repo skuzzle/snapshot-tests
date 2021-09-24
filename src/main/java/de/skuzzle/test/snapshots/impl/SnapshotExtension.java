@@ -1,5 +1,8 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.nio.file.Path;
+import java.util.Collection;
+
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -47,20 +50,37 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
-        final SnapshotImpl snapshotImpl = context.getStore(NAMESPACE)
+    public void afterEach(ExtensionContext extensionContext) throws Exception {
+        final SnapshotImpl snapshotImpl = extensionContext.getStore(NAMESPACE)
                 .get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
-        final GlobalResultCollector globalResultCollector = context.getStore(NAMESPACE)
+        final GlobalResultCollector globalResultCollector = extensionContext.getStore(NAMESPACE)
                 .get(KEY_RESULT_COLLECTOR_INSTANCE, GlobalResultCollector.class);
 
+        extensionContext.getExecutionException().ifPresent(
+                egal -> globalResultCollector.addFailedTestMethod(extensionContext.getRequiredTestMethod()));
         snapshotImpl.finalizeAssertions(globalResultCollector);
     }
 
     @Override
-    public void afterAll(ExtensionContext context) throws Exception {
-        final GlobalResultCollector globalResultCollector = context.getStore(NAMESPACE)
+    public void afterAll(ExtensionContext extensionContext) throws Exception {
+        final GlobalResultCollector globalResultCollector = extensionContext.getStore(NAMESPACE)
                 .get(KEY_RESULT_COLLECTOR_INSTANCE, GlobalResultCollector.class);
-        System.out.println(globalResultCollector);
+
+        final SnapshotConfiguration snapshotConfiguration = extensionContext.getStore(NAMESPACE)
+                .get(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, SnapshotConfiguration.class);
+
+        final Path snapshotDirectory = DirectoryResolver.resolveSnapshotDirectory(snapshotConfiguration);
+        final Collection<Path> orphanedSnapshots = globalResultCollector.findOrphanedSnapshotsIn(snapshotDirectory);
+        orphanedSnapshots
+                .forEach(orphaned -> {
+                    if (snapshotConfiguration.isForceUpdateSnapshots()) {
+                        UncheckedIO.delete(snapshotDirectory);
+                    } else {
+                        System.out.println(
+                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: "
+                                        + orphaned);
+                    }
+                });
     }
 
 }

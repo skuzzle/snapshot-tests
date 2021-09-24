@@ -20,7 +20,7 @@ final class SnapshotConfiguration {
     }
 
     public String snapshotDirecotry() throws IOException {
-        final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestInstance().getClass()
+        final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestClass()
                 .getAnnotation(SnapshotAssertions.class);
         final Class<?> testClass = extensionContext.getRequiredTestClass();
 

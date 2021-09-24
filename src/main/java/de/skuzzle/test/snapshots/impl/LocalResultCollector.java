@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,17 +36,12 @@ class LocalResultCollector {
         Throwables.throwIfNotNull(failures);
     }
 
+    // TODO: better name
     public void assertSuccessOther() throws Exception {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotResult::failure)
                 .flatMap(Optional::stream));
         Throwables.throwIfNotNull(failures);
-    }
-
-    public boolean containsResultForSnapshotAt(Path snapshotFile) {
-        return results.stream()
-                .map(SnapshotResult::snapshotFile)
-                .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult, snapshotFile));
     }
 
     private Throwable assertNotCreatedInitially() {
