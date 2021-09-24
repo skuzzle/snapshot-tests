@@ -61,7 +61,7 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
 
         extensionContext.getExecutionException().ifPresent(
                 egal -> globalResultCollector.addFailedTestMethod(extensionContext.getRequiredTestMethod()));
-        snapshotImpl.finalizeAssertions(globalResultCollector);
+        snapshotImpl.finalizeTest(globalResultCollector);
     }
 
     @Override

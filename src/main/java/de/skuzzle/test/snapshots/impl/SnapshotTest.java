@@ -17,6 +17,12 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
+/**
+ * Aggregates the logic of executing (possibly multiple) snapshot assertions in the
+ * context of a single test method.
+ *
+ * @author Simon Taddiken
+ */
 final class SnapshotTest implements Snapshot {
 
     private final Method testMethod;
@@ -78,7 +84,7 @@ final class SnapshotTest implements Snapshot {
         } else {
             final String storedSnapshot = Files.readString(snapshotFile, StandardCharsets.UTF_8);
 
-            result = assertEquality(structuralAssertions, storedSnapshot, serializedActual)
+            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
                     .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, storedSnapshot, assertionError))
                     .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, storedSnapshot));
         }
@@ -91,12 +97,12 @@ final class SnapshotTest implements Snapshot {
         return result;
     }
 
-    void finalizeAssertions(GlobalResultCollector globalResultCollector) throws Exception {
+    void finalizeTest(GlobalResultCollector globalResultCollector) throws Exception {
         globalResultCollector.addAllFrom(localResultCollector);
         localResultCollector.assertSuccess();
     }
 
-    private Optional<Throwable> assertEquality(StructuralAssertions structuralAssertions, String storedSnapshot,
+    private Optional<Throwable> compareTestResults(StructuralAssertions structuralAssertions, String storedSnapshot,
             String serializedActual) {
         try {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);

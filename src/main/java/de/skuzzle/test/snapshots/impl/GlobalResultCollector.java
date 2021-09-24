@@ -10,8 +10,15 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.skuzzle.test.snapshots.SnapshotAssertions;
 import de.skuzzle.test.snapshots.SnapshotResult;
 
+/**
+ * Collects the result of all test cases within a class that is annotated with
+ * {@link SnapshotAssertions}.
+ *
+ * @author Simon Taddiken
+ */
 final class GlobalResultCollector {
 
     private final Set<Method> failedTestMethods = new HashSet<>();
@@ -23,7 +30,7 @@ final class GlobalResultCollector {
     }
 
     public GlobalResultCollector addAllFrom(LocalResultCollector other) {
-        this.results.addAll(other.results());
+        this.results.addAll(Objects.requireNonNull(other).results());
         return this;
     }
 
