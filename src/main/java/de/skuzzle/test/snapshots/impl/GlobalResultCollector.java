@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import de.skuzzle.test.snapshots.SnapshotResult;
 
-class GlobalResultCollector {
+final class GlobalResultCollector {
 
     private final Set<Method> failedTestMethods = new HashSet<>();
     private final List<SnapshotResult> results = new ArrayList<>();
@@ -20,18 +20,6 @@ class GlobalResultCollector {
     public SnapshotResult add(SnapshotResult result) {
         this.results.add(Objects.requireNonNull(result));
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return results.stream()
-                .map(SnapshotResult::snapshotFile)
-                .map(Path::toString)
-                .collect(Collectors.joining("\n"))
-                + "\n" +
-                failedTestMethods.stream()
-                        .map(Method::getName)
-                        .collect(Collectors.joining("\n"));
     }
 
     public GlobalResultCollector addAllFrom(LocalResultCollector other) {
@@ -51,22 +39,27 @@ class GlobalResultCollector {
         }
     }
 
-    public boolean isOrphanedSnapshot(Path potentialSnapshotFile) {
+    private boolean isOrphanedSnapshot(Path potentialSnapshotFile) {
         if (!SnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
             return false;
         }
         // we can not detect orphaned snapshots for failed tests because the test might
         // have failed before creating the snapshot
-        final boolean pertainsToFailedTests = failedTestMethods.stream()
-                .anyMatch(failedTestMethod -> SnapshotNaming.isSnapshotFileForMethod(potentialSnapshotFile,
-                        failedTestMethod));
-        if (pertainsToFailedTests) {
+        if (pertainsToFailedTest(potentialSnapshotFile)) {
             return false;
         }
-        return !results.stream()
-                .map(SnapshotResult::snapshotFile)
-                .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
-                        potentialSnapshotFile));
+        return !testResultsContain(potentialSnapshotFile);
     }
 
+    private boolean pertainsToFailedTest(Path snapshotFile) {
+        return failedTestMethods.stream()
+                .anyMatch(failedTestMethod -> SnapshotNaming.isSnapshotFileForMethod(snapshotFile, failedTestMethod));
+    }
+
+    private boolean testResultsContain(Path snapshotFile) {
+        return results.stream()
+                .map(SnapshotResult::snapshotFile)
+                .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
+                        snapshotFile));
+    }
 }

@@ -10,7 +10,12 @@ import java.util.Optional;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotStatus;
 
-class LocalResultCollector {
+/**
+ * Collects the snapshot assertion results within a single test method.
+ *
+ * @author Simon Taddiken
+ */
+final class LocalResultCollector {
 
     private final List<SnapshotResult> results = new ArrayList<>();
 
@@ -36,8 +41,7 @@ class LocalResultCollector {
         Throwables.throwIfNotNull(failures);
     }
 
-    // TODO: better name
-    public void assertSuccessOther() throws Exception {
+    public void assertSuccessEagerly() throws Exception {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotResult::failure)
                 .flatMap(Optional::stream));

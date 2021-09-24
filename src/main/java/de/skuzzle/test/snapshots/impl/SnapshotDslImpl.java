@@ -15,12 +15,12 @@ import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
 class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertions {
 
-    private final SnapshotImpl snapshot;
+    private final SnapshotTest snapshot;
     private final Object actual;
     private SnapshotSerializer snapshotSerializer;
     private StructuralAssertions structuralAssertions;
 
-    public SnapshotDslImpl(SnapshotImpl snapshot, Object actual) {
+    public SnapshotDslImpl(SnapshotTest snapshot, Object actual) {
         this.snapshot = snapshot;
         this.actual = actual;
     }

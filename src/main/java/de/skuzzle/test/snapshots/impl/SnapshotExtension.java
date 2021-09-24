@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
 
@@ -44,15 +45,17 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
 
         final SnapshotConfiguration snapshotConfiguration = extensionContext.getStore(NAMESPACE)
                 .get(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, SnapshotConfiguration.class);
+
+        final Method testMethod = extensionContext.getRequiredTestMethod();
         return extensionContext.getStore(NAMESPACE)
                 .getOrComputeIfAbsent(KEY_SNAPSHOT_INSTANCE,
-                        k -> new SnapshotImpl(snapshotConfiguration, extensionContext));
+                        k -> new SnapshotTest(snapshotConfiguration, testMethod));
     }
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final SnapshotImpl snapshotImpl = extensionContext.getStore(NAMESPACE)
-                .get(KEY_SNAPSHOT_INSTANCE, SnapshotImpl.class);
+        final SnapshotTest snapshotImpl = extensionContext.getStore(NAMESPACE)
+                .get(KEY_SNAPSHOT_INSTANCE, SnapshotTest.class);
         final GlobalResultCollector globalResultCollector = extensionContext.getStore(NAMESPACE)
                 .get(KEY_RESULT_COLLECTOR_INSTANCE, GlobalResultCollector.class);
 
