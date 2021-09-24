@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.skuzzle.test/snapshot-tests)
-[![JavaDoc](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests.svg?label=JavaDoc)](http://javadoc-badge.appspot.com/de.skuzzle.test/snapshot-tests)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.3&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.3/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.3&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests/0.0.3)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -16,7 +16,7 @@ actual object against the stored snapshot.
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -45,12 +45,10 @@ Snapshot testing workflow:
 If your code under test produces deterministic results, tests should now be green
 4. Check in the persisted snapshots into your SCM
 
-## Rationale
-
 
 ## Compatibility
 - [x] Requires Java 11
-- [x] Tested against JUnit5 `5.8.0`
+- [x] Tested against JUnit5 `5.8.1`
 
 ## Usage
 
@@ -131,22 +129,3 @@ Currently it is not possible to use a directory outside `src/main/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
-
-## Changelog
-
-## Version 0.0.2
-* [#2](https://github.com/skuzzle/snapshot-tests/issues/2): Allow to access some snapshot information from within the test case.
-* [#4](https://github.com/skuzzle/snapshot-tests/issues/4): Retain original stack trace on assertion failure
-* Internal refactoring
-* Don't rely on spring-boot dependency management anymore
-
-<details>
-  <summary><b>Previous releases</b></summary>
-  
-### Version 0.0.1
-* Initial
-
-
-  None
-
-</details>

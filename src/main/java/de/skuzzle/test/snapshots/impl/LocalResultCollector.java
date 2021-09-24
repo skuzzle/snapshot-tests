@@ -1,7 +1,8 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,13 +10,22 @@ import java.util.Optional;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotStatus;
 
-class ResultCollector {
+/**
+ * Collects the snapshot assertion results within a single test method.
+ *
+ * @author Simon Taddiken
+ */
+final class LocalResultCollector {
 
     private final List<SnapshotResult> results = new ArrayList<>();
 
     public SnapshotResult add(SnapshotResult result) {
         this.results.add(Objects.requireNonNull(result));
         return result;
+    }
+
+    public Collection<SnapshotResult> results() {
+        return Collections.unmodifiableList(results);
     }
 
     public int size() {
@@ -31,17 +41,11 @@ class ResultCollector {
         Throwables.throwIfNotNull(failures);
     }
 
-    public void assertSuccessOther() throws Exception {
+    public void assertSuccessEagerly() throws Exception {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotResult::failure)
                 .flatMap(Optional::stream));
         Throwables.throwIfNotNull(failures);
-    }
-
-    public boolean containsResultForSnapshotAt(Path snapshotFile) {
-        return results.stream()
-                .map(SnapshotResult::snapshotFile)
-                .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult, snapshotFile));
     }
 
     private Throwable assertNotCreatedInitially() {

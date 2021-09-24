@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 final class UncheckedIO {
 
@@ -18,6 +19,14 @@ final class UncheckedIO {
     public static void delete(Path path) {
         try {
             Files.delete(path);
+        } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static Stream<Path> list(Path directory) {
+        try {
+            return Files.list(directory);
         } catch (final IOException e) {
             throw new UncheckedIOException(e);
         }

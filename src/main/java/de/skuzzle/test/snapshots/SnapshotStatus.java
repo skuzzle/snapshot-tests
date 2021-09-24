@@ -13,7 +13,7 @@ public enum SnapshotStatus {
      */
     CREATED_INITIALLY,
     /**
-     * Persisted snapshot has been forcefully updated with the actual test result.
+     * Persistent snapshot has been forcefully updated with the actual test result.
      */
     UPDATED_FORCEFULLY,
     /**

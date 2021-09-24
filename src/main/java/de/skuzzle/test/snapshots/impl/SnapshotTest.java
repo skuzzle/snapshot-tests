@@ -1,12 +1,12 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.opentest4j.AssertionFailedError;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
@@ -17,15 +17,21 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
-class SnapshotImpl implements Snapshot {
+/**
+ * Aggregates the logic of executing (possibly multiple) snapshot assertions in the
+ * context of a single test method.
+ *
+ * @author Simon Taddiken
+ */
+final class SnapshotTest implements Snapshot {
 
-    private final ExtensionContext extensionContext;
+    private final Method testMethod;
     private final SnapshotConfiguration configuration;
-    private final ResultCollector resultCollector = new ResultCollector();
+    private final LocalResultCollector localResultCollector = new LocalResultCollector();
 
-    public SnapshotImpl(SnapshotConfiguration configuration, ExtensionContext extensionContext) {
+    public SnapshotTest(SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = configuration;
-        this.extensionContext = extensionContext;
+        this.testMethod = testMethod;
     }
 
     @Override
@@ -34,7 +40,7 @@ class SnapshotImpl implements Snapshot {
     }
 
     private String determineNextSnapshotName() {
-        return extensionContext.getRequiredTestMethod().getName() + "_" + resultCollector.size();
+        return SnapshotNaming.getSnapshotName(testMethod, localResultCollector.size());
     }
 
     private Path determineSnapshotDirectory() throws IOException {
@@ -42,15 +48,7 @@ class SnapshotImpl implements Snapshot {
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
-        return determineSnapshotDirectory().resolve(snapshotName + ".snapshot");
-    }
-
-    public SnapshotConfiguration configuration() {
-        return configuration;
-    }
-
-    public ResultCollector results() {
-        return this.resultCollector;
+        return determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
     }
 
     SnapshotResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
@@ -62,7 +60,7 @@ class SnapshotImpl implements Snapshot {
         final SnapshotResult result = SnapshotResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
                 serializedActual);
 
-        return this.resultCollector.add(result);
+        return this.localResultCollector.add(result);
     }
 
     SnapshotResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
@@ -73,37 +71,38 @@ class SnapshotImpl implements Snapshot {
         final String serializedActual = snapshotSerializer.serialize(actual);
 
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots();
-        final boolean alreadyExisted = Files.exists(snapshotFile);
+        final boolean snapshotFileAlreadyExists = Files.exists(snapshotFile);
 
         final SnapshotResult result;
-        if (forceUpdateSnapshots || !alreadyExisted) {
+        if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
             Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
 
-            final SnapshotStatus status = alreadyExisted
+            final SnapshotStatus status = snapshotFileAlreadyExists
                     ? SnapshotStatus.UPDATED_FORCEFULLY
                     : SnapshotStatus.CREATED_INITIALLY;
             result = SnapshotResult.of(snapshotFile, status, serializedActual);
         } else {
             final String storedSnapshot = Files.readString(snapshotFile, StandardCharsets.UTF_8);
 
-            result = assertEquality(structuralAssertions, storedSnapshot, serializedActual)
+            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
                     .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, storedSnapshot, assertionError))
                     .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, storedSnapshot));
         }
-        this.resultCollector.add(result);
+        this.localResultCollector.add(result);
 
         if (!configuration.isSoftAssertions()) {
-            resultCollector.assertSuccessOther();
+            localResultCollector.assertSuccessEagerly();
         }
 
         return result;
     }
 
-    void finalizeAssertions() throws Exception {
-        resultCollector.assertSuccess();
+    void finalizeTest(GlobalResultCollector globalResultCollector) throws Exception {
+        globalResultCollector.addAllFrom(localResultCollector);
+        localResultCollector.assertSuccess();
     }
 
-    private Optional<Throwable> assertEquality(StructuralAssertions structuralAssertions, String storedSnapshot,
+    private Optional<Throwable> compareTestResults(StructuralAssertions structuralAssertions, String storedSnapshot,
             String serializedActual) {
         try {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);

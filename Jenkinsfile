@@ -15,6 +15,11 @@ pipeline {
         sh 'mvn -B clean verify'
       }
     }
+    stage('Coverage') {
+      steps {
+        sh 'mvn -B jacoco:report jacoco:report-integration coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN'
+      }
+    }
     stage('javadoc') {
       steps {
         sh 'mvn -B javadoc:javadoc'

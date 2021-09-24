@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/${project.groupId}/${project.artifactId}/badge.svg)](https://maven-badges.herokuapp.com/maven-central/${project.groupId}/${project.artifactId})
-[![JavaDoc](http://javadoc-badge.appspot.com/${project.groupId}/${project.artifactId}.svg?label=JavaDoc)](http://javadoc-badge.appspot.com/${project.groupId}/${project.artifactId})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/${project.artifactId}/${project.version}/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/${project.artifactId}/${project.version})
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/${github.name}/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/${github.name}?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -44,8 +44,6 @@ Snapshot testing workflow:
 3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. 
 If your code under test produces deterministic results, tests should now be green
 4. Check in the persisted snapshots into your SCM
-
-## Rationale
 
 
 ## Compatibility
@@ -131,22 +129,3 @@ Currently it is not possible to use a directory outside `src/main/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
-
-## Changelog
-
-## Version 0.0.2
-* [#2](https://github.com/skuzzle/snapshot-tests/issues/2): Allow to access some snapshot information from within the test case.
-* [#4](https://github.com/skuzzle/snapshot-tests/issues/4): Retain original stack trace on assertion failure
-* Internal refactoring
-* Don't rely on spring-boot dependency management anymore
-
-<details>
-  <summary><b>Previous releases</b></summary>
-  
-### Version 0.0.1
-* Initial
-
-
-  None
-
-</details>
