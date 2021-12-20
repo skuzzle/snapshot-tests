@@ -36,6 +36,11 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
     }
 
     @Override
+    public ChoseAssertions asText() {
+        return as(Object::toString);
+    }
+
+    @Override
     public ChoseAssertions as(SnapshotSerializer serializer) {
         this.snapshotSerializer = Objects.requireNonNull(serializer, "serializer must not be null");
         return this;
@@ -50,7 +55,7 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
     }
 
     @Override
-    public SnapshotResult matchesSnapshotText() throws Exception {
+    public SnapshotResult matchesSnapshotText() {
         return this.matchesAccordingTo(new TextDiffStructuralAssertions());
     }
 
@@ -60,13 +65,21 @@ class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertion
     }
 
     @Override
-    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception {
+    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
         Objects.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
-        return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
+        try {
+            return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
+        } catch (final Exception e) {
+            throw new IllegalStateException("Technical problem while performing the snapshot assertion", e);
+        }
     }
 
     @Override
-    public SnapshotResult justUpdateSnapshot() throws Exception {
-        return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
+    public SnapshotResult justUpdateSnapshot() {
+        try {
+            return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
+        } catch (final Exception e) {
+            throw new IllegalStateException("Technical problem while updating the snapshot", e);
+        }
     }
 }

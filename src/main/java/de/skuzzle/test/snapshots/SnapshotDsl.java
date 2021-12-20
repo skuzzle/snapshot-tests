@@ -79,6 +79,14 @@ public interface SnapshotDsl {
          */
         ChoseStructure asJson();
 
+        /**
+         * "Serializes" the actual test result using {@link Object#toString()}.
+         *
+         * @return Fluent API object for performing the snapshot assertion.
+         * @since 0.0.4
+         */
+        ChoseAssertions asText();
+
         ChoseStructure as(StructuredData structure);
 
         ChoseAssertions as(SnapshotSerializer serializer);
@@ -94,11 +102,9 @@ public interface SnapshotDsl {
          * @return Details about the snapshot.
          * @throws AssertionError Always thrown by this method to indicate that a call to
          *             this method must be removed to enable snapshot assertions.
-         * @throws Exception If any kind of technical exception (except assertion failure)
-         *             occurred.
          * @since ever
          */
-        SnapshotResult justUpdateSnapshot() throws Exception;
+        SnapshotResult justUpdateSnapshot();
 
         /**
          * Asserts that the serialized actual test result matches the persisted snapshot
@@ -108,11 +114,9 @@ public interface SnapshotDsl {
          *
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
-         * @throws Exception If any kind of technical exception (except assertion failure)
-         *             occurred.
          * @since ever
          */
-        SnapshotResult matchesSnapshotText() throws Exception;
+        SnapshotResult matchesSnapshotText();
 
         /**
          * Asserts that the serialized actual test result structurally matches the
@@ -122,11 +126,9 @@ public interface SnapshotDsl {
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)}.
-         * @throws Exception If any kind of technical exception (except assertion failure)
-         *             occurred.
          * @since ever
          */
-        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) throws Exception;
+        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions);
     }
 
     public interface ChoseStructure extends ChoseAssertions {
