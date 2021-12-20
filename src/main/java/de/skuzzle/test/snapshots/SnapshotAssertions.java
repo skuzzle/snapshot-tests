@@ -50,9 +50,9 @@ public @interface SnapshotAssertions {
      * Can be set to <code>true</code> <b>temporarily</b> in order to force to update the
      * persisted snapshots with the current test results.
      * <p>
-     * <b>Warning:</b> While this is attribute is set to true, all snapshot assertions
-     * will fail with an error. This is to prevent accidentally checking in disabled
-     * assertions.
+     * <b>Warning:</b> While this is attribute is set to true, all tests containing
+     * snapshot assertions will fail with an error. This is to prevent accidentally
+     * checking in disabled assertions.
      * <p>
      * After snapshots have been updated, you should reset this flag to <code>false</code>
      * and run the tests again before checking your code into any SCM.

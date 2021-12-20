@@ -10,7 +10,7 @@
 
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
 
     <name>Snapshot Test</name>

@@ -54,14 +54,18 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final SnapshotTest snapshotImpl = extensionContext.getStore(NAMESPACE)
-                .get(KEY_SNAPSHOT_INSTANCE, SnapshotTest.class);
         final GlobalResultCollector globalResultCollector = extensionContext.getStore(NAMESPACE)
                 .get(KEY_RESULT_COLLECTOR_INSTANCE, GlobalResultCollector.class);
 
         extensionContext.getExecutionException().ifPresent(
                 egal -> globalResultCollector.addFailedTestMethod(extensionContext.getRequiredTestMethod()));
-        snapshotImpl.finalizeTest(globalResultCollector);
+
+        final SnapshotTest snapshotImpl = extensionContext.getStore(NAMESPACE)
+                .get(KEY_SNAPSHOT_INSTANCE, SnapshotTest.class);
+
+        if (snapshotImpl != null) {
+            snapshotImpl.finalizeTest(globalResultCollector);
+        }
     }
 
     @Override
