@@ -2,6 +2,7 @@
 
 * Remove `throws` clauses from assert methods
 * Add `asText()` as shortcut for `as(Object::toString)`
+* Fix NPE in case of mixing snapshot and non-snapshot tests
 
 Maven Central coordinates for this release:
 
