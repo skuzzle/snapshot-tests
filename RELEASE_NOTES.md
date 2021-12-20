@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.4-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.4-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.4-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests/0.0.4-SNAPSHOT)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.4&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.4/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.4&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests/0.0.4)
 
 * Remove `throws` clauses from assert methods
 * Add `asText()` as shortcut for `as(Object::toString)`
@@ -10,7 +10,7 @@ Maven Central coordinates for this release:
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <scope>test</scope>
 </dependency>
 ```
