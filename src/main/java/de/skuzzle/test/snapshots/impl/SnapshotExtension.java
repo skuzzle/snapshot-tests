@@ -29,7 +29,6 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
         final GlobalResultCollector globalResultCollector = new GlobalResultCollector();
         extensionContext.getStore(NAMESPACE).put(KEY_RESULT_COLLECTOR_INSTANCE, globalResultCollector);
         extensionContext.getStore(NAMESPACE).put(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, configuration);
-
     }
 
     @Override
@@ -76,7 +75,7 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
         final SnapshotConfiguration snapshotConfiguration = extensionContext.getStore(NAMESPACE)
                 .get(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, SnapshotConfiguration.class);
 
-        final Path snapshotDirectory = DirectoryResolver.resolveSnapshotDirectory(snapshotConfiguration);
+        final Path snapshotDirectory = SnapshotDirectoryResolver.resolveSnapshotDirectory(snapshotConfiguration);
         final Collection<Path> orphanedSnapshots = globalResultCollector.findOrphanedSnapshotsIn(snapshotDirectory);
         orphanedSnapshots
                 .forEach(orphaned -> {

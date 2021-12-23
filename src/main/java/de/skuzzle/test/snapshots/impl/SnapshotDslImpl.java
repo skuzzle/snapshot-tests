@@ -2,6 +2,7 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.util.Objects;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
@@ -13,16 +14,22 @@ import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
-class SnapshotDslImpl implements ChoseDataFormat, ChoseStructure, ChoseAssertions {
+class SnapshotDslImpl implements ChoseActual, ChoseDataFormat, ChoseStructure, ChoseAssertions {
 
     private final SnapshotTest snapshot;
-    private final Object actual;
+    private Object actual;
     private SnapshotSerializer snapshotSerializer;
     private StructuralAssertions structuralAssertions;
 
     public SnapshotDslImpl(SnapshotTest snapshot, Object actual) {
-        this.snapshot = snapshot;
+        this.snapshot = Objects.requireNonNull(snapshot);
         this.actual = actual;
+    }
+
+    @Override
+    public ChoseDataFormat assertThat(Object actual) {
+        this.actual = actual;
+        return this;
     }
 
     @Override

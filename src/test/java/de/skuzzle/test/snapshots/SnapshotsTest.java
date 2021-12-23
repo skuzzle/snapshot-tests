@@ -48,6 +48,14 @@ public class SnapshotsTest {
         snapshot.assertThat(phil).asXml().matchesSnapshotStructure();
     }
 
+    @Test
+    void testWithExplicitSnapshotName(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        snapshot.named("simon").assertThat(simon).asXml().matchesSnapshotStructure();
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.named("phil").assertThat(phil).asXml().matchesSnapshotStructure();
+    }
+
     private Person determinePerson() {
         return new Person()
                 .setName("Simon")

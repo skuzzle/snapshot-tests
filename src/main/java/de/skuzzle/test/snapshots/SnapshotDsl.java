@@ -32,8 +32,11 @@ public interface SnapshotDsl {
      * @author Simon Taddiken
      * @since ever
      */
-    public interface Snapshot {
+    public interface Snapshot extends ChoseActual, ChoseName {
 
+    }
+
+    public interface ChoseActual {
         /**
          * Will create a serialized snapshot of the provided actual test result and store
          * it on disk.
@@ -43,7 +46,11 @@ public interface SnapshotDsl {
          * @since ever
          */
         ChoseDataFormat assertThat(Object actual);
+    }
 
+    public interface ChoseName {
+
+        ChoseActual named(String snapshotName);
     }
 
     /**
@@ -90,7 +97,6 @@ public interface SnapshotDsl {
         ChoseStructure as(StructuredData structure);
 
         ChoseAssertions as(SnapshotSerializer serializer);
-
     }
 
     public interface ChoseAssertions {

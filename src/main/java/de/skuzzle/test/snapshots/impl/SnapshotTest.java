@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
@@ -28,10 +29,17 @@ final class SnapshotTest implements Snapshot {
     private final Method testMethod;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
+    private String explicitName;
 
     public SnapshotTest(SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = configuration;
         this.testMethod = testMethod;
+    }
+
+    @Override
+    public ChoseActual named(String snapshotName) {
+        this.explicitName = snapshotName;
+        return new SnapshotDslImpl(this, null);
     }
 
     @Override
@@ -40,11 +48,14 @@ final class SnapshotTest implements Snapshot {
     }
 
     private String determineNextSnapshotName() {
+        if (explicitName != null) {
+            return explicitName;
+        }
         return SnapshotNaming.getSnapshotName(testMethod, localResultCollector.size());
     }
 
     private Path determineSnapshotDirectory() throws IOException {
-        return DirectoryResolver.resolveSnapshotDirectory(configuration);
+        return SnapshotDirectoryResolver.resolveSnapshotDirectory(configuration);
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
