@@ -1,3 +1,8 @@
+snapshot-number: 1
+test-method: testWithExplicitSnapshotName
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+snapshot-name: phil
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>
     <address>

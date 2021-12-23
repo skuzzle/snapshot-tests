@@ -65,7 +65,7 @@ final class GlobalResultCollector {
 
     private boolean testResultsContain(Path snapshotFile) {
         return results.stream()
-                .map(SnapshotResult::snapshotFile)
+                .map(SnapshotResult::targetFile)
                 .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
                         snapshotFile));
     }

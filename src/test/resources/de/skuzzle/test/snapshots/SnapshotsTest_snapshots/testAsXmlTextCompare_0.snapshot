@@ -1,3 +1,8 @@
+snapshot-number: 0
+test-method: testAsXmlTextCompare
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+snapshot-name: testAsXmlTextCompare_0
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>
     <address>

@@ -1,3 +1,8 @@
+snapshot-number: 0
+test-method: testAsJsonStructureCompare
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+snapshot-name: testAsJsonStructureCompare_0
+
 {
   "name" : "Simon",
   "surname" : "Taddiken",

@@ -7,6 +7,12 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import de.skuzzle.test.snapshots.SnapshotAssertions;
 
+/**
+ * Relevant configuration for executing snapshot tests in a test class that is annotated
+ * with {@link SnapshotAssertions}.
+ *
+ * @author Simon Taddiken
+ */
 final class SnapshotConfiguration {
 
     private final ExtensionContext extensionContext;
@@ -27,6 +33,10 @@ final class SnapshotConfiguration {
                 ? extensionContext.getRequiredTestClass().getName().replace('.', '/') + "_snapshots"
                 : snapshotAssertions.snapshotDirectory();
         return testDirName;
+    }
+
+    public Class<?> testClass() {
+        return extensionContext.getRequiredTestClass();
     }
 
     public boolean isForceUpdateSnapshots() {

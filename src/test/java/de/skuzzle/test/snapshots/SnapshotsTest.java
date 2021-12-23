@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@SnapshotAssertions
+@SnapshotAssertions(forceUpdateSnapshots = false)
 public class SnapshotsTest {
 
     @Test

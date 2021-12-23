@@ -1,3 +1,8 @@
+snapshot-number: 1
+test-method: testMultipleSnapshotsInOneTestCase
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+snapshot-name: testMultipleSnapshotsInOneTestCase_1
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>
     <address>

@@ -14,25 +14,25 @@ import java.util.Optional;
  */
 public final class SnapshotResult {
 
-    private final Path snapshotFile;
+    private final SnapshotFile snapshot;
+    private final Path targetFile;
     private final SnapshotStatus status;
-    private final String serializedSnapshot;
     private final Throwable failure;
 
-    private SnapshotResult(Path snapshotFile, SnapshotStatus status, String serializedSnapshot, Throwable failure) {
-        this.snapshotFile = Objects.requireNonNull(snapshotFile);
+    private SnapshotResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshot, Throwable failure) {
+        this.targetFile = Objects.requireNonNull(targetFile);
         this.status = Objects.requireNonNull(status);
-        this.serializedSnapshot = Objects.requireNonNull(serializedSnapshot);
+        this.snapshot = Objects.requireNonNull(snapshot);
         this.failure = failure;
     }
 
-    public static SnapshotResult forFailedTest(Path snapshotFile, String serializedSnapshot, Throwable failure) {
-        return new SnapshotResult(snapshotFile, SnapshotStatus.ASSERTED, serializedSnapshot,
+    public static SnapshotResult forFailedTest(Path targetFile, SnapshotFile snapshot, Throwable failure) {
+        return new SnapshotResult(targetFile, SnapshotStatus.ASSERTED, snapshot,
                 Objects.requireNonNull(failure));
     }
 
-    public static SnapshotResult of(Path snapshotFile, SnapshotStatus status, String serializedSnapshot) {
-        return new SnapshotResult(snapshotFile, status, serializedSnapshot, null);
+    public static SnapshotResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshot) {
+        return new SnapshotResult(targetFile, status, snapshot, null);
     }
 
     /**
@@ -40,8 +40,8 @@ public final class SnapshotResult {
      *
      * @return The snapshot file.
      */
-    public Path snapshotFile() {
-        return this.snapshotFile;
+    public Path targetFile() {
+        return this.targetFile;
     }
 
     /**
@@ -54,12 +54,12 @@ public final class SnapshotResult {
     }
 
     /**
-     * The serialized snapshot.
+     * The snapshot.
      *
      * @return The serialized snapshot.
      */
-    public String serializedSnapshot() {
-        return this.serializedSnapshot;
+    public SnapshotFile serializedSnapshot() {
+        return this.snapshot;
     }
 
     /**
@@ -77,7 +77,7 @@ public final class SnapshotResult {
      * @throws IOException if an I/O error occurs
      */
     public void deleteSnapshot() throws IOException {
-        Files.delete(snapshotFile);
+        Files.delete(targetFile);
     }
 
 }

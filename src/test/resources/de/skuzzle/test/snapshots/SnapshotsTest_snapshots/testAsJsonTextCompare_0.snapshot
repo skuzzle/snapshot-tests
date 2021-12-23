@@ -1,3 +1,8 @@
+snapshot-number: 0
+test-method: testAsJsonTextCompare
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+snapshot-name: testAsJsonTextCompare_0
+
 {
   "name" : "Simon",
   "surname" : "Taddiken",

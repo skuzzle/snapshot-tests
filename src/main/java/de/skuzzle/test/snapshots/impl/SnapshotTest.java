@@ -2,9 +2,9 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
@@ -13,6 +13,8 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
+import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotStatus;
@@ -54,6 +56,14 @@ final class SnapshotTest implements Snapshot {
         return SnapshotNaming.getSnapshotName(testMethod, localResultCollector.size());
     }
 
+    private SnapshotHeader determineNextSnapshotHeader() {
+        return SnapshotHeader.fromMap(Map.of(
+                SnapshotHeader.SNAPSHOT_NUMBER, "" + localResultCollector.size(),
+                SnapshotHeader.TEST_METHOD, testMethod.getName(),
+                SnapshotHeader.TEST_CLASS, configuration.testClass().getName(),
+                SnapshotHeader.SNAPSHOT_NAME, determineNextSnapshotName()));
+    }
+
     private Path determineSnapshotDirectory() throws IOException {
         return SnapshotDirectoryResolver.resolveSnapshotDirectory(configuration);
     }
@@ -67,9 +77,12 @@ final class SnapshotTest implements Snapshot {
         final Path snapshotFile = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
-        Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
+        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
+        final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
+        xx.writeTo(snapshotFile);
+
         final SnapshotResult result = SnapshotResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
-                serializedActual);
+                xx);
 
         return this.localResultCollector.add(result);
     }
@@ -86,18 +99,21 @@ final class SnapshotTest implements Snapshot {
 
         final SnapshotResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
-            Files.writeString(snapshotFile, serializedActual, StandardCharsets.UTF_8);
+            final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
+            final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
+            xx.writeTo(snapshotFile);
 
             final SnapshotStatus status = snapshotFileAlreadyExists
                     ? SnapshotStatus.UPDATED_FORCEFULLY
                     : SnapshotStatus.CREATED_INITIALLY;
-            result = SnapshotResult.of(snapshotFile, status, serializedActual);
+            result = SnapshotResult.of(snapshotFile, status, xx);
         } else {
-            final String storedSnapshot = Files.readString(snapshotFile, StandardCharsets.UTF_8);
+            final SnapshotFile xx = SnapshotFile.fromSnapshotFile(snapshotFile);
+            final String storedSnapshot = xx.snapshot();
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
-                    .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, storedSnapshot, assertionError))
-                    .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, storedSnapshot));
+                    .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, xx, assertionError))
+                    .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, xx));
         }
         this.localResultCollector.add(result);
 
