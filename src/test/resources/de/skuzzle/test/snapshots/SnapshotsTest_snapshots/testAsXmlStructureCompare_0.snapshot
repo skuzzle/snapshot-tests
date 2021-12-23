@@ -1,7 +1,7 @@
-snapshot-number: 0
-test-method: testAsXmlStructureCompare
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
 snapshot-name: testAsXmlStructureCompare_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-method: testAsXmlStructureCompare
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>

@@ -7,9 +7,11 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized
@@ -85,18 +87,18 @@ public final class SnapshotFile {
         public static final String SNAPSHOT_NUMBER = "snapshot-number";
         public static final String SNAPSHOT_NAME = "snapshot-name";
 
-        private final Map<String, String> values;
+        private final SortedMap<String, String> values;
 
-        private SnapshotHeader(Map<String, String> values) {
-            this.values = values;
+        private SnapshotHeader(SortedMap<String, String> values) {
+            this.values = Collections.unmodifiableSortedMap(values);
         }
 
         public static SnapshotHeader fromMap(Map<String, String> values) {
-            return new SnapshotHeader(Map.copyOf(values));
+            return new SnapshotHeader(new TreeMap<>(values));
         }
 
         public static SnapshotHeader readFrom(BufferedReader reader) throws IOException {
-            final Map<String, String> values = new HashMap<>();
+            final SortedMap<String, String> values = new TreeMap<>();
             String line = reader.readLine();
             while (line != null && !line.isEmpty()) {
                 final String[] parts = line.split(":", 2);
@@ -112,7 +114,7 @@ public final class SnapshotFile {
                 }
                 line = reader.readLine();
             }
-            return new SnapshotHeader(Map.copyOf(values));
+            return new SnapshotHeader(values);
         }
 
         public String get(String key) {

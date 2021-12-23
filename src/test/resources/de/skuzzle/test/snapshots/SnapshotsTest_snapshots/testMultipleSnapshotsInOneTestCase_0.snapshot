@@ -1,7 +1,7 @@
-snapshot-number: 0
-test-method: testMultipleSnapshotsInOneTestCase
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
 snapshot-name: testMultipleSnapshotsInOneTestCase_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-method: testMultipleSnapshotsInOneTestCase
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>

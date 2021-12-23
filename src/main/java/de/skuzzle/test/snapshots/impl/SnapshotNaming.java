@@ -9,6 +9,12 @@ final class SnapshotNaming {
         return path.getFileName().toString().endsWith(".snapshot");
     }
 
+    /**
+     * @deprecated Implementation should be adjusted so that it uses the information from
+     *             the snapshot header instead of relying on the file name (See
+     *             https://github.com/skuzzle/snapshot-tests/issues/8)
+     */
+    @Deprecated
     public static boolean isSnapshotFileForMethod(Path path, Method testMethod) {
         return path.getFileName().toString().startsWith(testMethod.getName() + "_");
     }

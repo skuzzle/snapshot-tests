@@ -22,7 +22,7 @@ public class FailingSnapshotTests {
                         "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
     }
 
-    @SnapshotAssertions(forceUpdateSnapshots = true)
+    @SnapshotAssertions(forceUpdateSnapshots = true) // leave force true
     static class FailBecauseForceUpdateFromAnnotation {
 
         @Test
