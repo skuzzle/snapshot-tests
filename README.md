@@ -120,12 +120,12 @@ can be replaced with a deterministic mock during testing.
 
 ### Changing the snapshot directory
 By default, snapshots are stored in a directory structure according to their test-class's package name relative to 
-`src/main/resources`. You can change the relative path using 
+`src/test/resources`. You can change the relative path using 
 
 ```java
 @SnapshotAssertions(snapshotDirectory = "snapshots")
 ```
-Currently it is not possible to use a directory outside `src/main/resources`.
+Currently it is not possible to use a directory outside `src/test/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
