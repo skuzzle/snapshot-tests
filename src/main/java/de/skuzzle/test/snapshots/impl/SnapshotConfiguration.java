@@ -22,10 +22,9 @@ final class SnapshotConfiguration {
     public String snapshotDirecotry() throws IOException {
         final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestClass()
                 .getAnnotation(SnapshotAssertions.class);
-        final Class<?> testClass = extensionContext.getRequiredTestClass();
 
         final String testDirName = snapshotAssertions.snapshotDirectory().isEmpty()
-                ? testClass.getName().replace('.', '/') + "_snapshots"
+                ? extensionContext.getRequiredTestClass().getName().replace('.', '/') + "_snapshots"
                 : snapshotAssertions.snapshotDirectory();
         return testDirName;
     }
