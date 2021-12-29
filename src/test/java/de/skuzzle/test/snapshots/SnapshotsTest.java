@@ -14,6 +14,11 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 public class SnapshotsTest {
 
     @Test
+    void testSnapshotNull(Snapshot snapshot) throws Exception {
+        snapshot.assertThat(null).asText().matchesSnapshotText();
+    }
+
+    @Test
     void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         snapshot.assertThat(myself).asJson().matchesSnapshotText();

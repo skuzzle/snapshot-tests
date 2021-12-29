@@ -2,10 +2,10 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.util.Objects;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -14,7 +14,7 @@ import de.skuzzle.test.snapshots.data.json.JacksonStructuredData;
 import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
-class SnapshotDslImpl implements ChoseActual, ChoseDataFormat, ChoseStructure, ChoseAssertions {
+class SnapshotDslImpl implements ChooseActual, ChoseDataFormat, ChooseStructure, ChooseAssertions {
 
     private final SnapshotTest snapshot;
     private Object actual;
@@ -33,28 +33,28 @@ class SnapshotDslImpl implements ChoseActual, ChoseDataFormat, ChoseStructure, C
     }
 
     @Override
-    public ChoseStructure asXml() {
+    public ChooseStructure asXml() {
         return as(JaxbStructuredData.inferJaxbContext(actual).build());
     }
 
     @Override
-    public ChoseStructure asJson() {
+    public ChooseStructure asJson() {
         return as(JacksonStructuredData.withDefaultObjectMapper().build());
     }
 
     @Override
-    public ChoseAssertions asText() {
+    public ChooseAssertions asText() {
         return as(Object::toString);
     }
 
     @Override
-    public ChoseAssertions as(SnapshotSerializer serializer) {
+    public ChooseAssertions as(SnapshotSerializer serializer) {
         this.snapshotSerializer = Objects.requireNonNull(serializer, "serializer must not be null");
         return this;
     }
 
     @Override
-    public ChoseStructure as(StructuredData structure) {
+    public ChooseStructure as(StructuredData structure) {
         Objects.requireNonNull(structure, "structure must not be null");
         this.snapshotSerializer = structure.snapshotSerializer();
         this.structuralAssertions = structure.structuralAssertions();

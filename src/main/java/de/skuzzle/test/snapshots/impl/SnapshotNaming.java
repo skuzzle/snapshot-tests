@@ -1,7 +1,11 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
+
+import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 
 final class SnapshotNaming {
 
@@ -16,7 +20,14 @@ final class SnapshotNaming {
      */
     @Deprecated
     public static boolean isSnapshotFileForMethod(Path path, Method testMethod) {
-        return path.getFileName().toString().startsWith(testMethod.getName() + "_");
+        try {
+            return SnapshotFile.fromSnapshotFile(path)
+                    .header()
+                    .get(SnapshotHeader.TEST_METHOD)
+                    .equals(testMethod.getName());
+        } catch (final IOException e) {
+            throw new RuntimeException();
+        }
     }
 
     public static String getSnapshotName(Method testMethod, int counter) {

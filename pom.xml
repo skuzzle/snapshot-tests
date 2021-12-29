@@ -33,7 +33,6 @@
         <version.opentest4j>1.2.0</version.opentest4j>
         <version.equals-verifier>3.7.2</version.equals-verifier>
 
-
         <site.name>snapshot-tests</site.name>
         <github.name>snapshot-tests</github.name>
     </properties>

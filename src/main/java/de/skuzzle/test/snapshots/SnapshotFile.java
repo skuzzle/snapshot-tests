@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.junit.platform.commons.support.ReflectionSupport;
+
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized
  * snapshot. The header is a simple key-value format which is separated from the actual
@@ -117,10 +119,19 @@ public final class SnapshotFile {
             return new SnapshotHeader(values);
         }
 
+        public Class<?> getTestClass() {
+            final String testClassName = get(TEST_CLASS);
+            return ReflectionSupport.tryToLoadClass(testClassName)
+                    .getOrThrow(cause -> new IllegalStateException(
+                            String.format("Could not load test class '%s' stated in Snapshot header", testClassName),
+                            cause));
+        }
+
         public String get(String key) {
-            final String value = values.get(key);
-            if (value != null) {
-                throw new IllegalArgumentException("No SnapshotHeader value for key: " + key);
+            final String value = values.get(Objects.requireNonNull(key, "key must not be null"));
+            if (value == null) {
+                throw new IllegalArgumentException(
+                        String.format("No SnapshotHeader value for key '%s' among %s", key, values));
             }
             return value;
         }

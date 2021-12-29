@@ -32,25 +32,33 @@ public interface SnapshotDsl {
      * @author Simon Taddiken
      * @since ever
      */
-    public interface Snapshot extends ChoseActual, ChoseName {
+    public interface Snapshot extends ChooseActual, ChooseName {
 
     }
 
-    public interface ChoseActual {
+    public interface ChooseActual {
         /**
          * Will create a serialized snapshot of the provided actual test result and store
          * it on disk.
          *
          * @param actual The actual test result.
-         * @return Fluent API object for chosing the snapshot format.
+         * @return Fluent API object for choosing the snapshot format.
          * @since ever
          */
         ChoseDataFormat assertThat(Object actual);
     }
 
-    public interface ChoseName {
-
-        ChoseActual named(String snapshotName);
+    public interface ChooseName {
+        /**
+         * Choose a name for the snapshot file. This overrides the default naming scheme
+         * of using <code>method name + consecutive number</code>. Note that, when you
+         * specify the same name twice within test cases for the same snapshot directory,
+         * snapshots will be silently overridden and tests may subsequently fail.
+         *
+         * @param snapshotName The name of the snapshot to create.
+         * @return Fluent API object for choosing the snapshot format.
+         */
+        ChooseActual named(String snapshotName);
     }
 
     /**
@@ -72,7 +80,7 @@ public interface SnapshotDsl {
          * @return Fluent API object for performing the snapshot assertion.
          * @since ever
          */
-        ChoseStructure asXml();
+        ChooseStructure asXml();
 
         /**
          * Serializes the actual test result into a json string. This will use an
@@ -84,7 +92,7 @@ public interface SnapshotDsl {
          * @return Fluent API object for performing the snapshot assertion.
          * @since ever
          */
-        ChoseStructure asJson();
+        ChooseStructure asJson();
 
         /**
          * "Serializes" the actual test result using {@link Object#toString()}.
@@ -92,24 +100,30 @@ public interface SnapshotDsl {
          * @return Fluent API object for performing the snapshot assertion.
          * @since 0.0.4
          */
-        ChoseAssertions asText();
+        ChooseAssertions asText();
 
-        ChoseStructure as(StructuredData structure);
+        ChooseStructure as(StructuredData structure);
 
-        ChoseAssertions as(SnapshotSerializer serializer);
+        ChooseAssertions as(SnapshotSerializer serializer);
     }
 
-    public interface ChoseAssertions {
+    public interface ChooseAssertions {
 
         /**
          * This method just updates the persisted snapshot with the current actual test
-         * result. <b>It will always make the test fail with an assertion failure.</b>
+         * result. <b>It will always make the test fail with an assertion failure.</b> Use
+         * it only temporarily as replacement for {@link #matchesSnapshotText()},
+         * {@link #matchesAccordingTo(StructuralAssertions)} or
+         * {@link ChooseStructure#matchesSnapshotStructure()}
          *
+         * @deprecated This method is NOT deprecated. Deprecation serves only to mark this
+         *             method in your IDE as it should only be used temporarily.
          * @return Details about the snapshot.
          * @throws AssertionError Always thrown by this method to indicate that a call to
          *             this method must be removed to enable snapshot assertions.
          * @since ever
          */
+        @Deprecated
         SnapshotResult justUpdateSnapshot();
 
         /**
@@ -137,7 +151,7 @@ public interface SnapshotDsl {
         SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions);
     }
 
-    public interface ChoseStructure extends ChoseAssertions {
+    public interface ChooseStructure extends ChooseAssertions {
 
         /**
          * Asserts that the serialized actual test result structurally matches the

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
@@ -39,7 +39,7 @@ final class SnapshotTest implements Snapshot {
     }
 
     @Override
-    public ChoseActual named(String snapshotName) {
+    public ChooseActual named(String snapshotName) {
         this.explicitName = snapshotName;
         return new SnapshotDslImpl(this, null);
     }

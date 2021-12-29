@@ -4,10 +4,10 @@ import javax.xml.bind.JAXBContext;
 
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseActual;
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChoseDataFormat;
-import de.skuzzle.test.snapshots.SnapshotDsl.ChoseStructure;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.data.xml.JaxbStructuredData;
 
@@ -41,7 +41,7 @@ public class SnapshotDslTest {
         return new TestSnapshotDslImpl();
     }
 
-    private static class TestSnapshotDslImpl implements Snapshot, ChoseDataFormat, ChoseStructure, ChoseAssertions {
+    private static class TestSnapshotDslImpl implements Snapshot, ChoseDataFormat, ChooseStructure, ChooseAssertions {
 
         @Override
         public ChoseDataFormat assertThat(Object actual) {
@@ -49,27 +49,27 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public ChoseStructure asXml() {
+        public ChooseStructure asXml() {
             return this;
         }
 
         @Override
-        public ChoseStructure asJson() {
+        public ChooseStructure asJson() {
             return this;
         }
 
         @Override
-        public ChoseAssertions asText() {
+        public ChooseAssertions asText() {
             return this;
         }
 
         @Override
-        public ChoseStructure as(StructuredData structure) {
+        public ChooseStructure as(StructuredData structure) {
             return this;
         }
 
         @Override
-        public ChoseAssertions as(SnapshotSerializer serializer) {
+        public ChooseAssertions as(SnapshotSerializer serializer) {
             return this;
         }
 
@@ -94,7 +94,7 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public ChoseActual named(String snapshotName) {
+        public ChooseActual named(String snapshotName) {
             return this;
         }
 
