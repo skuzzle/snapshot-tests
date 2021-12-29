@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.skuzzle</groupId>
         <artifactId>skuzzle-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
     </parent>
 
     <groupId>de.skuzzle.test</groupId>
@@ -14,13 +14,11 @@
     <packaging>jar</packaging>
 
     <name>Snapshot Test</name>
-    <description>Snapshot testing and test data production</description>
+    <description>Convenient snapshot testing for JUnit5 </description>
 
     <properties>
         <coveralls.skip>false</coveralls.skip>
         <version.java>11</version.java>
-        <maven.compiler.target>${version.java}</maven.compiler.target>
-        <maven.compiler.source>${version.java}</maven.compiler.source>
 
         <version.junit>5.8.1</version.junit>
         <version.assertj>3.13.2</version.assertj>
@@ -36,6 +34,8 @@
 
         <site.name>snapshot-tests</site.name>
         <github.name>snapshot-tests</github.name>
+        <github.main-branch>main</github.main-branch>
+        <github.dev-branch>dev</github.dev-branch>
     </properties>
 
     <scm>
