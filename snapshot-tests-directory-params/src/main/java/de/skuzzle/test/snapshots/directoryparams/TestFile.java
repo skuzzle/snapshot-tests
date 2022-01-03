@@ -66,7 +66,6 @@ public final class TestFile {
      * @param charset The charset to use.
      * @return The file contents as String
      * @throws IOException If an I/O error occurs.
-     * @see {@link #asText(Charset, Map)}
      */
     public String asText(Charset charset) throws IOException {
         return new String(asBinary(), Objects.requireNonNull(charset, "charset must not be null"));
