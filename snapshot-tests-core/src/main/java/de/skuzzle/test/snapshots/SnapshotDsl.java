@@ -73,6 +73,8 @@ public interface SnapshotDsl {
 
         ChooseStructure as(StructuredData structure);
 
+        ChooseStructure as(StructuredDataBuilder structuredDataBuilder);
+
         ChooseAssertions as(SnapshotSerializer serializer);
     }
 

@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots;
 
+import static de.skuzzle.test.snapshots.data.json.JsonSnapshot.json;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -7,12 +8,9 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
 
 @SnapshotAssertions(forceUpdateSnapshots = false)
 public class SnapshotsTest {
-
-    private static final StructuredData json = JsonSnapshot.withDefaultObjectMapper().build();
 
     @Test
     void testAsJsonTextCompare(Snapshot snapshot) throws Exception {

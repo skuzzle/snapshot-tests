@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots;
 
+import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -9,12 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 
 @SnapshotAssertions(forceUpdateSnapshots = false)
 public class SnapshotsTest {
-
-    private static final StructuredData xml = XmlSnapshot.inferJaxbContext().build();
 
     @Test
     void testAsXmlTextCompare(Snapshot snapshot) throws Exception {

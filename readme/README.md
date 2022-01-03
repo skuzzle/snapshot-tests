@@ -33,7 +33,7 @@ class ComplexTest {
     @Test
     void testCreateComplexObject(Snapshot snapshot) throws Exception {
         ComplexObject actual = classUnderTest.createComplexObject();
-        snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+        snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
     }
 }
 ```
@@ -68,7 +68,7 @@ You can also update snapshots for individual assertions by replacing any of the 
 `.justUpdateSnapshot()`:
 
 ```java
-    snapshot.assertThat(actual).asJson().justUpdateSnapshot();
+    snapshot.assertThat(actual).as(JsonSnapshot.json).justUpdateSnapshot();
 ```
 
 **Warning** While updating snapshots, all test cases containing snapshot assertions will fail (for the 
@@ -86,7 +86,7 @@ Snapshots can be serialized into any format. By default, this library ships with
 @Test
 void testSnapshotXml(Snapshot snapshot) throws Exception {
     ComplexObject actual = ...
-    snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+    snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
 }
 
 @Test

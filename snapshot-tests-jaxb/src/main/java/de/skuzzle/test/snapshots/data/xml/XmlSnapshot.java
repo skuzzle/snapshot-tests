@@ -11,8 +11,20 @@ import org.assertj.core.annotations.Nullable;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
+import de.skuzzle.test.snapshots.StructuredDataBuilder;
 
-public final class XmlSnapshot {
+/**
+ * {@link StructuredData} builder for serializing test results to XML, relying on JAXB.
+ *
+ * @author Simon Taddiken
+ */
+public final class XmlSnapshot implements StructuredDataBuilder {
+
+    /**
+     * Simple default {@link StructuredData} instance which infers the JAXB context from a
+     * test's actual result object.
+     */
+    public static final StructuredData xml = inferJaxbContext().build();
 
     @Nullable
     private final JAXBContext jaxbContext;
@@ -40,6 +52,7 @@ public final class XmlSnapshot {
         return this;
     }
 
+    @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = JaxbXmlSnapshotSerializer.withExplicitJaxbContext(
                 jaxbContext, marshallerSupplier);

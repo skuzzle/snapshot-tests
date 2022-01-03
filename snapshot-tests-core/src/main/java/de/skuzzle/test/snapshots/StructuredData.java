@@ -7,6 +7,7 @@ import java.util.Objects;
  *
  * @author Simon Taddiken
  * @since ever
+ * @see StructuredDataBuilder
  */
 public final class StructuredData {
 

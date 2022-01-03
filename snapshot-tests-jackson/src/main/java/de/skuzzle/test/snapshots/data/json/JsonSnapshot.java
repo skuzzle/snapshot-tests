@@ -11,8 +11,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
+import de.skuzzle.test.snapshots.StructuredDataBuilder;
 
-public final class JsonSnapshot {
+public final class JsonSnapshot implements StructuredDataBuilder {
+
+    public static final StructuredData json = withDefaultObjectMapper().build();
 
     private final ObjectMapper objectMapper;
 
@@ -39,6 +42,7 @@ public final class JsonSnapshot {
         return this;
     }
 
+    @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = new JacksonJsonSnapshotSerializer(objectMapper);
         final StructuralAssertions structuralAssertions = new JsonAssertStructuralAssertions();
