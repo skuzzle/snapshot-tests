@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
 import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
 
-class DiffInterpreter {
+final class DiffInterpreter {
 
     private static final Pattern WHITESPACE_ONLY = Pattern.compile("\\s+");
     private boolean ignoreWhitespaceChanges = false;

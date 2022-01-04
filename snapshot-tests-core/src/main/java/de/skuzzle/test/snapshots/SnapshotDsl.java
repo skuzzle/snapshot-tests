@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+
 /**
  * DSL for defining snapshot tests.
  *
@@ -20,7 +22,8 @@ public interface SnapshotDsl {
      * </pre>
      *
      * Note that the respective test class must be annotated with
-     * {@link SnapshotAssertions}.
+     * {@link SnapshotAssertions}, otherwise the test framework will not be able to
+     * resolve the <code>Snapshot<code> parameter of the test method.
      *
      * @author Simon Taddiken
      * @since ever
@@ -64,15 +67,27 @@ public interface SnapshotDsl {
     public interface ChooseDataFormat {
 
         /**
-         * "Serializes" the actual test result using {@link Object#toString()}.
+         * "Serializes" the actual test result using {@link Object#toString()} and
+         * compares the results using a generic string diff algorithm.
+         * <p>
+         * Calling this method is equivalent to calling
+         * <code>.as(TextSnapshot.text)</code>.
          *
          * @return Fluent API object for performing the snapshot assertion.
          * @since 0.0.4
+         * @see #as(StructuredDataBuilder)
          */
         ChooseAssertions asText();
 
-        ChooseStructure as(StructuredData structure);
-
+        /**
+         * Specify the serialization format <em>and</em> the way in which serialized
+         * objects are compared. A {@link StructuredData} instance combines both a
+         * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
+         *
+         * @param structuredDataBuilder
+         * @return Fluent API object for performing the snapshot assertion.
+         * @see StructuredData
+         */
         ChooseStructure as(StructuredDataBuilder structuredDataBuilder);
 
         ChooseAssertions as(SnapshotSerializer serializer);
@@ -106,6 +121,7 @@ public interface SnapshotDsl {
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
          * @since ever
+         * @see TextSnapshot
          */
         SnapshotResult matchesSnapshotText();
 

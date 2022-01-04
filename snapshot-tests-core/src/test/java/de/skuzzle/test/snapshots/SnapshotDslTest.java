@@ -37,11 +37,6 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public ChooseStructure as(StructuredData structure) {
-            return this;
-        }
-
-        @Override
         public ChooseAssertions as(SnapshotSerializer serializer) {
             return this;
         }
@@ -68,6 +63,11 @@ public class SnapshotDslTest {
 
         @Override
         public ChooseActual named(String snapshotName) {
+            return this;
+        }
+
+        @Override
+        public ChooseStructure as(StructuredDataBuilder structuredDataBuilder) {
             return this;
         }
 

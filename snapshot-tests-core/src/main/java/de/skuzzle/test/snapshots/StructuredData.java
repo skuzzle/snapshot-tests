@@ -2,14 +2,20 @@ package de.skuzzle.test.snapshots;
 
 import java.util.Objects;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
+
 /**
  * Combines a {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
+ * <p>
+ * This class implements {@link StructuredDataBuilder} so that {@link #build()} always
+ * returns <code>this</code>. This allows to pass a concrete instance of this class
+ * directly to the snapshot DSL {@link ChooseDataFormat#as(StructuredDataBuilder)}
  *
  * @author Simon Taddiken
  * @since ever
  * @see StructuredDataBuilder
  */
-public final class StructuredData {
+public final class StructuredData implements StructuredDataBuilder {
 
     private final SnapshotSerializer snapshotSerializer;
     private final StructuralAssertions structuralAssertions;
@@ -30,5 +36,10 @@ public final class StructuredData {
 
     public StructuralAssertions structuralAssertions() {
         return this.structuralAssertions;
+    }
+
+    @Override
+    public StructuredData build() {
+        return this;
     }
 }

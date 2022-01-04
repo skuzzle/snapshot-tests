@@ -11,7 +11,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataBuilder;
-import de.skuzzle.test.snapshots.data.text.TextDiffStructuralAssertions;
+import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
 
@@ -27,13 +27,15 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
 
     @Override
     public ChooseDataFormat assertThat(Object actual) {
+        // #9 (https://github.com/skuzzle/snapshot-tests/issues/9)
+        // Require non-null actual value?
         this.actual = actual;
         return this;
     }
 
     @Override
     public ChooseAssertions asText() {
-        return as(Object::toString);
+        return as(TextSnapshot.text);
     }
 
     @Override
@@ -43,21 +45,17 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
     }
 
     @Override
-    public ChooseStructure as(StructuredData structure) {
-        Objects.requireNonNull(structure, "structure must not be null");
+    public ChooseStructure as(StructuredDataBuilder structuredDataBuilder) {
+        final StructuredData structure = Objects
+                .requireNonNull(structuredDataBuilder, "structuredDataBuilder must not be null").build();
         this.snapshotSerializer = structure.snapshotSerializer();
         this.structuralAssertions = structure.structuralAssertions();
         return this;
     }
 
     @Override
-    public ChooseStructure as(StructuredDataBuilder structuredDataBuilder) {
-        return as(structuredDataBuilder.build());
-    }
-
-    @Override
     public SnapshotResult matchesSnapshotText() {
-        return this.matchesAccordingTo(new TextDiffStructuralAssertions());
+        return this.matchesAccordingTo(TextSnapshot.text.structuralAssertions());
     }
 
     @Override

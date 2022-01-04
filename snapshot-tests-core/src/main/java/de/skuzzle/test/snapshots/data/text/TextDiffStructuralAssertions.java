@@ -4,7 +4,7 @@ import org.opentest4j.AssertionFailedError;
 
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
-public class TextDiffStructuralAssertions implements StructuralAssertions {
+final class TextDiffStructuralAssertions implements StructuralAssertions {
 
     @Override
     public void assertEquals(String storedSnapshot, String serializedActual) {
