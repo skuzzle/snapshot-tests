@@ -26,6 +26,7 @@ public final class XmlSnapshot implements StructuredDataBuilder {
      */
     public static final StructuredData xml = inferJaxbContext().build();
 
+    // If left null, the JAXBContext will be inferred from the actual test result.
     @Nullable
     private final JAXBContext jaxbContext;
     private MarshallerSupplier marshallerSupplier;

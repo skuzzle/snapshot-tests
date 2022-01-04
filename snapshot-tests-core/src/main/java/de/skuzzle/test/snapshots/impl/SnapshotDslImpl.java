@@ -17,8 +17,8 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
 
     private final SnapshotTest snapshot;
     private Object actual;
-    private SnapshotSerializer snapshotSerializer;
-    private StructuralAssertions structuralAssertions;
+    private SnapshotSerializer snapshotSerializer = TextSnapshot.text.snapshotSerializer();
+    private StructuralAssertions structuralAssertions = TextSnapshot.text.structuralAssertions();
 
     public SnapshotDslImpl(SnapshotTest snapshot, Object actual) {
         this.snapshot = Objects.requireNonNull(snapshot);

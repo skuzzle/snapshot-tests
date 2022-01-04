@@ -6,7 +6,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
-class JsonAssertStructuralAssertions implements StructuralAssertions {
+final class JsonAssertStructuralAssertions implements StructuralAssertions {
 
     @Override
     public void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException {

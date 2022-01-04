@@ -65,7 +65,7 @@ public @interface SnapshotAssertions {
 
     /**
      * When enabled, a test method using snapshot assertions will continue to execute,
-     * even if the snapshot execution failed. This allows to collect multiple failing
+     * even if a snapshot assertion failed. This allows to collect multiple failing
      * snapshots with a single test execution.
      * <p>
      * The failures from all snapshot comparisons within the single test methods will be

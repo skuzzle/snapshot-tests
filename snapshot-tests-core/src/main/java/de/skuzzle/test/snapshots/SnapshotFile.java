@@ -28,7 +28,7 @@ public final class SnapshotFile {
     private final SnapshotHeader header;
     private final String snapshot;
 
-    public SnapshotFile(SnapshotHeader header, String snapshot) {
+    private SnapshotFile(SnapshotHeader header, String snapshot) {
         this.header = Objects.requireNonNull(header);
         this.snapshot = Objects.requireNonNull(snapshot);
     }

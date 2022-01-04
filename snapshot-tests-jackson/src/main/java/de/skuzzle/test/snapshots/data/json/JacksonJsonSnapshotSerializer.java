@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 
-class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
+final class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
 
     private final ObjectMapper objectMapper;
 
