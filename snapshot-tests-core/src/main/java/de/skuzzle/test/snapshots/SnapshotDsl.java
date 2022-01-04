@@ -23,7 +23,7 @@ public interface SnapshotDsl {
      *
      * Note that the respective test class must be annotated with
      * {@link SnapshotAssertions}, otherwise the test framework will not be able to
-     * resolve the <code>Snapshot<code> parameter of the test method.
+     * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
      * @since ever
@@ -84,7 +84,7 @@ public interface SnapshotDsl {
          * objects are compared. A {@link StructuredData} instance combines both a
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
          *
-         * @param structuredDataBuilder
+         * @param structuredDataBuilder The {@link StructuredDataBuilder} instance.
          * @return Fluent API object for performing the snapshot assertion.
          * @see StructuredData
          */
@@ -130,6 +130,7 @@ public interface SnapshotDsl {
          * persisted snapshot. This method delegates to given {@link StructuralAssertions}
          * instance.
          *
+         * @param structuralAssertions The {@link StructuralAssertions} instance to use.
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)}.
