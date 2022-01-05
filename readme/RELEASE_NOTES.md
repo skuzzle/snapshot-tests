@@ -26,7 +26,7 @@ If you need json based snapshots (includes `-core`):
 </dependency>
 ```
 
-If you only need xml based snapshots (includes `-core`):
+If you need xml based snapshots (includes `-core`):
 ```xml
 <dependency>
     <groupId>${project.groupId}</groupId>

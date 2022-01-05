@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * Pointer to a file that has been listed in a directory by {@link FilesFrom}. Provides a
  * few methods for conveniently working with that file.
  *
+ * @see FilesFrom
  * @author Simon Taddiken
  */
 public final class TestFile {
@@ -38,7 +39,7 @@ public final class TestFile {
         final String fileName = file.getFileName().toString();
         final int dot = fileName.lastIndexOf('.');
         return dot < 0
-                ? ""
+                ? fileName
                 : fileName.substring(0, dot);
     }
 
