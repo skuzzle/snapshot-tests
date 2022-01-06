@@ -16,6 +16,10 @@ If you only need text based snapshots:
 </dependency>
 ```
 
+```
+testImplementation '${project.groupId}:snapshot-tests-core:${project.version}'
+```
+
 If you need json based snapshots (includes `-core`):
 ```xml
 <dependency>
@@ -26,6 +30,10 @@ If you need json based snapshots (includes `-core`):
 </dependency>
 ```
 
+```
+testImplementation '${project.groupId}:snapshot-tests-jackson:${project.version}'
+```
+
 If you need xml based snapshots (includes `-core`):
 ```xml
 <dependency>
@@ -34,4 +42,8 @@ If you need xml based snapshots (includes `-core`):
     <version>${project.version}</version>
     <scope>test</scope>
 </dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 ```
