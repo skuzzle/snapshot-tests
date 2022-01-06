@@ -1,11 +1,14 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import de.skuzzle.test.snapshots.SnapshotAssertions;
+import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 
 /**
  * Relevant configuration for executing snapshot tests in a test class that is annotated
@@ -25,7 +28,15 @@ final class SnapshotConfiguration {
         return new SnapshotConfiguration(extensionContext);
     }
 
-    public String snapshotDirecotry() throws IOException {
+    public Path determineSnapshotDirectory() throws IOException {
+        final String testDirName = snapshotDirecotry();
+
+        final Path testDirectory = DirectoryResolver.resolve(testDirName);
+        Files.createDirectories(testDirectory);
+        return testDirectory;
+    }
+
+    private String snapshotDirecotry() throws IOException {
         final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestClass()
                 .getAnnotation(SnapshotAssertions.class);
 

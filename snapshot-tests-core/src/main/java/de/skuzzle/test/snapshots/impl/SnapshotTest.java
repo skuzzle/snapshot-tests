@@ -64,12 +64,8 @@ final class SnapshotTest implements Snapshot {
                 SnapshotHeader.SNAPSHOT_NAME, determineNextSnapshotName()));
     }
 
-    private Path determineSnapshotDirectory() throws IOException {
-        return SnapshotDirectoryResolver.resolveSnapshotDirectory(configuration);
-    }
-
     private Path determineSnapshotFile(String snapshotName) throws IOException {
-        return determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
+        return configuration.determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
     }
 
     SnapshotResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {

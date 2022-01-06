@@ -38,7 +38,8 @@ public interface SnapshotDsl {
          * it on disk.
          *
          * @param actual The actual test result.
-         * @return Fluent API object for choosing the snapshot format.
+         * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
+         *         the same object as 'this'!
          * @since ever
          */
         ChooseDataFormat assertThat(Object actual);
@@ -52,7 +53,8 @@ public interface SnapshotDsl {
          * snapshots will be silently overridden and tests may subsequently fail.
          *
          * @param snapshotName The name of the snapshot to create.
-         * @return Fluent API object for choosing the snapshot format.
+         * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
+         *         the same object as 'this'!
          */
         ChooseActual named(String snapshotName);
     }
@@ -73,7 +75,8 @@ public interface SnapshotDsl {
          * Calling this method is equivalent to calling
          * <code>.as(TextSnapshot.text)</code>.
          *
-         * @return Fluent API object for performing the snapshot assertion.
+         * @return Fluent API object for performing the snapshot assertion. Do NOT assume
+         *         it is the same object as 'this'!
          * @since 0.0.4
          * @see #as(StructuredDataBuilder)
          */
@@ -85,7 +88,8 @@ public interface SnapshotDsl {
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
          *
          * @param structuredDataBuilder The {@link StructuredDataBuilder} instance.
-         * @return Fluent API object for performing the snapshot assertion.
+         * @return Fluent API object for performing the snapshot assertion. Do NOT assume
+         *         it is the same object as 'this'!
          * @see StructuredData
          */
         ChooseStructure as(StructuredDataBuilder structuredDataBuilder);

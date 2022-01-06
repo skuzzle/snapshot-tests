@@ -8,6 +8,9 @@ package de.skuzzle.test.snapshots;
  * customizing, you should make sure that your implementations are compatible. For
  * example, it would <em>not</em> make sense to serialize objects to json and then use
  * XmlUnit to perform the structural assertions.
+ * <p>
+ * The serialized string will be persisted as 'snapshot' part within a
+ * {@link SnapshotFile}.
  *
  * @author Simon Taddiken
  * @since ever

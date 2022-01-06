@@ -75,7 +75,7 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
         final SnapshotConfiguration snapshotConfiguration = extensionContext.getStore(NAMESPACE)
                 .get(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, SnapshotConfiguration.class);
 
-        final Path snapshotDirectory = SnapshotDirectoryResolver.resolveSnapshotDirectory(snapshotConfiguration);
+        final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
         final Collection<Path> orphanedSnapshots = globalResultCollector.findOrphanedSnapshotsIn(snapshotDirectory);
         orphanedSnapshots
                 .forEach(orphaned -> {

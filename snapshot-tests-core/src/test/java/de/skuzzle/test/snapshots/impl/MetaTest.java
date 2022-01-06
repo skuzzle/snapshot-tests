@@ -12,7 +12,7 @@ import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
 import org.junit.platform.testkit.engine.Execution;
 
-public class TestTest {
+class MetaTest {
 
     public TestResult expectTestcase(Class<?> testClass) {
         final EngineExecutionResults executionResults = EngineTestKit
@@ -31,7 +31,7 @@ public class TestTest {
 
     private static boolean containedInStacktrace() {
         return StackWalker.getInstance().walk(stack -> stack
-                .anyMatch(stackFrame -> stackFrame.getClassName().equals(TestTest.class.getName())
+                .anyMatch(stackFrame -> stackFrame.getClassName().equals(MetaTest.class.getName())
                         && stackFrame.getMethodName().equals("expectTestcase")));
     }
 
