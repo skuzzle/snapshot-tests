@@ -12,7 +12,7 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
-## Latest Maven Central coordinates
+### Latest Maven Central coordinates
 
 If you only need text based snapshots:
 ```xml
@@ -58,6 +58,7 @@ testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
+
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
 
 ```java

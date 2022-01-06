@@ -12,16 +12,53 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+### Latest Maven Central coordinates
+
+If you only need text based snapshots:
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests-parent</artifactId>
+    <artifactId>snapshot-tests-core</artifactId>
     <version>0.0.5-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
 
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.5-SNAPSHOT'
+```
+
+If you need json based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>0.0.5-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.5-SNAPSHOT'
+```
+
+If you need xml based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jaxb</artifactId>
+    <version>0.0.5-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.5-SNAPSHOT'
+```
+
 ## Quick start
+_(assumes using `snapshot-tests-jackson` artifact)_
+
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
 
 ```java

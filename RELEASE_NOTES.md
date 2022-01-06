@@ -16,6 +16,10 @@ If you only need text based snapshots:
 </dependency>
 ```
 
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.5-SNAPSHOT'
+```
+
 If you need json based snapshots (includes `-core`):
 ```xml
 <dependency>
@@ -26,7 +30,11 @@ If you need json based snapshots (includes `-core`):
 </dependency>
 ```
 
-If you only need xml based snapshots (includes `-core`):
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.5-SNAPSHOT'
+```
+
+If you need xml based snapshots (includes `-core`):
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
@@ -34,4 +42,8 @@ If you only need xml based snapshots (includes `-core`):
     <version>0.0.5-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.5-SNAPSHOT'
 ```
