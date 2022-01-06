@@ -40,7 +40,7 @@ pipeline {
     }
     stage('Verify Release') {
       steps {
-        sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} verify'
+        sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} install'
       }
     }
     stage('Update readme') {

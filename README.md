@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.4&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests/0.0.4/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.4&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests/0.0.4)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.5&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/0.0.5/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.5&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/0.0.5)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -12,16 +12,53 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+### Latest Maven Central coordinates
+
+If you only need text based snapshots:
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests</artifactId>
-    <version>0.0.4</version>
+    <artifactId>snapshot-tests-core</artifactId>
+    <version>0.0.5</version>
     <scope>test</scope>
 </dependency>
 ```
 
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.5'
+```
+
+If you need json based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>0.0.5</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.5'
+```
+
+If you need xml based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jaxb</artifactId>
+    <version>0.0.5</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.5'
+```
+
 ## Quick start
+_(assumes using `snapshot-tests-jackson` artifact)_
+
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
 
 ```java
@@ -33,7 +70,7 @@ class ComplexTest {
     @Test
     void testCreateComplexObject(Snapshot snapshot) throws Exception {
         ComplexObject actual = classUnderTest.createComplexObject();
-        snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+        snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
     }
 }
 ```
@@ -68,7 +105,7 @@ You can also update snapshots for individual assertions by replacing any of the 
 `.justUpdateSnapshot()`:
 
 ```java
-    snapshot.assertThat(actual).asJson().justUpdateSnapshot();
+    snapshot.assertThat(actual).as(JsonSnapshot.json).justUpdateSnapshot();
 ```
 
 **Warning** While updating snapshots, all test cases containing snapshot assertions will fail (for the 
@@ -86,7 +123,7 @@ Snapshots can be serialized into any format. By default, this library ships with
 @Test
 void testSnapshotXml(Snapshot snapshot) throws Exception {
     ComplexObject actual = ...
-    snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+    snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
 }
 
 @Test
@@ -120,12 +157,12 @@ can be replaced with a deterministic mock during testing.
 
 ### Changing the snapshot directory
 By default, snapshots are stored in a directory structure according to their test-class's package name relative to 
-`src/main/resources`. You can change the relative path using 
+`src/test/resources`. You can change the relative path using 
 
 ```java
 @SnapshotAssertions(snapshotDirectory = "snapshots")
 ```
-Currently it is not possible to use a directory outside `src/main/resources`.
+Currently it is not possible to use a directory outside `src/test/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.

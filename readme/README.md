@@ -12,16 +12,53 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+### Latest Maven Central coordinates
+
+If you only need text based snapshots:
 ```xml
 <dependency>
     <groupId>${project.groupId}</groupId>
-    <artifactId>${project.artifactId}</artifactId>
+    <artifactId>snapshot-tests-core</artifactId>
     <version>${project.version}</version>
     <scope>test</scope>
 </dependency>
 ```
 
+```
+testImplementation '${project.groupId}:snapshot-tests-core:${project.version}'
+```
+
+If you need json based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-jackson:${project.version}'
+```
+
+If you need xml based snapshots (includes `-core`):
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-jaxb</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
+```
+
 ## Quick start
+_(assumes using `snapshot-tests-jackson` artifact)_
+
 Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
 
 ```java
@@ -33,7 +70,7 @@ class ComplexTest {
     @Test
     void testCreateComplexObject(Snapshot snapshot) throws Exception {
         ComplexObject actual = classUnderTest.createComplexObject();
-        snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+        snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
     }
 }
 ```
@@ -68,7 +105,7 @@ You can also update snapshots for individual assertions by replacing any of the 
 `.justUpdateSnapshot()`:
 
 ```java
-    snapshot.assertThat(actual).asJson().justUpdateSnapshot();
+    snapshot.assertThat(actual).as(JsonSnapshot.json).justUpdateSnapshot();
 ```
 
 **Warning** While updating snapshots, all test cases containing snapshot assertions will fail (for the 
@@ -86,7 +123,7 @@ Snapshots can be serialized into any format. By default, this library ships with
 @Test
 void testSnapshotXml(Snapshot snapshot) throws Exception {
     ComplexObject actual = ...
-    snapshot.assertThat(actual).asJson().matchesSnapshotStructure();
+    snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
 }
 
 @Test
@@ -120,12 +157,12 @@ can be replaced with a deterministic mock during testing.
 
 ### Changing the snapshot directory
 By default, snapshots are stored in a directory structure according to their test-class's package name relative to 
-`src/main/resources`. You can change the relative path using 
+`src/test/resources`. You can change the relative path using 
 
 ```java
 @SnapshotAssertions(snapshotDirectory = "snapshots")
 ```
-Currently it is not possible to use a directory outside `src/main/resources`.
+Currently it is not possible to use a directory outside `src/test/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.

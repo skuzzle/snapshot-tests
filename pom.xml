@@ -5,41 +5,48 @@
     <parent>
         <groupId>de.skuzzle</groupId>
         <artifactId>skuzzle-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.3</version>
     </parent>
 
     <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests</artifactId>
-    <version>0.0.4</version>
-    <packaging>jar</packaging>
+    <artifactId>snapshot-tests-parent</artifactId>
+    <version>0.0.5</version>
+    <packaging>pom</packaging>
 
-    <name>Snapshot Test</name>
-    <description>Snapshot testing and test data production</description>
+    <name>Snapshot Tests Parent</name>
+    <description>Convenient snapshot testing for JUnit5</description>
 
     <properties>
         <coveralls.skip>false</coveralls.skip>
         <version.java>11</version.java>
-        <maven.compiler.target>${version.java}</maven.compiler.target>
-        <maven.compiler.source>${version.java}</maven.compiler.source>
 
-        <version.jaxb-api>2.3.1</version.jaxb-api>
-        <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
-        <version.guava>30.1.1-jre</version.guava>
         <version.junit>5.8.1</version.junit>
-        <version.jackson>2.10.5.20201202</version.jackson>
-        <version.xmlunit>2.6.4</version.xmlunit>
-        <version.jsonassert>1.5.0</version.jsonassert>
         <version.assertj>3.13.2</version.assertj>
         <version.opentest4j>1.2.0</version.opentest4j>
 
+        <version.jaxb-api>2.3.1</version.jaxb-api>
+        <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
+        <version.xmlunit>2.6.4</version.xmlunit>
+
+        <version.jackson>2.10.5.20201202</version.jackson>
+        <version.jsonassert>1.5.0</version.jsonassert>
+        <version.equals-verifier>3.7.2</version.equals-verifier>
+
         <site.name>snapshot-tests</site.name>
         <github.name>snapshot-tests</github.name>
+        <github.main-branch>main</github.main-branch>
+        <github.dev-branch>dev</github.dev-branch>
+
+        <automatic-module-name>de.skuzzle.test.snapshots</automatic-module-name>
+        <failOnWarning>false</failOnWarning>
     </properties>
 
-    <scm>
-        <developerConnection>scm:git:https://github.com/skuzzle/${github.name}.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+    <modules>
+        <module>snapshot-tests-core</module>
+        <module>snapshot-tests-jackson</module>
+        <module>snapshot-tests-jaxb</module>
+        <module>snapshot-tests-directory-params</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -57,6 +64,19 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Self -->
+            <dependency>
+                <groupId>de.skuzzle.test</groupId>
+                <artifactId>snapshot-tests-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.skuzzle.test</groupId>
+                <artifactId>snapshot-tests-jackson</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -67,11 +87,7 @@
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${version.glassfish-jaxb}</version>
             </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${version.guava}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>
@@ -92,75 +108,13 @@
                 <artifactId>opentest4j</artifactId>
                 <version>${version.opentest4j}</version>
             </dependency>
+            <dependency>
+                <groupId>nl.jqno.equalsverifier</groupId>
+                <artifactId>equalsverifier</artifactId>
+                <version>${version.equals-verifier}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.xmlunit</groupId>
-            <artifactId>xmlunit-assertj</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Test -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-testkit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.opentest4j</groupId>
-            <artifactId>opentest4j</artifactId>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
@@ -192,45 +146,9 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Automatic-Module-Name>de.skuzzle.test.snapshots</Automatic-Module-Name>
+                            <Automatic-Module-Name>${automatic-module-name}</Automatic-Module-Name>
                         </manifestEntries>
                     </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.amashchenko.maven.plugin</groupId>
-                <artifactId>gitflow-maven-plugin</artifactId>
-                <configuration>
-                    <postReleaseGoals>deploy</postReleaseGoals>
-                    <detail>true</detail>
-                    <verbose>true</verbose>
-                    <skipTestProject>true</skipTestProject>
-                    <gitFlowConfig>
-                        <productionBranch>main</productionBranch>
-                        <developmentBranch>dev</developmentBranch>
-                    </gitFlowConfig>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.ragedunicorn.tools.maven</groupId>
-                <artifactId>github-release-maven-plugin</artifactId>
-                <version>1.0.2</version>
-                <configuration>
-                    <owner>skuzzle</owner>
-                    <repository>${github.name}</repository>
-                    <authToken>${github.release-token}</authToken>
-                    <tagName>v${project.version}</tagName>
-                    <name>${project.version}</name>
-                    <targetCommitish>main</targetCommitish>
-                    <releaseNotes>RELEASE_NOTES.md</releaseNotes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <usedDependencies>
-                        <usedDependency>org.glassfish.jaxb:jaxb-runtime</usedDependency>
-                    </usedDependencies>
                 </configuration>
             </plugin>
         </plugins>
