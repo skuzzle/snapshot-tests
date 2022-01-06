@@ -15,6 +15,9 @@ import de.skuzzle.test.snapshots.StructuredDataBuilder;
 
 /**
  * {@link StructuredData} builder for serializing test results to XML, relying on JAXB.
+ * <p>
+ * You can either use a pre-configured default instance via {@link #xml} or use any of the
+ * static factory methods to customize the construction.
  *
  * @author Simon Taddiken
  */
@@ -23,6 +26,10 @@ public final class XmlSnapshot implements StructuredDataBuilder {
     /**
      * Simple default {@link StructuredData} instance which infers the JAXB context from a
      * test's actual result object.
+     * <p>
+     * If you need control over how the {@link JAXBContext} and the {@link Marshaller} are
+     * being set up, use the static factory methods in {@link XmlSnapshot} instead of this
+     * static sonstant.
      */
     public static final StructuredData xml = inferJaxbContext().build();
 
