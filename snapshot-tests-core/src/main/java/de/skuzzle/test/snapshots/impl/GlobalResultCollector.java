@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.SnapshotResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
 
 /**
  * Collects the result of all test cases within a class that is annotated with
@@ -22,9 +22,9 @@ import de.skuzzle.test.snapshots.SnapshotResult;
 final class GlobalResultCollector {
 
     private final Set<Method> failedTestMethods = new HashSet<>();
-    private final List<SnapshotResult> results = new ArrayList<>();
+    private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public SnapshotResult add(SnapshotResult result) {
+    public SnapshotTestResult add(SnapshotTestResult result) {
         this.results.add(Objects.requireNonNull(result));
         return result;
     }
@@ -65,7 +65,7 @@ final class GlobalResultCollector {
 
     private boolean testResultsContain(Path snapshotFile) {
         return results.stream()
-                .map(SnapshotResult::targetFile)
+                .map(SnapshotTestResult::targetFile)
                 .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
                         snapshotFile));
     }

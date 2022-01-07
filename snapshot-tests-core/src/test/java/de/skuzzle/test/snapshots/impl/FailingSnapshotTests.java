@@ -7,8 +7,8 @@ import org.opentest4j.AssertionFailedError;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.SnapshotResult;
-import de.skuzzle.test.snapshots.SnapshotStatus;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 public class FailingSnapshotTests {
 
@@ -29,7 +29,7 @@ public class FailingSnapshotTests {
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
     }
@@ -52,7 +52,7 @@ public class FailingSnapshotTests {
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
     }
@@ -75,7 +75,7 @@ public class FailingSnapshotTests {
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
     }
@@ -97,7 +97,7 @@ public class FailingSnapshotTests {
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshotResult.deleteSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }

@@ -51,10 +51,21 @@ public final class SnapshotFile {
         return new SnapshotFile(header, snapshot.toString());
     }
 
+    /**
+     * Header information to this snapshot that are written by the framework.
+     *
+     * @return The header.
+     */
     public SnapshotHeader header() {
         return header;
     }
 
+    /**
+     * The serialized snapshot. This is the string that has been produced by the
+     * {@link SnapshotSerializer} in place.
+     *
+     * @return The serialized snapshot string.
+     */
     public String snapshot() {
         return snapshot;
     }

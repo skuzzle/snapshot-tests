@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 @EnableSnapshotTests(forceUpdateSnapshots = false)
 public class SnapshotsTest {
@@ -21,7 +22,7 @@ public class SnapshotsTest {
     @Test
     void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
-        final SnapshotResult snapshotResult = snapshot.assertThat(myself)
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(json)
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);

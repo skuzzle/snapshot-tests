@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import de.skuzzle.test.snapshots.SnapshotResult;
-import de.skuzzle.test.snapshots.SnapshotStatus;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 /**
  * Collects the snapshot assertion results within a single test method.
@@ -17,14 +17,14 @@ import de.skuzzle.test.snapshots.SnapshotStatus;
  */
 final class LocalResultCollector {
 
-    private final List<SnapshotResult> results = new ArrayList<>();
+    private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public SnapshotResult add(SnapshotResult result) {
+    public SnapshotTestResult add(SnapshotTestResult result) {
         this.results.add(Objects.requireNonNull(result));
         return result;
     }
 
-    public Collection<SnapshotResult> results() {
+    public Collection<SnapshotTestResult> results() {
         return Collections.unmodifiableList(results);
     }
 
@@ -34,7 +34,7 @@ final class LocalResultCollector {
 
     public void assertSuccess() throws Exception {
         Throwable failures = Throwables.flattenThrowables(results.stream()
-                .map(SnapshotResult::failure)
+                .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
         failures = Throwables.combine(failures, assertNotCreatedInitially());
         failures = Throwables.combine(failures, assertNotUpdatedForcefully());
@@ -43,7 +43,7 @@ final class LocalResultCollector {
 
     public void assertSuccessEagerly() throws Exception {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
-                .map(SnapshotResult::failure)
+                .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
         Throwables.throwIfNotNull(failures);
     }
@@ -66,11 +66,11 @@ final class LocalResultCollector {
     }
 
     private boolean wasCreatedInitially() {
-        return results.stream().map(SnapshotResult::status).anyMatch(SnapshotStatus.CREATED_INITIALLY::equals);
+        return results.stream().map(SnapshotTestResult::status).anyMatch(SnapshotStatus.CREATED_INITIALLY::equals);
     }
 
     private boolean wasUpdatedForcefully() {
-        return results.stream().map(SnapshotResult::status).anyMatch(SnapshotStatus.UPDATED_FORCEFULLY::equals);
+        return results.stream().map(SnapshotTestResult::status).anyMatch(SnapshotStatus.UPDATED_FORCEFULLY::equals);
     }
 
 }

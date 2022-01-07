@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 @EnableSnapshotTests(forceUpdateSnapshots = false)
 public class SnapshotsTest {
@@ -17,14 +18,14 @@ public class SnapshotsTest {
     @Test
     void testAsXmlTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
-        final SnapshotResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotText();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotText();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
     void testAsXmlStructureCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
-        final SnapshotResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotStructure();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
