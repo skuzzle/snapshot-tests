@@ -147,13 +147,16 @@ You can create multiple snapshots using `snapshot.assertThat(...)` from within a
 assign each snapshot a consecutive number.
 
 ### Dealing with random values
-A common source of problems are random values within the snapshoted data such as dates or generated ids. This framework
-comes with no means to resolve those issues. Instead you should design your code so that such randomness can easily be 
-mocked away. For example:
+A common source of problems are random values within the snapshot data such as dates or generated ids. This framework
+comes with no means to resolve those issues. Instead you should design your code up front so that such randomness can 
+easily be mocked away. For example:
 * Instead of using `LocalDateTime.now()` make your code use a shared `Clock` instance that is replacible in tests and 
 use `LocalDateTime.now(clock)`
 * More generally put: If your code uses random values in any place, consider to use a strategy interface instead which 
 can be replaced with a deterministic mock during testing.
+* As a last resort, you can implement some normalization. Either post-process your actual test result before taking the
+ snapshot or implement a `SnapshotSerializer` which does the normalization. You could also implement 
+ `StructralAssertions` in a way that it ignores such random values during comparison. 
 
 ### Changing the snapshot directory
 By default, snapshots are stored in a directory structure according to their test-class's package name relative to 
