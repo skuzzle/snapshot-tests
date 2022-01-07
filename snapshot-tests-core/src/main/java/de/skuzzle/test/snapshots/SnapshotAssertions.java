@@ -23,7 +23,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  *     &#64;Test
  *     void testSomething(Snapshot snapshot) throws Exception {
  *         Object actual = ...
- *         snapshot.assertThat(actual).asXml().matchesSnapshot();
+ *         snapshot.assertThat(actual).aText().matchesSnapshotText();
  *     }
  * }
  * </pre>

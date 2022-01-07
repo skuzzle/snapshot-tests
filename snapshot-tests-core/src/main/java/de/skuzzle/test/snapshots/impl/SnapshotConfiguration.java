@@ -29,14 +29,14 @@ final class SnapshotConfiguration {
     }
 
     public Path determineSnapshotDirectory() throws IOException {
-        final String testDirName = snapshotDirecotry();
+        final String testDirName = snapshotDirecotryName();
 
         final Path testDirectory = DirectoryResolver.resolve(testDirName);
         Files.createDirectories(testDirectory);
         return testDirectory;
     }
 
-    private String snapshotDirecotry() throws IOException {
+    private String snapshotDirecotryName() throws IOException {
         final SnapshotAssertions snapshotAssertions = extensionContext.getRequiredTestClass()
                 .getAnnotation(SnapshotAssertions.class);
 
