@@ -25,12 +25,42 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  *     &#64;Test
  *     void testSomething(Snapshot snapshot) throws Exception {
  *         Object actual = ...
- *         snapshot.assertThat(actual).aText().matchesSnapshotText();
+ *         snapshot.assertThat(actual).asText().matchesSnapshotText();
  *     }
  * }
  * </pre>
+ * <p>
+ * <code>asText()</code> will 'serialize' actual test results using
+ * {@link Object#toString()}. There are additional {@link StructuredDataBuilder}
+ * implementations that allow to serialize snapshots as json or xml. To use them, you need
+ * to declare their respective maven modules as dependency.
+ *
+ * <pre>
+ *     &#64;Test
+ *     void testSomething(Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *         snapshot.assertThat(actual).as(TextSnapshot.text).matchesSnapshotText();
+ *         snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotText();
+ *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotText();
+ *     }
+ * </pre>
+ * <p>
+ * When providing a structured data format like json/xml (or in general: an implementation
+ * of {@link StructuredDataBuilder}) you can make use of <em>structural assertions</em> to
+ * compare snapshots. Depending on the implementation, those might provide better error
+ * messages than plain text comparison.
+ *
+ * <pre>
+ *     &#64;Test
+ *     void testSomething(Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *         snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
+ *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
+ *     }
+ * </pre>
  *
  * @author Simon Taddiken
+ * @see Snapshot
  * @since ever.
  */
 @Retention(RUNTIME)
