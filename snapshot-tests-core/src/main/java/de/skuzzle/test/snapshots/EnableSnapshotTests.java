@@ -10,14 +10,16 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.impl.SnapshotExtension;
 
 /**
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
- * can use snapshot assertions like this:
+ * can use snapshot assertions by declaring a parameter of type {@link Snapshot} in your
+ * test case like this:
  *
  * <pre>
- * &#64;SnapshotAssertions
+ * &#64;EnableSnapshotTests
  * class MyTestClass {
  *
  *     &#64;Test
@@ -34,7 +36,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @ExtendWith(SnapshotExtension.class)
-public @interface SnapshotAssertions {
+public @interface EnableSnapshotTests {
 
     /**
      * Define the snapshot directory relative to <code>src/test/resources</code>. If this

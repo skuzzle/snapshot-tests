@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.5&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/0.0.5/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.5&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/0.0.5)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.6-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/0.0.6-SNAPSHOT/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.6-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/0.0.6-SNAPSHOT)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -19,13 +19,13 @@ If you only need text based snapshots:
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-core</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.5'
+testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.6-SNAPSHOT'
 ```
 
 If you need json based snapshots (includes `-core`):
@@ -33,13 +33,13 @@ If you need json based snapshots (includes `-core`):
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.5'
+testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.6-SNAPSHOT'
 ```
 
 If you need xml based snapshots (includes `-core`):
@@ -47,22 +47,22 @@ If you need xml based snapshots (includes `-core`):
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jaxb</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.5'
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.6-SNAPSHOT'
 ```
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
 
-Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
+Annotate your test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
 
 ```java
-@SnapshotAssertions
+@EnableSnapshotTests
 class ComplexTest {
 
     private WhatEverService classUnderTest = ...;
@@ -98,7 +98,7 @@ implementation change:
 persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
 
 ```java
-@SnapshotAssertions(forceUpdateSnapshots = true)
+@EnableSnapshotTests(forceUpdateSnapshots = true)
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
@@ -160,7 +160,7 @@ By default, snapshots are stored in a directory structure according to their tes
 `src/test/resources`. You can change the relative path using 
 
 ```java
-@SnapshotAssertions(snapshotDirectory = "snapshots")
+@EnableSnapshotTests(snapshotDirectory = "snapshots")
 ```
 Currently it is not possible to use a directory outside `src/test/resources`.
 

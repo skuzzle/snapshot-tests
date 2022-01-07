@@ -59,10 +59,10 @@ testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
 
-Annotate your test class with `@SnapshotAssertions` and declare a `Snapshot` parameter in your test case:
+Annotate your test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
 
 ```java
-@SnapshotAssertions
+@EnableSnapshotTests
 class ComplexTest {
 
     private WhatEverService classUnderTest = ...;
@@ -98,7 +98,7 @@ implementation change:
 persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
 
 ```java
-@SnapshotAssertions(forceUpdateSnapshots = true)
+@EnableSnapshotTests(forceUpdateSnapshots = true)
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
@@ -160,7 +160,7 @@ By default, snapshots are stored in a directory structure according to their tes
 `src/test/resources`. You can change the relative path using 
 
 ```java
-@SnapshotAssertions(snapshotDirectory = "snapshots")
+@EnableSnapshotTests(snapshotDirectory = "snapshots")
 ```
 Currently it is not possible to use a directory outside `src/test/resources`.
 

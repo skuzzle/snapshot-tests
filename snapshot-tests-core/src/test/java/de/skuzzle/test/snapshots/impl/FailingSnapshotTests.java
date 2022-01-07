@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
-import de.skuzzle.test.snapshots.SnapshotAssertions;
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotStatus;
@@ -22,7 +22,7 @@ public class FailingSnapshotTests {
                         "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
     }
 
-    @SnapshotAssertions(forceUpdateSnapshots = true) // leave force true
+    @EnableSnapshotTests(forceUpdateSnapshots = true) // leave force true
     static class FailBecauseForceUpdateFromAnnotation {
 
         @Test
@@ -45,7 +45,7 @@ public class FailingSnapshotTests {
                                 + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseJustUpdate {
 
         @Test
@@ -68,7 +68,7 @@ public class FailingSnapshotTests {
                         + "+[NOT ]test"));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseSnapshotMismatch {
 
         @Test
@@ -90,7 +90,7 @@ public class FailingSnapshotTests {
                         + "Run the test again and you should see it succeed."));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseInitial {
 
         @Test
@@ -111,7 +111,7 @@ public class FailingSnapshotTests {
                 .isInstanceOf(AssertionError.class);
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class MultipleAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
@@ -137,7 +137,7 @@ public class FailingSnapshotTests {
                                 + "test+[3]")));
     }
 
-    @SnapshotAssertions(softAssertions = true)
+    @EnableSnapshotTests(softAssertions = true)
     static class SoftAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {

@@ -10,12 +10,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.skuzzle.test.snapshots.SnapshotAssertions;
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotResult;
 
 /**
  * Collects the result of all test cases within a class that is annotated with
- * {@link SnapshotAssertions}.
+ * {@link EnableSnapshotTests}.
  *
  * @author Simon Taddiken
  */

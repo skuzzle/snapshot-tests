@@ -22,7 +22,7 @@ public interface SnapshotDsl {
      * </pre>
      *
      * Note that the respective test class must be annotated with
-     * {@link SnapshotAssertions}, otherwise the test framework will not be able to
+     * {@link EnableSnapshotTests}, otherwise the test framework will not be able to
      * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
