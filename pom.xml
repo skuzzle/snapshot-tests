@@ -151,6 +151,13 @@
                     </archive>
                 </configuration>
             </plugin>
+                <plugin>
+                    <groupId>com.ragedunicorn.tools.maven</groupId>
+                    <artifactId>github-release-maven-plugin</artifactId>
+                    <configuration>
+                        <releaseNotes>RELEASE_NOTES.md</releaseNotes>
+                    </configuration>
+                </plugin>
         </plugins>
     </build>
 </project>
