@@ -22,7 +22,7 @@ public interface SnapshotDsl {
      * </pre>
      *
      * Note that the respective test class must be annotated with
-     * {@link SnapshotAssertions}, otherwise the test framework will not be able to
+     * {@link EnableSnapshotTests}, otherwise the test framework will not be able to
      * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
@@ -114,7 +114,7 @@ public interface SnapshotDsl {
          * @since ever
          */
         @Deprecated
-        SnapshotResult justUpdateSnapshot();
+        SnapshotTestResult justUpdateSnapshot();
 
         /**
          * Asserts that the serialized actual test result matches the persisted snapshot
@@ -127,7 +127,7 @@ public interface SnapshotDsl {
          * @since ever
          * @see TextSnapshot
          */
-        SnapshotResult matchesSnapshotText();
+        SnapshotTestResult matchesSnapshotText();
 
         /**
          * Asserts that the serialized actual test result structurally matches the
@@ -140,7 +140,7 @@ public interface SnapshotDsl {
          *             {@link StructuralAssertions#assertEquals(String, String)}.
          * @since ever
          */
-        SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions);
+        SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions);
     }
 
     public interface ChooseStructure extends ChooseAssertions {
@@ -158,7 +158,7 @@ public interface SnapshotDsl {
          *             occurred.
          * @since ever
          */
-        SnapshotResult matchesSnapshotStructure() throws Exception;
+        SnapshotTestResult matchesSnapshotStructure() throws Exception;
 
     }
 }

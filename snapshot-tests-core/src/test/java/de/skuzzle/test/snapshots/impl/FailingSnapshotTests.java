@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
-import de.skuzzle.test.snapshots.SnapshotAssertions;
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.SnapshotResult;
-import de.skuzzle.test.snapshots.SnapshotStatus;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 public class FailingSnapshotTests {
 
@@ -22,14 +22,14 @@ public class FailingSnapshotTests {
                         "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
     }
 
-    @SnapshotAssertions(forceUpdateSnapshots = true) // leave force true
+    @EnableSnapshotTests(forceUpdateSnapshots = true) // leave force true
     static class FailBecauseForceUpdateFromAnnotation {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
     }
@@ -45,14 +45,14 @@ public class FailingSnapshotTests {
                                 + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseJustUpdate {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
     }
@@ -68,14 +68,14 @@ public class FailingSnapshotTests {
                         + "+[NOT ]test"));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseSnapshotMismatch {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
     }
@@ -90,14 +90,14 @@ public class FailingSnapshotTests {
                         + "Run the test again and you should see it succeed."));
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class FailBecauseInitial {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshotResult.deleteSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
@@ -111,7 +111,7 @@ public class FailingSnapshotTests {
                 .isInstanceOf(AssertionError.class);
     }
 
-    @SnapshotAssertions
+    @EnableSnapshotTests
     static class MultipleAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
@@ -137,7 +137,7 @@ public class FailingSnapshotTests {
                                 + "test+[3]")));
     }
 
-    @SnapshotAssertions(softAssertions = true)
+    @EnableSnapshotTests(softAssertions = true)
     static class SoftAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {

@@ -10,31 +10,63 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.impl.SnapshotExtension;
 
 /**
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
- * can use snapshot assertions like this:
+ * can use snapshot assertions by declaring a parameter of type {@link Snapshot} in your
+ * test case like this:
  *
  * <pre>
- * &#64;SnapshotAssertions
+ * &#64;EnableSnapshotTests
  * class MyTestClass {
  *
  *     &#64;Test
  *     void testSomething(Snapshot snapshot) throws Exception {
  *         Object actual = ...
- *         snapshot.assertThat(actual).asXml().matchesSnapshot();
+ *         snapshot.assertThat(actual).asText().matchesSnapshotText();
  *     }
  * }
  * </pre>
+ * <p>
+ * <code>asText()</code> will 'serialize' actual test results using
+ * {@link Object#toString()}. There are additional {@link StructuredDataBuilder}
+ * implementations that allow to serialize snapshots as json or xml. To use them, you need
+ * to declare their respective maven modules as dependency.
+ *
+ * <pre>
+ *     &#64;Test
+ *     void testSomething(Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *         snapshot.assertThat(actual).as(TextSnapshot.text).matchesSnapshotText();
+ *         snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotText();
+ *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotText();
+ *     }
+ * </pre>
+ * <p>
+ * When providing a structured data format like json/xml (or in general: an implementation
+ * of {@link StructuredDataBuilder}) you can make use of <em>structural assertions</em> to
+ * compare snapshots. Depending on the implementation, those might provide better error
+ * messages than plain text comparison.
+ *
+ * <pre>
+ *     &#64;Test
+ *     void testSomething(Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *         snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
+ *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
+ *     }
+ * </pre>
  *
  * @author Simon Taddiken
+ * @see Snapshot
  * @since ever.
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @ExtendWith(SnapshotExtension.class)
-public @interface SnapshotAssertions {
+public @interface EnableSnapshotTests {
 
     /**
      * Define the snapshot directory relative to <code>src/test/resources</code>. If this

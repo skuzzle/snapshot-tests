@@ -6,7 +6,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
-import de.skuzzle.test.snapshots.SnapshotResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
@@ -54,17 +54,17 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
     }
 
     @Override
-    public SnapshotResult matchesSnapshotText() {
+    public SnapshotTestResult matchesSnapshotText() {
         return this.matchesAccordingTo(TextSnapshot.text.structuralAssertions());
     }
 
     @Override
-    public SnapshotResult matchesSnapshotStructure() throws Exception {
+    public SnapshotTestResult matchesSnapshotStructure() throws Exception {
         return this.matchesAccordingTo(structuralAssertions);
     }
 
     @Override
-    public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
+    public SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
         Objects.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
         try {
             return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
@@ -74,7 +74,7 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
     }
 
     @Override
-    public SnapshotResult justUpdateSnapshot() {
+    public SnapshotTestResult justUpdateSnapshot() {
         try {
             return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
         } catch (final Exception e) {

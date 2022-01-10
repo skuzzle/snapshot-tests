@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -17,6 +19,8 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 public final class SnapshotExtension implements ParameterResolver, AfterEachCallback,
         BeforeAllCallback, AfterAllCallback {
+
+    private static final Logger log = System.getLogger(SnapshotExtension.class.getName());
 
     private static final Namespace NAMESPACE = Namespace.create(SnapshotExtension.class);
     private static final String KEY_SNAPSHOT_INSTANCE = "SNAPSHOT_INSTANCE";
@@ -81,11 +85,12 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
                 .forEach(orphaned -> {
                     if (snapshotConfiguration.isForceUpdateSnapshots()) {
                         UncheckedIO.delete(orphaned);
-                        System.out.println("Deleted orphaned snapshot file " + orphaned);
+
+                        log.log(Level.INFO, "Deleted orphaned snapshot file {0}", orphaned);
                     } else {
-                        System.out.println(
-                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: "
-                                        + orphaned);
+                        log.log(Level.WARNING,
+                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: {0}",
+                                orphaned);
                     }
                 });
     }

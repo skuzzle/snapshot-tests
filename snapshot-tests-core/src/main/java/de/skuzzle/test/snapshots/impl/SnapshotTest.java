@@ -15,9 +15,9 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
-import de.skuzzle.test.snapshots.SnapshotResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
-import de.skuzzle.test.snapshots.SnapshotStatus;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
@@ -68,7 +68,7 @@ final class SnapshotTest implements Snapshot {
         return configuration.determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
     }
 
-    SnapshotResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
+    SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
         final String snapshotName = determineNextSnapshotName();
         final Path snapshotFile = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
@@ -77,13 +77,13 @@ final class SnapshotTest implements Snapshot {
         final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
         xx.writeTo(snapshotFile);
 
-        final SnapshotResult result = SnapshotResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
+        final SnapshotTestResult result = SnapshotTestResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
                 xx);
 
         return this.localResultCollector.add(result);
     }
 
-    SnapshotResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
+    SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
             StructuralAssertions structuralAssertions,
             Object actual) throws Exception {
         final String snapshotName = determineNextSnapshotName();
@@ -93,7 +93,7 @@ final class SnapshotTest implements Snapshot {
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots();
         final boolean snapshotFileAlreadyExists = Files.exists(snapshotFile);
 
-        final SnapshotResult result;
+        final SnapshotTestResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
             final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
             final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
@@ -102,14 +102,14 @@ final class SnapshotTest implements Snapshot {
             final SnapshotStatus status = snapshotFileAlreadyExists
                     ? SnapshotStatus.UPDATED_FORCEFULLY
                     : SnapshotStatus.CREATED_INITIALLY;
-            result = SnapshotResult.of(snapshotFile, status, xx);
+            result = SnapshotTestResult.of(snapshotFile, status, xx);
         } else {
             final SnapshotFile xx = SnapshotFile.fromSnapshotFile(snapshotFile);
             final String storedSnapshot = xx.snapshot();
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
-                    .map(assertionError -> SnapshotResult.forFailedTest(snapshotFile, xx, assertionError))
-                    .orElseGet(() -> SnapshotResult.of(snapshotFile, SnapshotStatus.ASSERTED, xx));
+                    .map(assertionError -> SnapshotTestResult.forFailedTest(snapshotFile, xx, assertionError))
+                    .orElseGet(() -> SnapshotTestResult.of(snapshotFile, SnapshotStatus.ASSERTED, xx));
         }
         this.localResultCollector.add(result);
 

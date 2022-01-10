@@ -42,22 +42,22 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public SnapshotResult justUpdateSnapshot() {
+        public SnapshotTestResult justUpdateSnapshot() {
             return null;
         }
 
         @Override
-        public SnapshotResult matchesSnapshotText() {
+        public SnapshotTestResult matchesSnapshotText() {
             return null;
         }
 
         @Override
-        public SnapshotResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
+        public SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
             return null;
         }
 
         @Override
-        public SnapshotResult matchesSnapshotStructure() throws Exception {
+        public SnapshotTestResult matchesSnapshotStructure() throws Exception {
             return null;
         }
 
