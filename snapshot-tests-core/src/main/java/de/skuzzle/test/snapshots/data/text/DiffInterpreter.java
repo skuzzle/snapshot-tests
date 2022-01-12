@@ -21,10 +21,10 @@ final class DiffInterpreter {
     }
 
     public boolean hasFailures(Collection<Diff> diffs) {
-        return diffs.stream().noneMatch(this::isFailureDifference);
+        return diffs.stream().anyMatch(this::isFailureDifference);
     }
 
-    public boolean isFailureDifference(Diff diff) {
+    private boolean isFailureDifference(Diff diff) {
         return diff.operation != Operation.EQUAL
                 && (!ignoreWhitespaceChanges || !isWhitespace(diff));
     }

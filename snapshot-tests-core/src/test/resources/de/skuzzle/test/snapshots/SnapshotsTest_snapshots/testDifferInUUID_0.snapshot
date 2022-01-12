@@ -1,0 +1,14 @@
+snapshot-name: testDifferInUUID_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-method: testDifferInUUID
+
+Name: c1507632-0a98-4692-9579-429b4216201e
+Surname: Taddiken
+Birthdate: 2022-01-11
+Address: Street: Gibtsnicht-Straße
+Number: 1337
+Zip: 4711
+City: Bielefeld
+Country: Germany
+

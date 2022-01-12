@@ -1,0 +1,12 @@
+snapshot-name: testObjectMemberAction
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.normalize.ObjectTraversalTest
+test-method: testObjectMemberAction
+
+id: 4711
+uuid: null
+readonly: true
+Name: Simon
+Surname: Taddiken
+Birthdate: 1777-01-12
+Addresses: []

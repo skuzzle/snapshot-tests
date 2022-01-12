@@ -21,7 +21,7 @@ final class TextDiff {
     }
 
     public boolean hasDifference() {
-        return !diffInterpreter.hasFailures(diffs);
+        return diffInterpreter.hasFailures(diffs);
     }
 
     @Override

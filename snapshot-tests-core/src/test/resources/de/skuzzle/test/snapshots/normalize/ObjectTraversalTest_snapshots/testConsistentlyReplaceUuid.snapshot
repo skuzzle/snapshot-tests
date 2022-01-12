@@ -1,0 +1,22 @@
+snapshot-name: testConsistentlyReplaceUuid
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.normalize.ObjectTraversalTest
+test-method: testConsistentlyReplaceUuid
+
+id: 4711
+uuid: 00000000-0000-0000-0000-000000000000
+readonly: true
+Name: Simon
+Surname: Taddiken
+Birthdate: 1777-01-12
+Addresses: [Street: Gibtsnicht-Straße
+Number: 1337
+Zip: 4711
+City: Bielefeld
+Country: Germany
+, Street: Whatever-Rd
+Number: 42
+Zip: 11833
+City: London
+Country: UK
+]
