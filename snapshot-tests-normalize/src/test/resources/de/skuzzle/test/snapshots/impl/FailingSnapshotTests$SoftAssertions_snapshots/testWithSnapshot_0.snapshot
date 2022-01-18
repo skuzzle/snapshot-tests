@@ -1,0 +1,6 @@
+snapshot-name: testWithSnapshot_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTests$SoftAssertions
+test-method: testWithSnapshot
+
+test

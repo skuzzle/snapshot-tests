@@ -42,7 +42,9 @@
     </properties>
 
     <modules>
+        <module>snapshot-tests-bom</module>
         <module>snapshot-tests-core</module>
+        <module>snapshot-tests-normalize</module>
         <module>snapshot-tests-jackson</module>
         <module>snapshot-tests-jaxb</module>
         <module>snapshot-tests-directory-params</module>
@@ -86,7 +88,12 @@
                 <artifactId>snapshot-tests-directory-params</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>de.skuzzle.test</groupId>
+                <artifactId>snapshot-tests-normalize</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
