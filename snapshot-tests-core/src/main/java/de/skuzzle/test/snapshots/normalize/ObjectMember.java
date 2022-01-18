@@ -55,7 +55,7 @@ public interface ObjectMember {
      * is based on fields will throw an {@link UnsupportedOperationException} if the field
      * is declared final.
      *
-     * @param value
+     * @param value The value to set (may be null)
      * @throws UnsupportedOperationException If setting the value is not possible.
      */
     void setValue(Object value);
