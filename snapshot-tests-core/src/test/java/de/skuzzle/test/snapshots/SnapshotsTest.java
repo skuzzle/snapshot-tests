@@ -1,12 +1,10 @@
 package de.skuzzle.test.snapshots;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 @EnableSnapshotTests(forceUpdateSnapshots = false)
 public class SnapshotsTest {
@@ -25,14 +23,6 @@ public class SnapshotsTest {
         snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
         snapshot.named("phil").assertThat(phil).asText().matchesSnapshotText();
-    }
-
-    @Test
-    void testDifferInUUID(Snapshot snapshot) throws Exception {
-        final Person randomPerson = determinePerson()
-                .setName(UUID.randomUUID().toString())
-                .setBirthdate(LocalDate.now());
-        snapshot.assertThat(randomPerson).as(TextSnapshot.text).matchesSnapshotText();
     }
 
     private Person determinePerson() {
