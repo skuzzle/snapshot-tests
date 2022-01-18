@@ -76,6 +76,16 @@
                 <artifactId>snapshot-tests-jackson</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>de.skuzzle.test</groupId>
+                <artifactId>snapshot-tests-jaxb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.skuzzle.test</groupId>
+                <artifactId>snapshot-tests-directory-params</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>javax.xml.bind</groupId>
