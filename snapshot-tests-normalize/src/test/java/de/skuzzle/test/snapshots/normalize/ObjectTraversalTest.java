@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots.normalize;
 
+import static de.skuzzle.test.snapshots.normalize.ObjectMemberAction.members;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +57,8 @@ public class ObjectTraversalTest {
     void testConsistentlyReplaceUuid(ObjectMembers strategy, Snapshot snapshot) throws Exception {
         final Person person = (Person) determinePerson().setUuid(UUID.randomUUID().toString());
 
-        ObjectTraversal.applyActions(person, strategy, ObjectMemberAction.members()
-                .withStringValueMatching("([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})")
+        ObjectTraversal.applyActions(person, strategy, members()
+                .withStringValueMatching("[a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8}")
                 .consistentlyReplaceWith(Generators.uuidLike()));
 
         // intentionally use the same snapshot for all test arguments to make sure they

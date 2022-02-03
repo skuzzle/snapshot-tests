@@ -11,6 +11,12 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * An action that can be applied to a {@link ObjectMember} which is matched by a
+ * {@link Predicate}.
+ *
+ * @author Simon Taddiken
+ */
 public final class ObjectMemberAction {
 
     private final Predicate<ObjectMember> predicate;
@@ -39,6 +45,10 @@ public final class ObjectMemberAction {
             return where(objectMember -> objectMember.hasTypeCompatibleTo(type));
         }
 
+        public ChooseActionBuilder withValueEqualTo(Object obj) {
+            return where(objectMember -> Objects.equals(obj, objectMember.value()));
+        }
+
         public ChooseActionBuilder withStringValueMatching(Pattern pattern) {
             return where(objectMember -> objectMember.hasTypeCompatibleTo(String.class)
                     && objectMember.value() != null
@@ -49,9 +59,14 @@ public final class ObjectMemberAction {
             return withStringValueMatching(Pattern.compile(pattern));
         }
 
+        public ChooseActionBuilder any() {
+            return where(objectMember -> true);
+        }
+
         public ChooseActionBuilder where(Predicate<ObjectMember> predicate) {
             return new ChooseActionBuilder(predicate);
         }
+
     }
 
     public static class ChooseActionBuilder {
@@ -62,16 +77,16 @@ public final class ObjectMemberAction {
             this.predicate = Objects.requireNonNull(predicate, "predicate must not be null");
         }
 
-        public ObjectMemberAction dox(Consumer<ObjectMember> action) {
+        public ObjectMemberAction consumeWith(Consumer<ObjectMember> action) {
             return new ObjectMemberAction(predicate, Objects.requireNonNull(action, "action must not be null"));
         }
 
         public ObjectMemberAction mapValueTo(Function<? super Object, ? extends Object> transformer) {
-            return dox(objectMember -> objectMember.setValue(transformer.apply(objectMember.value())));
+            return consumeWith(objectMember -> objectMember.setValue(transformer.apply(objectMember.value())));
         }
 
         public ObjectMemberAction setValueTo(Object value) {
-            return dox(objectMember -> objectMember.setValue(value));
+            return consumeWith(objectMember -> objectMember.setValue(value));
         }
 
         public ObjectMemberAction setValueToNull() {
@@ -79,7 +94,7 @@ public final class ObjectMemberAction {
         }
 
         public ObjectMemberAction setToEmptyValue() {
-            return dox(objectMember -> {
+            return consumeWith(objectMember -> {
                 final Object emptyValue = SpecialTypesAndValues.getEmptyValueForType(objectMember.valueType());
                 if (emptyValue != null) {
                     objectMember.setValue(emptyValue);
@@ -88,7 +103,7 @@ public final class ObjectMemberAction {
         }
 
         public ObjectMemberAction removeFromParent() {
-            return dox(objectMember -> {
+            return consumeWith(objectMember -> {
                 final Object containerCollection = objectMember.collectionParent().orElse(null);
                 if (containerCollection == null) {
                     objectMember.setValue(null);
@@ -101,7 +116,7 @@ public final class ObjectMemberAction {
         public ObjectMemberAction consistentlyReplaceWith(
                 BiFunction<Integer, ? super Object, ? extends Object> generator) {
             final Map<Object, Object> replacements = new HashMap<>();
-            return dox(objectMember -> {
+            return consumeWith(objectMember -> {
                 final Object value = objectMember.value();
                 final Object replacement = replacements.computeIfAbsent(replacements,
                         key -> generator.apply(replacements.size(), value));

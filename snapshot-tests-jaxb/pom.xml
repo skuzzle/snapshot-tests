@@ -11,7 +11,7 @@
     <artifactId>snapshot-tests-jaxb</artifactId>
     <packaging>jar</packaging>
 
-    <name>XML Snapshot Serialization</name>
+    <name>Snapshot JSON Serialization</name>
     <description>XML snapshot serialization using jaxb</description>
     
     <properties>

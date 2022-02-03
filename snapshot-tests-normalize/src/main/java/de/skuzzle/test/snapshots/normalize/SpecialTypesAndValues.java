@@ -19,7 +19,6 @@ final class SpecialTypesAndValues {
 
     public static boolean isEmptyableType(Class<?> originalType) {
         return Map.class.isAssignableFrom(originalType)
-                || Collection.class.isAssignableFrom(originalType)
                 || Iterable.class.isAssignableFrom(originalType)
                 || String.class.isAssignableFrom(originalType)
                 || originalType.isArray();

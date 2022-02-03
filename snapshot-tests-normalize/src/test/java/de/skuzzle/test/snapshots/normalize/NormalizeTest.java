@@ -15,7 +15,6 @@ public class NormalizeTest {
     void testConsistentlyReplace() throws Exception {
         final String uuid0 = UUID.randomUUID().toString();
         final String uuid1 = UUID.randomUUID().toString();
-        System.out.println(uuid0);
         final String s = uuid0 + " and " + uuid1 + " and " + uuid1;
         final String result = Normalize.consistentlyReplace(uuid, (i, m) -> "uuid" + i).apply(s);
         assertThat(result).isEqualTo("uuid0 and uuid1 and uuid1");

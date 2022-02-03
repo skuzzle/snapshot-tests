@@ -11,7 +11,7 @@
     <artifactId>snapshot-tests-jackson</artifactId>
     <packaging>jar</packaging>
 
-    <name>JSON Snapshot Serialization</name>
+    <name>Snapshot JSON Serialization</name>
     <description>JSON snapshot serialization using jackson</description>
 
     <properties>
