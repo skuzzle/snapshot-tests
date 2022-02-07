@@ -17,7 +17,7 @@ public class Generators {
 
     public static BiFunction<Integer, String, String> dateLike(DateTimeFormatter formatter) {
         return (i, match) -> {
-            final long millis = 365 * 24 * 60 * 60 * 1000 * i;
+            final long millis = 365L * 24L * 60L * 60L * 1000L * (long) i;
             final ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC);
             return formatter.format(zonedDateTime);
         };
