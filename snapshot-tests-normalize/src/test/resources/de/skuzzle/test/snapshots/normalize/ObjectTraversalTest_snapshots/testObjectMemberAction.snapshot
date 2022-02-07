@@ -6,6 +6,7 @@ test-method: testObjectMemberAction
 id: 4711
 uuid: null
 readonly: true
+attributes: {}
 Name: Simon
 Surname: Taddiken
 Birthdate: 1777-01-12

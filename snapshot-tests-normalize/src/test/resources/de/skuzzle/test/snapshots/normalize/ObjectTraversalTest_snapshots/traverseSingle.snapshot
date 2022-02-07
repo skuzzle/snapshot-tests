@@ -3,6 +3,8 @@ snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.normalize.ObjectTraversalTest
 test-method: testTraverseSingle
 
+Attribute->[java.util.List]additionalValues: [tons]
+Attribute->[java.util.List]additionalValues: [cm]
 Person->[java.util.List]addresses: [Street: Gibtsnicht-Straße
 Number: 1337
 Zip: 4711
@@ -14,19 +16,26 @@ Zip: 11833
 City: London
 Country: UK
 ]
+Person->[java.util.Map]attributes: {weight={value: 60, additionalValues: [tons]}, height={value: 175, additionalValues: [cm]}}
+Person->[java.time.LocalDate]birthdate: 1777-01-12
 Address->[java.lang.String]city: Bielefeld
 Address->[java.lang.String]city: London
+Terminal in ArrayList->[java.lang.String]cm: cm
 Address->[java.lang.String]country: Germany
 Address->[java.lang.String]country: UK
-Address->[java.lang.String]number: 1337
-Address->[java.lang.String]number: 42
-Address->[java.lang.String]street: Gibtsnicht-Straße
-Address->[java.lang.String]street: Whatever-Rd
-Address->[java.lang.String]zipCode: 4711
-Address->[java.lang.String]zipCode: 11833
-Person->[java.time.LocalDate]birthdate: 1777-01-12
+Terminal in KeySet->[java.lang.String]height: height
 Person->[int]id: 4711
 Person->[java.lang.String]name: Simon
+Address->[java.lang.String]number: 1337
+Address->[java.lang.String]number: 42
 Person->[boolean]readonly: true
+Address->[java.lang.String]street: Gibtsnicht-Straße
+Address->[java.lang.String]street: Whatever-Rd
 Person->[java.lang.String]surname: Taddiken
+Terminal in ArrayList->[java.lang.String]tons: tons
 Person->[java.lang.String]uuid: null
+Attribute->[java.lang.String]value: 60
+Attribute->[java.lang.String]value: 175
+Terminal in KeySet->[java.lang.String]weight: weight
+Address->[java.lang.String]zipCode: 4711
+Address->[java.lang.String]zipCode: 11833

@@ -3,7 +3,9 @@ package de.skuzzle.test.snapshots.normalize;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -36,43 +38,6 @@ import java.util.stream.StreamSupport;
  */
 public final class ObjectTraversal {
 
-    // private static final Set<Class<?>> PRIMITIVES = Set.of(
-    // Boolean.class,
-    // Boolean.TYPE,
-    // Byte.class,
-    // Byte.TYPE,
-    // Short.class,
-    // Short.TYPE,
-    // Integer.class,
-    // Integer.TYPE,
-    // Long.class,
-    // Long.TYPE,
-    // Float.class,
-    // Float.TYPE,
-    // Double.class,
-    // Double.TYPE);
-
-    /**
-     * Creates a lazily populated Stream of {@link ObjectMember object members} that are
-     * recursively reachable from the given root object.
-     *
-     * @param root Root object from which members shall be discovered - may be null.
-     * @param strategy Strategy for discovering members. Can be obtained from static
-     *            factories in {@link ObjectMembers} itself.
-     * @return Stream of members.
-     */
-    public static Stream<ObjectMember> members(Object root, ObjectMembers strategy) {
-        Objects.requireNonNull(strategy, "strategy must not be null");
-
-        final var context = new VisitorContext();
-        return membersOf(root, root, context, strategy)
-                .sorted(Comparator.comparing(ObjectMember::name))
-                .flatMap(member -> Stream.concat(
-                        Stream.of(member),
-                        membersOf(member.value(), null, context, strategy)
-                                .sorted(Comparator.comparing(ObjectMember::name))));
-    }
-
     public static void applyActions(Object root, ObjectMembers strategy, ObjectMemberAction... actions) {
         applyActions(root, strategy, Arrays.asList(actions));
     }
@@ -87,31 +52,136 @@ public final class ObjectTraversal {
         });
     }
 
+    /**
+     * Creates a lazily populated Stream of {@link ObjectMember object members} that are
+     * recursively reachable from the given root object.
+     *
+     * @param root Root object from which members shall be discovered - may be null.
+     * @param strategy Strategy for discovering members. Can be obtained from static
+     *            factories in {@link ObjectMembers} itself.
+     * @return Stream of members.
+     */
+    public static Stream<ObjectMember> members(Object root, ObjectMembers strategy) {
+        Objects.requireNonNull(strategy, "strategy must not be null");
+
+        final var context = new VisitorContext();
+        return membersOfRecursive(root, null, context, strategy)
+                .filter(member -> !context.isTerminal(member.parent())
+                        || member instanceof TerminalTypeInCollection)
+                .sorted(Comparator.comparing(ObjectMember::name));
+    }
+
+    private static Stream<ObjectMember> membersOfRecursive(Object root, Object collectionParent, VisitorContext context,
+            ObjectMembers strategy) {
+        return Stream.of(root)
+                .flatMap(start -> membersOf(start, collectionParent, context, strategy))
+                .flatMap(member -> Stream.concat(
+                        Stream.of(member),
+                        membersOfRecursive(member.value(), collectionParent, context, strategy)));
+    }
+
     private static Stream<ObjectMember> membersOf(Object root, Object collectionParent, VisitorContext context,
             ObjectMembers strategy) {
-        if (root == null || !context.addVisitedInstance(root)) {
+        if (root == null || !context.alreadyVisisted(root)) {
             return Stream.empty();
+
         } else if (root instanceof Collection<?>) {
             final Collection<?> c = (Collection<?>) root;
-            return c.stream().flatMap(element -> membersOf(element, c, context, strategy));
+            return c.stream().flatMap(element -> membersOfRecursive(element, c, context, strategy));
+
         } else if (root.getClass().isArray()) {
             final Object[] c = (Object[]) root;
-            return Arrays.stream(c).flatMap(element -> membersOf(element, c, context, strategy));
+            return Arrays.stream(c).flatMap(element -> membersOfRecursive(element, c, context, strategy));
+
         } else if (root instanceof Iterable<?>) {
             final Iterable<?> it = (Iterable<?>) root;
             final Spliterator<?> spliterator = it.spliterator();
             return StreamSupport.stream(spliterator, false)
-                    .flatMap(element -> membersOf(element, spliterator, context, strategy));
-        } else if (!shouldRecurse(root)) {
+                    .flatMap(element -> membersOfRecursive(element, spliterator, context, strategy));
+
+        } else if (root instanceof Map<?, ?>) {
+            final Map<?, ?> map = (Map<?, ?>) root;
+            return Stream.concat(
+                    membersOfRecursive(map.keySet(), collectionParent, context, strategy),
+                    membersOfRecursive(map.values(), collectionParent, context, strategy));
+
+        } else if (context.isTerminal(root)) {
+            if (collectionParent != null) {
+                return Stream.of(new TerminalTypeInCollection(root, collectionParent));
+            }
             return Stream.empty();
         }
 
         return strategy.directMembersOf(root, collectionParent, context);
     }
 
-    static boolean shouldRecurse(Object root) {
-        return !(root.getClass().getPackageName().startsWith("java.")
-                || root.getClass().getPackageName().startsWith("javax."));
-    }
+    private static final class TerminalTypeInCollection implements ObjectMember {
 
+        private final Object value;
+        private final Object collectionParent;
+
+        public TerminalTypeInCollection(Object value, Object collectionParent) {
+            this.value = Objects.requireNonNull(value);
+            this.collectionParent = Objects.requireNonNull(collectionParent);
+        }
+
+        @Override
+        public Object parent() {
+            return collectionParent;
+        }
+
+        @Override
+        public Optional<Object> collectionParent() {
+            return Optional.of(collectionParent);
+        }
+
+        @Override
+        public String name() {
+            return value.toString();
+        }
+
+        @Override
+        public Class<?> valueType() {
+            return value.getClass();
+        }
+
+        @Override
+        public Object value() {
+            return value;
+        }
+
+        @Override
+        public void setValue(Object value) {
+
+        }
+
+        @Override
+        public boolean isReadonly() {
+            return true;
+        }
+
+        @Override
+        public boolean isWriteOnly() {
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(System.identityHashCode(value), System.identityHashCode(collectionParent));
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj == this || obj instanceof TerminalTypeInCollection
+                    && value == ((TerminalTypeInCollection) obj).value
+                    && collectionParent == ((TerminalTypeInCollection) obj).collectionParent;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Terminal in %s->[%s]%s: %s",
+                    collectionParent.getClass().getSimpleName(),
+                    valueType().getName(), name(), "" + value());
+        }
+    }
 }

@@ -4,7 +4,9 @@ import static de.skuzzle.test.snapshots.normalize.ObjectMemberAction.members;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -84,7 +86,9 @@ public class ObjectTraversalTest {
                         .setNumber("42")
                         .setZipCode("11833"))
                 .setReadonly(true)
-                .setId(4711);
+                .setId(4711)
+                .addAttribute("height", new Attribute("175").addAdditionalValue("cm"))
+                .addAttribute("weight", new Attribute("60").addAdditionalValue("tons"));
     }
 
     public static class Address {
@@ -215,6 +219,7 @@ public class ObjectTraversalTest {
         private int id;
         private String uuid;
         private boolean readonly;
+        private final Map<String, Attribute> attributes = new HashMap<>();
 
         public Entity setId(int id) {
             this.id = id;
@@ -243,14 +248,58 @@ public class ObjectTraversalTest {
             return this;
         }
 
+        public Entity addAttribute(String key, Attribute attribute) {
+            this.attributes.put(key, attribute);
+            return this;
+        }
+
+        public Map<String, Attribute> getAttributes() {
+            return this.attributes;
+        }
+
         @Override
         public String toString() {
             return new StringBuilder()
                     .append("id: ").append(id).append("\n")
                     .append("uuid: ").append(uuid).append("\n")
                     .append("readonly: ").append(readonly).append("\n")
+                    .append("attributes: ").append(attributes).append("\n")
                     .toString();
         }
+    }
 
+    static class Attribute {
+        private String value;
+        private final List<String> additionalValues = new ArrayList<>();
+
+        public Attribute(String value) {
+            this.value = value;
+        }
+
+        public Attribute setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+
+        public Attribute addAdditionalValue(String additionalValue) {
+            this.additionalValues.add(additionalValue);
+            return this;
+        }
+
+        public List<String> getAdditionalValues() {
+            return this.additionalValues;
+        }
+
+        @Override
+        public String toString() {
+            return new StringBuilder()
+                    .append("{value: ").append(value).append(", ")
+                    .append("additionalValues: ").append(additionalValues).append("}")
+                    .toString();
+        }
     }
 }

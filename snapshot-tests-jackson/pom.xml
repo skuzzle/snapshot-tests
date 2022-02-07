@@ -17,7 +17,19 @@
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.jackson</automatic-module-name>
     </properties>
-
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <dependencies>
         <dependency>
             <groupId>de.skuzzle.test</groupId>

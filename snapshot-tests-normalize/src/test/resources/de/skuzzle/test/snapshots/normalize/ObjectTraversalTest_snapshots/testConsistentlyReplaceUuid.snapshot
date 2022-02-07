@@ -6,6 +6,7 @@ test-method: testConsistentlyReplaceUuid
 id: 4711
 uuid: 00000000-0000-0000-0000-000000000000
 readonly: true
+attributes: {weight={value: 60, additionalValues: [tons]}, height={value: 175, additionalValues: [cm]}}
 Name: Simon
 Surname: Taddiken
 Birthdate: 1777-01-12

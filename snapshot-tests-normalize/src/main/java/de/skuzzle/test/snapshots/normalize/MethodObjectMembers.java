@@ -101,8 +101,8 @@ class MethodObjectMembers implements ObjectMembers {
         public boolean isGetter() {
             final var name = method.getName();
             return method.getParameterCount() == 0 &&
-                    name.startsWith("get") && name.length() > 3 && !name.equals("getClass") ||
-                    name.startsWith("is") && name.length() > 2;
+                    (name.startsWith("get") && name.length() > 3 && !name.equals("getClass") ||
+                            name.startsWith("is") && name.length() > 2);
         }
 
         @Override
@@ -176,12 +176,15 @@ class MethodObjectMembers implements ObjectMembers {
 
         @Override
         public Object value() {
-            if (getter == null) {
+            if (isWriteOnly()) {
                 // Note: As last resort we could try to find and read the corresponding
                 // field instead of throwing directly
-                throw new UnsupportedOperationException(String.format(
-                        "Could not read value of property '%s' because no getter was found on parent object '%s'", name,
-                        parent));
+                /*
+                 * throw new UnsupportedOperationException(String.format(
+                 * "Could not read value of property '%s' because no getter was found on parent object '%s'"
+                 * , name, parent));
+                 */
+                return null;
             }
             try {
                 getter.setAccessible(true);
@@ -194,12 +197,15 @@ class MethodObjectMembers implements ObjectMembers {
 
         @Override
         public void setValue(Object value) {
-            if (setter == null) {
+            if (isReadonly()) {
                 // Note: As last resort we could try to find and set the corresponding
                 // field instead of throwing directly
-                throw new UnsupportedOperationException(String.format(
-                        "Could not set value of property '%s' because no setter was found on parent object '%s'", name,
-                        parent));
+                /*
+                 * throw new UnsupportedOperationException(String.format(
+                 * "Could not set value of property '%s' because no setter was found on parent object '%s'"
+                 * , name, parent));
+                 */
+                return;
             }
 
             try {
@@ -211,6 +217,16 @@ class MethodObjectMembers implements ObjectMembers {
                                 setter, parent, value),
                         e);
             }
+        }
+
+        @Override
+        public boolean isReadonly() {
+            return setter == null;
+        }
+
+        @Override
+        public boolean isWriteOnly() {
+            return getter == null;
         }
 
         @Override

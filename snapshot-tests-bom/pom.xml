@@ -3,45 +3,42 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>de.skuzzle</groupId>
-        <artifactId>skuzzle-parent</artifactId>
-        <version>3.0.3</version>
+        <groupId>de.skuzzle.test</groupId>
+        <artifactId>snapshot-tests-parent</artifactId>
+        <version>0.0.7-SNAPSHOT</version>
     </parent>
 
-    <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-bom</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests BOM</name>
     <description>Manages all child artifact versions in case you need to reference multiple in a client project</description>
 
-
     <dependencyManagement>
         <dependencies>
             <!-- Self -->
             <dependency>
-                <groupId>de.skuzzle.test</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.skuzzle.test</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-jackson</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.skuzzle.test</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-jaxb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.skuzzle.test</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-directory-params</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.skuzzle.test</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-normalize</artifactId>
                 <version>${project.version}</version>
             </dependency>

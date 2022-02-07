@@ -7,9 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-/**
- * @author Simon Taddiken
- */
 class FieldObjectMembers implements ObjectMembers {
 
     private static final ObjectMembers INSTANCE = new FieldObjectMembers();
@@ -82,6 +79,9 @@ class FieldObjectMembers implements ObjectMembers {
 
         @Override
         public void setValue(Object value) {
+            if (isReadonly()) {
+                return;
+            }
             try {
                 field.setAccessible(true);
                 field.set(parent, value);
@@ -90,6 +90,16 @@ class FieldObjectMembers implements ObjectMembers {
                         String.format("Could not set value of field '%s' on object '%s' to '%s'", field, parent, value),
                         e);
             }
+        }
+
+        @Override
+        public boolean isReadonly() {
+            return Modifier.isFinal(field.getModifiers());
+        }
+
+        @Override
+        public boolean isWriteOnly() {
+            return false;
         }
 
         @Override

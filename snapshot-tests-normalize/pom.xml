@@ -11,12 +11,24 @@
     <artifactId>snapshot-tests-normalize</artifactId>
     <packaging>jar</packaging>
 
-    <name>Object normalization</name>
+    <name>Snapshot Object Normalization</name>
     <description>Travers/Clean/Normalize object instances</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.normalize</automatic-module-name>
     </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>

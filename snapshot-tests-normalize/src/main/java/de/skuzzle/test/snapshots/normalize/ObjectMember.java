@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.normalize;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -18,6 +19,19 @@ public interface ObjectMember {
      */
     Object parent();
 
+    /**
+     * If {@link #parent()} has been discovered in a supported collection type (array,
+     * {@link Iterable}, {@link Collection}) this method returns the respective
+     * collection.
+     * <p>
+     * Note that, during traversal, only the first occurrence of an object instance is
+     * taken into account. If the same object is once referenced in a collection
+     * <em>and</em> once directly, then depending on attribute discovery order, you might
+     * or might not encounter the one with available collection parent.
+     *
+     * @return Pointer to the collection in which {@link #parent()} has been discovered
+     *         while traversing an object graph.
+     */
     Optional<Object> collectionParent();
 
     /**
@@ -40,23 +54,27 @@ public interface ObjectMember {
 
     /**
      * Reads the member's value. Whether reading the value is supported highly depends on
-     * the implementation. For example, an implementation that is based on getter and
-     * setter methods might throw an {@link UnsupportedOperationException} if there is not
-     * getter method for the attribute.
+     * the implementation. Implementations are advised to provide a best effort approach
+     * for determining the value without failure.
+     * <p>
+     * If this member is {@link #isWriteOnly()} null is returned.
      *
      * @return The value (may be null)
-     * @throws UnsupportedOperationException If reading the value is not possible.
+     * @throws UnsupportedOperationException If reading the value fails.
      */
     Object value();
 
     /**
      * Sets the member's value to the respective value. Whether setting the value is
-     * supported highly depends on the implementation. For example, an implementation that
-     * is based on fields will throw an {@link UnsupportedOperationException} if the field
-     * is declared final.
+     * supported highly depends on the implementation. If the member is
+     * {@link #isReadonly()}, nothing happens.
      *
      * @param value The value to set (may be null)
      * @throws UnsupportedOperationException If setting the value is not possible.
      */
     void setValue(Object value);
+
+    boolean isReadonly();
+
+    boolean isWriteOnly();
 }
