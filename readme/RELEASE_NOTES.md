@@ -21,7 +21,7 @@ Maven Central coordinates for this release:
 testImplementation(platform(${project.groupId}:snapshot-tests-bom:${project.version}))
 ```
 
-## Technical Artifacts
+## Artifacts
 If you only need text based snapshots:
 ```xml
 <dependency>
@@ -62,4 +62,34 @@ If you need xml based snapshots (includes `-core`):
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
+```
+
+## Experimental
+
+Directory Params
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-directory-params</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-directory-params:${project.version}'
+```
+
+Object normalization
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-normalize</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-normalize:${project.version}'
 ```

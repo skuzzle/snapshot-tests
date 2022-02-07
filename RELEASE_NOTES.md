@@ -21,7 +21,7 @@ Maven Central coordinates for this release:
 testImplementation(platform(de.skuzzle.test:snapshot-tests-bom:0.0.7-SNAPSHOT))
 ```
 
-## Technical Artifacts
+## Artifacts
 If you only need text based snapshots:
 ```xml
 <dependency>
@@ -62,4 +62,34 @@ If you need xml based snapshots (includes `-core`):
 
 ```
 testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.7-SNAPSHOT'
+```
+
+## Experimental
+
+Directory Params
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-directory-params</artifactId>
+    <version>0.0.7-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-directory-params:0.0.7-SNAPSHOT'
+```
+
+Object normalization
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-normalize</artifactId>
+    <version>0.0.7-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-normalize:0.0.7-SNAPSHOT'
 ```
