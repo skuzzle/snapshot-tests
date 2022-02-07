@@ -14,47 +14,8 @@ actual object against the stored snapshot.
 
 ### Latest Maven Central coordinates
 
-If you only need text based snapshots:
-```xml
-<dependency>
-    <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests-core</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
-    <scope>test</scope>
-</dependency>
-```
-
-```
-testImplementation 'de.skuzzle.test:snapshot-tests-core:0.0.7-SNAPSHOT'
-```
-
-If you need json based snapshots (includes `-core`):
-```xml
-<dependency>
-    <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
-    <scope>test</scope>
-</dependency>
-```
-
-```
-testImplementation 'de.skuzzle.test:snapshot-tests-jackson:0.0.7-SNAPSHOT'
-```
-
-If you need xml based snapshots (includes `-core`):
-```xml
-<dependency>
-    <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests-jaxb</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
-    <scope>test</scope>
-</dependency>
-```
-
-```
-testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:0.0.7-SNAPSHOT'
-```
+Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
+release [0.0.7-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v0.0.7-SNAPSHOT)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
