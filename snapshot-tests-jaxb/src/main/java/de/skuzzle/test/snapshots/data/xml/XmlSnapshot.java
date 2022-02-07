@@ -32,7 +32,7 @@ public final class XmlSnapshot implements StructuredDataBuilder {
      * <p>
      * If you need control over how the {@link JAXBContext} and the {@link Marshaller} are
      * being set up, use the static factory methods in {@link XmlSnapshot} instead of this
-     * static sonstant.
+     * static constant.
      */
     public static final StructuredData xml = inferJaxbContext().build();
 
@@ -57,10 +57,6 @@ public final class XmlSnapshot implements StructuredDataBuilder {
         return new XmlSnapshot(null);
     }
 
-    /**
-     * @param jaxbContext
-     * @return
-     */
     public static XmlSnapshot with(JAXBContext jaxbContext) {
         return new XmlSnapshot(Objects.requireNonNull(jaxbContext, "jaxbContext must not be null"));
     }
