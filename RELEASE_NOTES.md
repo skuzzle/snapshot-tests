@@ -6,6 +6,22 @@
 
 Maven Central coordinates for this release:
 
+## BOM Artifact
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-bom</artifactId>
+    <version>0.0.7-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation(platform(de.skuzzle.test:snapshot-tests-bom:0.0.7-SNAPSHOT))
+```
+
+## Technical Artifacts
 If you only need text based snapshots:
 ```xml
 <dependency>
