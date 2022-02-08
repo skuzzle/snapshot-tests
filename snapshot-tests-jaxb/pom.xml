@@ -5,19 +5,31 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
 
     <artifactId>snapshot-tests-jaxb</artifactId>
     <packaging>jar</packaging>
 
-    <name>XML Snapshot Serialization</name>
+    <name>Snapshot XML Serialization</name>
     <description>XML snapshot serialization using jaxb</description>
     
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.jaxb</automatic-module-name>
     </properties>
-
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <dependencies>
         <dependency>
             <groupId>de.skuzzle.test</groupId>

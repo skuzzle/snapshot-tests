@@ -1,9 +1,27 @@
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/${project.artifactId}/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/${project.artifactId}/${project.version})
 
-* [#11](https://github.com/skuzzle/snapshot-tests/issues/11) Rename `@SnapshotAssertions` to `@EnableSnapshotTests` (**breaking**)
+* Allow to customize the Xml-Unit assertion via `XmlSnapshot.compareUsing(Consumer<CompareAssert>)`
+* Restructure modules
+* Experimental normalization API
 
 Maven Central coordinates for this release:
 
+## BOM Artifact
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-bom</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation(platform(${project.groupId}:snapshot-tests-bom:${project.version}))
+```
+
+## Artifacts
 If you only need text based snapshots:
 ```xml
 <dependency>
@@ -44,4 +62,34 @@ If you need xml based snapshots (includes `-core`):
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
+```
+
+## Experimental
+
+Directory Params
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-directory-params</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-directory-params:${project.version}'
+```
+
+Object normalization
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-normalize</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-normalize:${project.version}'
 ```

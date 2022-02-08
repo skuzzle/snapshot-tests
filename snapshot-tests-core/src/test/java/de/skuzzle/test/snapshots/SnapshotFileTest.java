@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
@@ -22,17 +23,26 @@ public class SnapshotFileTest {
     void testWriteRead() throws Exception {
         final SnapshotFile snapshotFile = SnapshotFile.of(SnapshotHeader.fromMap(Map.of("key", "value")),
                 "actualSnapshot");
-        final StringWriter writer = new StringWriter();
-        snapshotFile.writeTo(writer);
-
-        final SnapshotFile snapshotFile2 = SnapshotFile.readFrom(string(writer.toString()));
-        assertThat(snapshotFile).isEqualTo(snapshotFile2);
+        assertSameAfterWriteRead(snapshotFile);
     }
 
     @Test
     void testWriteReadEmptyHeader() throws Exception {
         final SnapshotFile snapshotFile = SnapshotFile.of(SnapshotHeader.fromMap(Map.of()),
                 "actualSnapshot");
+        assertSameAfterWriteRead(snapshotFile);
+
+    }
+
+    @Test
+    void testSnapshotStartsWithNewLines() throws Exception {
+        final SnapshotFile snapshotFile = SnapshotFile.of(SnapshotHeader.fromMap(Map.of("key", "value")),
+                "\nactualSnapshot");
+
+        assertSameAfterWriteRead(snapshotFile);
+    }
+
+    private void assertSameAfterWriteRead(SnapshotFile snapshotFile) throws IOException {
         final StringWriter writer = new StringWriter();
         snapshotFile.writeTo(writer);
 

@@ -8,9 +8,13 @@ import java.time.LocalDate;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.jupiter.api.Test;
+import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.assertj.XmlAssert;
+import org.xmlunit.diff.DifferenceEvaluators;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 
 @EnableSnapshotTests(forceUpdateSnapshots = false)
 public class SnapshotsTest {
@@ -26,6 +30,27 @@ public class SnapshotsTest {
     void testAsXmlStructureCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsXmlStructureCompareBuilder(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+                .as(XmlSnapshot
+                        .inferJaxbContext()
+                        .compareUsing(xmls -> xmls.withDifferenceEvaluator(DifferenceEvaluators.Default).areSimilar()))
+                .matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsXmlStructureCustomStructuralAssertions(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+                .as(XmlSnapshot.inferJaxbContext().compareUsing(CompareAssert::areSimilar))
+                .matchesAccordingTo((expected, actual) -> XmlAssert.assertThat(actual).and(expected)
+                        .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences()).areSimilar());
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
