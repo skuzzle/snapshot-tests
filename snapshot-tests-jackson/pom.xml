@@ -11,13 +11,25 @@
     <artifactId>snapshot-tests-jackson</artifactId>
     <packaging>jar</packaging>
 
-    <name>JSON Snapshot Serialization</name>
+    <name>Snapshot JSON Serialization</name>
     <description>JSON snapshot serialization using jackson</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.jackson</automatic-module-name>
     </properties>
-
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
     <dependencies>
         <dependency>
             <groupId>de.skuzzle.test</groupId>
