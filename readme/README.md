@@ -73,6 +73,12 @@ You can also update snapshots for individual assertions by replacing any of the 
 same reason that they are failing the first time the snapshot is created: because no assertion has been 
 performed during this run). 
 
+It is also possible to pass the system property `forceUpdateSnapshots` (case-_insensitive_) to the JVM. When running 
+the tests from maven it can be achieved like this:
+
+```
+mvn clean verify -DargLine=-DforceUpdateSnapshots
+```
 
 
 ### Defining the serialized format

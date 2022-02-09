@@ -1,6 +1,7 @@
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/${project.artifactId}/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/${project.artifactId}/${project.version})
 
 * Add ApiGuardian annotations to all public API
+* [#10](https://github.com/skuzzle/snapshot-tests/issues/10) Snapshots can be updated by passing `-DforceUpdateSnapshots` to the JVM
 
 Maven Central coordinates for this release:
 
@@ -16,7 +17,7 @@ Maven Central coordinates for this release:
 ```
 
 ```
-testImplementation(platform(${project.groupId}:snapshot-tests-bom:${project.version}))
+testImplementation(platform("${project.groupId}:snapshot-tests-bom:${project.version}"))
 ```
 
 ## Artifacts
@@ -32,6 +33,7 @@ If you only need text based snapshots:
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-core:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-core:${project.version}")
 ```
 
 If you need json based snapshots (includes `-core`):
@@ -46,6 +48,7 @@ If you need json based snapshots (includes `-core`):
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-jackson:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-jackson:${project.version}")
 ```
 
 If you need xml based snapshots (includes `-core`):
@@ -60,6 +63,7 @@ If you need xml based snapshots (includes `-core`):
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
 ```
 
 ## Experimental
@@ -76,6 +80,7 @@ Directory Params
 
 ```
 testImplementation '${project.groupId}:snapshot-tests-directory-params:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-directory-params:${project.version}")
 ```
 
 Object normalization
@@ -89,5 +94,5 @@ Object normalization
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-normalize:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-normalize:${project.version}")
 ```
