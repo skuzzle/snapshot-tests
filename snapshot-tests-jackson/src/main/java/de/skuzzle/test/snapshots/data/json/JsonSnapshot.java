@@ -89,7 +89,11 @@ public final class JsonSnapshot implements StructuredDataProvider {
      *
      * @param jsonComparator The comparator to use.
      * @return This instance.
+     * @apiNote This method is likely going to be replaced with a wrapper API around
+     *          JSONAssert types. The JSONAssert API is a bit awkward to use and I'd like
+     *          to remove it as a visible dependency altogether
      */
+    @API(status = Status.EXPERIMENTAL)
     public JsonSnapshot withComparator(JSONComparator jsonComparator) {
         this.jsonComparator = Objects.requireNonNull(jsonComparator, "comparator must not be null");
         return this;

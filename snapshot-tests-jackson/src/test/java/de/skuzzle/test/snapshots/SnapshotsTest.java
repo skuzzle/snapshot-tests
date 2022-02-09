@@ -6,9 +6,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.Customization;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
 
 @EnableSnapshotTests(forceUpdateSnapshots = false)
 public class SnapshotsTest {
@@ -24,6 +28,17 @@ public class SnapshotsTest {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(json)
+                .matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsJsonStructureCompareCustom(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+                .as(JsonSnapshot.withDefaultObjectMapper()
+                        .withComparator(new CustomComparator(JSONCompareMode.STRICT,
+                                new Customization("address.city", (o1, o2) -> true))))
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
