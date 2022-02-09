@@ -7,13 +7,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.assertj.core.annotations.Nullable;
 import org.xmlunit.assertj.CompareAssert;
 
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
-import de.skuzzle.test.snapshots.StructuredDataBuilder;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
  * {@link StructuredData} builder for serializing test results to XML, relying on JAXB and
@@ -24,7 +26,8 @@ import de.skuzzle.test.snapshots.StructuredDataBuilder;
  *
  * @author Simon Taddiken
  */
-public final class XmlSnapshot implements StructuredDataBuilder {
+@API(status = Status.STABLE)
+public final class XmlSnapshot implements StructuredDataProvider {
 
     /**
      * Simple default {@link StructuredData} instance which infers the JAXB context from a

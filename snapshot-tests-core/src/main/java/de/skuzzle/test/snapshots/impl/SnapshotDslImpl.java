@@ -10,7 +10,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
-import de.skuzzle.test.snapshots.StructuredDataBuilder;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
@@ -45,7 +45,7 @@ class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure
     }
 
     @Override
-    public ChooseStructure as(StructuredDataBuilder structuredDataBuilder) {
+    public ChooseStructure as(StructuredDataProvider structuredDataBuilder) {
         final StructuredData structure = Objects
                 .requireNonNull(structuredDataBuilder, "structuredDataBuilder must not be null").build();
         this.snapshotSerializer = structure.snapshotSerializer();

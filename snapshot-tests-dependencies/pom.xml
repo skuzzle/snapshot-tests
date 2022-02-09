@@ -48,7 +48,13 @@
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${version.glassfish-jaxb}</version>
             </dependency>
-
+            
+            <dependency>
+                <groupId>org.apiguardian</groupId>
+                <artifactId>apiguardian-api</artifactId>
+                <version>${version.api-guardian}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>

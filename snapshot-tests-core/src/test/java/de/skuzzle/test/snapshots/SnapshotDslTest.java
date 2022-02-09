@@ -67,7 +67,7 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public ChooseStructure as(StructuredDataBuilder structuredDataBuilder) {
+        public ChooseStructure as(StructuredDataProvider structuredDataBuilder) {
             return this;
         }
 

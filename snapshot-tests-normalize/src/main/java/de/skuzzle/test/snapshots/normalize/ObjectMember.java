@@ -3,6 +3,9 @@ package de.skuzzle.test.snapshots.normalize;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * A pointer to a class member belonging to a certain object instance. Allows to read and
  * modify the member's value in place.
@@ -10,6 +13,7 @@ import java.util.Optional;
  * @author Simon Taddiken
  * @see ObjectTraversal
  */
+@API(status = Status.EXPERIMENTAL)
 public interface ObjectMember {
 
     /**

@@ -6,6 +6,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.BiFunction;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
+@API(status = Status.EXPERIMENTAL)
 public class Generators {
 
     public static BiFunction<Integer, Object, String> uuidLike() {

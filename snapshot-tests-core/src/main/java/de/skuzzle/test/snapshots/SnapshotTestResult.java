@@ -6,12 +6,16 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * Result details of a single snapshot assertion.
  *
  * @author Simon Taddiken
  * @since 0.0.2
  */
+@API(status = Status.EXPERIMENTAL)
 public final class SnapshotTestResult {
 
     private final SnapshotFile snapshot;
@@ -79,6 +83,7 @@ public final class SnapshotTestResult {
     public void deleteSnapshot() throws IOException {
         Files.delete(targetFile);
     }
+
     /**
      * Information about the creation of a single snapshot file.
      *

@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.junit.platform.commons.support.ReflectionSupport;
 
 /**
@@ -23,6 +25,7 @@ import org.junit.platform.commons.support.ReflectionSupport;
  * @author Simon Taddiken
  * @since 0.0.5
  */
+@API(status = Status.STABLE)
 public final class SnapshotFile {
 
     private final SnapshotHeader header;

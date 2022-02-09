@@ -1,12 +1,15 @@
 package de.skuzzle.test.snapshots;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * Allows to customize how structured data is compared in order to check whether a
  * snapshot matches an actual test result.
  *
  * @author Simon Taddiken
- * @since ever
  */
+@API(status = Status.STABLE)
 public interface StructuralAssertions {
 
     /**

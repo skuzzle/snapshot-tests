@@ -10,6 +10,8 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 /**
@@ -31,6 +33,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 @Target({ TYPE, FIELD, METHOD, CONSTRUCTOR })
 @Documented
 @ArgumentsSource(DirectoryContentsArgumentsProvider.class)
+@API(status = Status.EXPERIMENTAL)
 public @interface FilesFrom {
 
     /**

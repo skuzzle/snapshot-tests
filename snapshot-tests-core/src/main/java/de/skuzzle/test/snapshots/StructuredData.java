@@ -2,20 +2,23 @@ package de.skuzzle.test.snapshots;
 
 import java.util.Objects;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 
 /**
  * Combines a {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
  * <p>
- * This class implements {@link StructuredDataBuilder} so that {@link #build()} always
+ * This class implements {@link StructuredDataProvider} so that {@link #build()} always
  * returns <code>this</code>. This allows to pass a concrete instance of this class
- * directly to the snapshot DSL {@link ChooseDataFormat#as(StructuredDataBuilder)}
+ * directly to the snapshot DSL {@link ChooseDataFormat#as(StructuredDataProvider)}
  *
  * @author Simon Taddiken
- * @since ever
- * @see StructuredDataBuilder
+ * @see StructuredDataProvider
  */
-public final class StructuredData implements StructuredDataBuilder {
+@API(status = Status.STABLE)
+public final class StructuredData implements StructuredDataProvider {
 
     private final SnapshotSerializer snapshotSerializer;
     private final StructuralAssertions structuralAssertions;

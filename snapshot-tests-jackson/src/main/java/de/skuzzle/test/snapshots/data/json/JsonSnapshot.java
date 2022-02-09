@@ -3,7 +3,12 @@ package de.skuzzle.test.snapshots.data.json;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.DefaultComparator;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -13,7 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
-import de.skuzzle.test.snapshots.StructuredDataBuilder;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
  * Serializes snapshots as json using jackson. Use either the static factory methods or
@@ -25,7 +30,8 @@ import de.skuzzle.test.snapshots.StructuredDataBuilder;
  *
  * @author Simon Taddiken
  */
-public final class JsonSnapshot implements StructuredDataBuilder {
+@API(status = Status.STABLE)
+public final class JsonSnapshot implements StructuredDataProvider {
 
     /**
      * Takes Snapshots using jackson {@link ObjectMapper} and compare the results using
@@ -34,9 +40,11 @@ public final class JsonSnapshot implements StructuredDataBuilder {
     public static final StructuredData json = withDefaultObjectMapper().build();
 
     private final ObjectMapper objectMapper;
+    private JSONComparator jsonComparator;
 
     private JsonSnapshot(ObjectMapper objectMapper) {
         this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
+        this.jsonComparator = new DefaultComparator(JSONCompareMode.STRICT);
     }
 
     /**
@@ -75,10 +83,22 @@ public final class JsonSnapshot implements StructuredDataBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@link JSONComparator} for comparing actual and expected. If not set, the
+     * {@link DefaultComparator} along with {@link JSONCompareMode#STRICT} will be used.
+     *
+     * @param jsonComparator The comparator to use.
+     * @return This instance.
+     */
+    public JsonSnapshot withComparator(JSONComparator jsonComparator) {
+        this.jsonComparator = Objects.requireNonNull(jsonComparator, "comparator must not be null");
+        return this;
+    }
+
     @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = new JacksonJsonSnapshotSerializer(objectMapper);
-        final StructuralAssertions structuralAssertions = new JsonAssertStructuralAssertions();
+        final StructuralAssertions structuralAssertions = new JsonAssertStructuralAssertions(jsonComparator);
         return StructuredData.with(snapshotSerializer, structuralAssertions);
     }
 }

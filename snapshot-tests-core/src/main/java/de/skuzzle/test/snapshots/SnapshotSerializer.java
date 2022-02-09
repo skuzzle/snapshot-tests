@@ -1,5 +1,8 @@
 package de.skuzzle.test.snapshots;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * Defines how an object is serialized into a persistable String.
  * <p>
@@ -13,8 +16,8 @@ package de.skuzzle.test.snapshots;
  * {@link SnapshotFile}.
  *
  * @author Simon Taddiken
- * @since ever
  */
+@API(status = Status.STABLE)
 public interface SnapshotSerializer {
 
     /**
@@ -24,7 +27,6 @@ public interface SnapshotSerializer {
      * @return The serialized object.
      * @throws SnapshotException If the object could not be serialized for technical
      *             reasons.
-     * @since ever
      */
     String serialize(Object testResult) throws SnapshotException;
 }
