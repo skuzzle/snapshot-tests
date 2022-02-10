@@ -4,6 +4,9 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.normalize.MethodObjectMembers.PropertyConventions;
 
 /**
@@ -14,6 +17,7 @@ import de.skuzzle.test.snapshots.normalize.MethodObjectMembers.PropertyConventio
  * @see ObjectTraversal
  * @apiNote This interface is meant for internal implementations only.
  */
+@API(status = Status.EXPERIMENTAL)
 public interface ObjectMembers {
 
     static ObjectMembers fieldBased() {

@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=0.0.7&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/0.0.7/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=0.0.7&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/0.0.7)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.0.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/1.0.0/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.0.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/1.0.0)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -12,10 +12,12 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/)
+
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [0.0.7](https://github.com/skuzzle/snapshot-tests/releases/tag/v0.0.7)
+release [1.0.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.0.0)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
@@ -46,7 +48,7 @@ If your code under test produces deterministic results, tests should now be gree
 
 ## Compatibility
 - [x] Requires Java 11
-- [x] Tested against JUnit5 `${version.junit}`
+- [x] Tested against JUnit5 `5.8.2`
 
 ## Usage
 
@@ -73,6 +75,12 @@ You can also update snapshots for individual assertions by replacing any of the 
 same reason that they are failing the first time the snapshot is created: because no assertion has been 
 performed during this run). 
 
+It is also possible to pass the system property `forceUpdateSnapshots` (case-_insensitive_) to the JVM. When running 
+the tests from maven it can be achieved like this:
+
+```
+mvn clean verify -DargLine=-DforceUpdateSnapshots
+```
 
 
 ### Defining the serialized format

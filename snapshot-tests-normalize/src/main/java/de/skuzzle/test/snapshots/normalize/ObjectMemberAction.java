@@ -11,12 +11,16 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * An action that can be applied to a {@link ObjectMember} which is matched by a
  * {@link Predicate}.
  *
  * @author Simon Taddiken
  */
+@API(status = Status.EXPERIMENTAL)
 public final class ObjectMemberAction {
 
     private final Predicate<ObjectMember> predicate;

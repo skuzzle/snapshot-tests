@@ -3,6 +3,10 @@ package de.skuzzle.test.snapshots.directories;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
+@API(status = Status.INTERNAL)
 public class DirectoryResolver {
     // FIXME: https://github.com/skuzzle/snapshot-tests/issues/3
     // This will not necessarily resolve to the correct directory. Especially multi

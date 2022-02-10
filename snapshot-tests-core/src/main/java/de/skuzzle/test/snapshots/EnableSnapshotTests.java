@@ -7,6 +7,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
@@ -31,7 +33,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  * </pre>
  * <p>
  * <code>asText()</code> will 'serialize' actual test results using
- * {@link Object#toString()}. There are additional {@link StructuredDataBuilder}
+ * {@link Object#toString()}. There are additional {@link StructuredDataProvider}
  * implementations that allow to serialize snapshots as json or xml. To use them, you need
  * to declare their respective maven modules as dependency.
  *
@@ -46,7 +48,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  * </pre>
  * <p>
  * When providing a structured data format like json/xml (or in general: an implementation
- * of {@link StructuredDataBuilder}) you can make use of <em>structural assertions</em> to
+ * of {@link StructuredDataProvider}) you can make use of <em>structural assertions</em> to
  * compare snapshots. Depending on the implementation, those might provide better error
  * messages than plain text comparison.
  *
@@ -61,11 +63,11 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  *
  * @author Simon Taddiken
  * @see Snapshot
- * @since ever.
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @ExtendWith(SnapshotExtension.class)
+@API(status = Status.STABLE)
 public @interface EnableSnapshotTests {
 
     /**
@@ -74,7 +76,6 @@ public @interface EnableSnapshotTests {
      * package name of the test class.
      *
      * @return The relative directory to store the snapshots.
-     * @since ever
      */
     String snapshotDirectory() default "";
 
@@ -91,7 +92,6 @@ public @interface EnableSnapshotTests {
      *
      * @return Whether to update the stored snapshots.
      * @see ChooseAssertions#justUpdateSnapshot()
-     * @since 0.0.2 (renamed from updateSnapshots)
      */
     boolean forceUpdateSnapshots() default false;
 
@@ -104,7 +104,6 @@ public @interface EnableSnapshotTests {
      * collected and reported after the test method completed.
      *
      * @return Whether to enable soft assertions. Defaults to <code>false</code>.
-     * @since 0.0.2
      */
     boolean softAssertions() default false;
 }

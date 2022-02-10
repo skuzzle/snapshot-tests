@@ -1,5 +1,8 @@
 package de.skuzzle.test.snapshots;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * Tagging interface for classes that can provide an instance of {@link StructuredData}.
  * This is mostly useful in order for the IDE to list all available snapshot data formats
@@ -12,7 +15,8 @@ package de.skuzzle.test.snapshots;
  * @author Simon Taddiken
  */
 @FunctionalInterface
-public interface StructuredDataBuilder {
+@API(status = Status.STABLE)
+public interface StructuredDataProvider {
 
     /**
      * Provides the {@link StructuredData} instance which defines the serialization format

@@ -10,7 +10,7 @@
 
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-parent</artifactId>
-    <version>0.0.7</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Parent</name>
@@ -27,6 +27,22 @@
 
         <automatic-module-name>de.skuzzle.test.snapshots</automatic-module-name>
         <failOnWarning>false</failOnWarning>
+
+        <!-- Versions are defined here (to be able to use the properties while filtering the readme during release), actual dependencies are managed in 
+            a sub-module -->
+        <version.junit>5.8.2</version.junit>
+        <version.assertj>3.22.0</version.assertj>
+        <version.opentest4j>1.2.0</version.opentest4j>
+
+        <version.jaxb-api>2.3.1</version.jaxb-api>
+        <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
+        <version.xmlunit>2.9.0</version.xmlunit>
+
+        <version.jackson>2.10.5.20201202</version.jackson>
+        <version.jsonassert>1.5.0</version.jsonassert>
+        <version.equals-verifier>3.9</version.equals-verifier>
+        <version.api-guardian>1.1.2</version.api-guardian>
+
     </properties>
 
     <modules>
@@ -40,7 +56,7 @@
     </modules>
 
     <build>
-    
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -56,7 +72,7 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

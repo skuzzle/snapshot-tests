@@ -10,6 +10,9 @@ import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
  * Allows to recursively iterate all members of an actual object. Each member is wrapped
  * into a {@link ObjectMember} instance from which it can be read/modified. How members
@@ -36,6 +39,7 @@ import java.util.stream.StreamSupport;
  * @see ObjectMember
  * @see ObjectMembers
  */
+@API(status = Status.EXPERIMENTAL)
 public final class ObjectTraversal {
 
     public static void applyActions(Object root, ObjectMembers strategy, ObjectMemberAction... actions) {

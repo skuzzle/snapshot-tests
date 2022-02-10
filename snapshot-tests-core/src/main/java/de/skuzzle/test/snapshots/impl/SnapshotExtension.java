@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -17,6 +19,12 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
+/**
+ * This class is only public so it can be referenced by the entry point annotation.
+ *
+ * @author Simon Taddiken
+ */
+@API(status = Status.INTERNAL)
 public final class SnapshotExtension implements ParameterResolver, AfterEachCallback,
         BeforeAllCallback, AfterAllCallback {
 

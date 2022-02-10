@@ -1,7 +1,10 @@
 package de.skuzzle.test.snapshots.data.text;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.StructuredData;
-import de.skuzzle.test.snapshots.StructuredDataBuilder;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
  * Take snapshots using {@link Object#toString()}. Use the static instance
@@ -9,7 +12,8 @@ import de.skuzzle.test.snapshots.StructuredDataBuilder;
  *
  * @author Simon Taddiken
  */
-public final class TextSnapshot implements StructuredDataBuilder {
+@API(status = Status.STABLE)
+public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a

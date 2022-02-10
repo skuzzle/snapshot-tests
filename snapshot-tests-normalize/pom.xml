@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>0.0.7</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>snapshot-tests-normalize</artifactId>
@@ -17,7 +17,7 @@
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.normalize</automatic-module-name>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,6 +31,10 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>de.skuzzle.test</groupId>
             <artifactId>snapshot-tests-core</artifactId>

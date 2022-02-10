@@ -12,6 +12,8 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/)
+
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
@@ -73,6 +75,12 @@ You can also update snapshots for individual assertions by replacing any of the 
 same reason that they are failing the first time the snapshot is created: because no assertion has been 
 performed during this run). 
 
+It is also possible to pass the system property `forceUpdateSnapshots` (case-_insensitive_) to the JVM. When running 
+the tests from maven it can be achieved like this:
+
+```
+mvn clean verify -DargLine=-DforceUpdateSnapshots
+```
 
 
 ### Defining the serialized format

@@ -18,6 +18,8 @@ import de.skuzzle.test.snapshots.directories.DirectoryResolver;
  */
 final class SnapshotConfiguration {
 
+    private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
+
     private final ExtensionContext extensionContext;
 
     private SnapshotConfiguration(ExtensionContext extensionContext) {
@@ -51,9 +53,16 @@ final class SnapshotConfiguration {
     }
 
     public boolean isForceUpdateSnapshots() {
-        return extensionContext.getRequiredTestClass()
+        final boolean valueFromAnnotation = extensionContext.getRequiredTestClass()
                 .getAnnotation(EnableSnapshotTests.class)
                 .forceUpdateSnapshots();
+        if (valueFromAnnotation) {
+            return valueFromAnnotation;
+        }
+        return System.getProperties().keySet().stream()
+                .map(Object::toString)
+                .anyMatch(FORCE_UPDATE_SYSTEM_PROPERTY::equalsIgnoreCase);
+
     }
 
     public boolean isSoftAssertions() {

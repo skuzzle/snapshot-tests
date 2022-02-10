@@ -1,12 +1,16 @@
 package de.skuzzle.test.snapshots;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 /**
- * DSL for defining snapshot tests.
+ * DSL for defining snapshot tests. The main entry point is {@link Snapshot}.
  *
  * @author Simon Taddiken
  */
+@API(status = Status.STABLE)
 public interface SnapshotDsl {
 
     /**
@@ -26,12 +30,13 @@ public interface SnapshotDsl {
      * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
-     * @since ever
      */
+    @API(status = Status.STABLE)
     public interface Snapshot extends ChooseActual, ChooseName {
 
     }
 
+    @API(status = Status.STABLE)
     public interface ChooseActual {
         /**
          * Will create a serialized snapshot of the provided actual test result and store
@@ -40,11 +45,11 @@ public interface SnapshotDsl {
          * @param actual The actual test result.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
-         * @since ever
          */
         ChooseDataFormat assertThat(Object actual);
     }
 
+    @API(status = Status.STABLE)
     public interface ChooseName {
         /**
          * Choose a name for the snapshot file. This overrides the default naming scheme
@@ -60,12 +65,13 @@ public interface SnapshotDsl {
     }
 
     /**
-     * Allows to chose the structure into which the actual test result will be serialized.
-     * A custom serializer can be passed using {@link #as(SnapshotSerializer)}.
+     * Allows to choose the structure into which the actual test result will be
+     * serialized. A custom serializer can be passed using
+     * {@link #as(SnapshotSerializer)}.
      *
      * @author Simon Taddiken
-     * @since ever
      */
+    @API(status = Status.STABLE)
     public interface ChooseDataFormat {
 
         /**
@@ -78,7 +84,7 @@ public interface SnapshotDsl {
          * @return Fluent API object for performing the snapshot assertion. Do NOT assume
          *         it is the same object as 'this'!
          * @since 0.0.4
-         * @see #as(StructuredDataBuilder)
+         * @see #as(StructuredDataProvider)
          */
         ChooseAssertions asText();
 
@@ -87,16 +93,24 @@ public interface SnapshotDsl {
          * objects are compared. A {@link StructuredData} instance combines both a
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
          *
-         * @param structuredDataBuilder The {@link StructuredDataBuilder} instance.
+         * @param structuredDataBuilder The {@link StructuredDataProvider} instance.
          * @return Fluent API object for performing the snapshot assertion. Do NOT assume
          *         it is the same object as 'this'!
          * @see StructuredData
          */
-        ChooseStructure as(StructuredDataBuilder structuredDataBuilder);
+        ChooseStructure as(StructuredDataProvider structuredDataBuilder);
 
+        /**
+         * Specify the serialization format.
+         *
+         * @param serializer The serializer to use.
+         * @return Fluent API object for performing the snapshot assertion. Do NOT assume
+         *         it is the same object as 'this'!
+         */
         ChooseAssertions as(SnapshotSerializer serializer);
     }
 
+    @API(status = Status.STABLE)
     public interface ChooseAssertions {
 
         /**
@@ -106,12 +120,11 @@ public interface SnapshotDsl {
          * {@link #matchesAccordingTo(StructuralAssertions)} or
          * {@link ChooseStructure#matchesSnapshotStructure()}
          *
-         * @deprecated This method is NOT deprecated. Deprecation serves only to mark this
-         *             method in your IDE as it should only be used temporarily.
+         * @deprecated This method is <b>NOT</b> deprecated. Deprecation serves only to
+         *             mark this method in your IDE as it should only be used temporarily.
          * @return Details about the snapshot.
          * @throws AssertionError Always thrown by this method to indicate that a call to
          *             this method must be removed to enable snapshot assertions.
-         * @since ever
          */
         @Deprecated
         SnapshotTestResult justUpdateSnapshot();
@@ -124,7 +137,6 @@ public interface SnapshotDsl {
          *
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
-         * @since ever
          * @see TextSnapshot
          */
         SnapshotTestResult matchesSnapshotText();
@@ -138,11 +150,11 @@ public interface SnapshotDsl {
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)}.
-         * @since ever
          */
         SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions);
     }
 
+    @API(status = Status.STABLE)
     public interface ChooseStructure extends ChooseAssertions {
 
         /**
@@ -156,7 +168,6 @@ public interface SnapshotDsl {
          *             snapshots have been updated.
          * @throws Exception If any kind of technical exception (except assertion failure)
          *             occurred.
-         * @since ever
          */
         SnapshotTestResult matchesSnapshotStructure() throws Exception;
 

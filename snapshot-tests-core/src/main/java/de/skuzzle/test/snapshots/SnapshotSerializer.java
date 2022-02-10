@@ -1,7 +1,10 @@
 package de.skuzzle.test.snapshots;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 /**
- * Defines how an object is serialized into a persistable String.
+ * Defines how an object is serialized into a persistable snapshot String.
  * <p>
  * Serializers are closely related to {@link StructuralAssertions}. The framework always
  * uses a combination of these two in order to perform a snapshot assertion. When
@@ -12,9 +15,11 @@ package de.skuzzle.test.snapshots;
  * The serialized string will be persisted as 'snapshot' part within a
  * {@link SnapshotFile}.
  *
+ * @see StructuredData
+ * @see StructuralAssertions
  * @author Simon Taddiken
- * @since ever
  */
+@API(status = Status.STABLE)
 public interface SnapshotSerializer {
 
     /**
@@ -24,7 +29,6 @@ public interface SnapshotSerializer {
      * @return The serialized object.
      * @throws SnapshotException If the object could not be serialized for technical
      *             reasons.
-     * @since ever
      */
     String serialize(Object testResult) throws SnapshotException;
 }
