@@ -1,18 +1,25 @@
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/${project.artifactId}/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/${project.artifactId}/${project.version})
 
+_This is the first major release! Please watch out for ApiGuardian `@API` annotation when using public API. Some 
+classes/methods are still marked as experimental and thus elligible to change during a minor release._
+
 * Add ApiGuardian annotations to all public API
 * [#10](https://github.com/skuzzle/snapshot-tests/issues/10) Snapshots can be updated by passing `-DforceUpdateSnapshots` to the JVM
+* Allow to customize the `JSONComparator` instance when structurally comparing JSON snapshots
+* Improve JavaDoc
 
 Maven Central coordinates for this release:
 
 ## BOM Artifact
+Manages the versions of all modules in case you are using multiple in your project
 
 ```xml
 <dependency>
     <groupId>${project.groupId}</groupId>
     <artifactId>snapshot-tests-bom</artifactId>
     <version>${project.version}</version>
-    <scope>test</scope>
+    <type>pom</type>
+    <scope>import</scope>
 </dependency>
 ```
 
