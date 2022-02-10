@@ -30,7 +30,6 @@ public interface SnapshotDsl {
      * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
-     * @since ever
      */
     @API(status = Status.STABLE)
     public interface Snapshot extends ChooseActual, ChooseName {
@@ -46,7 +45,6 @@ public interface SnapshotDsl {
          * @param actual The actual test result.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
-         * @since ever
          */
         ChooseDataFormat assertThat(Object actual);
     }
@@ -139,7 +137,6 @@ public interface SnapshotDsl {
          *
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
-         * @since ever
          * @see TextSnapshot
          */
         SnapshotTestResult matchesSnapshotText();
@@ -153,7 +150,6 @@ public interface SnapshotDsl {
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)}.
-         * @since ever
          */
         SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions);
     }
@@ -172,7 +168,6 @@ public interface SnapshotDsl {
          *             snapshots have been updated.
          * @throws Exception If any kind of technical exception (except assertion failure)
          *             occurred.
-         * @since ever
          */
         SnapshotTestResult matchesSnapshotStructure() throws Exception;
 

@@ -7,6 +7,8 @@ import org.apiguardian.api.API.Status;
  * Allows to customize how structured data is compared in order to check whether a
  * snapshot matches an actual test result.
  *
+ * @see SnapshotSerializer
+ * @see StructuredData
  * @author Simon Taddiken
  */
 @API(status = Status.STABLE)

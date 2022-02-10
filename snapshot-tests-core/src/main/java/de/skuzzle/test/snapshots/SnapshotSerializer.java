@@ -4,7 +4,7 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
- * Defines how an object is serialized into a persistable String.
+ * Defines how an object is serialized into a persistable snapshot String.
  * <p>
  * Serializers are closely related to {@link StructuralAssertions}. The framework always
  * uses a combination of these two in order to perform a snapshot assertion. When
@@ -15,6 +15,8 @@ import org.apiguardian.api.API.Status;
  * The serialized string will be persisted as 'snapshot' part within a
  * {@link SnapshotFile}.
  *
+ * @see StructuredData
+ * @see StructuralAssertions
  * @author Simon Taddiken
  */
 @API(status = Status.STABLE)
