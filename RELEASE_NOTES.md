@@ -1,10 +1,4 @@
-_This is the first major release! Please watch out for ApiGuardian `@API` annotation when using public API. Some 
-classes/methods are still marked as experimental and thus elligible to change during a minor release._
-
-* Add ApiGuardian annotations to all public API
-* [#10](https://github.com/skuzzle/snapshot-tests/issues/10) Snapshots can be updated by passing `-DforceUpdateSnapshots` to the JVM
-* Allow to customize the `JSONComparator` instance when structurally comparing JSON snapshots
-* Improve JavaDoc
+* TBD
 
 Maven Central coordinates for this release:
 
