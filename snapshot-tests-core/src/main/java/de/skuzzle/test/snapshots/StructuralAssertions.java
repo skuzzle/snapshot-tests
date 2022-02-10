@@ -2,6 +2,7 @@ package de.skuzzle.test.snapshots;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.opentest4j.AssertionFailedError;
 
 /**
  * Allows to customize how structured data is compared in order to check whether a
@@ -23,6 +24,9 @@ public interface StructuralAssertions {
      * @throws AssertionError If both objects are not "identical" according to this
      *             implementation.
      * @throws SnapshotException If any kind of technical error occurs during comparison.
+     * @apiNote Implementors are advised to throw {@link AssertionFailedError} instead of
+     *          plain {@link AssertionError}. This allows the user to see an IDE generated
+     *          diff of the actual and expected values in most IDEs.
      */
     void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException;
 }

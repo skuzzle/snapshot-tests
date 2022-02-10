@@ -70,15 +70,15 @@ final class SnapshotTest implements Snapshot {
 
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
         final String snapshotName = determineNextSnapshotName();
-        final Path snapshotFile = determineSnapshotFile(snapshotName);
+        final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
         final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
-        final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
-        xx.writeTo(snapshotFile);
+        final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
+                .writeTo(snapshotFilePath);
 
-        final SnapshotTestResult result = SnapshotTestResult.of(snapshotFile, SnapshotStatus.UPDATED_FORCEFULLY,
-                xx);
+        final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
+                snapshotFile);
 
         return this.localResultCollector.add(result);
     }
@@ -87,29 +87,30 @@ final class SnapshotTest implements Snapshot {
             StructuralAssertions structuralAssertions,
             Object actual) throws Exception {
         final String snapshotName = determineNextSnapshotName();
-        final Path snapshotFile = determineSnapshotFile(snapshotName);
+        final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots();
-        final boolean snapshotFileAlreadyExists = Files.exists(snapshotFile);
+        final boolean snapshotFileAlreadyExists = Files.exists(snapshotFilePath);
 
         final SnapshotTestResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
             final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
-            final SnapshotFile xx = SnapshotFile.of(snapshotHeader, serializedActual);
-            xx.writeTo(snapshotFile);
+            final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
+                    .writeTo(snapshotFilePath);
 
             final SnapshotStatus status = snapshotFileAlreadyExists
                     ? SnapshotStatus.UPDATED_FORCEFULLY
                     : SnapshotStatus.CREATED_INITIALLY;
-            result = SnapshotTestResult.of(snapshotFile, status, xx);
+            result = SnapshotTestResult.of(snapshotFilePath, status, snapshotFile);
         } else {
-            final SnapshotFile xx = SnapshotFile.fromSnapshotFile(snapshotFile);
-            final String storedSnapshot = xx.snapshot();
+            final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(snapshotFilePath);
+            final String storedSnapshot = snapshotFile.snapshot();
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
-                    .map(assertionError -> SnapshotTestResult.forFailedTest(snapshotFile, xx, assertionError))
-                    .orElseGet(() -> SnapshotTestResult.of(snapshotFile, SnapshotStatus.ASSERTED, xx));
+                    .map(assertionError -> SnapshotTestResult.forFailedTest(snapshotFilePath, snapshotFile,
+                            assertionError))
+                    .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
         this.localResultCollector.add(result);
 

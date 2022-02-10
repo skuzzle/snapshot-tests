@@ -37,7 +37,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * Takes Snapshots using jackson {@link ObjectMapper} and compare the results using
      * {@link JSONAssert}.
      */
-    public static final StructuredData json = withDefaultObjectMapper().build();
+    public static final StructuredDataProvider json = withDefaultObjectMapper().build();
 
     private final ObjectMapper objectMapper;
     private JSONComparator jsonComparator;

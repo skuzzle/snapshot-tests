@@ -25,7 +25,7 @@ import org.junit.platform.commons.support.ReflectionSupport;
  * @author Simon Taddiken
  * @since 0.0.5
  */
-@API(status = Status.STABLE)
+@API(status = Status.EXPERIMENTAL)
 public final class SnapshotFile {
 
     private final SnapshotHeader header;
@@ -73,10 +73,11 @@ public final class SnapshotFile {
         return snapshot;
     }
 
-    public void writeTo(Path snapshotFile) throws IOException {
+    public SnapshotFile writeTo(Path snapshotFile) throws IOException {
         try (var writer = Files.newBufferedWriter(snapshotFile, StandardCharsets.UTF_8)) {
             writeTo(writer);
         }
+        return this;
     }
 
     void writeTo(Writer writer) throws IOException {
@@ -96,6 +97,7 @@ public final class SnapshotFile {
                 && Objects.equals(snapshot, ((SnapshotFile) obj).snapshot);
     }
 
+    @API(status = Status.EXPERIMENTAL)
     public static final class SnapshotHeader {
 
         public static final String TEST_CLASS = "test-class";
