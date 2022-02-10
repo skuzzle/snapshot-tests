@@ -138,4 +138,9 @@ public final class TestFile {
         matcher.appendTail(b);
         return b.toString();
     }
+
+    @Override
+    public String toString() {
+        return this.file.toString();
+    }
 }
