@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.0.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/1.0.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.0.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/1.0.0-SNAPSHOT)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.0.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-parent/1.0.0/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.0.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-parent/1.0.0)
 
 _This is the first major release! Please watch out for ApiGuardian `@API` annotation when using public API. Some 
 classes/methods are still marked as experimental and thus elligible to change during a minor release._
@@ -17,14 +17,14 @@ Manages the versions of all modules in case you are using multiple in your proje
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-bom</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <type>pom</type>
     <scope>import</scope>
 </dependency>
 ```
 
 ```
-testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.0.0-SNAPSHOT"))
+testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.0.0"))
 ```
 
 ## Artifacts
@@ -33,14 +33,14 @@ If you only need text based snapshots:
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-core</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-core:1.0.0-SNAPSHOT'
-testImplementation("de.skuzzle.test:snapshot-tests-core:1.0.0-SNAPSHOT")
+testImplementation 'de.skuzzle.test:snapshot-tests-core:1.0.0'
+testImplementation("de.skuzzle.test:snapshot-tests-core:1.0.0")
 ```
 
 If you need json based snapshots (includes `-core`):
@@ -48,14 +48,14 @@ If you need json based snapshots (includes `-core`):
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jackson:1.0.0-SNAPSHOT'
-testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.0.0-SNAPSHOT")
+testImplementation 'de.skuzzle.test:snapshot-tests-jackson:1.0.0'
+testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.0.0")
 ```
 
 If you need xml based snapshots (includes `-core`):
@@ -63,14 +63,14 @@ If you need xml based snapshots (includes `-core`):
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jaxb</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:1.0.0-SNAPSHOT'
-testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.0.0-SNAPSHOT")
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:1.0.0'
+testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.0.0")
 ```
 
 ## Experimental
@@ -80,14 +80,14 @@ Directory Params
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-directory-params</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-directory-params:1.0.0-SNAPSHOT'
-testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.0.0-SNAPSHOT")
+testImplementation 'de.skuzzle.test:snapshot-tests-directory-params:1.0.0'
+testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.0.0")
 ```
 
 Object normalization
@@ -95,11 +95,11 @@ Object normalization
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-normalize</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.0.0-SNAPSHOT")
+testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.0.0")
 ```
