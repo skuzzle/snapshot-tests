@@ -79,6 +79,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * @return This instance.
      */
     public JsonSnapshot configure(Consumer<ObjectMapper> c) {
+        Objects.requireNonNull(c, "consumer must not be null");
         c.accept(objectMapper);
         return this;
     }
