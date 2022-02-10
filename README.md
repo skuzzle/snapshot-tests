@@ -12,6 +12,8 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/)
+
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
@@ -46,7 +48,7 @@ If your code under test produces deterministic results, tests should now be gree
 
 ## Compatibility
 - [x] Requires Java 11
-- [x] Tested against JUnit5 `5.8.1`
+- [x] Tested against JUnit5 `5.8.2`
 
 ## Usage
 
