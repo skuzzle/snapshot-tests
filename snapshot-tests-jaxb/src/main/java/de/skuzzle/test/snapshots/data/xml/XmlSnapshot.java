@@ -9,7 +9,6 @@ import javax.xml.bind.Marshaller;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-import org.assertj.core.annotations.Nullable;
 import org.xmlunit.assertj.CompareAssert;
 
 import de.skuzzle.test.snapshots.SnapshotSerializer;
@@ -40,7 +39,6 @@ public final class XmlSnapshot implements StructuredDataProvider {
     public static final StructuredDataProvider xml = inferJaxbContext().build();
 
     // If left null, the JAXBContext will be inferred from the actual test result.
-    @Nullable
     private final JAXBContext jaxbContext;
     // Creates the Marshaller from the JAXBContext
     private MarshallerSupplier marshallerSupplier;

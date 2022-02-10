@@ -7,15 +7,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.assertj.core.annotations.Nullable;
-
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot.MarshallerSupplier;
 
 final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
 
-    @Nullable
     private final JAXBContext jaxb;
     private final MarshallerSupplier marshallerSupplier;
 
@@ -25,7 +22,7 @@ final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
     }
 
     public static SnapshotSerializer withExplicitJaxbContext(
-            @Nullable JAXBContext jaxb,
+            JAXBContext jaxb,
             MarshallerSupplier marshallerSupplier) {
         return new JaxbXmlSnapshotSerializer(jaxb, marshallerSupplier);
     }
