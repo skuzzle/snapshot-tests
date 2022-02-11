@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 
 /**
@@ -52,17 +54,29 @@ final class SnapshotConfiguration {
         return extensionContext.getRequiredTestClass();
     }
 
-    public boolean isForceUpdateSnapshots() {
-        final boolean valueFromAnnotation = extensionContext.getRequiredTestClass()
+    public boolean isForceUpdateSnapshotsGlobal() {
+        // Annotation on test class
+        final boolean valueFromLegacyAnnotation = testClass()
                 .getAnnotation(EnableSnapshotTests.class)
                 .forceUpdateSnapshots();
-        if (valueFromAnnotation) {
-            return valueFromAnnotation;
+        if (valueFromLegacyAnnotation
+                || extensionContext.getRequiredTestClass().isAnnotationPresent(ForceUpdateSnapshots.class)) {
+            return true;
         }
+
+        // System property
         return System.getProperties().keySet().stream()
                 .map(Object::toString)
                 .anyMatch(FORCE_UPDATE_SYSTEM_PROPERTY::equalsIgnoreCase);
+    }
 
+    public boolean isForceUpdateSnapshotsLocal(Method testMethod) {
+        // Annotation on test method
+        if (testMethod.isAnnotationPresent(ForceUpdateSnapshots.class)) {
+            return true;
+        }
+
+        return isForceUpdateSnapshotsGlobal();
     }
 
     public boolean isSoftAssertions() {

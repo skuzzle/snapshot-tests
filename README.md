@@ -58,10 +58,21 @@ implementation change:
 1. Using a test driven approach, you can of course always modify the snapshots manually to reflect the new requirements
  before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files.
 2. If you are confident that you implemented the requirements correctly, you can advise the framework to update all the 
-persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
+persisted snapshots with the current test results. You can do so by temporarily placing the `@ForceUpdateSnapshots` 
+annotation on either your test class or your test method:
 
 ```java
-@EnableSnapshotTests(forceUpdateSnapshots = true)
+@EnableSnapshotTests
+@ForceUpdateSnapshots
+class YourTestClass {...}
+```
+
+or
+
+```java
+@Test
+@ForceUpdateSnapshots
+void yourSnapshotTest(Snapshot snapshot) {...}
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
@@ -114,6 +125,29 @@ comparisons specific to your serialization format.
 ### Multiple snapshots in same test case
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
+
+### Parameterized tests
+_(since 1.1.0)_
+
+Snapshot tests work well together with `@ParameterizedTest` but only if you take care of proper snapshot naming 
+yourself like in this snippet:
+
+```java
+@ParameterizedTest
+@ValueSource(strings = { "string1", "string2" })
+void testParameterized(String param, Snapshot snapshot) {
+
+    snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
+            .assertThat(param).asText().matchesSnapshotText();
+}
+```
+This will make each parameter's value part of the generated snapshot's file name. 
+
+Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
+parameterized execution (this could actually be desirable if you want to test that your code produces the exact same 
+result for different parameters).
+
+Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
 
 ### Dealing with random values
 A common source of problems are random values within the snapshot data such as dates or generated ids. This framework

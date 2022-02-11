@@ -1,4 +1,5 @@
-* TBD
+* [#5](https://github.com/skuzzle/snapshot-tests/issues/5): Improve support for parameterized tests (`@ParameterizedTest`)
+* Deprecate `EnableSnapshotTests.forceUpdateSnapshots` in favor of new `@ForceUpdateSnapshots` annotation.
 
 Maven Central coordinates for this release:
 

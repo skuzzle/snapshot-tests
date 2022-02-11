@@ -87,7 +87,7 @@ final class SnapshotTest implements Snapshot {
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
-        final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots();
+        final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshotsLocal(testMethod);
         final boolean snapshotFileAlreadyExists = Files.exists(snapshotFilePath);
 
         final SnapshotTestResult result;

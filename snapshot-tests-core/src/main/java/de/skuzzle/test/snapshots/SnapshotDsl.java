@@ -128,7 +128,8 @@ public interface SnapshotDsl {
          *             mark this method in your IDE as it should only be used temporarily.
          * @return Details about the snapshot.
          * @throws AssertionError Always thrown by this method to indicate that a call to
-         *             this method must be removed to enable snapshot assertions.
+         *             this method must be removed to enable snapshot assertions. @ see
+         * @see ForceUpdateSnapshots
          */
         @Deprecated
         SnapshotTestResult justUpdateSnapshot();

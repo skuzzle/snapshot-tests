@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
@@ -13,9 +14,9 @@ import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 public class FailingSnapshotTests {
 
     @Test
-    void testFailBecauseForceUpdateFromAnnotation() throws Throwable {
+    void testFailBecauseForceUpdateFromAnnotationDeprecated() throws Throwable {
         new MetaTest()
-                .expectTestcase(FailBecauseForceUpdateFromAnnotation.class)
+                .expectTestcase(FailBecauseForceUpdateFromAnnotationDeprecated.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
@@ -23,7 +24,30 @@ public class FailingSnapshotTests {
     }
 
     @EnableSnapshotTests(forceUpdateSnapshots = true) // leave force true
-    static class FailBecauseForceUpdateFromAnnotation {
+    static class FailBecauseForceUpdateFromAnnotationDeprecated {
+
+        @Test
+        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
+        }
+    }
+
+    @Test
+    void testFailBecauseForceUpdateFromAnnotationOnTestClass() throws Throwable {
+        new MetaTest()
+                .expectTestcase(FailBecauseForceUpdateFromAnnotationOnTestClass.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage(String.format(
+                        "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+    }
+
+    @EnableSnapshotTests
+    @ForceUpdateSnapshots
+    static class FailBecauseForceUpdateFromAnnotationOnTestClass {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
@@ -53,6 +77,30 @@ public class FailingSnapshotTests {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
+        }
+    }
+
+    @Test
+    void testFailBecauseForceUpdateAnnotationOnTestMethod() throws Exception {
+        new MetaTest()
+                .expectTestcase(FailBecauseForceUpdateAnnotationOnTestMethod.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage(String.format(
+                        "Snapshots have been updated forcefully.%n"
+                                + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseForceUpdateAnnotationOnTestMethod {
+
+        @Test
+        @ForceUpdateSnapshots
+        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
     }

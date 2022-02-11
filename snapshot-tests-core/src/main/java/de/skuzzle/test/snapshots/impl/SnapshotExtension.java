@@ -25,8 +25,11 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * @author Simon Taddiken
  */
 @API(status = Status.INTERNAL)
-public final class SnapshotExtension implements ParameterResolver, AfterEachCallback,
-        BeforeAllCallback, AfterAllCallback {
+public final class SnapshotExtension implements
+        BeforeAllCallback,
+        ParameterResolver,
+        AfterEachCallback,
+        AfterAllCallback {
 
     private static final Logger log = System.getLogger(SnapshotExtension.class.getName());
 
@@ -38,9 +41,9 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
         final SnapshotConfiguration configuration = SnapshotConfiguration.fromExtensionContext(extensionContext);
+        extensionContext.getStore(NAMESPACE).put(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, configuration);
         final GlobalResultCollector globalResultCollector = new GlobalResultCollector();
         extensionContext.getStore(NAMESPACE).put(KEY_RESULT_COLLECTOR_INSTANCE, globalResultCollector);
-        extensionContext.getStore(NAMESPACE).put(KEY_SNAPSHOT_CONFIGURATION_INSTANCE, configuration);
     }
 
     @Override
@@ -89,9 +92,10 @@ public final class SnapshotExtension implements ParameterResolver, AfterEachCall
 
         final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
         final Collection<Path> orphanedSnapshots = globalResultCollector.findOrphanedSnapshotsIn(snapshotDirectory);
+
         orphanedSnapshots
                 .forEach(orphaned -> {
-                    if (snapshotConfiguration.isForceUpdateSnapshots()) {
+                    if (snapshotConfiguration.isForceUpdateSnapshotsGlobal()) {
                         UncheckedIO.delete(orphaned);
 
                         log.log(Level.INFO, "Deleted orphaned snapshot file {0}", orphaned);

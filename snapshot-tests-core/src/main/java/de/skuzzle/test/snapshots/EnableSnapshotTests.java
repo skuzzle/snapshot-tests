@@ -114,9 +114,12 @@ public @interface EnableSnapshotTests {
      * After snapshots have been updated, you should reset this flag to <code>false</code>
      * and run the tests again before checking your code into any SCM.
      *
+     * @deprecated Since 1.1.0 - Use the {@link ForceUpdateSnapshots} annotation instead.
      * @return Whether to update the stored snapshots.
      * @see ChooseAssertions#justUpdateSnapshot()
      */
+    @API(status = Status.DEPRECATED, since = "1.1.0")
+    @Deprecated(since = "1.1.0")
     boolean forceUpdateSnapshots() default false;
 
     /**
