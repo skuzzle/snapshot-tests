@@ -3,6 +3,8 @@ package de.skuzzle.test.snapshots;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
@@ -23,6 +25,14 @@ public class SnapshotsTest {
         snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
         snapshot.named("phil").assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "string1", "string2" })
+    void testParameterized(String param, Snapshot snapshot) {
+
+        snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
+                .assertThat(param).asText().matchesSnapshotText();
     }
 
     private Person determinePerson() {

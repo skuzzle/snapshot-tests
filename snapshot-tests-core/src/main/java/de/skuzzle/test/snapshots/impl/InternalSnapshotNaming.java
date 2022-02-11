@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 
-final class SnapshotNaming {
+final class InternalSnapshotNaming {
 
     public static boolean isSnapshotFile(Path path) {
         return path.getFileName().toString().endsWith(".snapshot");
@@ -22,10 +22,6 @@ final class SnapshotNaming {
         } catch (final IOException e) {
             throw new RuntimeException();
         }
-    }
-
-    public static String getSnapshotName(Method testMethod, int counter) {
-        return testMethod.getName() + "_" + counter;
     }
 
     public static String getSnapshotFileName(String snapshotName) {

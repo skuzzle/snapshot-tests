@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
@@ -15,6 +16,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
+import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
@@ -31,7 +33,7 @@ final class SnapshotTest implements Snapshot {
     private final Method testMethod;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
-    private String explicitName;
+    private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
 
     public SnapshotTest(SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = configuration;
@@ -39,9 +41,9 @@ final class SnapshotTest implements Snapshot {
     }
 
     @Override
-    public ChooseActual named(String snapshotName) {
-        this.explicitName = snapshotName;
-        return new SnapshotDslImpl(this, null);
+    public ChooseActual namedAccordingTo(SnapshotNaming namingStrategy) {
+        this.namingStrategy = Objects.requireNonNull(namingStrategy, "namingStrategy must not be null");
+        return this;
     }
 
     @Override
@@ -49,44 +51,39 @@ final class SnapshotTest implements Snapshot {
         return new SnapshotDslImpl(this, actual);
     }
 
-    private String determineNextSnapshotName() {
-        if (explicitName != null) {
-            return explicitName;
-        }
-        return SnapshotNaming.getSnapshotName(testMethod, localResultCollector.size());
-    }
-
-    private SnapshotHeader determineNextSnapshotHeader() {
+    private SnapshotHeader determineNextSnapshotHeader(String snapshotName) {
         return SnapshotHeader.fromMap(Map.of(
                 SnapshotHeader.SNAPSHOT_NUMBER, "" + localResultCollector.size(),
                 SnapshotHeader.TEST_METHOD, testMethod.getName(),
                 SnapshotHeader.TEST_CLASS, configuration.testClass().getName(),
-                SnapshotHeader.SNAPSHOT_NAME, determineNextSnapshotName()));
+                SnapshotHeader.SNAPSHOT_NAME, snapshotName));
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
-        return configuration.determineSnapshotDirectory().resolve(SnapshotNaming.getSnapshotFileName(snapshotName));
+        final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
+        return configuration.determineSnapshotDirectory().resolve(snapshotFileName);
     }
 
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
-        final String snapshotName = determineNextSnapshotName();
+        final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
-        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
+        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
         final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
                 .writeTo(snapshotFilePath);
 
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
                 snapshotFile);
 
-        return this.localResultCollector.add(result);
+        this.localResultCollector.add(result);
+        return result;
     }
 
     SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
             StructuralAssertions structuralAssertions,
             Object actual) throws Exception {
-        final String snapshotName = determineNextSnapshotName();
+        final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
 
@@ -95,7 +92,7 @@ final class SnapshotTest implements Snapshot {
 
         final SnapshotTestResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
-            final SnapshotHeader snapshotHeader = determineNextSnapshotHeader();
+            final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
             final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
                     .writeTo(snapshotFilePath);
 

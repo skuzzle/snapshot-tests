@@ -48,8 +48,8 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  * </pre>
  * <p>
  * When providing a structured data format like json/xml (or in general: an implementation
- * of {@link StructuredDataProvider}) you can make use of <em>structural assertions</em> to
- * compare snapshots. Depending on the implementation, those might provide better error
+ * of {@link StructuredDataProvider}) you can make use of <em>structural assertions</em>
+ * to compare snapshots. Depending on the implementation, those might provide better error
  * messages than plain text comparison.
  *
  * <pre>
@@ -60,9 +60,33 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
  *     }
  * </pre>
+ * <p>
+ * <h3>Parameterized tests</h3>
+ * <p>
+ * Snapshot tests can be combined with JUnit5's parameterized tests, but only when you
+ * provide an explict name for each snapshot assertion. With the default automatic
+ * snapshot naming scheme, snapshots would otherwise be overriden for each parameterized
+ * execution.
+ *
+ * <pre>
+ *     &#64;ParameterizedTest
+ *     &#64;Values(string = { "string1", "string2" })
+ *     void testSomething(String parameter, Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *
+ *         // BAD: would choose the same snapshot file name 'testSomething_0.snapshot' disregarding the parameter
+ *         // (Note: this could be desired if you expect the same output for all parameters)
+ *         snapshot.assertThat(actual).as...;
+ *
+ *         // GOOD: Append the parameter's value to the snapshot name to have separate snapshots per execution
+ *         // This will create snapshots named 'testSomething_0_string1.snapshot' and 'testSomething_0_string2.snapshot'
+ *         snapshot.namedAccordingTo(SnapshotNaming.withParameters(parameter))
+ *                 .assertThat(actual).as...;
+ * </pre>
  *
  * @author Simon Taddiken
  * @see Snapshot
+ * @see SnapshotNaming
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })

@@ -67,6 +67,11 @@ public class SnapshotDslTest {
         }
 
         @Override
+        public ChooseActual namedAccordingTo(SnapshotNaming namingStrategy) {
+            return this;
+        }
+
+        @Override
         public ChooseStructure as(StructuredDataProvider structuredDataBuilder) {
             return this;
         }

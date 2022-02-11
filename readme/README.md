@@ -115,6 +115,29 @@ comparisons specific to your serialization format.
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
 
+### Parameterized tests
+_(since 1.1.0)_
+
+Snapshot tests work well together with `@ParameterizedTest` but only if you take care of proper snapshot naming 
+yourself like in this snippet:
+
+```java
+@ParameterizedTest
+@ValueSource(strings = { "string1", "string2" })
+void testParameterized(String param, Snapshot snapshot) {
+
+    snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
+            .assertThat(param).asText().matchesSnapshotText();
+}
+```
+This will make each parameter's value part of the generated snapshot's file name. 
+
+Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
+parameterized execution (this could actually be desirable if you want to test that your code produces the exact same 
+result for different parameters).
+
+Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
+
 ### Dealing with random values
 A common source of problems are random values within the snapshot data such as dates or generated ids. This framework
 comes with no means to resolve those issues. Instead you should design your code up front so that such randomness can 

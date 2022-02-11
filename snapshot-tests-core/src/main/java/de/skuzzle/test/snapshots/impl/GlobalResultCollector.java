@@ -47,7 +47,7 @@ final class GlobalResultCollector {
     }
 
     private boolean isOrphanedSnapshot(Path potentialSnapshotFile) {
-        if (!SnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
+        if (!InternalSnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
             return false;
         }
         // we can not detect orphaned snapshots for failed tests because the test might
@@ -60,7 +60,7 @@ final class GlobalResultCollector {
 
     private boolean pertainsToFailedTest(Path snapshotFile) {
         return failedTestMethods.stream()
-                .anyMatch(failedTestMethod -> SnapshotNaming.isSnapshotFileForMethod(snapshotFile, failedTestMethod));
+                .anyMatch(failedTestMethod -> InternalSnapshotNaming.isSnapshotFileForMethod(snapshotFile, failedTestMethod));
     }
 
     private boolean testResultsContain(Path snapshotFile) {

@@ -61,7 +61,11 @@ public interface SnapshotDsl {
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
          */
-        ChooseActual named(String snapshotName);
+        default ChooseActual named(String snapshotName) {
+            return namedAccordingTo(SnapshotNaming.constant(snapshotName));
+        }
+
+        ChooseActual namedAccordingTo(SnapshotNaming namingStrategy);
     }
 
     /**
