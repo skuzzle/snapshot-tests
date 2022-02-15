@@ -1,0 +1,6 @@
+snapshot-name: testThatHasBeenDeleted_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.impl.OrphanedSnapshotDetectionTest
+test-method: failingTestMethod
+
+1

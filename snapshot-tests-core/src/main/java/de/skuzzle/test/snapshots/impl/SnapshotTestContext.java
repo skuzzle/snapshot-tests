@@ -1,10 +1,13 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -12,6 +15,7 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
  * Context object that pertains to the execution of a whole test class which is annotated
@@ -23,6 +27,8 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
+
+    private static final Logger log = System.getLogger(SnapshotTestContext.class.getName());
 
     private final OrphanedSnapshotsDetector orphanedSnapshotDetector = new OrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
@@ -116,11 +122,26 @@ public final class SnapshotTestContext {
     /**
      * Uses the collected context information to detect and optionally also clean up
      * orphaned snapshot files.
+     *
+     * @return The detected orphans.
      */
-    public void detectOrCleanupOrphanedSnapshots() {
-        final boolean deleteSnapshots = this.snapshotConfiguration.isForceUpdateSnapshotsGlobal();
+    public Collection<Path> detectOrCleanupOrphanedSnapshots() {
+        final boolean deleteOrphaned = this.snapshotConfiguration.isForceUpdateSnapshotsGlobal();
         final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
-        this.orphanedSnapshotDetector.detectOrCleanupOrphanedSnapshots(snapshotDirectory, deleteSnapshots);
+        return this.orphanedSnapshotDetector.findOrphanedSnapshotsIn(snapshotDirectory).stream()
+                .peek(orphaned -> {
+                    if (deleteOrphaned) {
+                        UncheckedIO.delete(orphaned);
+
+                        log.log(Level.INFO, "Deleted orphaned snapshot file {0} in ",
+                                orphaned.getFileName(), orphaned.getParent());
+                    } else {
+                        log.log(Level.WARNING,
+                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: {0} in {1}",
+                                orphaned.getFileName(), orphaned.getParent());
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
 }
