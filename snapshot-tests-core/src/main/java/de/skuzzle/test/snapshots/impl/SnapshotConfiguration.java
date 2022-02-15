@@ -14,7 +14,7 @@ import org.apiguardian.api.API.Status;
  * @see DefaultSnapshotConfiguration
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
-public interface SnapshotConfiguration {
+interface SnapshotConfiguration {
 
     /**
      * Determines the directory into which the snapshot files for the currently executed

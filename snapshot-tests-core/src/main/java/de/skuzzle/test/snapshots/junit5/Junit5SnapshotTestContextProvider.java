@@ -1,11 +1,10 @@
-package de.skuzzle.test.snapshots.junit;
+package de.skuzzle.test.snapshots.junit5;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
-import de.skuzzle.test.snapshots.impl.DefaultSnapshotConfiguration;
 import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 /**
@@ -14,7 +13,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
  *
  * @author Simon Taddiken
  */
-final class Junit5SnapshotTestContextFactory {
+final class Junit5SnapshotTestContextProvider {
 
     private static final Namespace NAMESPACE = Namespace.create(JUnit5SnapshotExtension.class);
     private static final String KEY_SELF = "SNAPSHOT_CONTEXT";
@@ -40,8 +39,8 @@ final class Junit5SnapshotTestContextFactory {
      * {@link ExtensionContext}. The extension context is assumed to be pertaining to the
      * test class (as opposed to pertaining to a single test method)
      *
-     * @param extensionContext
-     * @return
+     * @param extensionContext The extension context to attach to.
+     * @return The attached {@link SnapshotTestContext}.
      */
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
         searchParents(extensionContext)
@@ -51,8 +50,7 @@ final class Junit5SnapshotTestContextFactory {
                 });
 
         final Class<?> testClass = extensionContext.getRequiredTestClass();
-        final var configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
-        final var snapshotTestContext = SnapshotTestContext.forConfiguration(configuration);
+        final var snapshotTestContext = SnapshotTestContext.forTestClass(testClass);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;
     }

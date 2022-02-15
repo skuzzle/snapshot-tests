@@ -20,7 +20,7 @@ import de.skuzzle.test.snapshots.io.UncheckedIO;
  * @since 1.1.0
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
-public final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
+final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
 

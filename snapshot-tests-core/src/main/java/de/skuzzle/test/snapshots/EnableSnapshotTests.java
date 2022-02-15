@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.junit.JUnit5SnapshotExtension;
+import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
 
 /**
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you

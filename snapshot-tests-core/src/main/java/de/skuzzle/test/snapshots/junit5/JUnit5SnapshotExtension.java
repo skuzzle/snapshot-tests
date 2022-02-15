@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.junit;
+package de.skuzzle.test.snapshots.junit5;
 
 import java.lang.reflect.Method;
 
@@ -30,7 +30,7 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
-        Junit5SnapshotTestContextFactory.create(extensionContext);
+        Junit5SnapshotTestContextProvider.create(extensionContext);
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class JUnit5SnapshotExtension implements
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
 
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextFactory
+        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
                 .fromExtensionContext(extensionContext);
 
         final Method testMethod = extensionContext.getRequiredTestMethod();
@@ -53,7 +53,7 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextFactory
+        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
                 .fromExtensionContext(extensionContext);
 
         extensionContext.getExecutionException()
@@ -68,7 +68,7 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextFactory
+        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
                 .fromExtensionContext(extensionContext);
         snapshotTestContext.detectOrCleanupOrphanedSnapshots();
     }
