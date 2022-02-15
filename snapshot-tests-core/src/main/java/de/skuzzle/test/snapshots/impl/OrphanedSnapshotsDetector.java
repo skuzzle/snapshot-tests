@@ -22,7 +22,7 @@ import de.skuzzle.test.snapshots.io.UncheckedIO;
  *
  * @author Simon Taddiken
  */
-public final class OrphanedSnapshotsDetector {
+final class OrphanedSnapshotsDetector {
 
     private static final Logger log = System.getLogger(OrphanedSnapshotsDetector.class.getName());
 

@@ -27,7 +27,7 @@ public final class SnapshotTestContext {
     private final OrphanedSnapshotsDetector orphanedSnapshotDetector = new OrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
 
-    private InternalSnapshotTest currentSnapshotTest;
+    private SnapshotTestImpl currentSnapshotTest;
 
     private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
         this.snapshotConfiguration = Objects.requireNonNull(snapshotConfiguration,
@@ -47,8 +47,20 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Creates a {@link InternalSnapshotTest} instance which will be used to inject a
-     * {@link Snapshot} instance into the given test method.
+     * Determines whether the parameters with the given type are eligible for injecting
+     * the object that is created by {@link #createSnapshotTestFor(Method)}.
+     *
+     * @param type A type.
+     * @return Whether the type of the object returned by
+     *         {@link #createSnapshotTestFor(Method)} is compatible to the given type.
+     */
+    public boolean isSnapshotParameter(Class<?> type) {
+        return type == Snapshot.class;
+    }
+
+    /**
+     * Creates a {@link Snapshot} object that can be injected into a test method as
+     * starting point of the snapshot DSL.
      * <p>
      * This method changes the state of this context object. A new
      * {@link InternalSnapshotTest} can only be created, when the current one has been
@@ -58,11 +70,11 @@ public final class SnapshotTestContext {
      * @return A {@link InternalSnapshotTest} instance.
      * @see #clearCurrentSnapshotTest()
      */
-    public InternalSnapshotTest createSnapshotTestFor(Method testMethod) {
+    public Snapshot createSnapshotTestFor(Method testMethod) {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        currentSnapshotTest = InternalSnapshotTest.of(this.snapshotConfiguration, testMethod);
+        currentSnapshotTest = new SnapshotTestImpl(snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }
 

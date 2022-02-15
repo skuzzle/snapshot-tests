@@ -49,7 +49,7 @@ final class Junit5SnapshotTestContextProvider {
                             "There is already a SnapshotTestContext attached to the given ExtensionContext or any of its parents");
                 });
 
-        final Class<?> testClass = extensionContext.getRequiredTestClass();
+        final var testClass = extensionContext.getRequiredTestClass();
         final var snapshotTestContext = SnapshotTestContext.forTestClass(testClass);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;

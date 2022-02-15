@@ -12,9 +12,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.impl.InternalSnapshotTest;
-import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 /**
  * This class is only public so it can be referenced by the entry point annotation.
@@ -37,15 +35,16 @@ public final class JUnit5SnapshotExtension implements
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
 
-        return Snapshot.class.isAssignableFrom(parameterContext.getParameter().getType());
+        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
+        final var parameterType = parameterContext.getParameter().getType();
+        return snapshotTestContext.isSnapshotParameter(parameterType);
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
             throws ParameterResolutionException {
 
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
-                .fromExtensionContext(extensionContext);
+        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
 
         final Method testMethod = extensionContext.getRequiredTestMethod();
         return snapshotTestContext.createSnapshotTestFor(testMethod);
@@ -53,8 +52,7 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
-                .fromExtensionContext(extensionContext);
+        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
 
         extensionContext.getExecutionException()
                 .ifPresent(__ -> snapshotTestContext.recordFailedTest(extensionContext.getRequiredTestMethod()));
@@ -68,8 +66,7 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        final SnapshotTestContext snapshotTestContext = Junit5SnapshotTestContextProvider
-                .fromExtensionContext(extensionContext);
+        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
         snapshotTestContext.detectOrCleanupOrphanedSnapshots();
     }
 
