@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
  * Collects the result of all test cases within a class that is annotated with
@@ -19,18 +22,15 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
  *
  * @author Simon Taddiken
  */
-final class GlobalResultCollector {
+public final class OrphanedSnapshotsDetector {
+
+    private static final Logger log = System.getLogger(OrphanedSnapshotsDetector.class.getName());
 
     private final Set<Method> failedTestMethods = new HashSet<>();
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public SnapshotTestResult add(SnapshotTestResult result) {
-        this.results.add(Objects.requireNonNull(result));
-        return result;
-    }
-
-    public GlobalResultCollector addAllFrom(LocalResultCollector other) {
-        this.results.addAll(Objects.requireNonNull(other).results());
+    public OrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
+        this.results.addAll(Objects.requireNonNull(other));
         return this;
     }
 
@@ -38,10 +38,10 @@ final class GlobalResultCollector {
         this.failedTestMethods.add(Objects.requireNonNull(testMethod));
     }
 
-    public Collection<Path> findOrphanedSnapshotsIn(Path snapshotDirectory) {
+    private Collection<Path> findOrphanedSnapshotsIn(Path snapshotDirectory) {
         try (final var files = UncheckedIO.list(snapshotDirectory)) {
             return files
-                    .filter(existingSnapshot -> isOrphanedSnapshot(existingSnapshot))
+                    .filter(this::isOrphanedSnapshot)
                     .collect(Collectors.toList());
         }
     }
@@ -60,7 +60,8 @@ final class GlobalResultCollector {
 
     private boolean pertainsToFailedTest(Path snapshotFile) {
         return failedTestMethods.stream()
-                .anyMatch(failedTestMethod -> InternalSnapshotNaming.isSnapshotFileForMethod(snapshotFile, failedTestMethod));
+                .anyMatch(failedTestMethod -> InternalSnapshotNaming.isSnapshotFileForMethod(snapshotFile,
+                        failedTestMethod));
     }
 
     private boolean testResultsContain(Path snapshotFile) {
@@ -68,5 +69,20 @@ final class GlobalResultCollector {
                 .map(SnapshotTestResult::targetFile)
                 .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
                         snapshotFile));
+    }
+
+    public void detectOrCleanupOrphanedSnapshots(Path snapshotDirectory, boolean deleteOrphaned) {
+        findOrphanedSnapshotsIn(snapshotDirectory)
+                .forEach(orphaned -> {
+                    if (deleteOrphaned) {
+                        UncheckedIO.delete(orphaned);
+
+                        log.log(Level.INFO, "Deleted orphaned snapshot file {0}", orphaned);
+                    } else {
+                        log.log(Level.WARNING,
+                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: {0}",
+                                orphaned);
+                    }
+                });
     }
 }

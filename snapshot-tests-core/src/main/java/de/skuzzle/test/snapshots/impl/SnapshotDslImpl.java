@@ -15,12 +15,12 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
 
-    private final SnapshotTest snapshot;
+    private final SnapshotTestImpl snapshot;
     private Object actual;
     private SnapshotSerializer snapshotSerializer = TextSnapshot.text.snapshotSerializer();
     private StructuralAssertions structuralAssertions = TextSnapshot.text.structuralAssertions();
 
-    public SnapshotDslImpl(SnapshotTest snapshot, Object actual) {
+    public SnapshotDslImpl(SnapshotTestImpl snapshot, Object actual) {
         this.snapshot = Objects.requireNonNull(snapshot);
         this.actual = actual;
     }

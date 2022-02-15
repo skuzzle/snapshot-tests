@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@EnableSnapshotTests(forceUpdateSnapshots = false)
+@EnableSnapshotTests
 public class SnapshotsTest {
 
     @Test

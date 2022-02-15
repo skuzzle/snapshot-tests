@@ -84,6 +84,14 @@ public final class SnapshotTestResult {
         Files.delete(targetFile);
     }
 
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append("status=").append(status)
+                .append(", targetFile=").append(targetFile)
+                .toString();
+    }
+
     /**
      * Information about the creation of a single snapshot file.
      *

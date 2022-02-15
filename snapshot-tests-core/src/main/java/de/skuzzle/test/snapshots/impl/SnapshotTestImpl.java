@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,16 +29,16 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
  *
  * @author Simon Taddiken
  */
-final class SnapshotTest implements Snapshot {
+final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
 
     private final Method testMethod;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
 
-    public SnapshotTest(SnapshotConfiguration configuration, Method testMethod) {
-        this.configuration = configuration;
-        this.testMethod = testMethod;
+    SnapshotTestImpl(SnapshotConfiguration configuration, Method testMethod) {
+        this.configuration = Objects.requireNonNull(configuration, "configuration must not be null");
+        this.testMethod = Objects.requireNonNull(testMethod, "testMethod must not be null");
     }
 
     @Override
@@ -118,8 +119,13 @@ final class SnapshotTest implements Snapshot {
         return result;
     }
 
-    void finalizeTest(GlobalResultCollector globalResultCollector) throws Exception {
-        globalResultCollector.addAllFrom(localResultCollector);
+    @Override
+    public List<SnapshotTestResult> testResults() {
+        return localResultCollector.results();
+    }
+
+    @Override
+    public void executeAssertions() throws Exception {
         localResultCollector.assertSuccess();
     }
 

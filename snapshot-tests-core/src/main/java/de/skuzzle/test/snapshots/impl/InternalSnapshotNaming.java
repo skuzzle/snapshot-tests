@@ -9,6 +9,10 @@ import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 
 final class InternalSnapshotNaming {
 
+    public static String getSnapshotFileName(String snapshotName) {
+        return snapshotName + ".snapshot";
+    }
+
     public static boolean isSnapshotFile(Path path) {
         return path.getFileName().toString().endsWith(".snapshot");
     }
@@ -22,10 +26,6 @@ final class InternalSnapshotNaming {
         } catch (final IOException e) {
             throw new RuntimeException();
         }
-    }
-
-    public static String getSnapshotFileName(String snapshotName) {
-        return snapshotName + ".snapshot";
     }
 
 }

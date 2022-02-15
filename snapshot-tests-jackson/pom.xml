@@ -15,7 +15,7 @@
     <description>JSON snapshot serialization using jackson</description>
 
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.jackson</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.json.jackson</automatic-module-name>
     </properties>
     
     <dependencyManagement>

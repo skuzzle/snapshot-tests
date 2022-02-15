@@ -1,7 +1,7 @@
-snapshot-name: testAsXmlStructureCustomStructuralAssertions_0
+snapshot-name: testAsXmlTextCompare_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
-test-method: testAsXmlStructureCustomStructuralAssertions
+test-class: de.skuzzle.test.snapshots.xml.SnapshotsTest
+test-method: testAsXmlTextCompare
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>

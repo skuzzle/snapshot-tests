@@ -15,7 +15,7 @@
     <description>XML snapshot serialization using jaxb</description>
     
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.jaxb</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.xml.jaxb</automatic-module-name>
     </properties>
     
     <dependencyManagement>

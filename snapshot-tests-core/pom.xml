@@ -17,7 +17,7 @@
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.core</automatic-module-name>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -29,7 +29,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,6 +75,18 @@
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit</artifactId>
+            <version>0.22.0</version>
+            <scope>test</scope>
+        </dependency>
+                <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <version>0.22.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
