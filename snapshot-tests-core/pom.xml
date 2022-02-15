@@ -77,15 +77,45 @@
             <artifactId>equalsverifier</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit-junit5</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.skuzzle.enforcer</groupId>
+                        <artifactId>restrict-imports-enforcer-rule</artifactId>
+                        <version>2.0.0</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>check-junit5</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <RestrictImports>
+                                    <includeTestCode>false</includeTestCode>
+                                    <reason>Dont use JUnit5 dependencies incore or API</reason>
+                                    <basePackage>de.skuzzle.test.snapshots.**</basePackage>
+                                    <bannedImport>org.junit.**</bannedImport>
+                                    <exclusions>
+                                        <exclusion>de.skuzzle.test.snapshots.junit5.**</exclusion>
+                                        <exclusion>de.skuzzle.test.snapshots.*</exclusion>
+                                    </exclusions>
+                                </RestrictImports>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
