@@ -33,15 +33,39 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 @API(status = Status.STABLE, since = "1.1.0")
 public interface SnapshotNaming {
 
+    /**
+     * The default naming strategy which simply concatenates method name + counter.
+     *
+     * @return The default naming strategy.
+     */
     static SnapshotNaming defaultNaming() {
         return (testMethod, counter) -> testMethod.getName() + "_" + counter;
     }
 
+    /**
+     * Creates a naming strategy which always returns the given constant string.
+     *
+     * @param snapshotName The name of the snapshot.
+     * @return Naming strategy which always returns the same name.
+     */
     static SnapshotNaming constant(String snapshotName) {
         Objects.requireNonNull(snapshotName, "snapshotName must not be null");
         return (testMethod, counter) -> snapshotName;
     }
 
+    /**
+     * Creates a naming strategy similar to the {@linkplain #defaultNaming() default
+     * naming strategy}. Besides the counter, this strategy also concatenates the toString
+     * representation of various parameter objects to the snapshot name.
+     * <p>
+     * Using this strategy is useful when using snapshot tests in combination with
+     * parameterized tests. This allows to match snapshots to an explicit set of actual
+     * parameters with which a test has been executed.
+     *
+     * @param parameter1 The first parameter.
+     * @param furtherParameters Optional further parameters.
+     * @return The naming strategy.
+     */
     static SnapshotNaming withParameters(Object parameter1, Object... furtherParameters) {
         Objects.requireNonNull(parameter1, "parameter must not be null");
         return (testMethod, counter) -> {
