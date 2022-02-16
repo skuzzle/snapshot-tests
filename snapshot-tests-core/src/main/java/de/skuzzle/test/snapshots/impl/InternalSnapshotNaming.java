@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
@@ -24,7 +25,8 @@ final class InternalSnapshotNaming {
                     .get(SnapshotHeader.TEST_METHOD)
                     .equals(testMethod.getName());
         } catch (final IOException e) {
-            throw new RuntimeException();
+            throw new UncheckedIOException(
+                    "Error determining snapshot header for method " + testMethod + " from snapshot file at " + path, e);
         }
     }
 
