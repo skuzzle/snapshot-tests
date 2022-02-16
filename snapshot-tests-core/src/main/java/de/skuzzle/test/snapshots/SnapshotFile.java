@@ -15,7 +15,6 @@ import java.util.TreeMap;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-import org.junit.platform.commons.support.ReflectionSupport;
 
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized
@@ -133,14 +132,6 @@ public final class SnapshotFile {
                 line = reader.readLine();
             }
             return new SnapshotHeader(values);
-        }
-
-        public Class<?> getTestClass() {
-            final String testClassName = get(TEST_CLASS);
-            return ReflectionSupport.tryToLoadClass(testClassName)
-                    .getOrThrow(cause -> new IllegalStateException(
-                            String.format("Could not load test class '%s' stated in Snapshot header", testClassName),
-                            cause));
         }
 
         public String get(String key) {
