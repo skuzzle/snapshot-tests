@@ -1,27 +1,53 @@
 package de.skuzzle.test.snapshots.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.nio.file.Path;
-import java.util.Collection;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.impl.MockSnapshotLoggerFactory.MockSnapshotLogger;
 
-@EnableSnapshotTests
+@DisplayNameGeneration(ReplaceUnderscores.class)
 public class OrphanedSnapshotDetectionTest {
 
-    void failingTestMethod() {
-        throw new RuntimeException();
+    private final MetaTest frameworkTest = new MetaTest();
+
+    @AfterEach
+    void uninstallMockLogger() {
+        MockSnapshotLoggerFactory.uninstall();
     }
 
     @Test
-    void test() throws Throwable {
-        final SnapshotTestContext context = SnapshotTestContext.forTestClass(OrphanedSnapshotDetectionTest.class);
-        context.recordFailedTest(OrphanedSnapshotDetectionTest.class.getDeclaredMethod("failingTestMethod"));
-        final Collection<Path> orphanedSnapshots = context.detectOrCleanupOrphanedSnapshots();
-        assertThat(orphanedSnapshots).hasSize(1);
+    void orphaned_file_for_deleted_test_should_correctly_be_detected() throws Throwable {
+        final MockSnapshotLogger logger = MockSnapshotLoggerFactory.install();
+
+        frameworkTest.expectTestcase(TestCase.class);
+
+        logger.assertContainsExactlyOneEventWhere(logEvent -> logEvent.hasLevel("warn")
+                && logEvent.messageMatches(message -> message.startsWith("Found orphaned snapshot file."))
+                && logEvent
+                        .containsParamWhere(param -> param.toString().contains("testThatHasBeenDeleted_0.snapshot")));
     }
 
+    @Test
+    void orphaned_files_should_not_be_detected_for_failing_tests() throws Throwable {
+        final MockSnapshotLogger logger = MockSnapshotLoggerFactory.install();
+
+        frameworkTest.expectTestcase(TestCase.class);
+
+        logger.assertContainsNoEventWhere(
+                logEvent -> logEvent
+                        .containsParamWhere(param -> param.toString().contains("failingTestMethod.snapshot")));
+    }
+
+    @EnableSnapshotTests
+    static class TestCase {
+
+        @Test
+        void failingTestMethod() {
+            throw new RuntimeException();
+        }
+
+    }
 }

@@ -13,9 +13,11 @@ import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 public class FailingSnapshotTests {
 
+    private final MetaTest frameworkTest = new MetaTest();
+
     @Test
     void testFailBecauseForceUpdateFromAnnotationDeprecated() throws Throwable {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(FailBecauseForceUpdateFromAnnotationDeprecated.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -28,8 +30,6 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -37,7 +37,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testFailBecauseForceUpdateFromAnnotationOnTestClass() throws Throwable {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(FailBecauseForceUpdateFromAnnotationOnTestClass.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -51,8 +51,6 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -60,7 +58,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testFailBecauseJustUpdate() throws Exception {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(FailBecauseJustUpdate.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -74,8 +72,6 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -83,8 +79,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testFailBecauseForceUpdateAnnotationOnTestMethod() throws Exception {
-        new MetaTest()
-                .expectTestcase(FailBecauseForceUpdateAnnotationOnTestMethod.class)
+        frameworkTest.expectTestcase(FailBecauseForceUpdateAnnotationOnTestMethod.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
@@ -98,8 +93,6 @@ public class FailingSnapshotTests {
         @Test
         @ForceUpdateSnapshots
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -107,7 +100,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testFailBecauseSnapshotMismatch() throws Throwable {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(FailBecauseSnapshotMismatch.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -121,8 +114,6 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
@@ -130,7 +121,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testFailBecauseInitial() throws Throwable {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(FailBecauseInitial.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -143,8 +134,6 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshotResult.deleteSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
@@ -153,7 +142,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testMultipleAssertions() throws Exception {
-        new MetaTest()
+        frameworkTest
                 .expectTestcase(MultipleAssertions.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class);
@@ -163,8 +152,6 @@ public class FailingSnapshotTests {
     static class MultipleAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshot.assertThat("test2").asText().matchesSnapshotText();
         }
@@ -189,8 +176,6 @@ public class FailingSnapshotTests {
     static class SoftAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
-            MetaTest.assumeMetaTest();
-
             snapshot.assertThat("test2").asText().matchesSnapshotText();
             snapshot.assertThat("test3").asText().matchesSnapshotText();
         }

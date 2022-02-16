@@ -84,7 +84,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>de.skuzzle.enforcer</groupId>
@@ -103,11 +102,12 @@
                             <rules>
                                 <RestrictImports>
                                     <includeTestCode>false</includeTestCode>
-                                    <reason>Dont use JUnit5 dependencies incore or API</reason>
+                                    <reason>Dont use JUnit5 dependencies in core or API</reason>
                                     <basePackage>de.skuzzle.test.snapshots.**</basePackage>
                                     <bannedImport>org.junit.**</bannedImport>
                                     <exclusions>
                                         <exclusion>de.skuzzle.test.snapshots.junit5.**</exclusion>
+                                        <!-- This exclusion should be removed once https://github.com/skuzzle/snapshot-tests/issues/17 is resolved -->
                                         <exclusion>de.skuzzle.test.snapshots.*</exclusion>
                                     </exclusions>
                                 </RestrictImports>
