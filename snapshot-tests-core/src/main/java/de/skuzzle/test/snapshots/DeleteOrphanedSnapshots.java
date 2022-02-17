@@ -31,7 +31,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * </ol>
  * <p>
  * Besides using this annotations, orphans can also be deleted by passing the system
- * property <code>deleteOrphans</code> (case insensitive) to the JVM.
+ * property <code>deleteOrphanedSnapshots</code> (case insensitive) to the JVM.
  *
  * @deprecated This annotation is <b>NOT</b> deprecated. Deprecation serves only to mark
  *             this annotation in your IDE as it should only be used temporarily.
@@ -42,6 +42,6 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 @Target({ TYPE })
 @API(status = Status.EXPERIMENTAL, since = "1.1.0")
 @Deprecated
-public @interface DeleteOrphans {
+public @interface DeleteOrphanedSnapshots {
 
 }

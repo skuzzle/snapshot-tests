@@ -96,13 +96,13 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * Snapshot files can become orphans if, for example you rename a test class/method or you
  * change the snapshot assertions within a test. This framework comes with a sophisticated
  * approach for detecting those orphaned files. By default, we will log a warning with the
- * found orphan. You can temporarily place the {@link DeleteOrphans} annotation on a
+ * found orphan. You can temporarily place the {@link DeleteOrphanedSnapshots} annotation on a
  * snapshot test class to have those files deleted automatically.
  *
  * @author Simon Taddiken
  * @see Snapshot
  * @see SnapshotNaming
- * @see DeleteOrphans
+ * @see DeleteOrphanedSnapshots
  * @see ForceUpdateSnapshots
  */
 @Retention(RUNTIME)

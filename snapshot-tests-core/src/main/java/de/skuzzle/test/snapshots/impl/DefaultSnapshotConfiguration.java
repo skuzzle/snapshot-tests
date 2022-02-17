@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
-import de.skuzzle.test.snapshots.DeleteOrphans;
+import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.directories.DirectoryResolver;
@@ -24,7 +24,7 @@ import de.skuzzle.test.snapshots.io.UncheckedIO;
 final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
-    private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphans";
+    private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphanedSnapshots";
 
     private final Class<?> testClass;
 
@@ -62,8 +62,8 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
-    public boolean isDeleteOrphans() {
-        return testClass().isAnnotationPresent(DeleteOrphans.class)
+    public boolean isDeleteOrphanedSnapshots() {
+        return testClass().isAnnotationPresent(DeleteOrphanedSnapshots.class)
                 || System.getProperties().keySet().stream()
                         .map(Object::toString)
                         .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);

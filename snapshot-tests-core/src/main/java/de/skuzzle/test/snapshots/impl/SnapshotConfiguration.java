@@ -36,7 +36,7 @@ interface SnapshotConfiguration {
      *
      * @return Whether orphaned snapshot files should be removed.
      */
-    boolean isDeleteOrphans();
+    boolean isDeleteOrphanedSnapshots();
 
     /**
      * Determines whether snapshots are to be forcefully updated during the execution of a

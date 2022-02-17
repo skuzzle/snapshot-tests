@@ -129,7 +129,7 @@ public final class SnapshotTestContext {
      * @return The detected orphans.
      */
     public Collection<Path> detectOrCleanupOrphanedSnapshots() {
-        final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphans();
+        final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphanedSnapshots();
 
         final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
         final Stream<Path> dynamicOrphans = dynamicOrphanedSnapshotsDetector.detectOrphans(snapshotDirectory);
@@ -144,7 +144,7 @@ public final class SnapshotTestContext {
                                 orphaned.getFileName(), orphaned.getParent());
                     } else {
                         log.warn(
-                                "Found orphaned snapshot file. Run with '@DeleteOrphans' annotation to remove: {0} in {1}",
+                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: {0} in {1}",
                                 orphaned.getFileName(), orphaned.getParent());
                     }
                 })
