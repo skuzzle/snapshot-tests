@@ -9,28 +9,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
- * Collects the result of all test cases within a class that is annotated with
- * {@link EnableSnapshotTests}.
+ * Dynamically (=while running the tests) detects orphaned snapshots by observing each
+ * snapshot test's result to determine whether the snapshot assertions within all
+ * successfully executed tests had changed.
  *
  * @author Simon Taddiken
+ * @see StaticOrphanedSnapshotDetector
  */
-final class GlobalResultCollector {
+final class DynamicOrphanedSnapshotsDetector {
 
     private final Set<Method> failedTestMethods = new HashSet<>();
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public SnapshotTestResult add(SnapshotTestResult result) {
-        this.results.add(Objects.requireNonNull(result));
-        return result;
-    }
-
-    public GlobalResultCollector addAllFrom(LocalResultCollector other) {
-        this.results.addAll(Objects.requireNonNull(other).results());
+    public DynamicOrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
+        this.results.addAll(Objects.requireNonNull(other));
         return this;
     }
 
@@ -38,16 +36,17 @@ final class GlobalResultCollector {
         this.failedTestMethods.add(Objects.requireNonNull(testMethod));
     }
 
-    public Collection<Path> findOrphanedSnapshotsIn(Path snapshotDirectory) {
+    public Stream<Path> detectOrphans(Path snapshotDirectory) {
         try (final var files = UncheckedIO.list(snapshotDirectory)) {
             return files
-                    .filter(existingSnapshot -> isOrphanedSnapshot(existingSnapshot))
-                    .collect(Collectors.toList());
+                    .filter(this::isOrphanedSnapshot)
+                    .collect(Collectors.toList())
+                    .stream();
         }
     }
 
     private boolean isOrphanedSnapshot(Path potentialSnapshotFile) {
-        if (!SnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
+        if (!InternalSnapshotNaming.isSnapshotFile(potentialSnapshotFile)) {
             return false;
         }
         // we can not detect orphaned snapshots for failed tests because the test might
@@ -60,7 +59,8 @@ final class GlobalResultCollector {
 
     private boolean pertainsToFailedTest(Path snapshotFile) {
         return failedTestMethods.stream()
-                .anyMatch(failedTestMethod -> SnapshotNaming.isSnapshotFileForMethod(snapshotFile, failedTestMethod));
+                .anyMatch(failedTestMethod -> InternalSnapshotNaming.isSnapshotFileForMethod(snapshotFile,
+                        failedTestMethod));
     }
 
     private boolean testResultsContain(Path snapshotFile) {

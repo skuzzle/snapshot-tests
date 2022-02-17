@@ -1,7 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +18,11 @@ final class LocalResultCollector {
 
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public SnapshotTestResult add(SnapshotTestResult result) {
+    public void add(SnapshotTestResult result) {
         this.results.add(Objects.requireNonNull(result));
-        return result;
     }
 
-    public Collection<SnapshotTestResult> results() {
+    public List<SnapshotTestResult> results() {
         return Collections.unmodifiableList(results);
     }
 
@@ -36,8 +34,8 @@ final class LocalResultCollector {
         Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
-        failures = Throwables.combine(failures, assertNotCreatedInitially());
-        failures = Throwables.combine(failures, assertNotUpdatedForcefully());
+        failures = Throwables.combine(failures, failIfCreatedInitially());
+        failures = Throwables.combine(failures, failIfUpdatedForcefully());
         Throwables.throwIfNotNull(failures);
     }
 
@@ -48,7 +46,7 @@ final class LocalResultCollector {
         Throwables.throwIfNotNull(failures);
     }
 
-    private Throwable assertNotCreatedInitially() {
+    private Throwable failIfCreatedInitially() {
         if (wasCreatedInitially()) {
             return new AssertionError(String.format(
                     "Snapshots have been created the first time.%nRun the test again and you should see it succeed."));
@@ -56,7 +54,7 @@ final class LocalResultCollector {
         return null;
     }
 
-    private Throwable assertNotUpdatedForcefully() {
+    private Throwable failIfUpdatedForcefully() {
         if (wasUpdatedForcefully()) {
             return new AssertionError(String.format(
                     "Snapshots have been updated forcefully.%n"

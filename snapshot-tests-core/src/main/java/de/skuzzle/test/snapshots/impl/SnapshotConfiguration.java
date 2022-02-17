@@ -1,73 +1,67 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.io.IOException;
-import java.nio.file.Files;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.util.Objects;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.directories.DirectoryResolver;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
- * Relevant configuration for executing snapshot tests in a test class that is annotated
- * with {@link EnableSnapshotTests}.
+ * Supplies configuration options to the snapshot test execution.
  *
  * @author Simon Taddiken
+ * @since 1.1.0
+ * @see DefaultSnapshotConfiguration
  */
-final class SnapshotConfiguration {
+@API(status = Status.INTERNAL, since = "1.1.0")
+interface SnapshotConfiguration {
 
-    private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
+    /**
+     * Determines the directory into which the snapshot files for the currently executed
+     * test class are persisted.
+     *
+     * @return The snapshot directory.
+     */
+    Path determineSnapshotDirectory();
 
-    private final ExtensionContext extensionContext;
+    /**
+     * The class containing the currently executed test.
+     *
+     * @return The test class.
+     */
+    Class<?> testClass();
 
-    private SnapshotConfiguration(ExtensionContext extensionContext) {
-        this.extensionContext = Objects.requireNonNull(extensionContext);
-    }
+    /**
+     * Whether to delete orphaned snapshot files during test execution.
+     *
+     * @return Whether orphaned snapshot files should be removed.
+     */
+    boolean isDeleteOrphanedSnapshots();
 
-    public static SnapshotConfiguration fromExtensionContext(ExtensionContext extensionContext) {
-        return new SnapshotConfiguration(extensionContext);
-    }
+    /**
+     * Determines whether snapshots are to be forcefully updated during the execution of a
+     * whole test class.
+     *
+     * @return Whether to forcefully update snapshots.
+     */
+    boolean isForceUpdateSnapshotsGlobal();
 
-    public Path determineSnapshotDirectory() throws IOException {
-        final String testDirName = snapshotDirecotryName();
+    /**
+     * Determines whether snapshots are to be forcefully updated during the execution of
+     * the given test method.
+     *
+     * @param testMethod The test method.
+     * @return Whether to forcefully update snapshots.
+     */
+    boolean isForceUpdateSnapshotsLocal(Method testMethod);
 
-        final Path testDirectory = DirectoryResolver.resolve(testDirName);
-        Files.createDirectories(testDirectory);
-        return testDirectory;
-    }
+    /**
+     * Whether soft assertions shall be used. When set to true, a failing snapshot
+     * assertion will not make the test immediately fail. Instead, all snapshot test
+     * results are collected and processed at once when the test method finishes.
+     *
+     * @return Whether to use soft assertions.
+     */
+    boolean isSoftAssertions();
 
-    private String snapshotDirecotryName() throws IOException {
-        final EnableSnapshotTests snapshotAssertions = extensionContext.getRequiredTestClass()
-                .getAnnotation(EnableSnapshotTests.class);
-
-        final String testDirName = snapshotAssertions.snapshotDirectory().isEmpty()
-                ? extensionContext.getRequiredTestClass().getName().replace('.', '/') + "_snapshots"
-                : snapshotAssertions.snapshotDirectory();
-        return testDirName;
-    }
-
-    public Class<?> testClass() {
-        return extensionContext.getRequiredTestClass();
-    }
-
-    public boolean isForceUpdateSnapshots() {
-        final boolean valueFromAnnotation = extensionContext.getRequiredTestClass()
-                .getAnnotation(EnableSnapshotTests.class)
-                .forceUpdateSnapshots();
-        if (valueFromAnnotation) {
-            return valueFromAnnotation;
-        }
-        return System.getProperties().keySet().stream()
-                .map(Object::toString)
-                .anyMatch(FORCE_UPDATE_SYSTEM_PROPERTY::equalsIgnoreCase);
-
-    }
-
-    public boolean isSoftAssertions() {
-        return extensionContext.getRequiredTestClass()
-                .getAnnotation(EnableSnapshotTests.class)
-                .softAssertions();
-    }
 }

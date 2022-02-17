@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.impl.SnapshotExtension;
+import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
 
 /**
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
@@ -48,8 +48,8 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  * </pre>
  * <p>
  * When providing a structured data format like json/xml (or in general: an implementation
- * of {@link StructuredDataProvider}) you can make use of <em>structural assertions</em> to
- * compare snapshots. Depending on the implementation, those might provide better error
+ * of {@link StructuredDataProvider}) you can make use of <em>structural assertions</em>
+ * to compare snapshots. Depending on the implementation, those might provide better error
  * messages than plain text comparison.
  *
  * <pre>
@@ -60,13 +60,54 @@ import de.skuzzle.test.snapshots.impl.SnapshotExtension;
  *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
  *     }
  * </pre>
+ * <p>
+ * <h3>Parameterized tests</h3>
+ * <p>
+ * Snapshot tests can be combined with JUnit5's parameterized tests, but only when you
+ * provide an explicit name for each snapshot assertion. With the default automatic
+ * snapshot naming scheme, snapshots would otherwise be overridden for each parameterized
+ * execution.
+ *
+ * <pre>
+ *     &#64;ParameterizedTest
+ *     &#64;Values(string = { "string1", "string2" })
+ *     void testSomething(String parameter, Snapshot snapshot) throws Exception {
+ *         Object actual = ...
+ *
+ *         // BAD: would choose the same snapshot file name 'testSomething_0.snapshot' disregarding the parameter
+ *         // (Note: this could be desired if you expect the same output for all parameters)
+ *         snapshot.assertThat(actual).as...;
+ *
+ *         // GOOD: Append the parameter's value to the snapshot name to have separate snapshots per execution
+ *         // This will create snapshots named 'testSomething_0_string1.snapshot' and 'testSomething_0_string2.snapshot'
+ *         snapshot.namedAccordingTo(SnapshotNaming.withParameters(parameter))
+ *                 .assertThat(actual).as...;
+ * </pre>
+ *
+ * <h3>Updating snapshots</h3>
+ * <p>
+ * Snapshots can become outdated when your code under test changes on purpose. In that
+ * case you can advice the framework to override existing snapshots with your code under
+ * test's actual result by placing the annotation {@link ForceUpdateSnapshots} on either
+ * the whole snapshot test class or on a single test method.
+ *
+ * <h3>Orphaned snapshots</h3>
+ * <p>
+ * Snapshot files can become orphans if, for example you rename a test class/method or you
+ * change the snapshot assertions within a test. This framework comes with a sophisticated
+ * approach for detecting those orphaned files. By default, we will log a warning with the
+ * found orphan. You can temporarily place the {@link DeleteOrphanedSnapshots} annotation on a
+ * snapshot test class to have those files deleted automatically.
  *
  * @author Simon Taddiken
  * @see Snapshot
+ * @see SnapshotNaming
+ * @see DeleteOrphanedSnapshots
+ * @see ForceUpdateSnapshots
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
-@ExtendWith(SnapshotExtension.class)
+@ExtendWith(JUnit5SnapshotExtension.class)
 @API(status = Status.STABLE)
 public @interface EnableSnapshotTests {
 
@@ -90,9 +131,12 @@ public @interface EnableSnapshotTests {
      * After snapshots have been updated, you should reset this flag to <code>false</code>
      * and run the tests again before checking your code into any SCM.
      *
+     * @deprecated Since 1.1.0 - Use the {@link ForceUpdateSnapshots} annotation instead.
      * @return Whether to update the stored snapshots.
      * @see ChooseAssertions#justUpdateSnapshot()
      */
+    @API(status = Status.DEPRECATED, since = "1.1.0")
+    @Deprecated(since = "1.1.0")
     boolean forceUpdateSnapshots() default false;
 
     /**

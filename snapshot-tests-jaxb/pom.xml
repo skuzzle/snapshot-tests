@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>snapshot-tests-jaxb</artifactId>
@@ -15,7 +15,7 @@
     <description>XML snapshot serialization using jaxb</description>
     
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.jaxb</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.xml.jaxb</automatic-module-name>
     </properties>
     
     <dependencyManagement>

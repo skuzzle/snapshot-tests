@@ -1,45 +1,58 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.xml;
 
-import static de.skuzzle.test.snapshots.data.json.JsonSnapshot.json;
+import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
+import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.assertj.XmlAssert;
+import org.xmlunit.diff.DifferenceEvaluators;
 
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
-import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
+import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 
-@EnableSnapshotTests(forceUpdateSnapshots = false)
+@EnableSnapshotTests
 public class SnapshotsTest {
 
     @Test
-    void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
+    void testAsXmlTextCompare(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
-        snapshot.assertThat(myself).as(json).matchesSnapshotText();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotText();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
+    void testAsXmlStructureCompare(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson();
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsXmlStructureCompareBuilder(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(json)
+                .as(XmlSnapshot
+                        .inferJaxbContext()
+                        .compareUsing(xmls -> xmls.withDifferenceEvaluator(DifferenceEvaluators.Default).areSimilar()))
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsJsonStructureCompareCustom(Snapshot snapshot) throws Exception {
+    void testAsXmlStructureCustomStructuralAssertions(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.withDefaultObjectMapper()
-                        .withComparator(new CustomComparator(JSONCompareMode.STRICT,
-                                new Customization("address.city", (o1, o2) -> true))))
-                .matchesSnapshotStructure();
+                .as(XmlSnapshot.inferJaxbContext().compareUsing(CompareAssert::areSimilar))
+                .matchesAccordingTo((expected, actual) -> XmlAssert.assertThat(actual).and(expected)
+                        .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences()).areSimilar());
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
@@ -120,6 +133,7 @@ public class SnapshotsTest {
         }
     }
 
+    @XmlRootElement
     public static class Person {
         private String name;
         private String surname;

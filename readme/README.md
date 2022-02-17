@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/${project.artifactId}/${project.version}/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/${project.artifactId}/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-bom/${project.version}/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-core/${project.version})
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/${github.name}/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/${github.name}?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -58,10 +58,21 @@ implementation change:
 1. Using a test driven approach, you can of course always modify the snapshots manually to reflect the new requirements
  before you change the actual code. This might be a bit tedious if you have a lot of affected snapshot files.
 2. If you are confident that you implemented the requirements correctly, you can advise the framework to update all the 
-persisted snapshots with the current test results. You can do so by setting the `updateSnapshots` attribute like so:
+persisted snapshots with the current test results. You can do so by temporarily placing the `@ForceUpdateSnapshots` 
+annotation on either your test class or your test method:
 
 ```java
-@EnableSnapshotTests(forceUpdateSnapshots = true)
+@EnableSnapshotTests
+@ForceUpdateSnapshots
+class YourTestClass {...}
+```
+
+or
+
+```java
+@Test
+@ForceUpdateSnapshots
+void yourSnapshotTest(Snapshot snapshot) {...}
 ```
 
 You can also update snapshots for individual assertions by replacing any of the `matchesSnapshot...` calls with 
@@ -115,6 +126,29 @@ comparisons specific to your serialization format.
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
 
+### Parameterized tests
+_(since 1.1.0)_
+
+Snapshot tests work well together with `@ParameterizedTest` but only if you take care of proper snapshot naming 
+yourself like in this snippet:
+
+```java
+@ParameterizedTest
+@ValueSource(strings = { "string1", "string2" })
+void testParameterized(String param, Snapshot snapshot) {
+
+    snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
+            .assertThat(param).asText().matchesSnapshotText();
+}
+```
+This will make each parameter's value part of the generated snapshot's file name. 
+
+Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
+parameterized execution (this could actually be desirable if you want to test that your code produces the exact same 
+result for different parameters).
+
+Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
+
 ### Dealing with random values
 A common source of problems are random values within the snapshot data such as dates or generated ids. This framework
 comes with no means to resolve those issues. Instead you should design your code up front so that such randomness can 
@@ -138,3 +172,9 @@ Currently it is not possible to use a directory outside `src/test/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
+
+### Orphaned snapshot files
+Snapshot files can become orphans if, for example you rename a test class/method or you change the snapshot assertions 
+within a test. This framework comes with a sophisticated approach for detecting those orphaned files. By default, we 
+will log a warning with the found orphan. You can temporarily place the `@DeleteOrphanedSnapshots` annotation on a 
+snapshot test class to have those files deleted automatically.

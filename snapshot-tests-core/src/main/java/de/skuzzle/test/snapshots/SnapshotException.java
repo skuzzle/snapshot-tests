@@ -3,6 +3,12 @@ package de.skuzzle.test.snapshots;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+/**
+ * This is a framework exception that can be thrown when implementing certain extension
+ * points.
+ *
+ * @author Simon Taddiken
+ */
 @API(status = Status.MAINTAINED)
 public class SnapshotException extends Exception {
 

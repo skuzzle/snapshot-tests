@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>snapshot-tests-jackson</artifactId>
@@ -15,7 +15,7 @@
     <description>JSON snapshot serialization using jackson</description>
 
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.jackson</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.json.jackson</automatic-module-name>
     </properties>
     
     <dependencyManagement>

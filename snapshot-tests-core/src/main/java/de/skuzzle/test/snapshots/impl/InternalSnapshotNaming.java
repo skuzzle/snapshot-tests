@@ -1,13 +1,18 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 
-final class SnapshotNaming {
+final class InternalSnapshotNaming {
+
+    public static String getSnapshotFileName(String snapshotName) {
+        return snapshotName + ".snapshot";
+    }
 
     public static boolean isSnapshotFile(Path path) {
         return path.getFileName().toString().endsWith(".snapshot");
@@ -20,16 +25,9 @@ final class SnapshotNaming {
                     .get(SnapshotHeader.TEST_METHOD)
                     .equals(testMethod.getName());
         } catch (final IOException e) {
-            throw new RuntimeException();
+            throw new UncheckedIOException(
+                    "Error determining snapshot header for method " + testMethod + " from snapshot file at " + path, e);
         }
-    }
-
-    public static String getSnapshotName(Method testMethod, int counter) {
-        return testMethod.getName() + "_" + counter;
-    }
-
-    public static String getSnapshotFileName(String snapshotName) {
-        return snapshotName + ".snapshot";
     }
 
 }
