@@ -30,7 +30,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
  * @since 1.1.0
  * @author Simon Taddiken
  */
-@API(status = Status.STABLE, since = "1.1.0")
+@API(status = Status.EXPERIMENTAL, since = "1.1.0")
 public interface SnapshotNaming {
 
     /**

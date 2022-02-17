@@ -65,6 +65,14 @@ public interface SnapshotDsl {
             return namedAccordingTo(SnapshotNaming.constant(snapshotName));
         }
 
+        /**
+         * Choose a name for the snapshot file according to the given strategy.
+         *
+         * @param namingStrategy The naming strategy to use.
+         * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
+         *         the same object as 'this'!
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.1.0")
         ChooseActual namedAccordingTo(SnapshotNaming namingStrategy);
     }
 
