@@ -140,11 +140,11 @@ public final class SnapshotTestContext {
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
-                        log.info("Deleted orphaned snapshot file {0} in ",
+                        log.info("Deleted orphaned snapshot file {0} in {1}",
                                 orphaned.getFileName(), orphaned.getParent());
                     } else {
                         log.warn(
-                                "Found orphaned snapshot file. Run with 'forceUpdateSnapshots' option to remove: {0} in {1}",
+                                "Found orphaned snapshot file. Run with '@DeleteOrphans' annotation to remove: {0} in {1}",
                                 orphaned.getFileName(), orphaned.getParent());
                     }
                 })
