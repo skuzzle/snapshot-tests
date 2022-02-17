@@ -71,6 +71,7 @@ public interface SnapshotDsl {
          * @param namingStrategy The naming strategy to use.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
+         * @since 1.1.0
          */
         @API(status = Status.EXPERIMENTAL, since = "1.1.0")
         ChooseActual namedAccordingTo(SnapshotNaming namingStrategy);
@@ -105,12 +106,12 @@ public interface SnapshotDsl {
          * objects are compared. A {@link StructuredData} instance combines both a
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
          *
-         * @param structuredDataBuilder The {@link StructuredDataProvider} instance.
+         * @param structuredDataProvider The {@link StructuredDataProvider} instance.
          * @return Fluent API object for performing the snapshot assertion. Do NOT assume
          *         it is the same object as 'this'!
          * @see StructuredData
          */
-        ChooseStructure as(StructuredDataProvider structuredDataBuilder);
+        ChooseStructure as(StructuredDataProvider structuredDataProvider);
 
         /**
          * Specify the serialization format.
@@ -122,6 +123,11 @@ public interface SnapshotDsl {
         ChooseAssertions as(SnapshotSerializer serializer);
     }
 
+    /**
+     * DSL stage to choose how to perform the snapshot assertion.
+     *
+     * @author Simon Taddiken
+     */
     @API(status = Status.STABLE)
     public interface ChooseAssertions {
 
