@@ -30,6 +30,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -51,6 +53,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -72,6 +76,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -93,6 +99,8 @@ public class FailingSnapshotTests {
         @Test
         @ForceUpdateSnapshots
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.UPDATED_FORCEFULLY);
         }
@@ -114,6 +122,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
@@ -134,6 +144,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshotResult.deleteSnapshot();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
@@ -152,6 +164,8 @@ public class FailingSnapshotTests {
     static class MultipleAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             snapshot.assertThat("test").asText().matchesSnapshotText();
             snapshot.assertThat("test2").asText().matchesSnapshotText();
         }
@@ -176,6 +190,8 @@ public class FailingSnapshotTests {
     static class SoftAssertions {
         @Test
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
             snapshot.assertThat("test2").asText().matchesSnapshotText();
             snapshot.assertThat("test3").asText().matchesSnapshotText();
         }

@@ -2,6 +2,8 @@ package de.skuzzle.test.snapshots.junit5;
 
 import java.util.Optional;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
@@ -12,7 +14,9 @@ import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
  * JUnit5's {@link ExtensionContext}.
  *
  * @author Simon Taddiken
+ * @since 1.1.0
  */
+@API(status = Status.INTERNAL, since = "1.1.0")
 final class Junit5SnapshotTestContextProvider {
 
     private static final Namespace NAMESPACE = Namespace.create(JUnit5SnapshotExtension.class);

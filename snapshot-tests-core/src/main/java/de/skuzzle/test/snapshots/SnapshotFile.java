@@ -31,8 +31,8 @@ public final class SnapshotFile {
     private final String snapshot;
 
     private SnapshotFile(SnapshotHeader header, String snapshot) {
-        this.header = Objects.requireNonNull(header);
-        this.snapshot = Objects.requireNonNull(snapshot);
+        this.header = Objects.requireNonNull(header, "snapshot header must not be null");
+        this.snapshot = Objects.requireNonNull(snapshot, "snapshot must not be null");
     }
 
     public static SnapshotFile of(SnapshotHeader header, String snapshot) {

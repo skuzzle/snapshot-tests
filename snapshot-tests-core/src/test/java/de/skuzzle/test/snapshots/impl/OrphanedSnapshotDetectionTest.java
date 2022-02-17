@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.impl.MockSnapshotLoggerFactory.MockSnapshotLogger;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -45,7 +46,9 @@ public class OrphanedSnapshotDetectionTest {
     static class TestCase {
 
         @Test
-        void failingTestMethod() {
+        void failingTestMethod(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+
             throw new RuntimeException();
         }
 

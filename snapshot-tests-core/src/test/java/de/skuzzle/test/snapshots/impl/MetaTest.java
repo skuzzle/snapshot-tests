@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
@@ -20,6 +21,18 @@ class MetaTest {
                 .execute();
 
         return new TestResult(executionResults, testClass);
+    }
+
+    static void assumeMetaTest() {
+        Assumptions.assumeThat(containedInStacktrace())
+                .as("This test cas will be executed as meta-test case")
+                .isTrue();
+    }
+
+    private static boolean containedInStacktrace() {
+        return StackWalker.getInstance().walk(stack -> stack
+                .anyMatch(stackFrame -> stackFrame.getClassName().equals(MetaTest.class.getName())
+                        && stackFrame.getMethodName().equals("expectTestcase")));
     }
 
     static class TestResult {

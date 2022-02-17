@@ -1,6 +1,9 @@
 * [#5](https://github.com/skuzzle/snapshot-tests/issues/5): Improve support for parameterized tests (`@ParameterizedTest`)
 * [#15](https://github.com/skuzzle/snapshot-tests/issues/15): Internal refactoring to decouple core from JUnit dependency
-* Deprecate `EnableSnapshotTests.forceUpdateSnapshots` in favor of new `@ForceUpdateSnapshots` annotation.
+* [#8](https://github.com/skuzzle/snapshot-tests/issues/8): Way more sophisticated orphan detection
+* Deprecate `EnableSnapshotTests.forceUpdateSnapshots` in favor of new `@ForceUpdateSnapshots` annotation
+* Orphaned files are not deleted any more when `forceUpdateSnapshots` is enabled
+* `@DeleteOrphans` annotation can be placed on the test class in order to delete orphaned files
 
 Maven Central coordinates for this release:
 

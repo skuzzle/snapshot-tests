@@ -172,3 +172,9 @@ Currently it is not possible to use a directory outside `src/test/resources`.
 
 Take care when reusing the same directory for multiple test classes. If they also by coincidence contain equally named 
 test methods, snapshots might get overridden unintentionally.
+
+### Orphaned snapshot files
+Snapshot files can become orphans if, for example you rename a test class/method or you change the snapshot assertions 
+within a test. This framework comes with a sophisticated approach for detecting those orphaned files. By default, we 
+will log a warning with the found orphan. You can temporarily place the {@link DeleteOrphans} annotation on a snapshot 
+test class to have those files deleted automatically.

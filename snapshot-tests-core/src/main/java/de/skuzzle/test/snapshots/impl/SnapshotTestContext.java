@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -13,6 +14,7 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
@@ -31,7 +33,7 @@ public final class SnapshotTestContext {
     // logger during tests
     private final SnapshotLogger log = SnapshotLogging.getLogger(SnapshotTestContext.class);
 
-    private final OrphanedSnapshotsDetector orphanedSnapshotDetector = new OrphanedSnapshotsDetector();
+    private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
 
     private SnapshotTestImpl currentSnapshotTest;
@@ -108,7 +110,7 @@ public final class SnapshotTestContext {
      * @param testMethod Test method that failed.
      */
     public void recordFailedTest(Method testMethod) {
-        this.orphanedSnapshotDetector.addFailedTestMethod(testMethod);
+        this.dynamicOrphanedSnapshotsDetector.addFailedTestMethod(testMethod);
     }
 
     /**
@@ -117,7 +119,7 @@ public final class SnapshotTestContext {
      * @param results The snapshot test results of a single test method.
      */
     public void recordSnapshotTestResults(Collection<SnapshotTestResult> results) {
-        this.orphanedSnapshotDetector.addAllFrom(results);
+        this.dynamicOrphanedSnapshotsDetector.addAllFrom(results);
     }
 
     /**
@@ -127,9 +129,13 @@ public final class SnapshotTestContext {
      * @return The detected orphans.
      */
     public Collection<Path> detectOrCleanupOrphanedSnapshots() {
-        final boolean deleteOrphaned = this.snapshotConfiguration.isForceUpdateSnapshotsGlobal();
+        final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphans();
+
         final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
-        return this.orphanedSnapshotDetector.findOrphanedSnapshotsIn(snapshotDirectory).stream()
+        final Stream<Path> dynamicOrphans = dynamicOrphanedSnapshotsDetector.detectOrphans(snapshotDirectory);
+        final Stream<Path> staticOrphans = new StaticOrphanedSnapshotDetector().detectOrphans(DirectoryResolver.BASE);
+        return Stream.concat(dynamicOrphans, staticOrphans)
+                .distinct()
                 .peek(orphaned -> {
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);

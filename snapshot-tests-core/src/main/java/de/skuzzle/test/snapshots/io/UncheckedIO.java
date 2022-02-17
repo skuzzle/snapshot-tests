@@ -44,6 +44,14 @@ public final class UncheckedIO {
         }
     }
 
+    public static Stream<Path> walk(Path directory) {
+        try {
+            return Files.walk(directory);
+        } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     public static void createDirectories(Path testDirectory) {
         try {
             Files.createDirectories(testDirectory);

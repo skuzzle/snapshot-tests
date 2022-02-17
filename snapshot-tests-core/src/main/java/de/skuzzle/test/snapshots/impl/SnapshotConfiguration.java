@@ -32,6 +32,13 @@ interface SnapshotConfiguration {
     Class<?> testClass();
 
     /**
+     * Whether to delete orphaned snapshot files during test execution.
+     *
+     * @return Whether orphaned snapshot files should be removed.
+     */
+    boolean isDeleteOrphans();
+
+    /**
      * Determines whether snapshots are to be forcefully updated during the execution of a
      * whole test class.
      *

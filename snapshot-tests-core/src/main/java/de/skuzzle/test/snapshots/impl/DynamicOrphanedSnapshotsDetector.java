@@ -9,23 +9,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
- * Collects the result of all test cases within a class that is annotated with
- * {@link EnableSnapshotTests}.
+ * Dynamically (=while running the tests) detects orphaned snapshots by observing each
+ * snapshot test's result to determine whether the snapshot assertions within all
+ * successfully executed tests had changed.
  *
  * @author Simon Taddiken
+ * @see StaticOrphanedSnapshotDetector
  */
-final class OrphanedSnapshotsDetector {
+final class DynamicOrphanedSnapshotsDetector {
 
     private final Set<Method> failedTestMethods = new HashSet<>();
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public OrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
+    public DynamicOrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
         this.results.addAll(Objects.requireNonNull(other));
         return this;
     }
@@ -34,11 +36,12 @@ final class OrphanedSnapshotsDetector {
         this.failedTestMethods.add(Objects.requireNonNull(testMethod));
     }
 
-    public Collection<Path> findOrphanedSnapshotsIn(Path snapshotDirectory) {
+    public Stream<Path> detectOrphans(Path snapshotDirectory) {
         try (final var files = UncheckedIO.list(snapshotDirectory)) {
             return files
                     .filter(this::isOrphanedSnapshot)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList())
+                    .stream();
         }
     }
 

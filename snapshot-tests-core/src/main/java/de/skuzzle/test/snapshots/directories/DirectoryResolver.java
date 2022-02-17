@@ -11,7 +11,8 @@ public class DirectoryResolver {
     // This will not necessarily resolve to the correct directory. Especially multi
     // module setups and cases where the build is not invoked directly from its folder,
     // this might give some problems
-    private final static Path BASE = Path.of("src", "test", "resources");
+    @API(status = Status.INTERNAL, since = "1.1.0")
+    public final static Path BASE = Path.of("src", "test", "resources");
 
     public static Path resolve(String directory) {
         return BASE.resolve(directory);
