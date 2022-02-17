@@ -6,21 +6,21 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
-import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
-class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
+final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
 
     private final SnapshotTestImpl snapshot;
     private Object actual;
     private SnapshotSerializer snapshotSerializer = TextSnapshot.text.snapshotSerializer();
     private StructuralAssertions structuralAssertions = TextSnapshot.text.structuralAssertions();
 
-    public SnapshotDslImpl(SnapshotTestImpl snapshot, Object actual) {
+    SnapshotDslImpl(SnapshotTestImpl snapshot, Object actual) {
         this.snapshot = Objects.requireNonNull(snapshot);
         this.actual = actual;
     }
