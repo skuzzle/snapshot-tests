@@ -54,6 +54,7 @@
         <module>snapshot-tests-jackson</module>
         <module>snapshot-tests-jaxb</module>
         <module>snapshot-tests-directory-params</module>
+        <module>snapshot-tests-common</module>
     </modules>
 
     <build>

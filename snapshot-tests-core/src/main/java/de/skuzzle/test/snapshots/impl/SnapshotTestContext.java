@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,6 +16,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Context object that pertains to the execution of a whole test class which is annotated
@@ -39,7 +39,7 @@ public final class SnapshotTestContext {
     private SnapshotTestImpl currentSnapshotTest;
 
     private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
-        this.snapshotConfiguration = Objects.requireNonNull(snapshotConfiguration,
+        this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
                 "snapshotConfiguration must not be null");
     }
 

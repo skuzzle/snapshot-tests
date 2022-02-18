@@ -13,6 +13,8 @@ import java.util.stream.StreamSupport;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 /**
  * Allows to recursively iterate all members of an actual object. Each member is wrapped
  * into a {@link ObjectMember} instance from which it can be read/modified. How members
@@ -66,7 +68,7 @@ public final class ObjectTraversal {
      * @return Stream of members.
      */
     public static Stream<ObjectMember> members(Object root, ObjectMembers strategy) {
-        Objects.requireNonNull(strategy, "strategy must not be null");
+        Arguments.requireNonNull(strategy, "strategy must not be null");
 
         final var context = new VisitorContext();
         return membersOfRecursive(root, null, context, strategy)
@@ -125,8 +127,8 @@ public final class ObjectTraversal {
         private final Object collectionParent;
 
         public TerminalTypeInCollection(Object value, Object collectionParent) {
-            this.value = Objects.requireNonNull(value);
-            this.collectionParent = Objects.requireNonNull(collectionParent);
+            this.value = Arguments.requireNonNull(value);
+            this.collectionParent = Arguments.requireNonNull(collectionParent);
         }
 
         @Override

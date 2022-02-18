@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Dynamically (=while running the tests) detects orphaned snapshots by observing each
@@ -28,12 +28,12 @@ final class DynamicOrphanedSnapshotsDetector {
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
     public DynamicOrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
-        this.results.addAll(Objects.requireNonNull(other));
+        this.results.addAll(Arguments.requireNonNull(other));
         return this;
     }
 
     public void addFailedTestMethod(Method testMethod) {
-        this.failedTestMethods.add(Objects.requireNonNull(testMethod));
+        this.failedTestMethods.add(Arguments.requireNonNull(testMethod));
     }
 
     public Stream<Path> detectOrphans(Path snapshotDirectory) {

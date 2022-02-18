@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.data.json;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.apiguardian.api.API;
@@ -19,6 +18,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Serializes snapshots as json using jackson. Use either the static factory methods or
@@ -43,7 +43,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
     private JSONComparator jsonComparator;
 
     private JsonSnapshot(ObjectMapper objectMapper) {
-        this.objectMapper = Objects.requireNonNull(objectMapper, "objectMapper must not be null");
+        this.objectMapper = Arguments.requireNonNull(objectMapper, "objectMapper must not be null");
         this.jsonComparator = new DefaultComparator(JSONCompareMode.STRICT);
     }
 
@@ -79,7 +79,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * @return This instance.
      */
     public JsonSnapshot configure(Consumer<ObjectMapper> c) {
-        Objects.requireNonNull(c, "consumer must not be null");
+        Arguments.requireNonNull(c, "consumer must not be null");
         c.accept(objectMapper);
         return this;
     }
@@ -96,7 +96,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      */
     @API(status = Status.EXPERIMENTAL)
     public JsonSnapshot withComparator(JSONComparator jsonComparator) {
-        this.jsonComparator = Objects.requireNonNull(jsonComparator, "comparator must not be null");
+        this.jsonComparator = Arguments.requireNonNull(jsonComparator, "comparator must not be null");
         return this;
     }
 

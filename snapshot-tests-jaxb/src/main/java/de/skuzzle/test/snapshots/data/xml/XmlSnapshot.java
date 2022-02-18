@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.data.xml;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import javax.xml.bind.JAXBContext;
@@ -15,6 +14,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * {@link StructuredData} builder for serializing test results to XML, relying on JAXB and
@@ -70,7 +70,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * @return A builder for building {@link StructuredData}.
      */
     public static XmlSnapshot with(JAXBContext jaxbContext) {
-        return new XmlSnapshot(Objects.requireNonNull(jaxbContext, "jaxbContext must not be null"));
+        return new XmlSnapshot(Arguments.requireNonNull(jaxbContext, "jaxbContext must not be null"));
     }
 
     /**
@@ -81,7 +81,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * @return This builder instance.
      */
     public XmlSnapshot withMarshaller(MarshallerSupplier marshallerSupplier) {
-        this.marshallerSupplier = Objects.requireNonNull(marshallerSupplier, "marshallerSupplier must not be null");
+        this.marshallerSupplier = Arguments.requireNonNull(marshallerSupplier, "marshallerSupplier must not be null");
         return this;
     }
 
@@ -95,7 +95,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
      */
     @API(status = Status.EXPERIMENTAL)
     public XmlSnapshot compareUsing(Consumer<CompareAssert> xmls) {
-        this.compareAssertConsumer = Objects.requireNonNull(xmls, "CompareAssert consumer must not be null");
+        this.compareAssertConsumer = Arguments.requireNonNull(xmls, "CompareAssert consumer must not be null");
         return this;
     }
 

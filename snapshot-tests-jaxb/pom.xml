@@ -32,8 +32,12 @@
     
     <dependencies>
         <dependency>
-            <groupId>de.skuzzle.test</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>snapshot-tests-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>snapshot-tests-common</artifactId>
         </dependency>
         
         <dependency>

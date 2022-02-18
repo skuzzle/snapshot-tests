@@ -11,6 +11,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 /**
  * Provides reflection based {@link ObjectMember} implementation that consists of a
  * matching pair of a getter and a setter methods. Getter and Setter methods are matched
@@ -24,7 +26,7 @@ class MethodObjectMembers implements ObjectMembers {
     private final Function<Method, PropertyConventions> conventionsConstructor;
 
     private MethodObjectMembers(Function<Method, PropertyConventions> conventionsConstructor) {
-        this.conventionsConstructor = Objects.requireNonNull(conventionsConstructor,
+        this.conventionsConstructor = Arguments.requireNonNull(conventionsConstructor,
                 "conventionsConstructor must not be null");
     }
 
@@ -142,8 +144,8 @@ class MethodObjectMembers implements ObjectMembers {
         private final Method setter;
 
         private MethodObjectMember(String name, Object parent, Object collectionParent, Method getter, Method setter) {
-            this.name = Objects.requireNonNull(name, "member name must not be null");
-            this.parent = Objects.requireNonNull(parent, "member's parent must not be null");
+            this.name = Arguments.requireNonNull(name, "member name must not be null");
+            this.parent = Arguments.requireNonNull(parent, "member's parent must not be null");
             this.collectionParent = collectionParent;
 
             this.getter = getter;

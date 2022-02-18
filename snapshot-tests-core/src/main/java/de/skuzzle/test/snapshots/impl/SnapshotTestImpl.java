@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
@@ -22,6 +21,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Aggregates the logic of executing (possibly multiple) snapshot assertions in the
@@ -37,13 +37,13 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
 
     SnapshotTestImpl(SnapshotConfiguration configuration, Method testMethod) {
-        this.configuration = Objects.requireNonNull(configuration, "configuration must not be null");
-        this.testMethod = Objects.requireNonNull(testMethod, "testMethod must not be null");
+        this.configuration = Arguments.requireNonNull(configuration, "configuration must not be null");
+        this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
     }
 
     @Override
     public ChooseActual namedAccordingTo(SnapshotNaming namingStrategy) {
-        this.namingStrategy = Objects.requireNonNull(namingStrategy, "namingStrategy must not be null");
+        this.namingStrategy = Arguments.requireNonNull(namingStrategy, "namingStrategy must not be null");
         return this;
     }
 

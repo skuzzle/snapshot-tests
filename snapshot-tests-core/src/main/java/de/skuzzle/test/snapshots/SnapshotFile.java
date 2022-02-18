@@ -16,6 +16,8 @@ import java.util.TreeMap;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized
  * snapshot. The header is a simple key-value format which is separated from the actual
@@ -31,8 +33,8 @@ public final class SnapshotFile {
     private final String snapshot;
 
     private SnapshotFile(SnapshotHeader header, String snapshot) {
-        this.header = Objects.requireNonNull(header, "snapshot header must not be null");
-        this.snapshot = Objects.requireNonNull(snapshot, "snapshot must not be null");
+        this.header = Arguments.requireNonNull(header, "snapshot header must not be null");
+        this.snapshot = Arguments.requireNonNull(snapshot, "snapshot must not be null");
     }
 
     public static SnapshotFile of(SnapshotHeader header, String snapshot) {
@@ -125,6 +127,7 @@ public final class SnapshotFile {
                 final String key = parts[0].trim();
                 final String value = parts[1].trim();
                 final String prev = values.put(key, value);
+
                 if (prev != null) {
                     throw new IllegalArgumentException(String
                             .format("Header contains duplicate key: '%s' with values '%s' and '%s'", key, value, prev));
@@ -135,12 +138,8 @@ public final class SnapshotFile {
         }
 
         public String get(String key) {
-            final String value = values.get(Objects.requireNonNull(key, "key must not be null"));
-            if (value == null) {
-                throw new IllegalArgumentException(
-                        String.format("No SnapshotHeader value for key '%s' among %s", key, values));
-            }
-            return value;
+            final String value = values.get(Arguments.requireNonNull(key, "key must not be null"));
+            return Arguments.requireNonNull(value, "No SnapshotHeader value for key '%s' among %s", key, values);
         }
 
         public int getInt(String key) {

@@ -7,13 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Pointer to a file that has been listed in a directory by {@link FilesFrom}. Provides a
@@ -28,7 +29,7 @@ public final class TestFile {
     private final Path file;
 
     TestFile(Path file) {
-        this.file = Objects.requireNonNull(file, "file must not be null");
+        this.file = Arguments.requireNonNull(file, "file must not be null");
     }
 
     /**
@@ -112,7 +113,7 @@ public final class TestFile {
      * @throws IOException If an I/O error occurs.
      */
     public String asText(Charset charset) throws IOException {
-        return new String(asBinary(), Objects.requireNonNull(charset, "charset must not be null"));
+        return new String(asBinary(), Arguments.requireNonNull(charset, "charset must not be null"));
     }
 
     private static final Pattern REPLACIBLE_VAR = Pattern.compile("\\$\\{(.*)\\}");

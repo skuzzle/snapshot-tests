@@ -8,14 +8,14 @@
         <version>1.1.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>snapshot-tests-directory-params</artifactId>
+    <artifactId>snapshot-tests-common</artifactId>
     <packaging>jar</packaging>
 
-    <name>Directory Contents Parameters</name>
+    <name>Common Utilities</name>
     <description></description>
 
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.directoryparams</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.common</automatic-module-name>
     </properties>
     
     <dependencyManagement>
@@ -31,32 +31,13 @@
     </dependencyManagement>
     
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>snapshot-tests-common</artifactId>
-        </dependency>
-        
         <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-commons</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.skuzzle.test</groupId>
-            <artifactId>snapshot-tests-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.assertj</groupId>

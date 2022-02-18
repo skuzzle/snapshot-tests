@@ -1,7 +1,6 @@
 package de.skuzzle.test.snapshots.data.xml;
 
 import java.io.StringWriter;
-import java.util.Objects;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -10,6 +9,7 @@ import javax.xml.bind.Marshaller;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot.MarshallerSupplier;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
 
@@ -18,7 +18,7 @@ final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
 
     private JaxbXmlSnapshotSerializer(JAXBContext jaxb, MarshallerSupplier marshallerSupplier) {
         this.jaxb = jaxb;
-        this.marshallerSupplier = Objects.requireNonNull(marshallerSupplier);
+        this.marshallerSupplier = Arguments.requireNonNull(marshallerSupplier);
     }
 
     public static SnapshotSerializer withExplicitJaxbContext(

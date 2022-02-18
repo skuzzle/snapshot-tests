@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 @API(status = Status.INTERNAL)
 public class DirectoryResolver {
     // FIXME: https://github.com/skuzzle/snapshot-tests/issues/3
@@ -15,7 +17,7 @@ public class DirectoryResolver {
     public final static Path BASE = Path.of("src", "test", "resources");
 
     public static Path resolve(String directory) {
-        return BASE.resolve(directory);
+        return BASE.resolve(Arguments.requireNonNull(directory, "directory must not be null"));
     }
 
     private DirectoryResolver() {
