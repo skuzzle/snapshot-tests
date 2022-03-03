@@ -21,16 +21,28 @@ public final class Arguments {
     }
 
     public static <T> T requireNonNull(T object, String message) {
-        if (object == null) {
-            throw new IllegalArgumentException(message);
-        }
+        check(object != null, message);
         return object;
     }
 
     public static <T> T requireNonNull(T object, String message, Object... params) {
-        if (object == null) {
+        check(object != null, message, params);
+        return object;
+    }
+
+    public static void check(boolean condition) {
+        check(condition, "Argument validation failed with no explicit message");
+    }
+
+    public static void check(boolean condition, String message) {
+        if (!condition) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void check(boolean condition, String message, Object... params) {
+        if (!condition) {
             throw new IllegalArgumentException(String.format(message, params));
         }
-        return object;
     }
 }

@@ -1,4 +1,6 @@
 * [#21](https://github.com/skuzzle/snapshot-tests/issues/21): Throw `IllegalArgumentException` instead of `NullPointerException` when validating parameters
+* `TestFile` injected in parameterized tests now has a `sibling(String)` and `siblingWithExtension(String)` method.
+* Added `filter` attribute to the `@FilesFrom` annotation to specify a `PathFilter` implementation. Allows for more fine grained filtering control.
 
 Maven Central coordinates for this release:
 

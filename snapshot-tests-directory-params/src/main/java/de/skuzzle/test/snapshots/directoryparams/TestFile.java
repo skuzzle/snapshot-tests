@@ -29,13 +29,41 @@ public final class TestFile {
     private final Path file;
 
     TestFile(Path file) {
-        this.file = Arguments.requireNonNull(file, "file must not be null");
+        Arguments.requireNonNull(file, "file must not be null");
+        Arguments.check(Files.exists(file), "file doesn't exist: %s", file);
+        this.file = file;
+    }
+
+    /**
+     * Returns a pointer to a sibling file with given name.
+     *
+     * @param fileName The file name (including extension) of a sibling file to resolve.
+     * @return Pointer to the sibling file.
+     * @since 1.2.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestFile sibling(String fileName) {
+        Arguments.requireNonNull(fileName, "sibling fileName must not be null");
+        return new TestFile(directory().resolve(fileName));
+    }
+
+    /**
+     * Resolves a sibling file with same name as this one but with the given extension.
+     *
+     * @param extension The extension of a sibling file with identical name to resolve.
+     * @return Pointer to the sibling file.
+     * @since 1.2.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestFile siblingWithExtension(String extension) {
+        Arguments.requireNonNull(extension, "sibling extension must not be null");
+        return new TestFile(directory().resolve(name() + "." + extension));
     }
 
     /**
      * This file as Path.
      *
-     * @return
+     * @return The file.
      */
     public Path file() {
         return this.file;
@@ -51,7 +79,7 @@ public final class TestFile {
     }
 
     /**
-     * The name of this file without extensions
+     * The name of this file without extension.
      *
      * @return Name without extension.
      */
@@ -73,7 +101,7 @@ public final class TestFile {
     }
 
     /**
-     * Returns this file's extension without leading dot. If you file has no extension
+     * Returns this file's extension without leading dot. If this file has no extension
      * (that is, {@link #nameWithExtension()} does not contain a '.') an empty String is
      * returned.
      *
