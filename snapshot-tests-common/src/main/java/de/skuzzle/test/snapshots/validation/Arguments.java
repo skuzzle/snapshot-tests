@@ -20,6 +20,13 @@ public final class Arguments {
         return requireNonNull(object, "parameter is expected to be non null");
     }
 
+    public static <T> T requireNonNull(T object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
+        }
+        return object;
+    }
+
     public static <T> T requireNonNull(T object, String message, Object... params) {
         if (object == null) {
             throw new IllegalArgumentException(String.format(message, params));
