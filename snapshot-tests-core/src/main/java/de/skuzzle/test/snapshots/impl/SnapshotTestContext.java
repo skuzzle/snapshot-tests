@@ -13,8 +13,8 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.validation.Arguments;
 

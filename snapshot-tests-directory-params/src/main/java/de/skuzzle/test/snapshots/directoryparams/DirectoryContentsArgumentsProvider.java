@@ -12,6 +12,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
+
 class DirectoryContentsArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<FilesFrom> {
 
     private FilesFrom directoryContents;
@@ -48,7 +50,7 @@ class DirectoryContentsArgumentsProvider implements ArgumentsProvider, Annotatio
     }
 
     private Path determineDirectory() throws IOException {
-        return DirectoryResolver.resolve(directoryContents);
+        return DirectoryResolver.resolve(directoryContents.directory());
     }
 
     @Override

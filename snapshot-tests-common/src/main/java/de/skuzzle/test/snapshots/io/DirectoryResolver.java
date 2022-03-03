@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.directories;
+package de.skuzzle.test.snapshots.io;
 
 import java.nio.file.Path;
 
@@ -7,6 +7,11 @@ import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.validation.Arguments;
 
+/**
+ * Resolves directories relative to src/test/resources.
+ *
+ * @author Simon Taddiken
+ */
 @API(status = Status.INTERNAL)
 public class DirectoryResolver {
     // FIXME: https://github.com/skuzzle/snapshot-tests/issues/3
