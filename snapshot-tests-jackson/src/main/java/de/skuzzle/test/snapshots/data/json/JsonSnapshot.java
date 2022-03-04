@@ -100,6 +100,14 @@ public final class JsonSnapshot implements StructuredDataProvider {
         return this;
     }
 
+    @API(status = Status.EXPERIMENTAL)
+    public JsonSnapshot withComparator(Consumer<ComparatorCustomizer> customizedMatcher) {
+        final ComparatorCustomizerImpl comparatorCustomizerImpl = new ComparatorCustomizerImpl();
+        customizedMatcher.accept(comparatorCustomizerImpl);
+        this.jsonComparator = comparatorCustomizerImpl.build();
+        return this;
+    }
+
     @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = new JacksonJsonSnapshotSerializer(objectMapper);
