@@ -2,6 +2,11 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.nio.file.Path;
 
+/**
+ * Result of testing a single snapshot file for whether it is orphaned or not.
+ *
+ * @author Simon Taddiken
+ */
 final class OrphanDetectionResult {
 
     private final String detectorName;
