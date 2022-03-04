@@ -20,12 +20,13 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * @author Simon Taddiken
  * @since 1.2.0
  * @see FilesFrom#filter()
+ * @see DirectoriesFrom#filter()
  */
 @API(status = Status.EXPERIMENTAL, since = "1.2.0")
 public interface PathFilter {
 
     public static PathFilter fromPredicate(Predicate<Path> predicate) {
-        return path -> predicate.test(path);
+        return predicate::test;
     }
 
     /**

@@ -7,7 +7,8 @@ import java.util.Arrays;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * PathFilter implementation that handles the {@link FilesFrom#extensions()} filter.
+ * Special PathFilter implementation that handles the {@link FilesFrom#extensions()}
+ * filter.
  *
  * @author Simon Taddiken
  * @since 1.2.0

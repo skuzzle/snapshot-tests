@@ -10,7 +10,7 @@ import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 @EnableSnapshotTests(snapshotDirectory = "test-input", forceUpdateSnapshots = false)
-public class DirectoryParameterTest {
+public class FilesFromTest {
 
     @ParameterizedTest
     @FilesFrom(directory = "test-input", extensions = "txt")
@@ -23,24 +23,6 @@ public class DirectoryParameterTest {
 
         // Then
         snapshot.named(testFile.name())
-                .assertThat(actualTestResult)
-                .asText()
-                .matchesSnapshotText();
-    }
-
-    @ParameterizedTest
-    @DirectoriesFrom(directory = "test-directories")
-    void testDirectories(TestDirectory directory, Snapshot snapshot) throws IOException {
-        // Given
-        final TestFile testFile = directory.resolve("input.txt");
-        final String testInput = testFile.asText(StandardCharsets.UTF_8);
-
-        // When
-        final String actualTestResult = transform(testInput);
-
-        // Then
-        snapshot.in(directory.path())
-                .named(testFile.name())
                 .assertThat(actualTestResult)
                 .asText()
                 .matchesSnapshotText();

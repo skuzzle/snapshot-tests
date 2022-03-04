@@ -43,7 +43,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 public @interface FilesFrom {
 
     /**
-     * The directory, relative to src/main/resources, from which to list the files.
+     * The directory, relative to src/test/resources, from which to list the files.
      */
     String directory();
 
