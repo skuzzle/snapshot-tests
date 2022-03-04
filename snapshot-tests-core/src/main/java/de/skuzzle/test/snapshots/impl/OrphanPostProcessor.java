@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
-public class OrphanPostProcessor {
+class OrphanPostProcessor {
 
     public Stream<OrphanDetectionResult> orphanedOnly(Collection<OrphanDetectionResult> results) {
         return results.stream()
