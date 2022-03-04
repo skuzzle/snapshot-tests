@@ -92,7 +92,7 @@ final class StaticOrphanedSnapshotDetector {
             // NOTE: this only checks against the global snapshot directory. If the
             // snapshot had been taken using a local directory override it will
             // erroneously reported here as ORPHAN. That result will be overruled with the
-            // result from the static orphan detector which correctly identifies those
+            // result from the dynamic orphan detector which correctly identifies those
             // cases as ACTIVE.
             final Path snapshotDirectory = configuration.determineSnapshotDirectory();
             final Path snapshotFileName = path.getFileName();
