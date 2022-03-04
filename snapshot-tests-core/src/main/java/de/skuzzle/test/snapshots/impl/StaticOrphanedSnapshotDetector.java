@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
+import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
@@ -40,19 +41,18 @@ final class StaticOrphanedSnapshotDetector {
      * @param root The root directory to traverse.
      * @return Stream of orphaned snapshot files.
      */
-    public Stream<Path> detectOrphans(Path root) {
+    public Stream<OrphanDetectionResult> detectOrphans(Path root) {
         try (var files = UncheckedIO.walk(root)) {
             return files
                     .filter(InternalSnapshotNaming::isSnapshotFile)
                     .map(SnapshotFileAndPath::readFrom)
-                    .filter(SnapshotFileAndPath::isOrphaned)
-                    .map(SnapshotFileAndPath::path)
+                    .map(SnapshotFileAndPath::toOrphanDetectionResult)
                     .collect(Collectors.toList())
                     .stream();
         }
     }
 
-    public static final class SnapshotFileAndPath {
+    private static final class SnapshotFileAndPath {
         private final Path path;
         private final SnapshotFile snapshotFile;
 
@@ -70,27 +70,36 @@ final class StaticOrphanedSnapshotDetector {
             }
         }
 
-        public Path path() {
-            return this.path;
+        public OrphanDetectionResult toOrphanDetectionResult() {
+            return new OrphanDetectionResult(StaticOrphanedSnapshotDetector.class.getSimpleName(), path, isOrphaned());
         }
 
-        private boolean isOrphaned() {
+        private Result isOrphaned() {
             // test whether test class still exists
             final Optional<Class<?>> testClass = testClass();
             if (testClass.isEmpty()) {
-                return true;
+                return Result.ORPHAN;
             }
             // test whether test method still exists in test class
             final Optional<Method> testMethod = testMethodIn(testClass.orElseThrow());
             if (testMethod.isEmpty()) {
-                return true;
+                return Result.ORPHAN;
             }
             // test whether snapshot is located in correct folder
             final SnapshotConfiguration configuration = DefaultSnapshotConfiguration
                     .forTestClass(testClass.orElseThrow());
+
+            // NOTE: this only checks against the global snapshot directory. If the
+            // snapshot had been taken using a local directory override it will
+            // erroneously reported here as ORPHAN. That result will be overruled with the
+            // result from the static orphan detector which correctly identifies those
+            // cases as ACTIVE.
             final Path snapshotDirectory = configuration.determineSnapshotDirectory();
             final Path snapshotFileName = path.getFileName();
-            return !Files.exists(snapshotDirectory.resolve(snapshotFileName));
+            final boolean fileIsMissing = !Files.exists(snapshotDirectory.resolve(snapshotFileName));
+            return fileIsMissing
+                    ? Result.ORPHAN
+                    : Result.UNSURE;
         }
 
         private Optional<Class<?>> testClass() {

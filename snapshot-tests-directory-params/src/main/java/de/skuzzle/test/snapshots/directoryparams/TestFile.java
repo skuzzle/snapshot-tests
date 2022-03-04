@@ -31,6 +31,7 @@ public final class TestFile {
     TestFile(Path file) {
         Arguments.requireNonNull(file, "file must not be null");
         Arguments.check(Files.exists(file), "file doesn't exist: %s", file);
+        Arguments.check(Files.isRegularFile(file), "file is not a regular file: %s", file);
         this.file = file;
     }
 
@@ -57,7 +58,7 @@ public final class TestFile {
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
     public TestFile siblingWithExtension(String extension) {
         Arguments.requireNonNull(extension, "sibling extension must not be null");
-        return new TestFile(directory().resolve(name() + "." + extension));
+        return testDirectory().resolve(name() + "." + extension);
     }
 
     /**
@@ -73,9 +74,17 @@ public final class TestFile {
      * The directory that contains this file.
      *
      * @return This file's directory.
+     * @deprecated Since 1.2.0 - use {@link #testDirectory()} instead.
      */
+    @Deprecated(forRemoval = true, since = "1.2.0")
+    @API(status = Status.DEPRECATED, since = "1.2.0")
     public Path directory() {
         return this.file.getParent();
+    }
+
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestDirectory testDirectory() {
+        return new TestDirectory(this.file.getParent());
     }
 
     /**
@@ -152,6 +161,7 @@ public final class TestFile {
         final Set<String> replacedVariables = new HashSet<>(context.size());
         final Matcher matcher = REPLACIBLE_VAR.matcher(raw);
         final StringBuilder b = new StringBuilder(raw.length());
+
         while (matcher.find()) {
             final String varName = matcher.group(1);
             final Object replacement = context.get(varName);
@@ -170,6 +180,6 @@ public final class TestFile {
 
     @Override
     public String toString() {
-        return this.file.toString();
+        return name();
     }
 }

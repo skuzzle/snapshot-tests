@@ -1,6 +1,8 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -17,6 +19,8 @@ public interface InternalSnapshotTest {
      * @return The test results.
      */
     List<SnapshotTestResult> testResults();
+
+    Optional<Path> snapshotDirectoryOverride();
 
     /**
      * When soft assertions are enabled, performs the assertions based on the results

@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import java.nio.file.Path;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -32,7 +34,7 @@ public interface SnapshotDsl {
      * @author Simon Taddiken
      */
     @API(status = Status.STABLE)
-    public interface Snapshot extends ChooseActual, ChooseName {
+    public interface Snapshot extends ChooseActual, ChooseName, ChooseDirectory {
 
     }
 
@@ -49,8 +51,25 @@ public interface SnapshotDsl {
         ChooseDataFormat assertThat(Object actual);
     }
 
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public interface ChooseDirectory {
+
+        /**
+         * Allows to choose the directory into which the snapshot will be persisted. The
+         * directory is relative to src/test/resources. The path configured here takes
+         * precedence over what is configured in
+         * {@link EnableSnapshotTests#snapshotDirectory()}
+         *
+         * @param directory The directory into which to write the snapshot.
+         * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
+         *         the same object as 'this'!
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+        ChooseName in(Path directory);
+    }
+
     @API(status = Status.STABLE)
-    public interface ChooseName {
+    public interface ChooseName extends ChooseActual {
         /**
          * Choose a name for the snapshot file. This overrides the default naming scheme
          * of using <code>method name + consecutive number</code>. Note that, when you
