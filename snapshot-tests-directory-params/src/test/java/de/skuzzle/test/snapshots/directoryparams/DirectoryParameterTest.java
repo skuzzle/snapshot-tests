@@ -28,6 +28,24 @@ public class DirectoryParameterTest {
                 .matchesSnapshotText();
     }
 
+    @ParameterizedTest
+    @DirectoriesFrom(directory = "test-directories")
+    void testDirectories(TestDirectory directory, Snapshot snapshot) throws IOException {
+        // Given
+        final TestFile testFile = directory.resolve("input.txt");
+        final String testInput = testFile.asText(StandardCharsets.UTF_8);
+
+        // When
+        final String actualTestResult = transform(testInput);
+
+        // Then
+        snapshot.in(directory.path())
+                .named(testFile.name())
+                .assertThat(actualTestResult)
+                .asText()
+                .matchesSnapshotText();
+    }
+
     private String transform(String input) {
         return input;
     }
