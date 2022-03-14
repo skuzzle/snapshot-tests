@@ -78,11 +78,6 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         return this.directoryOverride != null ? this.directoryOverride : configuration.determineSnapshotDirectory();
     }
 
-    @Override
-    public Optional<Path> snapshotDirectoryOverride() {
-        return Optional.ofNullable(directoryOverride);
-    }
-
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
         final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);

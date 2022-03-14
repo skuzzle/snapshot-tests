@@ -37,8 +37,13 @@ final class DynamicOrphanedSnapshotsDetector {
         this.failedTestMethods.add(Arguments.requireNonNull(testMethod));
     }
 
-    public Stream<OrphanDetectionResult> detectOrphans(Path snapshotDirectory) {
-        try (final var files = UncheckedIO.list(snapshotDirectory)) {
+    private Stream<Path> snapshotDirectories(Path globalSnapshotDirectory) {
+        return Stream.concat(Stream.of(globalSnapshotDirectory),
+                results.stream().map(SnapshotTestResult::targetFile).map(Path::getParent));
+    }
+
+    public Stream<OrphanDetectionResult> detectOrphans(Path globalSnapshotDirectory) {
+        try (final var files = snapshotDirectories(globalSnapshotDirectory).flatMap(UncheckedIO::list)) {
             return files
                     .filter(this::isSnapshotFile)
                     .map(this::isOrphanedSnapshot)

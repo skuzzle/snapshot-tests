@@ -59,7 +59,6 @@ public final class JUnit5SnapshotExtension implements
 
         final InternalSnapshotTest snapshotTest = snapshotTestContext.clearCurrentSnapshotTest().orElse(null);
         if (snapshotTest != null) {
-            snapshotTest.snapshotDirectoryOverride().ifPresent(snapshotTestContext::recordDynamicSnapshotDirectory);
             snapshotTestContext.recordSnapshotTestResults(snapshotTest.testResults());
             snapshotTest.executeAssertions();
         }

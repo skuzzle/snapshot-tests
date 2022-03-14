@@ -2,9 +2,7 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,7 +11,6 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
@@ -38,8 +35,6 @@ public final class SnapshotTestContext {
 
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
-
-    private final List<Path> dynamicSnapshotDirectories = new ArrayList<>();
 
     private SnapshotTestImpl currentSnapshotTest;
 
@@ -119,17 +114,6 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Records an extra directory for containing snapshots. The framework uses this to
-     * discover dynamic snapshot directories that are use with
-     * {@link ChooseDirectory#in(Path)}.
-     *
-     * @param dynamicSnapshotDirectory The snapshot directory to add.
-     */
-    public void recordDynamicSnapshotDirectory(Path dynamicSnapshotDirectory) {
-        dynamicSnapshotDirectories.add(dynamicSnapshotDirectory);
-    }
-
-    /**
      * Records the results from all snapshot assertions within a single test method.
      *
      * @param results The snapshot test results of a single test method.
@@ -146,9 +130,10 @@ public final class SnapshotTestContext {
      */
     public Collection<Path> detectOrCleanupOrphanedSnapshots() {
         final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphanedSnapshots();
+        final Path globalSnapshotDirectory = this.snapshotConfiguration.determineSnapshotDirectory();
 
-        final Stream<OrphanDetectionResult> dynamicOrphans = allSnapshotDirectories()
-                .flatMap(dynamicOrphanedSnapshotsDetector::detectOrphans);
+        final Stream<OrphanDetectionResult> dynamicOrphans = dynamicOrphanedSnapshotsDetector
+                .detectOrphans(globalSnapshotDirectory);
 
         final Stream<OrphanDetectionResult> staticOrphans = new StaticOrphanedSnapshotDetector()
                 .detectOrphans(DirectoryResolver.BASE);
@@ -170,11 +155,6 @@ public final class SnapshotTestContext {
                     }
                 })
                 .collect(Collectors.toList());
-    }
-
-    private Stream<Path> allSnapshotDirectories() {
-        final Path defaultSnapshotDirectory = this.snapshotConfiguration.determineSnapshotDirectory();
-        return Stream.concat(Stream.of(defaultSnapshotDirectory), dynamicSnapshotDirectories.stream());
     }
 
 }
