@@ -43,12 +43,9 @@ public final class SnapshotTestContext {
                 "snapshotConfiguration must not be null");
     }
 
-    private SnapshotTestContext(Class<?> testClass) {
-        this.snapshotConfiguration = DefaultSnapshotConfiguration.forTestClass(testClass);
-    }
-
     public static SnapshotTestContext forTestClass(Class<?> testClass) {
-        return new SnapshotTestContext(testClass);
+        final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
+        return new SnapshotTestContext(configuration);
     }
 
     public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
