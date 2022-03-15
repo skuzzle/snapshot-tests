@@ -61,7 +61,7 @@ final class SnapshotLogging {
 
                 @Override
                 public void info(String message, Object... params) {
-                    JDK_LOGGER.log(Level.WARNING, message, params);
+                    JDK_LOGGER.log(Level.INFO, message, params);
                 }
             };
         }
