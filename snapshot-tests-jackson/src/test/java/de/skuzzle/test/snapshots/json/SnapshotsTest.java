@@ -51,7 +51,7 @@ public class SnapshotsTest {
         final Person myself = determinePerson().setName("0000-02-02");
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(JsonSnapshot.withDefaultObjectMapper()
-                        .withComparator(matcher -> matcher
+                        .withComparisonRules(rules -> rules
                                 .jsonPathAt("address.city").ignore()
                                 .jsonPathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
                 .matchesSnapshotStructure();

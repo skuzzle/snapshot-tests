@@ -2,6 +2,7 @@ package de.skuzzle.test.snapshots.data.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import org.skyscreamer.jsonassert.Customization;
@@ -14,7 +15,7 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import de.skuzzle.test.snapshots.validation.Arguments;
 
-final class ComparatorCustomizerImpl implements ComparatorCustomizer {
+final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
 
     private final List<Customization> customizations = new ArrayList<>();
 
@@ -24,7 +25,7 @@ final class ComparatorCustomizerImpl implements ComparatorCustomizer {
         return new ChooseMatcher() {
 
             @Override
-            public ComparatorCustomizer mustMatch(Pattern regex) {
+            public ComparisonRuleBuilder mustMatch(Pattern regex) {
                 Arguments.requireNonNull(regex, "regex must not be null");
                 customizations
                         .add(new Customization(path, new LocationAwareValueMatcher<>() {
@@ -53,8 +54,15 @@ final class ComparatorCustomizerImpl implements ComparatorCustomizer {
             }
 
             @Override
-            public ComparatorCustomizer ignore() {
+            public ComparisonRuleBuilder ignore() {
                 customizations.add(new Customization(path, (o1, o2) -> true));
+                return ComparatorCustomizerImpl.this;
+            }
+
+            @Override
+            public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
+                Arguments.requireNonNull(predicate, "predicate must not be null");
+                customizations.add(new Customization(path, (o1, o2) -> predicate.test(o1) && predicate.test(o2)));
                 return ComparatorCustomizerImpl.this;
             }
         };

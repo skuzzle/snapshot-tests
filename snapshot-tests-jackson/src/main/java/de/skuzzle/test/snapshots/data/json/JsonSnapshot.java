@@ -90,20 +90,29 @@ public final class JsonSnapshot implements StructuredDataProvider {
      *
      * @param jsonComparator The comparator to use.
      * @return This instance.
+     * @deprecated Since 1.2.0 - Use {@link #withComparisonRules(Consumer)} instead.
      * @apiNote This method is likely going to be replaced with a wrapper API around
      *          JSONAssert types. The JSONAssert API is a bit awkward to use and I'd like
      *          to remove it as a visible dependency altogether
      */
-    @API(status = Status.EXPERIMENTAL)
+    @Deprecated(forRemoval = true, since = "1.2.0")
+    @API(status = Status.DEPRECATED, since = "1.2.0")
     public JsonSnapshot withComparator(JSONComparator jsonComparator) {
         this.jsonComparator = Arguments.requireNonNull(jsonComparator, "comparator must not be null");
         return this;
     }
 
-    @API(status = Status.EXPERIMENTAL)
-    public JsonSnapshot withComparator(Consumer<ComparatorCustomizer> customizedMatcher) {
+    /**
+     * Allows to specify extra comparison rules that are applied to certain paths within
+     * the json snapshots.
+     *
+     * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
+     * @return This instance.
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public JsonSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         final ComparatorCustomizerImpl comparatorCustomizerImpl = new ComparatorCustomizerImpl();
-        customizedMatcher.accept(comparatorCustomizerImpl);
+        rules.accept(comparatorCustomizerImpl);
         this.jsonComparator = comparatorCustomizerImpl.build();
         return this;
     }
