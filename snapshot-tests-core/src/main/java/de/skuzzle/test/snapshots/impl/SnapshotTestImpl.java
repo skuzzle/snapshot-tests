@@ -36,6 +36,9 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
 
+    // XXX: These might be mutated multiple times during the execution of a single test if
+    // that test uses multiple snapshot assertions with different explicit
+    // naming/directory override.
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
     private Path directoryOverride;
 
