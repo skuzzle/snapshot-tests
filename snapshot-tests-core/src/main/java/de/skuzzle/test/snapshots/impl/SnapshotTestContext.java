@@ -48,7 +48,7 @@ public final class SnapshotTestContext {
         return new SnapshotTestContext(configuration);
     }
 
-    public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
+    static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
         return new SnapshotTestContext(snapshotConfiguration);
     }
 
