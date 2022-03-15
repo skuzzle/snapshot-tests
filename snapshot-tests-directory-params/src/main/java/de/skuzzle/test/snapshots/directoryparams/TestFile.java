@@ -82,6 +82,12 @@ public final class TestFile {
         return this.file.getParent();
     }
 
+    /**
+     * The directory that contains this file.
+     *
+     * @return This file's directory.
+     * @since 1.2.0
+     */
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
     public TestDirectory testDirectory() {
         return new TestDirectory(this.file.getParent());

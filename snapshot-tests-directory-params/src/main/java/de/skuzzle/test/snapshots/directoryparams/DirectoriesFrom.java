@@ -29,6 +29,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  * @see TestFile
  * @see FilesFrom
  * @author Simon Taddiken
+ * @since 1.2.0
  */
 @Retention(RUNTIME)
 @Target({ METHOD })
@@ -47,7 +48,7 @@ public @interface DirectoriesFrom {
      * directories are to be included. The class is expected to have an accessible,
      * 0-arguments constructor.
      * <p>
-     * Per default, all sub directories of {@link #directory()} are included.
+     * Per default, all direct sub directories of {@link #directory()} are included.
      *
      * @return The path filter to use.
      */
