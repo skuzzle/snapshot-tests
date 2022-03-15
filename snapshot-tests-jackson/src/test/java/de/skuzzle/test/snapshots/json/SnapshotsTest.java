@@ -52,8 +52,8 @@ public class SnapshotsTest {
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(JsonSnapshot.withDefaultObjectMapper()
                         .withComparisonRules(rules -> rules
-                                .jsonPathAt("address.city").ignore()
-                                .jsonPathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+                                .pathAt("address.city").ignore()
+                                .pathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }

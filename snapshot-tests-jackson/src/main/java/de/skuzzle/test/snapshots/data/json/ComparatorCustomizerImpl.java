@@ -20,7 +20,7 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
     private final List<Customization> customizations = new ArrayList<>();
 
     @Override
-    public ChooseMatcher jsonPathAt(String path) {
+    public ChooseMatcher pathAt(String path) {
 
         return new ChooseMatcher() {
 

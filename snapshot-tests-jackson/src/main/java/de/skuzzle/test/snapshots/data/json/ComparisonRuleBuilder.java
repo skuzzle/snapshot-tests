@@ -21,7 +21,7 @@ public interface ComparisonRuleBuilder {
      * @param path The dot separated path.
      * @return A DSL Object for specifying how to compare values rooted at that path.
      */
-    ChooseMatcher jsonPathAt(String path);
+    ChooseMatcher pathAt(String path);
 
     /**
      * Allows to choose the comparison for the value.
