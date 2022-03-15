@@ -10,7 +10,7 @@ import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 @EnableSnapshotTests(snapshotDirectory = "test-input", forceUpdateSnapshots = false)
-public class DirectoryParameterTest {
+public class FilesFromTest {
 
     @ParameterizedTest
     @FilesFrom(directory = "test-input", extensions = "txt")

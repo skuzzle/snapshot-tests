@@ -7,13 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Pointer to a file that has been listed in a directory by {@link FilesFrom}. Provides a
@@ -28,13 +29,42 @@ public final class TestFile {
     private final Path file;
 
     TestFile(Path file) {
-        this.file = Objects.requireNonNull(file, "file must not be null");
+        Arguments.requireNonNull(file, "file must not be null");
+        Arguments.check(Files.exists(file), "file doesn't exist: %s", file);
+        Arguments.check(Files.isRegularFile(file), "file is not a regular file: %s", file);
+        this.file = file;
+    }
+
+    /**
+     * Returns a pointer to a sibling file with given name.
+     *
+     * @param fileName The file name (including extension) of a sibling file to resolve.
+     * @return Pointer to the sibling file.
+     * @since 1.2.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestFile sibling(String fileName) {
+        Arguments.requireNonNull(fileName, "sibling fileName must not be null");
+        return new TestFile(directory().resolve(fileName));
+    }
+
+    /**
+     * Resolves a sibling file with same name as this one but with the given extension.
+     *
+     * @param extension The extension of a sibling file with identical name to resolve.
+     * @return Pointer to the sibling file.
+     * @since 1.2.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestFile siblingWithExtension(String extension) {
+        Arguments.requireNonNull(extension, "sibling extension must not be null");
+        return testDirectory().resolve(name() + "." + extension);
     }
 
     /**
      * This file as Path.
      *
-     * @return
+     * @return The file.
      */
     public Path file() {
         return this.file;
@@ -44,13 +74,27 @@ public final class TestFile {
      * The directory that contains this file.
      *
      * @return This file's directory.
+     * @deprecated Since 1.2.0 - use {@link #testDirectory()} instead.
      */
+    @Deprecated(forRemoval = true, since = "1.2.0")
+    @API(status = Status.DEPRECATED, since = "1.2.0")
     public Path directory() {
         return this.file.getParent();
     }
 
     /**
-     * The name of this file without extensions
+     * The directory that contains this file.
+     *
+     * @return This file's directory.
+     * @since 1.2.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.0")
+    public TestDirectory testDirectory() {
+        return new TestDirectory(this.file.getParent());
+    }
+
+    /**
+     * The name of this file without extension.
      *
      * @return Name without extension.
      */
@@ -72,7 +116,7 @@ public final class TestFile {
     }
 
     /**
-     * Returns this file's extension without leading dot. If you file has no extension
+     * Returns this file's extension without leading dot. If this file has no extension
      * (that is, {@link #nameWithExtension()} does not contain a '.') an empty String is
      * returned.
      *
@@ -112,7 +156,7 @@ public final class TestFile {
      * @throws IOException If an I/O error occurs.
      */
     public String asText(Charset charset) throws IOException {
-        return new String(asBinary(), Objects.requireNonNull(charset, "charset must not be null"));
+        return new String(asBinary(), Arguments.requireNonNull(charset, "charset must not be null"));
     }
 
     private static final Pattern REPLACIBLE_VAR = Pattern.compile("\\$\\{(.*)\\}");
@@ -123,6 +167,7 @@ public final class TestFile {
         final Set<String> replacedVariables = new HashSet<>(context.size());
         final Matcher matcher = REPLACIBLE_VAR.matcher(raw);
         final StringBuilder b = new StringBuilder(raw.length());
+
         while (matcher.find()) {
             final String varName = matcher.group(1);
             final Object replacement = context.get(varName);
@@ -141,6 +186,6 @@ public final class TestFile {
 
     @Override
     public String toString() {
-        return this.file.toString();
+        return name();
     }
 }

@@ -1,7 +1,5 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.util.Objects;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
@@ -12,6 +10,7 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
 
@@ -21,7 +20,7 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
     private StructuralAssertions structuralAssertions = TextSnapshot.text.structuralAssertions();
 
     SnapshotDslImpl(SnapshotTestImpl snapshot, Object actual) {
-        this.snapshot = Objects.requireNonNull(snapshot);
+        this.snapshot = Arguments.requireNonNull(snapshot);
         this.actual = actual;
     }
 
@@ -40,13 +39,13 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
 
     @Override
     public ChooseAssertions as(SnapshotSerializer serializer) {
-        this.snapshotSerializer = Objects.requireNonNull(serializer, "serializer must not be null");
+        this.snapshotSerializer = Arguments.requireNonNull(serializer, "serializer must not be null");
         return this;
     }
 
     @Override
     public ChooseStructure as(StructuredDataProvider structuredDataBuilder) {
-        final StructuredData structure = Objects
+        final StructuredData structure = Arguments
                 .requireNonNull(structuredDataBuilder, "structuredDataBuilder must not be null").build();
         this.snapshotSerializer = structure.snapshotSerializer();
         this.structuralAssertions = structure.structuralAssertions();
@@ -65,7 +64,7 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
 
     @Override
     public SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
-        Objects.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
+        Arguments.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
         try {
             return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
         } catch (final Exception e) {

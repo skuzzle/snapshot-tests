@@ -14,6 +14,8 @@ import java.util.stream.Stream;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 /**
  * An action that can be applied to a {@link ObjectMember} which is matched by a
  * {@link Predicate}.
@@ -78,11 +80,11 @@ public final class ObjectMemberAction {
         private final Predicate<ObjectMember> predicate;
 
         private ChooseActionBuilder(Predicate<ObjectMember> predicate) {
-            this.predicate = Objects.requireNonNull(predicate, "predicate must not be null");
+            this.predicate = Arguments.requireNonNull(predicate, "predicate must not be null");
         }
 
         public ObjectMemberAction consumeWith(Consumer<ObjectMember> action) {
-            return new ObjectMemberAction(predicate, Objects.requireNonNull(action, "action must not be null"));
+            return new ObjectMemberAction(predicate, Arguments.requireNonNull(action, "action must not be null"));
         }
 
         public ObjectMemberAction mapValueTo(Function<? super Object, ? extends Object> transformer) {

@@ -2,7 +2,6 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -10,8 +9,9 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
-import de.skuzzle.test.snapshots.directories.DirectoryResolver;
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Relevant configuration for executing snapshot tests in a test class that is annotated
@@ -29,7 +29,7 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     private final Class<?> testClass;
 
     private DefaultSnapshotConfiguration(Class<?> testClass) {
-        this.testClass = Objects.requireNonNull(testClass, "testClass must not be null");
+        this.testClass = Arguments.requireNonNull(testClass, "testClass must not be null");
     }
 
     public static SnapshotConfiguration forTestClass(Class<?> testClass) {

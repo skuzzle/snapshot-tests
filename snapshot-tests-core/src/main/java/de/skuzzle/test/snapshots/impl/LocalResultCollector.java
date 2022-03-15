@@ -3,11 +3,11 @@ package de.skuzzle.test.snapshots.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Collects the snapshot assertion results within a single test method.
@@ -19,7 +19,7 @@ final class LocalResultCollector {
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
     public void add(SnapshotTestResult result) {
-        this.results.add(Objects.requireNonNull(result));
+        this.results.add(Arguments.requireNonNull(result));
     }
 
     public List<SnapshotTestResult> results() {

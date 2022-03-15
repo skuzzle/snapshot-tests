@@ -2,7 +2,6 @@ package de.skuzzle.test.snapshots;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,6 +9,7 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Strategy interface for dynamically determining snapshot names. By default, the snapshot
@@ -49,7 +49,7 @@ public interface SnapshotNaming {
      * @return Naming strategy which always returns the same name.
      */
     static SnapshotNaming constant(String snapshotName) {
-        Objects.requireNonNull(snapshotName, "snapshotName must not be null");
+        Arguments.requireNonNull(snapshotName, "snapshotName must not be null");
         return (testMethod, counter) -> snapshotName;
     }
 
@@ -67,7 +67,7 @@ public interface SnapshotNaming {
      * @return The naming strategy.
      */
     static SnapshotNaming withParameters(Object parameter1, Object... furtherParameters) {
-        Objects.requireNonNull(parameter1, "parameter must not be null");
+        Arguments.requireNonNull(parameter1, "parameter must not be null");
         return (testMethod, counter) -> {
             final String parameterPart = Stream.concat(Stream.of(parameter1), Arrays.stream(furtherParameters))
                     .map(Object::toString)

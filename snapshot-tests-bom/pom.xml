@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <artifactId>snapshot-tests-bom</artifactId>
@@ -40,6 +40,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-normalize</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

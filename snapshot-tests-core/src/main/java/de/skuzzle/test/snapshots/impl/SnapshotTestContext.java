@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,9 +13,10 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.directories.DirectoryResolver;
 import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Context object that pertains to the execution of a whole test class which is annotated
@@ -39,19 +39,16 @@ public final class SnapshotTestContext {
     private SnapshotTestImpl currentSnapshotTest;
 
     private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
-        this.snapshotConfiguration = Objects.requireNonNull(snapshotConfiguration,
+        this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
                 "snapshotConfiguration must not be null");
     }
 
-    private SnapshotTestContext(Class<?> testClass) {
-        this.snapshotConfiguration = DefaultSnapshotConfiguration.forTestClass(testClass);
-    }
-
     public static SnapshotTestContext forTestClass(Class<?> testClass) {
-        return new SnapshotTestContext(testClass);
+        final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
+        return new SnapshotTestContext(configuration);
     }
 
-    public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
+    static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
         return new SnapshotTestContext(snapshotConfiguration);
     }
 
@@ -130,11 +127,17 @@ public final class SnapshotTestContext {
      */
     public Collection<Path> detectOrCleanupOrphanedSnapshots() {
         final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphanedSnapshots();
+        final Path globalSnapshotDirectory = this.snapshotConfiguration.determineSnapshotDirectory();
 
-        final Path snapshotDirectory = snapshotConfiguration.determineSnapshotDirectory();
-        final Stream<Path> dynamicOrphans = dynamicOrphanedSnapshotsDetector.detectOrphans(snapshotDirectory);
-        final Stream<Path> staticOrphans = new StaticOrphanedSnapshotDetector().detectOrphans(DirectoryResolver.BASE);
-        return Stream.concat(dynamicOrphans, staticOrphans)
+        final Stream<OrphanDetectionResult> dynamicOrphans = dynamicOrphanedSnapshotsDetector
+                .detectOrphans(globalSnapshotDirectory);
+
+        final Stream<OrphanDetectionResult> staticOrphans = new StaticOrphanedSnapshotDetector()
+                .detectOrphans(DirectoryResolver.BASE);
+
+        return new OrphanPostProcessor()
+                .orphanedOnly(Stream.concat(dynamicOrphans, staticOrphans).collect(Collectors.toList()))
+                .map(OrphanDetectionResult::snapshotFile)
                 .distinct()
                 .peek(orphaned -> {
                     if (deleteOrphaned) {

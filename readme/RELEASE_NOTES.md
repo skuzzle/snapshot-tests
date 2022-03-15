@@ -1,9 +1,10 @@
-* [#5](https://github.com/skuzzle/snapshot-tests/issues/5): Improve support for parameterized tests (`@ParameterizedTest`)
-* [#15](https://github.com/skuzzle/snapshot-tests/issues/15): Internal refactoring to decouple core from JUnit dependency
-* [#8](https://github.com/skuzzle/snapshot-tests/issues/8): Way more sophisticated orphan detection
-* Deprecate `EnableSnapshotTests.forceUpdateSnapshots` in favor of new `@ForceUpdateSnapshots` annotation
-* Orphaned files are not deleted any more when `forceUpdateSnapshots` is enabled
-* `@DeleteOrphanedSnapshots` annotation can be placed on the test class in order to delete orphaned files
+* [#16](https://github.com/skuzzle/snapshot-tests/issues/16): Add better API for customizing json comparisons.
+* [#21](https://github.com/skuzzle/snapshot-tests/issues/21): Throw `IllegalArgumentException` instead of `NullPointerException` when validating parameters.
+* Automatically wrap objects in `JAXBElement` when they are not annotated with `@XmlRootObject`.
+* `TestFile` injected in parameterized tests now has a `sibling(String)` and `siblingWithExtension(String)` method.
+* Added `@DirectoriesFrom` annotation which iterates directories and injects them as `TestDirectory` into test methods.
+* Added `filter` attribute to the `@FilesFrom` annotation to specify a `PathFilter` implementation. Allows for more fine grained filtering control.
+* Experimental support for changing the snapshot directory per assertion with `snapshot.in(pathToDirectory).assertThat(...)`.
 
 Maven Central coordinates for this release:
 

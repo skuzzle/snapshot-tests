@@ -6,13 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
@@ -22,6 +22,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Aggregates the logic of executing (possibly multiple) snapshot assertions in the
@@ -34,16 +35,27 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     private final Method testMethod;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
+
+    // XXX: These might be mutated multiple times during the execution of a single test if
+    // that test uses multiple snapshot assertions with different explicit
+    // naming/directory override.
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
+    private Path directoryOverride;
 
     SnapshotTestImpl(SnapshotConfiguration configuration, Method testMethod) {
-        this.configuration = Objects.requireNonNull(configuration, "configuration must not be null");
-        this.testMethod = Objects.requireNonNull(testMethod, "testMethod must not be null");
+        this.configuration = Arguments.requireNonNull(configuration, "configuration must not be null");
+        this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
     }
 
     @Override
     public ChooseActual namedAccordingTo(SnapshotNaming namingStrategy) {
-        this.namingStrategy = Objects.requireNonNull(namingStrategy, "namingStrategy must not be null");
+        this.namingStrategy = Arguments.requireNonNull(namingStrategy, "namingStrategy must not be null");
+        return this;
+    }
+
+    @Override
+    public ChooseName in(Path directory) {
+        this.directoryOverride = Arguments.requireNonNull(directory, "snapshot directory must not be null");
         return this;
     }
 
@@ -62,7 +74,11 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
         final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
-        return configuration.determineSnapshotDirectory().resolve(snapshotFileName);
+        return determineSnapshotDirectory().resolve(snapshotFileName);
+    }
+
+    private Path determineSnapshotDirectory() {
+        return this.directoryOverride != null ? this.directoryOverride : configuration.determineSnapshotDirectory();
     }
 
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {

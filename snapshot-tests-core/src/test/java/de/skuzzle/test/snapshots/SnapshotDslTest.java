@@ -1,10 +1,13 @@
 package de.skuzzle.test.snapshots;
 
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
@@ -14,9 +17,21 @@ public class SnapshotDslTest {
     @Test
     void testDsl() throws Exception {
         snapshot()
+                .namedAccordingTo(SnapshotNaming.defaultNaming())
                 .assertThat(new Object())
                 .asText()
-                .justUpdateSnapshot();
+                .matchesSnapshotText();
+
+    }
+
+    @Test
+    void testDsl2() throws Exception {
+        snapshot()
+                .in(Path.of("tbd", "x"))
+                .namedAccordingTo(SnapshotNaming.defaultNaming())
+                .assertThat(new Object())
+                .asText()
+                .matchesSnapshotText();
 
     }
 
@@ -73,6 +88,11 @@ public class SnapshotDslTest {
 
         @Override
         public ChooseStructure as(StructuredDataProvider structuredDataBuilder) {
+            return this;
+        }
+
+        @Override
+        public ChooseName in(Path directory) {
             return this;
         }
 

@@ -4,6 +4,7 @@ import static de.skuzzle.test.snapshots.data.json.JsonSnapshot.json;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.Customization;
@@ -41,6 +42,18 @@ public class SnapshotsTest {
                 .as(JsonSnapshot.withDefaultObjectMapper()
                         .withComparator(new CustomComparator(JSONCompareMode.STRICT,
                                 new Customization("address.city", (o1, o2) -> true))))
+                .matchesSnapshotStructure();
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsJsonStructureCompareCustomNew(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson().setName("0000-02-02");
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+                .as(JsonSnapshot.withDefaultObjectMapper()
+                        .withComparisonRules(rules -> rules
+                                .pathAt("address.city").ignore()
+                                .pathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }

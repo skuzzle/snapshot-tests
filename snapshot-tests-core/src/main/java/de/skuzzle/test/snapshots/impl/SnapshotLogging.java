@@ -2,10 +2,11 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.util.Objects;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Minimal internal logging abstraction that helps us with testing. By default, simply
@@ -25,7 +26,7 @@ final class SnapshotLogging {
     }
 
     static void setFactory(SnapshotLoggerFactory factory) {
-        FACTORY = Objects.requireNonNull(factory, "factory must not be null");
+        FACTORY = Arguments.requireNonNull(factory, "factory must not be null");
     }
 
     static void resetFactory() {
@@ -60,7 +61,7 @@ final class SnapshotLogging {
 
                 @Override
                 public void info(String message, Object... params) {
-                    JDK_LOGGER.log(Level.WARNING, message, params);
+                    JDK_LOGGER.log(Level.INFO, message, params);
                 }
             };
         }

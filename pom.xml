@@ -10,7 +10,7 @@
 
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Parent</name>
@@ -54,6 +54,7 @@
         <module>snapshot-tests-jackson</module>
         <module>snapshot-tests-jaxb</module>
         <module>snapshot-tests-directory-params</module>
+        <module>snapshot-tests-common</module>
     </modules>
 
     <build>

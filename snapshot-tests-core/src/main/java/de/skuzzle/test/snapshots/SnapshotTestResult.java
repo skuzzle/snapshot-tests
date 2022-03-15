@@ -3,11 +3,12 @@ package de.skuzzle.test.snapshots;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Result details of a single snapshot assertion.
@@ -24,15 +25,15 @@ public final class SnapshotTestResult {
     private final Throwable failure;
 
     private SnapshotTestResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshot, Throwable failure) {
-        this.targetFile = Objects.requireNonNull(targetFile);
-        this.status = Objects.requireNonNull(status);
-        this.snapshot = Objects.requireNonNull(snapshot);
+        this.targetFile = Arguments.requireNonNull(targetFile);
+        this.status = Arguments.requireNonNull(status);
+        this.snapshot = Arguments.requireNonNull(snapshot);
         this.failure = failure;
     }
 
     public static SnapshotTestResult forFailedTest(Path targetFile, SnapshotFile snapshot, Throwable failure) {
         return new SnapshotTestResult(targetFile, SnapshotStatus.ASSERTED, snapshot,
-                Objects.requireNonNull(failure));
+                Arguments.requireNonNull(failure));
     }
 
     public static SnapshotTestResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshot) {
