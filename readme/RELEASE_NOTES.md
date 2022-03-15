@@ -1,5 +1,6 @@
-* [#21](https://github.com/skuzzle/snapshot-tests/issues/21): Throw `IllegalArgumentException` instead of `NullPointerException` when validating parameters
-* Automatically wrap objects in `JAXBElement` when they are not annotated with `@XmlRootObject`
+* [#16](https://github.com/skuzzle/snapshot-tests/issues/16): Add better API for customizing json comparisons.
+* [#21](https://github.com/skuzzle/snapshot-tests/issues/21): Throw `IllegalArgumentException` instead of `NullPointerException` when validating parameters.
+* Automatically wrap objects in `JAXBElement` when they are not annotated with `@XmlRootObject`.
 * `TestFile` injected in parameterized tests now has a `sibling(String)` and `siblingWithExtension(String)` method.
 * Added `DirectoriesFrom` which iterates directories and injects them as `TestDirectory`.
 * Added `filter` attribute to the `@FilesFrom` annotation to specify a `PathFilter` implementation. Allows for more fine grained filtering control.
