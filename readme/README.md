@@ -178,3 +178,6 @@ Snapshot files can become orphans if, for example you rename a test class/method
 within a test. This framework comes with a sophisticated approach for detecting those orphaned files. By default, we 
 will log a warning with the found orphan. You can temporarily place the `@DeleteOrphanedSnapshots` annotation on a 
 snapshot test class to have those files deleted automatically.
+
+**Warning:** Deleting orphans should be handled with care. There might be raw occasions where we falsely detect a 
+snapshot file as orphan (especially if you are running only parts of your test suite or have disabled tests).

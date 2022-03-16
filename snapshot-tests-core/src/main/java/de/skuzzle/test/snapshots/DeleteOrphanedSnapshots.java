@@ -12,11 +12,13 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 /**
- * Tagging annotation that can be <em>temporarily</em> placed on a snapshot test to have
+ * Tagging annotation that can be <b>temporarily</b> placed on a snapshot test to have
  * orphaned snapshot files automatically deleted.
  * <p>
- * <b>Warning:</b> This will also delete orphans that do not necessarily pertain to the
- * currently executed test class.
+ * <b>WARNING:</b> This will also delete orphans that do not necessarily pertain to the
+ * currently executed test class. Use with caution especially when you are executing only
+ * parts of your test suite (snapshots pertaining to excluded tests might falsely be
+ * determined orphaned).
  * <p>
  * An orphaned snapshot file is one for which at least one of the following conditions
  * apply:
@@ -34,7 +36,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * property <code>deleteOrphanedSnapshots</code> (case insensitive) to the JVM.
  *
  * @deprecated This annotation is <b>NOT</b> deprecated. Deprecation serves only to mark
- *             this annotation in your IDE as it should only be used temporarily.
+ *             this annotation in your IDE as it should only ever be used temporarily.
  * @since 1.1.0
  * @author Simon Taddiken
  */

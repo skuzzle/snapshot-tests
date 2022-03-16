@@ -55,6 +55,10 @@ public final class SnapshotFile {
         return new SnapshotFile(header, snapshot.toString());
     }
 
+    public SnapshotFile changeHeader(SnapshotHeader newHeader) {
+        return new SnapshotFile(newHeader, snapshot);
+    }
+
     /**
      * Header information to this snapshot that are written by the framework.
      *
