@@ -55,6 +55,15 @@ public final class SnapshotFile {
         return new SnapshotFile(header, snapshot.toString());
     }
 
+    /**
+     * Creates a new {@link SnapshotFile} instance with the given header and the same
+     * snapshot contents.
+     *
+     * @param newHeader The new header.
+     * @return A new {@link SnapshotFile} instance.
+     * @since 1.2.1
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.2.1")
     public SnapshotFile changeHeader(SnapshotHeader newHeader) {
         return new SnapshotFile(newHeader, snapshot);
     }
