@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import static java.util.Comparator.comparing;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -8,10 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -119,18 +121,18 @@ public final class SnapshotFile {
         public static final String SNAPSHOT_NUMBER = "snapshot-number";
         public static final String SNAPSHOT_NAME = "snapshot-name";
 
-        private final SortedMap<String, String> values;
+        private final Map<String, String> values;
 
-        private SnapshotHeader(SortedMap<String, String> values) {
-            this.values = Collections.unmodifiableSortedMap(values);
+        private SnapshotHeader(Map<String, String> values) {
+            this.values = Collections.unmodifiableMap(values);
         }
 
         public static SnapshotHeader fromMap(Map<String, String> values) {
-            return new SnapshotHeader(new TreeMap<>(values));
+            return new SnapshotHeader(new HashMap<>(values));
         }
 
         public static SnapshotHeader readFrom(BufferedReader reader) throws IOException {
-            final SortedMap<String, String> values = new TreeMap<>();
+            final Map<String, String> values = new HashMap<>();
             String line = reader.readLine();
             while (line != null && !line.isEmpty()) {
                 final String[] parts = line.split(":", 2);
@@ -160,7 +162,11 @@ public final class SnapshotFile {
         }
 
         private void writeTo(Writer writer) throws IOException {
-            for (final var entry : values.entrySet()) {
+            // sort entries by key to ensure deterministic results
+            final Iterable<Entry<String, String>> sortedEntries = values.entrySet().stream()
+                    .sorted(comparing(Entry::getKey))::iterator;
+
+            for (final var entry : sortedEntries) {
                 writer.write(entry.getKey() + ": " + entry.getValue());
                 writer.write("\n");
             }
