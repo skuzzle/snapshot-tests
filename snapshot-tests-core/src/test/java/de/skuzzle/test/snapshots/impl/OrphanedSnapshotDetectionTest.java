@@ -25,7 +25,7 @@ public class OrphanedSnapshotDetectionTest {
     private final MockOrphanCollector orphans = MockOrphanCollector.installNewInstance();
 
     @AfterEach
-    void uninstallMockLogger() {
+    void uninstallMockCollector() {
         MockOrphanCollector.uninstall();
     }
 
