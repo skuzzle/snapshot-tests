@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
-import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
+import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
@@ -74,16 +74,16 @@ final class StaticOrphanedSnapshotDetector {
             return new OrphanDetectionResult(StaticOrphanedSnapshotDetector.class.getSimpleName(), path, isOrphaned());
         }
 
-        private Result isOrphaned() {
+        private OrphanStatus isOrphaned() {
             // test whether test class still exists
             final Optional<Class<?>> testClass = testClass();
             if (testClass.isEmpty()) {
-                return Result.ORPHAN;
+                return OrphanStatus.ORPHAN;
             }
             // test whether test method still exists in test class
             final Optional<Method> testMethod = testMethodIn(testClass.orElseThrow());
             if (testMethod.isEmpty()) {
-                return Result.ORPHAN;
+                return OrphanStatus.ORPHAN;
             }
             // test whether snapshot is located in correct folder
             final SnapshotConfiguration configuration = DefaultSnapshotConfiguration
@@ -98,8 +98,8 @@ final class StaticOrphanedSnapshotDetector {
             final Path snapshotFileName = path.getFileName();
             final boolean fileIsMissing = !Files.exists(snapshotDirectory.resolve(snapshotFileName));
             return fileIsMissing
-                    ? Result.ORPHAN
-                    : Result.UNSURE;
+                    ? OrphanStatus.ORPHAN
+                    : OrphanStatus.UNSURE;
         }
 
         private Optional<Class<?>> testClass() {

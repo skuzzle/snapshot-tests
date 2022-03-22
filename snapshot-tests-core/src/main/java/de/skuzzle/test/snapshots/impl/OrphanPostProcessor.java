@@ -9,15 +9,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
+import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
 
 /**
  * Post processes the results from both the {@link DynamicOrphanedSnapshotsDetector} and
  * {@link StaticOrphanedSnapshotDetector} according to these rules:
  * <p>
  * If both processors produced a result for the same snapshot file and one result was
- * {@link Result#ACTIVE} it is not considered orphaned. Otherwise it is considered
- * orphaned if one result was {@link Result#ORPHAN}.
+ * {@link OrphanStatus#ACTIVE} it is not considered orphaned. Otherwise it is considered
+ * orphaned if one result was {@link OrphanStatus#ORPHAN}.
  *
  * @author Simon Taddiken
  */
@@ -33,9 +33,9 @@ class OrphanPostProcessor {
     private Optional<OrphanDetectionResult> decideIsOrphan(Collection<OrphanDetectionResult> resultsForOneFile) {
         OrphanDetectionResult orphan = null;
         for (final OrphanDetectionResult result : resultsForOneFile) {
-            if (result.result() == Result.ACTIVE) {
+            if (result.status() == OrphanStatus.ACTIVE) {
                 return Optional.empty();
-            } else if (result.result() == Result.ORPHAN) {
+            } else if (result.status() == OrphanStatus.ORPHAN) {
                 orphan = result;
             }
         }

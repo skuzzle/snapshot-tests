@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
+import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
@@ -59,12 +59,12 @@ final class DynamicOrphanedSnapshotsDetector {
     private OrphanDetectionResult isOrphanedSnapshot(Path snapshotFile) {
         // we can not detect orphaned snapshots for failed tests because the test might
         // have failed before creating the snapshot
-        Result result;
+        OrphanStatus result;
         if (pertainsToFailedTest(snapshotFile)) {
-            result = Result.UNSURE;
+            result = OrphanStatus.UNSURE;
         } else {
             final boolean containedInTest = testResultsContain(snapshotFile);
-            result = containedInTest ? Result.ACTIVE : Result.ORPHAN;
+            result = containedInTest ? OrphanStatus.ACTIVE : OrphanStatus.ORPHAN;
         }
         return new OrphanDetectionResult(getClass().getSimpleName(), snapshotFile, result);
     }

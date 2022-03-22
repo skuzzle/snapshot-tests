@@ -3,7 +3,7 @@ package de.skuzzle.test.snapshots.impl;
 import java.nio.file.Path;
 
 /**
- * Result of testing a single snapshot file for whether it is orphaned or not.
+ * OrphanStatus of testing a single snapshot file for whether it is orphaned or not.
  *
  * @author Simon Taddiken
  */
@@ -11,9 +11,9 @@ final class OrphanDetectionResult {
 
     private final String detectorName;
     private final Path snapshotFile;
-    private final Result result;
+    private final OrphanStatus result;
 
-    OrphanDetectionResult(String detectorName, Path snapshotFile, Result result) {
+    OrphanDetectionResult(String detectorName, Path snapshotFile, OrphanStatus result) {
         this.detectorName = detectorName;
         this.snapshotFile = snapshotFile.toAbsolutePath();
         this.result = result;
@@ -23,11 +23,11 @@ final class OrphanDetectionResult {
         return this.snapshotFile;
     }
 
-    public Result result() {
+    public OrphanStatus status() {
         return this.result;
     }
 
-    enum Result {
+    enum OrphanStatus {
         ACTIVE,
         ORPHAN,
         UNSURE
