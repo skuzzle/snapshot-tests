@@ -15,7 +15,7 @@ final class OrphanDetectionResult {
 
     OrphanDetectionResult(String detectorName, Path snapshotFile, Result result) {
         this.detectorName = detectorName;
-        this.snapshotFile = snapshotFile;
+        this.snapshotFile = snapshotFile.toAbsolutePath();
         this.result = result;
     }
 

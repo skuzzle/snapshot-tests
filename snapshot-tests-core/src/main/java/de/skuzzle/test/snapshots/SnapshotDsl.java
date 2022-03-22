@@ -32,6 +32,7 @@ public interface SnapshotDsl {
      * resolve the <code>Snapshot</code> parameter of the test method.
      *
      * @author Simon Taddiken
+     * @see EnableSnapshotTests
      */
     @API(status = Status.STABLE)
     public interface Snapshot extends ChooseActual, ChooseName, ChooseDirectory {
@@ -56,13 +57,17 @@ public interface SnapshotDsl {
 
         /**
          * Allows to choose the directory into which the snapshot will be persisted. The
-         * directory is relative to src/test/resources. The path configured here takes
-         * precedence over what is configured in
+         * path configured here takes precedence over what is configured in
          * {@link EnableSnapshotTests#snapshotDirectory()}
+         * <p>
+         * <b>Warning:</b> Changing the directory has severe impact on orphan detection
+         * and might lead to false positives. Use with caution as long as this API is
+         * marked 'EXPERIMENTAL'.
          *
          * @param directory The directory into which to write the snapshot.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
+         * @since 1.2.0
          */
         @API(status = Status.EXPERIMENTAL, since = "1.2.0")
         ChooseName in(Path directory);

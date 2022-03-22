@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -13,7 +14,7 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.impl.SnapshotLogging.SnapshotLogger;
+import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -29,9 +30,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
 
-    // can't make it static for now because otherwise we could not easily exchange the
-    // logger during tests
-    private final SnapshotLogger log = SnapshotLogging.getLogger(SnapshotTestContext.class);
+    private static final System.Logger log = System.getLogger(SnapshotTestContext.class.getName());
 
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
@@ -129,24 +128,32 @@ public final class SnapshotTestContext {
         final boolean deleteOrphaned = this.snapshotConfiguration.isDeleteOrphanedSnapshots();
         final Path globalSnapshotDirectory = this.snapshotConfiguration.determineSnapshotDirectory();
 
+        // all orphan detection results will be reported with this collector. By default,
+        // the collector doesn't do anything, but it can be exchanged with a mock
+        // collector during unit tests to have easier access to the orphans.
+        final OrphanCollector collector = OrphanCollectorHolder.getCollector();
+
         final Stream<OrphanDetectionResult> dynamicOrphans = dynamicOrphanedSnapshotsDetector
-                .detectOrphans(globalSnapshotDirectory);
+                .detectOrphans(globalSnapshotDirectory)
+                .peek(collector::addRawResult);
 
         final Stream<OrphanDetectionResult> staticOrphans = new StaticOrphanedSnapshotDetector()
-                .detectOrphans(DirectoryResolver.BASE);
+                .detectOrphans(DirectoryResolver.BASE)
+                .peek(collector::addRawResult);
 
         return new OrphanPostProcessor()
                 .orphanedOnly(Stream.concat(dynamicOrphans, staticOrphans).collect(Collectors.toList()))
+                .peek(collector::addPostProcessedResult)
                 .map(OrphanDetectionResult::snapshotFile)
                 .distinct()
                 .peek(orphaned -> {
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
-                        log.info("Deleted orphaned snapshot file {0} in {1}",
+                        log.log(Level.INFO, "Deleted orphaned snapshot file {0} in {1}",
                                 orphaned.getFileName(), orphaned.getParent());
                     } else {
-                        log.warn(
+                        log.log(Level.WARNING,
                                 "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: {0} in {1}",
                                 orphaned.getFileName(), orphaned.getParent());
                     }
