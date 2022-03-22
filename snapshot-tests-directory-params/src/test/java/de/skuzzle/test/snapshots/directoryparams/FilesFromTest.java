@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@EnableSnapshotTests(snapshotDirectory = "test-input", forceUpdateSnapshots = false)
+@EnableSnapshotTests(snapshotDirectory = "test-input")
 public class FilesFromTest {
 
     @ParameterizedTest

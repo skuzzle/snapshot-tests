@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
+import static de.skuzzle.test.snapshots.SnapshotTestResult.forFailedTest;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -107,9 +109,10 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshotsLocal(testMethod);
         final boolean snapshotFileAlreadyExists = Files.exists(snapshotFilePath);
 
+        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
+
         final SnapshotTestResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
-            final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
             final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
                     .writeTo(snapshotFilePath);
 
@@ -118,12 +121,11 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                     : SnapshotStatus.CREATED_INITIALLY;
             result = SnapshotTestResult.of(snapshotFilePath, status, snapshotFile);
         } else {
-            final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(snapshotFilePath);
+            final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
             final String storedSnapshot = snapshotFile.snapshot();
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
-                    .map(assertionError -> SnapshotTestResult.forFailedTest(snapshotFilePath, snapshotFile,
-                            assertionError))
+                    .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
                     .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
         this.localResultCollector.add(result);
@@ -133,6 +135,20 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         }
 
         return result;
+    }
+
+    private SnapshotFile readSnapshotFileAndUpdateHeader(Path snapshotFilePath, SnapshotHeader newHeader)
+            throws IOException {
+        SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(snapshotFilePath);
+
+        // persistently update the snapshot's header if for example the class or test
+        // method has been renamed
+        // This happens only if the snapshot was taken with a custom name or custom
+        // directory
+        if (!newHeader.equals(snapshotFile.header())) {
+            snapshotFile = snapshotFile.changeHeader(newHeader).writeTo(snapshotFilePath);
+        }
+        return snapshotFile;
     }
 
     @Override

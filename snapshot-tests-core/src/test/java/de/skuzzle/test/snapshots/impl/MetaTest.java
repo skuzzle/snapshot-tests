@@ -14,6 +14,10 @@ import org.junit.platform.testkit.engine.Execution;
 
 class MetaTest {
 
+    public void executeTestcasesIn(Class<?> testClass) {
+        expectTestcase(testClass);
+    }
+
     public TestResult expectTestcase(Class<?> testClass) {
         final EngineExecutionResults executionResults = EngineTestKit
                 .engine("junit-jupiter")
