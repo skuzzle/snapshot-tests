@@ -66,8 +66,8 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
-        snapshotTestContext.detectOrCleanupOrphanedSnapshots();
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .detectOrCleanupOrphanedSnapshots();
     }
 
     @Override
