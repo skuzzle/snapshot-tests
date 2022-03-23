@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,20 @@ public class OrphanedSnapshotDetectionTest {
 
         orphans.results().areExactly(1, forFileWithName("testThatHasBeenDeleted_0.snapshot"));
     }
+    
+    @Test
+    void snapshot_for_test_that_has_not_been_executed_should_not_be_detected_as_orphan() throws Throwable {
+        frameworkTest.executeTestcasesIn(TestCase.class);
+        
+        orphans.results().areNot(forFileWithName("workingTest_0.snapshot"));
+    }
+    
+    @Test
+    void snapshot_for_existing_test_in_different_class_that_was_not_executed_should_not_be_detected_as_orphan() throws Throwable {
+        frameworkTest.executeTestcasesIn(AnotherTestClass.class);
+        
+        orphans.results().areNot(forFileWithName("workingTest_0.snapshot"));
+    }
 
     @Test
     void orphaned_files_should_not_be_detected_for_failing_tests() throws Throwable {
@@ -45,12 +60,30 @@ public class OrphanedSnapshotDetectionTest {
 
     @EnableSnapshotTests
     static class TestCase {
+        
+        @Test
+        @Disabled
+        void workingTest(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+            
+            snapshot.assertThat("1").asText().matchesSnapshotText();
+        }
 
         @Test
         void failingTestMethod(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             throw new RuntimeException();
+        }
+    }
+    
+    @EnableSnapshotTests
+    static class AnotherTestClass {
+        @Test
+        void anotherWorkingTest(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+            
+            snapshot.assertThat("1").asText().matchesSnapshotText();
         }
     }
 
