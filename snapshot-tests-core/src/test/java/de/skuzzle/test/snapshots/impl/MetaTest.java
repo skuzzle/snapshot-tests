@@ -36,7 +36,8 @@ class MetaTest {
     private static boolean containedInStacktrace() {
         return StackWalker.getInstance().walk(stack -> stack
                 .anyMatch(stackFrame -> stackFrame.getClassName().equals(MetaTest.class.getName())
-                        && stackFrame.getMethodName().equals("expectTestcase")));
+                        && stackFrame.getMethodName().equals("expectTestcase")
+                        || stackFrame.getMethodName().equals("executeTestcasesIn")));
     }
 
     static class TestResult {

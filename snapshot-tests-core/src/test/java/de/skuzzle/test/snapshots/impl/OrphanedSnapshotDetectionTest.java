@@ -18,6 +18,7 @@ import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class OrphanedSnapshotDetectionTest {
@@ -28,6 +29,27 @@ public class OrphanedSnapshotDetectionTest {
     @AfterEach
     void uninstallMockCollector() {
         MockOrphanCollector.uninstall();
+    }
+
+    @Test
+    void orphaned_file_for_changed_snapshot_directory_should_correctly_be_detected() throws IOException {
+        final Path localTemp = DirectoryResolver.resolve("localtemp");
+        final String fileName = "someSnapshotTest_0.snapshot";
+        final Path snapshotFile = localTemp.resolve(fileName);
+
+        try {
+            Files.createDirectories(localTemp);
+            createArtificialSnapshotFile(TestCase.class, "someSnapshotTest",
+                    "someSnapshotTest", "content", false).writeTo(snapshotFile);
+
+            frameworkTest.executeTestcasesIn(TestCase.class);
+
+            orphans.results().areAtLeast(1, forFileWithName(fileName));
+
+        } finally {
+            Files.delete(snapshotFile);
+            Files.delete(localTemp);
+        }
     }
 
     @Test
@@ -63,6 +85,11 @@ public class OrphanedSnapshotDetectionTest {
     static class TestCase {
 
         @Test
+        void someSnapshotTest(Snapshot snapshot) {
+
+        }
+
+        @Test
         @Disabled
         void disabledTest(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
@@ -90,11 +117,12 @@ public class OrphanedSnapshotDetectionTest {
 
     @Test
     void header_should_be_changed_if_test_method_has_been_renamed() throws Throwable {
-        final Path snapshotFile = createArtificialSnapshotFile(
+        final Path snapshotFile = storeArtificialSnapshotFile(
                 TestCaseThatChangesHeader.class,
                 "old_method_name",
                 "custom_snapshot_name",
-                "content");
+                "content",
+                false);
 
         try {
             frameworkTest.executeTestcasesIn(TestCaseThatChangesHeader.class);
@@ -117,21 +145,37 @@ public class OrphanedSnapshotDetectionTest {
         }
     }
 
-    private Path createArtificialSnapshotFile(
+    private Path determineDefaultSnapshotDirectory(Class<?> testClass) {
+        return DefaultSnapshotConfiguration.forTestClass(testClass).determineSnapshotDirectory();
+    }
+
+    private SnapshotFile createArtificialSnapshotFile(
             Class<?> testClass,
             String testMethodName,
             String snapshotName,
-            String snapshot) throws IOException {
+            String snapshot,
+            boolean dynamicDirectory) throws IOException {
 
         final SnapshotHeader header = SnapshotHeader.fromMap(Map.of(
                 SnapshotHeader.SNAPSHOT_NUMBER, "0",
                 SnapshotHeader.TEST_METHOD, testMethodName,
                 SnapshotHeader.TEST_CLASS, testClass.getName(),
-                SnapshotHeader.SNAPSHOT_NAME, snapshotName));
-        final SnapshotConfiguration configuration = DefaultSnapshotConfiguration
-                .forTestClass(testClass);
-        final Path snapshotFilePath = configuration.determineSnapshotDirectory().resolve(snapshotName + ".snapshot");
-        SnapshotFile.of(header, snapshot).writeTo(snapshotFilePath);
+                SnapshotHeader.SNAPSHOT_NAME, snapshotName,
+                SnapshotHeader.DYNAMIC_DIRECTORY, "" + dynamicDirectory));
+        return SnapshotFile.of(header, snapshot);
+    }
+
+    private Path storeArtificialSnapshotFile(
+            Class<?> testClass,
+            String testMethodName,
+            String snapshotName,
+            String snapshot,
+            boolean dynamicDirectory) throws IOException {
+
+        final Path snapshotFilePath = determineDefaultSnapshotDirectory(testClass)
+                .resolve(snapshotName + ".snapshot");
+        createArtificialSnapshotFile(testClass, testMethodName, snapshotName, snapshot, dynamicDirectory)
+                .writeTo(snapshotFilePath);
 
         return snapshotFilePath;
     }
