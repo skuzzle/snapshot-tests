@@ -11,12 +11,12 @@ final class OrphanDetectionResult {
 
     private final String detectorName;
     private final Path snapshotFile;
-    private final OrphanStatus result;
+    private final OrphanStatus status;
 
     OrphanDetectionResult(String detectorName, Path snapshotFile, OrphanStatus result) {
         this.detectorName = detectorName;
         this.snapshotFile = snapshotFile.toAbsolutePath();
-        this.result = result;
+        this.status = result;
     }
 
     public Path snapshotFile() {
@@ -24,7 +24,7 @@ final class OrphanDetectionResult {
     }
 
     public OrphanStatus status() {
-        return this.result;
+        return this.status;
     }
 
     enum OrphanStatus {
@@ -38,7 +38,7 @@ final class OrphanDetectionResult {
         return new StringBuilder()
                 .append("detectorName=").append(detectorName)
                 .append(", snapshotFile=").append(snapshotFile)
-                .append(", result=").append(result)
+                .append(", status=").append(status)
                 .toString();
     }
 }
