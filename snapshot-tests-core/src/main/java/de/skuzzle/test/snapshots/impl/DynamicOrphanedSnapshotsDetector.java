@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +27,8 @@ final class DynamicOrphanedSnapshotsDetector {
     private final Set<Method> failedOrSkippedTestMethods = new HashSet<>();
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public DynamicOrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
-        this.results.addAll(Arguments.requireNonNull(other));
-        return this;
+    public void addResult(SnapshotTestResult result) {
+        this.results.add(result);
     }
 
     public void addFailedOrSkippedTestMethod(Method testMethod) {

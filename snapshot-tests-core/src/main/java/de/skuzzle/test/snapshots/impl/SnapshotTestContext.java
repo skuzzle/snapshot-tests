@@ -79,7 +79,7 @@ public final class SnapshotTestContext {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        currentSnapshotTest = new SnapshotTestImpl(snapshotConfiguration, testMethod);
+        currentSnapshotTest = new SnapshotTestImpl(this, snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }
 
@@ -113,10 +113,10 @@ public final class SnapshotTestContext {
     /**
      * Records the results from all snapshot assertions within a single test method.
      *
-     * @param results The snapshot test results of a single test method.
+     * @param result A snapshot test result of a single snapshot assertion.
      */
-    public void recordSnapshotTestResults(Collection<SnapshotTestResult> results) {
-        this.dynamicOrphanedSnapshotsDetector.addAllFrom(results);
+    public void recordSnapshotTestResult(SnapshotTestResult result) {
+        this.dynamicOrphanedSnapshotsDetector.addResult(result);
     }
 
     /**

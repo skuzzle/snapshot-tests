@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,6 +34,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
 
     private final Method testMethod;
+    private final SnapshotTestContext context;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
 
@@ -44,9 +44,10 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
     private Path directoryOverride;
 
-    SnapshotTestImpl(SnapshotConfiguration configuration, Method testMethod) {
+    SnapshotTestImpl(SnapshotTestContext context, SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = Arguments.requireNonNull(configuration, "configuration must not be null");
         this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
+        this.context = context;
     }
 
     @Override
@@ -96,7 +97,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
                 snapshotFile);
 
-        this.localResultCollector.add(result);
+        this.localResultCollector.recordSnapshotTestResult(result);
         return result;
     }
 
@@ -129,7 +130,8 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                     .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
                     .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
-        this.localResultCollector.add(result);
+        this.localResultCollector.recordSnapshotTestResult(result);
+        this.context.recordSnapshotTestResult(result);
 
         if (!configuration.isSoftAssertions()) {
             localResultCollector.assertSuccessEagerly();
@@ -153,12 +155,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     }
 
     @Override
-    public List<SnapshotTestResult> testResults() {
-        return localResultCollector.results();
-    }
-
-    @Override
-    public void executeAssertions() throws Exception {
+    public void executeSoftAssertions() throws Exception {
         localResultCollector.assertSuccess();
     }
 

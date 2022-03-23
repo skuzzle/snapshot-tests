@@ -18,7 +18,7 @@ final class LocalResultCollector {
 
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public void add(SnapshotTestResult result) {
+    public void recordSnapshotTestResult(SnapshotTestResult result) {
         this.results.add(Arguments.requireNonNull(result));
     }
 
