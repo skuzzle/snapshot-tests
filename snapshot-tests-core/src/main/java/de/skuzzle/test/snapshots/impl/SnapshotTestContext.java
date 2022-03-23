@@ -107,7 +107,7 @@ public final class SnapshotTestContext {
      * @param testMethod Test method that failed or has been skipped.
      */
     public void recordFailedOrSkippedTest(Method testMethod) {
-        this.dynamicOrphanedSnapshotsDetector.addFailedTestMethod(testMethod);
+        this.dynamicOrphanedSnapshotsDetector.addFailedOrSkippedTestMethod(testMethod);
     }
 
     /**

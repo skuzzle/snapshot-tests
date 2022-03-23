@@ -33,7 +33,7 @@ final class DynamicOrphanedSnapshotsDetector {
         return this;
     }
 
-    public void addFailedTestMethod(Method testMethod) {
+    public void addFailedOrSkippedTestMethod(Method testMethod) {
         this.failedOrSkippedTestMethods.add(Arguments.requireNonNull(testMethod));
     }
 
