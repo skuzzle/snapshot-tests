@@ -25,7 +25,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 final class DynamicOrphanedSnapshotsDetector {
 
-    private final Set<Method> failedTestMethods = new HashSet<>();
+    private final Set<Method> failedOrSkippedTestMethods = new HashSet<>();
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
     public DynamicOrphanedSnapshotsDetector addAllFrom(Collection<SnapshotTestResult> other) {
@@ -34,7 +34,7 @@ final class DynamicOrphanedSnapshotsDetector {
     }
 
     public void addFailedTestMethod(Method testMethod) {
-        this.failedTestMethods.add(Arguments.requireNonNull(testMethod));
+        this.failedOrSkippedTestMethods.add(Arguments.requireNonNull(testMethod));
     }
 
     private Stream<Path> snapshotDirectories(Path globalSnapshotDirectory) {
@@ -57,10 +57,10 @@ final class DynamicOrphanedSnapshotsDetector {
     }
 
     private OrphanDetectionResult isOrphanedSnapshot(Path snapshotFile) {
-        // we can not detect orphaned snapshots for failed tests because the test might
-        // have failed before creating the snapshot
+        // we can not detect orphaned snapshots for failed or skipped tests because the
+        // test might have failed before creating the snapshot
         OrphanStatus result;
-        if (pertainsToFailedTest(snapshotFile)) {
+        if (pertainsToFailedOrSkippedTest(snapshotFile)) {
             result = OrphanStatus.UNSURE;
         } else {
             final boolean containedInTest = testResultsContain(snapshotFile);
@@ -69,8 +69,8 @@ final class DynamicOrphanedSnapshotsDetector {
         return new OrphanDetectionResult(getClass().getSimpleName(), snapshotFile, result);
     }
 
-    private boolean pertainsToFailedTest(Path snapshotFile) {
-        return failedTestMethods.stream()
+    private boolean pertainsToFailedOrSkippedTest(Path snapshotFile) {
+        return failedOrSkippedTestMethods.stream()
                 .anyMatch(failedTestMethod -> InternalSnapshotNaming.isSnapshotFileForMethod(snapshotFile,
                         failedTestMethod));
     }

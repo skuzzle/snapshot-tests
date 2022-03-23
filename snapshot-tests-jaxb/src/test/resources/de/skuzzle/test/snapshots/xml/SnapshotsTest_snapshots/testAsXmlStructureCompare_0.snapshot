@@ -1,3 +1,4 @@
+dynamic-directory: false
 snapshot-name: testAsXmlStructureCompare_0
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.xml.SnapshotsTest

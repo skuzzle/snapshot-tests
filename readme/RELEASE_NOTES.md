@@ -1,6 +1,7 @@
-* Detect whether a test method had been renamed and update a snapshot's header information (works in some cases. 
-  In other cases, a new snapshot might be taken and the existing one becomse an orphan).
-* Fix and improve orphan detection (especially when using custom snapshot names and/or custom snapshot directories)
+_Note:_ When running your tests with this version for the first time, you will see that your snapshot files are being 
+changed because we introduced a new header field. You can and safely check in these changes into your SCM.
+
+* Improve orphan detection to report less false positives
 
 Maven Central coordinates for this release:
 

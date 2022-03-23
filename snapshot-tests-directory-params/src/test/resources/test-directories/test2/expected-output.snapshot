@@ -1,3 +1,4 @@
+dynamic-directory: true
 snapshot-name: expected-output
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.directoryparams.DirectoriesFromTest

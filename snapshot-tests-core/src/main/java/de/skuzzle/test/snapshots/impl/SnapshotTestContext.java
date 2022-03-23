@@ -100,12 +100,13 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Records a failing test within the currently executed test class. Knowing which
-     * tests failed is crucial for implementing orphaned snapshot detection.
+     * Records a failed or skipped test within the currently executed test class. Knowing
+     * which tests did not complete successfully is crucial for implementing orphaned
+     * snapshot detection.
      *
-     * @param testMethod Test method that failed.
+     * @param testMethod Test method that failed or has been skipped.
      */
-    public void recordFailedTest(Method testMethod) {
+    public void recordFailedOrSkippedTest(Method testMethod) {
         this.dynamicOrphanedSnapshotsDetector.addFailedTestMethod(testMethod);
     }
 

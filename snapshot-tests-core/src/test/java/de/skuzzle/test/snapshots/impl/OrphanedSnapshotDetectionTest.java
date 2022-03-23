@@ -36,19 +36,20 @@ public class OrphanedSnapshotDetectionTest {
 
         orphans.results().areExactly(1, forFileWithName("testThatHasBeenDeleted_0.snapshot"));
     }
-    
+
     @Test
     void snapshot_for_test_that_has_not_been_executed_should_not_be_detected_as_orphan() throws Throwable {
         frameworkTest.executeTestcasesIn(TestCase.class);
-        
-        orphans.results().areNot(forFileWithName("workingTest_0.snapshot"));
+
+        orphans.results().areNot(forFileWithName("disabledTest_0.snapshot"));
     }
-    
+
     @Test
-    void snapshot_for_existing_test_in_different_class_that_was_not_executed_should_not_be_detected_as_orphan() throws Throwable {
+    void snapshot_for_existing_test_in_different_class_that_was_not_executed_should_not_be_detected_as_orphan()
+            throws Throwable {
         frameworkTest.executeTestcasesIn(AnotherTestClass.class);
-        
-        orphans.results().areNot(forFileWithName("workingTest_0.snapshot"));
+
+        orphans.results().areNot(forFileWithName("disabledTest_0.snapshot"));
     }
 
     @Test
@@ -60,12 +61,12 @@ public class OrphanedSnapshotDetectionTest {
 
     @EnableSnapshotTests
     static class TestCase {
-        
+
         @Test
         @Disabled
-        void workingTest(Snapshot snapshot) {
+        void disabledTest(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
-            
+
             snapshot.assertThat("1").asText().matchesSnapshotText();
         }
 
@@ -76,13 +77,13 @@ public class OrphanedSnapshotDetectionTest {
             throw new RuntimeException();
         }
     }
-    
+
     @EnableSnapshotTests
     static class AnotherTestClass {
         @Test
         void anotherWorkingTest(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
-            
+
             snapshot.assertThat("1").asText().matchesSnapshotText();
         }
     }

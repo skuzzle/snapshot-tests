@@ -1,3 +1,4 @@
+dynamic-directory: false
 snapshot-name: anotherWorkingTest_0
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.impl.OrphanedSnapshotDetectionTest$AnotherTestClass

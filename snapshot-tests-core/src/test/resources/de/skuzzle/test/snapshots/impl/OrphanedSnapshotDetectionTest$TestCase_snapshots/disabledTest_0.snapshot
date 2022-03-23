@@ -1,6 +1,6 @@
-snapshot-name: workingTest_0
+snapshot-name: disabledTest_0
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.impl.OrphanedSnapshotDetectionTest$TestCase
-test-method: workingTest
+test-method: disabledTest
 
 1

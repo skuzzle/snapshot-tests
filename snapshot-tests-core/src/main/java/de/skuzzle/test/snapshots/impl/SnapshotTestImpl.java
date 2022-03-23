@@ -71,7 +71,8 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                 SnapshotHeader.SNAPSHOT_NUMBER, "" + localResultCollector.size(),
                 SnapshotHeader.TEST_METHOD, testMethod.getName(),
                 SnapshotHeader.TEST_CLASS, configuration.testClass().getName(),
-                SnapshotHeader.SNAPSHOT_NAME, snapshotName));
+                SnapshotHeader.SNAPSHOT_NAME, snapshotName,
+                SnapshotHeader.DYNAMIC_DIRECTORY, "" + (this.directoryOverride != null)));
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
@@ -144,7 +145,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         // persistently update the snapshot's header if for example the class or test
         // method has been renamed
         // This happens only if the snapshot was taken with a custom name or custom
-        // directory
+        // directory or a new library version introduces changes to the header
         if (!newHeader.equals(snapshotFile.header())) {
             snapshotFile = snapshotFile.changeHeader(newHeader).writeTo(snapshotFilePath);
         }
