@@ -24,7 +24,6 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  *
  * @author Simon Taddiken
  * @since 1.1.0
- * @see InternalSnapshotTest
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
@@ -63,15 +62,15 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Creates a {@link Snapshot} object that can be injected into a test method as
-     * starting point of the snapshot DSL.
+     * Creates a Snapshot object that can be injected into a test method as starting point
+     * of the snapshot DSL.
      * <p>
-     * This method changes the state of this context object. A new
-     * {@link InternalSnapshotTest} can only be created, when the current one has been
-     * retrieved and cleared using {@link #clearCurrentSnapshotTest()}.
+     * This method changes the state of this context object. A new Snapshot can only be
+     * created, when the current one has been retrieved and cleared using
+     * {@link #finalizeSnapshotTest()}.
      *
      * @param testMethod The test method.
-     * @return A {@link InternalSnapshotTest} instance.
+     * @return A Snapshot instance.
      * @see #finalizeSnapshotTest()
      */
     public Snapshot createSnapshotTestFor(Method testMethod) {
