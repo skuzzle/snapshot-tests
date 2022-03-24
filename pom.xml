@@ -10,7 +10,7 @@
 
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-parent</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.2</version>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Parent</name>
