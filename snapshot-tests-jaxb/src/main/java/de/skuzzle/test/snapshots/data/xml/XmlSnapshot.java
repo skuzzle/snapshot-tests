@@ -35,6 +35,9 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * If you need control over how the {@link JAXBContext} and the {@link Marshaller} are
      * being set up, use the static factory methods in {@link XmlSnapshot} instead of this
      * static constant.
+     *
+     * @see #with(JAXBContext)
+     * @see #inferJaxbContext()
      */
     public static final StructuredDataProvider xml = inferJaxbContext().build();
 

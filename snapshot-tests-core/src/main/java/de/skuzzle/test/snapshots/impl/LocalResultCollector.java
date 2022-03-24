@@ -1,7 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,12 +17,8 @@ final class LocalResultCollector {
 
     private final List<SnapshotTestResult> results = new ArrayList<>();
 
-    public void add(SnapshotTestResult result) {
+    public void recordSnapshotTestResult(SnapshotTestResult result) {
         this.results.add(Arguments.requireNonNull(result));
-    }
-
-    public List<SnapshotTestResult> results() {
-        return Collections.unmodifiableList(results);
     }
 
     public int size() {

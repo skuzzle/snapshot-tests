@@ -120,6 +120,14 @@ public final class SnapshotFile {
         public static final String TEST_METHOD = "test-method";
         public static final String SNAPSHOT_NUMBER = "snapshot-number";
         public static final String SNAPSHOT_NAME = "snapshot-name";
+        /**
+         * Stores per snapshot whether it had been taken with a dynamic directory. This
+         * information helps to improve static orphan detection.
+         *
+         * @since 1.2.2
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.2.2")
+        public static final String DYNAMIC_DIRECTORY = "dynamic-directory";
 
         private final Map<String, String> values;
 
@@ -152,6 +160,11 @@ public final class SnapshotFile {
             return new SnapshotHeader(values);
         }
 
+        public String getOrDefault(String key, String defaultValue) {
+            final String value = values.get(Arguments.requireNonNull(key, "key must not be null"));
+            return value == null ? defaultValue : value;
+        }
+
         public String get(String key) {
             final String value = values.get(Arguments.requireNonNull(key, "key must not be null"));
             return Arguments.requireNonNull(value, "No SnapshotHeader value for key '%s' among %s", key, values);
@@ -159,6 +172,19 @@ public final class SnapshotFile {
 
         public int getInt(String key) {
             return Integer.parseInt(get(key));
+        }
+
+        /**
+         * Retrieves a boolean header value.
+         *
+         * @param key The name of the header to retrieve.
+         * @param defaultValue Default value if no header for that key exists.
+         * @return The boolean value.
+         * @since 1.2.2
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.2.2")
+        public boolean getBoolean(String key, boolean defaultValue) {
+            return Boolean.parseBoolean(getOrDefault(key, "" + defaultValue));
         }
 
         private void writeTo(Writer writer) throws IOException {

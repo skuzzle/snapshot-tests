@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.2.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.2.1/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.2.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.2.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.2.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.2.2/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.2.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.2.2)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -17,7 +17,7 @@ Read more about snapshot testing in this accompanying [blog post](https://simon.
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.2.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.2.1)
+release [1.2.2](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.2.2)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_

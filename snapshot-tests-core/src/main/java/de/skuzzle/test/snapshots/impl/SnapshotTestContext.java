@@ -4,7 +4,6 @@ import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +24,6 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  *
  * @author Simon Taddiken
  * @since 1.1.0
- * @see InternalSnapshotTest
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
@@ -64,58 +62,57 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Creates a {@link Snapshot} object that can be injected into a test method as
-     * starting point of the snapshot DSL.
+     * Creates a Snapshot object that can be injected into a test method as starting point
+     * of the snapshot DSL.
      * <p>
-     * This method changes the state of this context object. A new
-     * {@link InternalSnapshotTest} can only be created, when the current one has been
-     * retrieved and cleared using {@link #clearCurrentSnapshotTest()}.
+     * This method changes the state of this context object. A new Snapshot can only be
+     * created, when the current one has been retrieved and cleared using
+     * {@link #finalizeSnapshotTest()}.
      *
      * @param testMethod The test method.
-     * @return A {@link InternalSnapshotTest} instance.
-     * @see #clearCurrentSnapshotTest()
+     * @return A Snapshot instance.
+     * @see #finalizeSnapshotTest()
      */
     public Snapshot createSnapshotTestFor(Method testMethod) {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        currentSnapshotTest = new SnapshotTestImpl(snapshotConfiguration, testMethod);
+        currentSnapshotTest = new SnapshotTestImpl(this, snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }
 
     /**
-     * Clears and retrieves the {@link InternalSnapshotTest} instance that has been
-     * created by {@link #createSnapshotTestFor(Method)}. This method is intended to be
-     * used after the execution of a single test method in order to retrieve and process
-     * the {@link InternalSnapshotTest#testResults()}.
+     * Finalizes the current test by clearing this context and executing its remaining
+     * assertions.
      *
-     * @return The {@link InternalSnapshotTest} instance or an empty optional if the
-     *         currently executed test did not use snapshot assertions.
+     * @throws Exception If late assertions of the test fail.
      * @see #createSnapshotTestFor(Method)
      */
-    public Optional<InternalSnapshotTest> clearCurrentSnapshotTest() {
-        final InternalSnapshotTest current = currentSnapshotTest;
+    public void finalizeSnapshotTest() throws Exception {
+        if (currentSnapshotTest != null) {
+            currentSnapshotTest.executeFinalAssertions();
+        }
         this.currentSnapshotTest = null;
-        return Optional.ofNullable(current);
     }
 
     /**
-     * Records a failing test within the currently executed test class. Knowing which
-     * tests failed is crucial for implementing orphaned snapshot detection.
+     * Records a failed or skipped test within the currently executed test class. Knowing
+     * which tests did not complete successfully is crucial for implementing orphaned
+     * snapshot detection.
      *
-     * @param testMethod Test method that failed.
+     * @param testMethod Test method that failed or has been skipped.
      */
-    public void recordFailedTest(Method testMethod) {
-        this.dynamicOrphanedSnapshotsDetector.addFailedTestMethod(testMethod);
+    public void recordFailedOrSkippedTest(Method testMethod) {
+        this.dynamicOrphanedSnapshotsDetector.addFailedOrSkippedTestMethod(testMethod);
     }
 
     /**
      * Records the results from all snapshot assertions within a single test method.
      *
-     * @param results The snapshot test results of a single test method.
+     * @param result A snapshot test result of a single snapshot assertion.
      */
-    public void recordSnapshotTestResults(Collection<SnapshotTestResult> results) {
-        this.dynamicOrphanedSnapshotsDetector.addAllFrom(results);
+    public void recordSnapshotTestResult(SnapshotTestResult result) {
+        this.dynamicOrphanedSnapshotsDetector.addResult(result);
     }
 
     /**

@@ -1,3 +1,4 @@
+dynamic-directory: false
 snapshot-name: testWithSnapshot_1
 snapshot-number: 1
 test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTests$SoftAssertions

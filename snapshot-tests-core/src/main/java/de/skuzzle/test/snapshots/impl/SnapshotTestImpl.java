@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,9 +31,10 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  *
  * @author Simon Taddiken
  */
-final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
+final class SnapshotTestImpl implements Snapshot {
 
     private final Method testMethod;
+    private final SnapshotTestContext context;
     private final SnapshotConfiguration configuration;
     private final LocalResultCollector localResultCollector = new LocalResultCollector();
 
@@ -44,9 +44,10 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
     private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
     private Path directoryOverride;
 
-    SnapshotTestImpl(SnapshotConfiguration configuration, Method testMethod) {
+    SnapshotTestImpl(SnapshotTestContext context, SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = Arguments.requireNonNull(configuration, "configuration must not be null");
         this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
+        this.context = context;
     }
 
     @Override
@@ -71,7 +72,8 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                 SnapshotHeader.SNAPSHOT_NUMBER, "" + localResultCollector.size(),
                 SnapshotHeader.TEST_METHOD, testMethod.getName(),
                 SnapshotHeader.TEST_CLASS, configuration.testClass().getName(),
-                SnapshotHeader.SNAPSHOT_NAME, snapshotName));
+                SnapshotHeader.SNAPSHOT_NAME, snapshotName,
+                SnapshotHeader.DYNAMIC_DIRECTORY, "" + (this.directoryOverride != null)));
     }
 
     private Path determineSnapshotFile(String snapshotName) throws IOException {
@@ -95,8 +97,14 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
                 snapshotFile);
 
-        this.localResultCollector.add(result);
+        recordSnapshotTestResult(result);
+
         return result;
+    }
+
+    private void recordSnapshotTestResult(final SnapshotTestResult result) {
+        this.localResultCollector.recordSnapshotTestResult(result);
+        this.context.recordSnapshotTestResult(result);
     }
 
     SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
@@ -128,7 +136,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                     .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
                     .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
-        this.localResultCollector.add(result);
+        recordSnapshotTestResult(result);
 
         if (!configuration.isSoftAssertions()) {
             localResultCollector.assertSuccessEagerly();
@@ -144,20 +152,14 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         // persistently update the snapshot's header if for example the class or test
         // method has been renamed
         // This happens only if the snapshot was taken with a custom name or custom
-        // directory
+        // directory or a new library version introduces changes to the header
         if (!newHeader.equals(snapshotFile.header())) {
             snapshotFile = snapshotFile.changeHeader(newHeader).writeTo(snapshotFilePath);
         }
         return snapshotFile;
     }
 
-    @Override
-    public List<SnapshotTestResult> testResults() {
-        return localResultCollector.results();
-    }
-
-    @Override
-    public void executeAssertions() throws Exception {
+    public void executeFinalAssertions() throws Exception {
         localResultCollector.assertSuccess();
     }
 

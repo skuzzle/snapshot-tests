@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.junit5;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -11,8 +12,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-
-import de.skuzzle.test.snapshots.impl.InternalSnapshotTest;
+import org.junit.jupiter.api.extension.TestWatcher;
 
 /**
  * This class is only public so it can be referenced by the entry point annotation.
@@ -24,7 +24,8 @@ public final class JUnit5SnapshotExtension implements
         ParameterResolver,
         BeforeAllCallback,
         AfterEachCallback,
-        AfterAllCallback {
+        AfterAllCallback,
+        TestWatcher {
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
@@ -52,22 +53,31 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
-
-        extensionContext.getExecutionException()
-                .ifPresent(__ -> snapshotTestContext.recordFailedTest(extensionContext.getRequiredTestMethod()));
-
-        final InternalSnapshotTest snapshotTest = snapshotTestContext.clearCurrentSnapshotTest().orElse(null);
-        if (snapshotTest != null) {
-            snapshotTestContext.recordSnapshotTestResults(snapshotTest.testResults());
-            snapshotTest.executeAssertions();
-        }
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .finalizeSnapshotTest();
     }
 
     @Override
     public void afterAll(ExtensionContext extensionContext) throws Exception {
-        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
-        snapshotTestContext.detectOrCleanupOrphanedSnapshots();
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .detectOrCleanupOrphanedSnapshots();
     }
 
+    @Override
+    public void testFailed(ExtensionContext extensionContext, Throwable cause) {
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .recordFailedOrSkippedTest(extensionContext.getRequiredTestMethod());
+    }
+
+    @Override
+    public void testAborted(ExtensionContext extensionContext, Throwable cause) {
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .recordFailedOrSkippedTest(extensionContext.getRequiredTestMethod());
+    }
+
+    @Override
+    public void testDisabled(ExtensionContext extensionContext, Optional<String> reason) {
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .recordFailedOrSkippedTest(extensionContext.getRequiredTestMethod());
+    }
 }

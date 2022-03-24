@@ -9,7 +9,7 @@ import org.assertj.core.api.ListAssert;
 
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 
-public class MockOrphanCollector implements OrphanCollector {
+final class MockOrphanCollector implements OrphanCollector {
 
     public static MockOrphanCollector installNewInstance() {
         final MockOrphanCollector collector = new MockOrphanCollector();

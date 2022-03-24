@@ -1,3 +1,4 @@
+dynamic-directory: false
 snapshot-name: phil
 snapshot-number: 1
 test-class: de.skuzzle.test.snapshots.SnapshotsTest

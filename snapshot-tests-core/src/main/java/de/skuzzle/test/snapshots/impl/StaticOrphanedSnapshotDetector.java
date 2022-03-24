@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
-import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.Result;
+import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 
 /**
@@ -74,32 +74,37 @@ final class StaticOrphanedSnapshotDetector {
             return new OrphanDetectionResult(StaticOrphanedSnapshotDetector.class.getSimpleName(), path, isOrphaned());
         }
 
-        private Result isOrphaned() {
+        private OrphanStatus isOrphaned() {
             // test whether test class still exists
+            // guards against renaming/deleting the test class
             final Optional<Class<?>> testClass = testClass();
             if (testClass.isEmpty()) {
-                return Result.ORPHAN;
+                return OrphanStatus.ORPHAN;
             }
             // test whether test method still exists in test class
+            // guards against renaming/deleting the test class
             final Optional<Method> testMethod = testMethodIn(testClass.orElseThrow());
             if (testMethod.isEmpty()) {
-                return Result.ORPHAN;
+                return OrphanStatus.ORPHAN;
+            }
+
+            // When the snapshot was taken with a dynamic directory (=directory is
+            // determined while executing the test) we can not statically verify whether
+            // this snapshot file is still in the correct directory
+            if (isDynamicDirectory()) {
+                return OrphanStatus.UNSURE;
             }
             // test whether snapshot is located in correct folder
+            // guards against changing the global snapshot directory
             final SnapshotConfiguration configuration = DefaultSnapshotConfiguration
                     .forTestClass(testClass.orElseThrow());
 
-            // NOTE: this only checks against the global snapshot directory. If the
-            // snapshot had been taken using a local directory override it will
-            // erroneously reported here as ORPHAN. That result will be overruled with the
-            // result from the dynamic orphan detector which correctly identifies those
-            // cases as ACTIVE.
             final Path snapshotDirectory = configuration.determineSnapshotDirectory();
             final Path snapshotFileName = path.getFileName();
             final boolean fileIsMissing = !Files.exists(snapshotDirectory.resolve(snapshotFileName));
             return fileIsMissing
-                    ? Result.ORPHAN
-                    : Result.UNSURE;
+                    ? OrphanStatus.ORPHAN
+                    : OrphanStatus.UNSURE;
         }
 
         private Optional<Class<?>> testClass() {
@@ -118,6 +123,13 @@ final class StaticOrphanedSnapshotDetector {
                     .filter(method -> method.getName().equals(methodName))
                     .filter(this::isSnapshotTest)
                     .findAny();
+        }
+
+        private boolean isDynamicDirectory() {
+            // the default value 'true' that is being used here will only come into play
+            // for snapshot files that have been taken with a version < 1.2.2. We use
+            // 'true' as default as it will lead to less false positives.
+            return snapshotFile.header().getBoolean(SnapshotHeader.DYNAMIC_DIRECTORY, true);
         }
 
         private boolean isSnapshotTest(Method method) {
