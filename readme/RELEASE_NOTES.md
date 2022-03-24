@@ -2,6 +2,8 @@ _Note:_ When running your tests with this version for the first time, you will s
 changed because we introduced a new header field. You can and safely check in these changes into your SCM.
 
 * Improve orphan detection to report less false positives
+* Multiple JavaDoc improvements
+* Improve and simplify internal interface and test framework integration
 
 Maven Central coordinates for this release:
 
