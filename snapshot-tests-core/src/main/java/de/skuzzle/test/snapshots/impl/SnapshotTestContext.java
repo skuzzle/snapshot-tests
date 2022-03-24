@@ -89,10 +89,11 @@ public final class SnapshotTestContext {
      * @see #createSnapshotTestFor(Method)
      */
     public void finalizeSnapshotTest() throws Exception {
-        if (currentSnapshotTest != null) {
-            currentSnapshotTest.executeFinalAssertions();
-        }
+        final SnapshotTestImpl current = this.currentSnapshotTest;
         this.currentSnapshotTest = null;
+        if (current != null) {
+            current.executeFinalAssertions();
+        }
     }
 
     /**
