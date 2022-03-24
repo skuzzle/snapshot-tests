@@ -4,7 +4,6 @@ import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -73,7 +72,7 @@ public final class SnapshotTestContext {
      *
      * @param testMethod The test method.
      * @return A {@link InternalSnapshotTest} instance.
-     * @see #clearCurrentSnapshotTest()
+     * @see #finalizeSnapshotTest()
      */
     public Snapshot createSnapshotTestFor(Method testMethod) {
         if (currentSnapshotTest != null) {
@@ -84,19 +83,17 @@ public final class SnapshotTestContext {
     }
 
     /**
-     * Clears and retrieves the {@link InternalSnapshotTest} instance that has been
-     * created by {@link #createSnapshotTestFor(Method)}. This method is intended to be
-     * used after the execution of a single test method in order to retrieve and process
-     * the {@link InternalSnapshotTest#testResults()}.
+     * Finalizes the current test by clearing this context and executing its remaining
+     * assertions.
      *
-     * @return The {@link InternalSnapshotTest} instance or an empty optional if the
-     *         currently executed test did not use snapshot assertions.
+     * @throws Exception If late assertions of the test fail.
      * @see #createSnapshotTestFor(Method)
      */
-    public Optional<InternalSnapshotTest> clearCurrentSnapshotTest() {
-        final InternalSnapshotTest current = currentSnapshotTest;
+    public void finalizeSnapshotTest() throws Exception {
+        if (currentSnapshotTest != null) {
+            currentSnapshotTest.executeFinalAssertions();
+        }
         this.currentSnapshotTest = null;
-        return Optional.ofNullable(current);
     }
 
     /**

@@ -14,8 +14,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestWatcher;
 
-import de.skuzzle.test.snapshots.impl.InternalSnapshotTest;
-
 /**
  * This class is only public so it can be referenced by the entry point annotation.
  *
@@ -55,12 +53,8 @@ public final class JUnit5SnapshotExtension implements
 
     @Override
     public void afterEach(ExtensionContext extensionContext) throws Exception {
-        final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
-
-        final InternalSnapshotTest snapshotTest = snapshotTestContext.clearCurrentSnapshotTest().orElse(null);
-        if (snapshotTest != null) {
-            snapshotTest.executeSoftAssertions();
-        }
+        Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext)
+                .finalizeSnapshotTest();
     }
 
     @Override

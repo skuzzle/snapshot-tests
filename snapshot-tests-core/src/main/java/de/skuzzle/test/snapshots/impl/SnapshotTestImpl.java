@@ -31,7 +31,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  *
  * @author Simon Taddiken
  */
-final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
+final class SnapshotTestImpl implements Snapshot {
 
     private final Method testMethod;
     private final SnapshotTestContext context;
@@ -97,8 +97,14 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
                 snapshotFile);
 
-        this.localResultCollector.recordSnapshotTestResult(result);
+        recordSnapshotTestResult(result);
+
         return result;
+    }
+
+    private void recordSnapshotTestResult(final SnapshotTestResult result) {
+        this.localResultCollector.recordSnapshotTestResult(result);
+        this.context.recordSnapshotTestResult(result);
     }
 
     SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
@@ -130,8 +136,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
                     .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
                     .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
-        this.localResultCollector.recordSnapshotTestResult(result);
-        this.context.recordSnapshotTestResult(result);
+        recordSnapshotTestResult(result);
 
         if (!configuration.isSoftAssertions()) {
             localResultCollector.assertSuccessEagerly();
@@ -154,8 +159,7 @@ final class SnapshotTestImpl implements Snapshot, InternalSnapshotTest {
         return snapshotFile;
     }
 
-    @Override
-    public void executeSoftAssertions() throws Exception {
+    public void executeFinalAssertions() throws Exception {
         localResultCollector.assertSuccess();
     }
 

@@ -60,7 +60,7 @@ public class OrphanedSnapshotDetectionTest {
     }
 
     @Test
-    void snapshot_for_test_that_has_not_been_executed_should_not_be_detected_as_orphan() throws Throwable {
+    void snapshot_for_test_that_is_disabled_should_not_be_detected_as_orphan() throws Throwable {
         frameworkTest.executeTestcasesIn(TestCase.class);
 
         orphans.results().areNot(forFileWithName("disabledTest_0.snapshot"));
@@ -81,8 +81,21 @@ public class OrphanedSnapshotDetectionTest {
         orphans.results().areNot(forFileWithName("failingTestMethod.snapshot"));
     }
 
+    @Test
+    void orphaned_file_for_disabled_assertion_within_testshould_correctly_be_detected() throws Throwable {
+        frameworkTest.executeTestcasesIn(TestCase.class);
+
+        orphans.results().areExactly(1, forFileWithName("testWithChangedAssertions_1.snapshot"));
+    }
+
     @EnableSnapshotTests
     static class TestCase {
+
+        @Test
+        void testWithChangedAssertions(Snapshot snapshot) {
+            snapshot.assertThat("1").asText().matchesSnapshotText();
+            // snapshot.assertThat("2").asText().matchesSnapshotText();
+        }
 
         @Test
         void someSnapshotTest(Snapshot snapshot) {
