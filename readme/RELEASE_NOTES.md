@@ -1,6 +1,7 @@
 _Note:_ When running your tests with this version for the first time, you will see that your snapshot files are being 
 changed because we introduced a new header field. You can and safely check in these changes into your SCM.
 
+* Fix a regression introduced with `1.2.2` where the framework ends up in unrecoverable condition after a snapshot test failed
 * Remove Target `ElementType.METHOD` from `@EnableSnapshotTests`
 
 Maven Central coordinates for this release:
