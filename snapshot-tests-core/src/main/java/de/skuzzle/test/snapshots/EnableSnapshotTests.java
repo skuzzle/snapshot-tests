@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots;
 
-import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -96,8 +95,8 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * Snapshot files can become orphans if, for example you rename a test class/method or you
  * change the snapshot assertions within a test. This framework comes with a sophisticated
  * approach for detecting those orphaned files. By default, we will log a warning with the
- * found orphan. You can temporarily place the {@link DeleteOrphanedSnapshots} annotation on a
- * snapshot test class to have those files deleted automatically.
+ * found orphan. You can temporarily place the {@link DeleteOrphanedSnapshots} annotation
+ * on a snapshot test class to have those files deleted automatically.
  *
  * @author Simon Taddiken
  * @see Snapshot
@@ -106,7 +105,7 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * @see ForceUpdateSnapshots
  */
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD })
+@Target({ TYPE })
 @ExtendWith(JUnit5SnapshotExtension.class)
 @API(status = Status.STABLE)
 public @interface EnableSnapshotTests {
