@@ -29,6 +29,8 @@ Person->[int]id: 4711
 Person->[java.lang.String]name: Simon
 Address->[java.lang.String]number: 1337
 Address->[java.lang.String]number: 42
+Person->[[Ljava.lang.String;]objectArray: [Array]
+Person->[[B]primitiveArray: [Array]
 Person->[boolean]readonly: true
 Address->[java.lang.String]street: Gibtsnicht-Straße
 Address->[java.lang.String]street: Whatever-Rd

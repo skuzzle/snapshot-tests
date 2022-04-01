@@ -243,10 +243,21 @@ class MethodObjectMembers implements ObjectMembers {
                     && Objects.equals(name, ((MethodObjectMember) obj).name);
         }
 
+        private String valueAsString() {
+            final Object value = value();
+            if (value == null) {
+                return null;
+            }
+            if (value.getClass().isArray()) {
+                return "[Array]";
+            }
+            return "" + value;
+        }
+
         @Override
         public String toString() {
             return String.format("%s->[%s]%s: %s", parent.getClass().getSimpleName(),
-                    valueType().getName(), name(), "" + value());
+                    valueType().getName(), name(), "" + valueAsString());
         }
     }
 
