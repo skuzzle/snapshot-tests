@@ -111,6 +111,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      */
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
     public JsonSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
+        Arguments.requireNonNull(rules, "rules consumer must not be null");
         final ComparatorCustomizerImpl comparatorCustomizerImpl = new ComparatorCustomizerImpl();
         rules.accept(comparatorCustomizerImpl);
         this.jsonComparator = comparatorCustomizerImpl.build();
