@@ -40,8 +40,7 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
                                     JSONCompareResult result)
                                     throws ValueMatcherException {
 
-                                final boolean match = actual != null && regex.matcher(actual.toString()).matches()
-                                        && snapshot != null && regex.matcher(snapshot.toString()).matches();
+                                final boolean match = actual != null && regex.matcher(actual.toString()).matches();
                                 if (!match) {
                                     result.fail(String.format(
                                             "Expected actual value '%s' of field '%s'  to match the pattern '%s'",
@@ -62,7 +61,7 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                customizations.add(new Customization(path, (o1, o2) -> predicate.test(o1) && predicate.test(o2)));
+                customizations.add(new Customization(path, (actual, expected) -> predicate.test(actual)));
                 return ComparatorCustomizerImpl.this;
             }
         };

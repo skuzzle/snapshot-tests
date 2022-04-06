@@ -1,3 +1,5 @@
+* Change: Custom json matchers are only tested against the new actual result and not against the persisted snapshot anymore
+
 ### Experimental
 * Fix: object traversal failed on primitive arrays
 * Fix: serious bug in `ObjectMemberAction.replaceConsistently`
