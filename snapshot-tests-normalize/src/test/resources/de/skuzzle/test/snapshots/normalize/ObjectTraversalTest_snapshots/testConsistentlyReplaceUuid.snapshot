@@ -22,3 +22,5 @@ Zip: 11833
 City: London
 Country: UK
 ]
+PrimitiveArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+ObjectArray: [null, null, null, null, null, null, null, null, null, null]

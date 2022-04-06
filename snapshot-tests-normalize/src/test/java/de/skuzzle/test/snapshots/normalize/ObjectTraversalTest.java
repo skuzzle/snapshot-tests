@@ -18,7 +18,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.normalize.strings.Generators;
 
 @EnableSnapshotTests
 public class ObjectTraversalTest {

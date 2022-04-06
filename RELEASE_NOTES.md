@@ -1,4 +1,8 @@
+### Experimental
 * Fix: object traversal failed on primitive arrays
+* Fix: serious bug in `ObjectMemberAction.replaceConsistently`
+* Add: new simpler overload of `ObjectMemberAction.replaceConsistently`
+* Add: new package for string normalization
 
 Maven Central coordinates for this release:
 
