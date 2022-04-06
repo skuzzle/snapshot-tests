@@ -124,10 +124,14 @@ public final class ObjectMemberAction {
             final Map<Object, Object> replacements = new HashMap<>();
             return consumeWith(objectMember -> {
                 final Object value = objectMember.value();
-                final Object replacement = replacements.computeIfAbsent(replacements,
+                final Object replacement = replacements.computeIfAbsent(value,
                         key -> generator.apply(replacements.size(), value));
                 objectMember.setValue(replacement);
             });
+        }
+
+        public ObjectMemberAction consistentlyReplaceWith(Function<Integer, ? extends Object> generator) {
+            return consistentlyReplaceWith((i, match) -> generator.apply(i));
         }
     }
 }
