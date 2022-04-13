@@ -1,4 +1,5 @@
 * Change: Custom json matchers are only tested against the new actual result and not against the persisted snapshot anymore
+* [#24](https://github.com/skuzzle/snapshot-tests/issues/24): Only create snapshot directory if necessary
 
 ### Experimental
 * Fix: object traversal failed on primitive arrays
