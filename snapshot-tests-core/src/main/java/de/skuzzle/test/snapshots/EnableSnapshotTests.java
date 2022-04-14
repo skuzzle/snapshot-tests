@@ -69,7 +69,7 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  *
  * <pre>
  *     &#64;ParameterizedTest
- *     &#64;Values(string = { "string1", "string2" })
+ *     &#64;Values(strings = { "string1", "string2" })
  *     void testSomething(String parameter, Snapshot snapshot) throws Exception {
  *         Object actual = ...
  *
