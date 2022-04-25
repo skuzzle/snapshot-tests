@@ -15,7 +15,7 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import de.skuzzle.test.snapshots.validation.Arguments;
 
-final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
+final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
 
     private final List<Customization> customizations = new ArrayList<>();
 
@@ -49,20 +49,20 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
                                 return match;
                             }
                         }));
-                return ComparatorCustomizerImpl.this;
+                return JsonComparisonRuleBuilder.this;
             }
 
             @Override
             public ComparisonRuleBuilder ignore() {
                 customizations.add(new Customization(path, (o1, o2) -> true));
-                return ComparatorCustomizerImpl.this;
+                return JsonComparisonRuleBuilder.this;
             }
 
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
                 customizations.add(new Customization(path, (actual, expected) -> predicate.test(actual)));
-                return ComparatorCustomizerImpl.this;
+                return JsonComparisonRuleBuilder.this;
             }
         };
     }

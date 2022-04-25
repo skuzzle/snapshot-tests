@@ -12,7 +12,7 @@ test-method: testAsJsonStructureCompareCustomNew
     "street" : "Gibtsnicht-Straße",
     "number" : "1337",
     "zipCode" : "4711",
-    "city" : "Bielefeld",
+    "city" : "not Bielefeld",
     "country" : "Germany"
   }
 }
