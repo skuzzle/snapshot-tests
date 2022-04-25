@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +38,8 @@ final class DynamicOrphanedSnapshotsDetector {
 
     private Stream<Path> snapshotDirectories(Path globalSnapshotDirectory) {
         return Stream.concat(Stream.of(globalSnapshotDirectory),
-                results.stream().map(SnapshotTestResult::targetFile).map(Path::getParent));
+                results.stream().map(SnapshotTestResult::targetFile).map(Path::getParent))
+                .filter(Files::exists);
     }
 
     public Stream<OrphanDetectionResult> detectOrphans(Path globalSnapshotDirectory) {
