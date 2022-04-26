@@ -54,8 +54,7 @@ final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
 
             @Override
             public ComparisonRuleBuilder ignore() {
-                customizations.add(new Customization(path, (o1, o2) -> true));
-                return JsonComparisonRuleBuilder.this;
+                return mustMatch(actual -> true);
             }
 
             @Override

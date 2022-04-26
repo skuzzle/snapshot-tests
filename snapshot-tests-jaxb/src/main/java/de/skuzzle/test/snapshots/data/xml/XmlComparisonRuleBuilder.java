@@ -28,20 +28,13 @@ final class XmlComparisonRuleBuilder implements ComparisonRuleBuilder {
             @Override
             public ComparisonRuleBuilder mustMatch(Pattern regex) {
                 Arguments.requireNonNull(regex, "regex must not be null");
-                return mustMatch(actual -> regex.matcher(((Detail) actual).getTarget().getTextContent()).matches());
+                return mustMatch(actualDetails -> regex.matcher(((Detail) actualDetails).getTarget().getTextContent())
+                        .matches());
             }
 
             @Override
             public ComparisonRuleBuilder ignore() {
-                customizations.add(new XPathDifferenceEvaluator(xpathEngine, path, new DifferenceEvaluator() {
-
-                    @Override
-                    public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
-                        return ComparisonResult.EQUAL;
-                    }
-                }));
-
-                return XmlComparisonRuleBuilder.this;
+                return mustMatch(actualDetails -> true);
             }
 
             @Override
