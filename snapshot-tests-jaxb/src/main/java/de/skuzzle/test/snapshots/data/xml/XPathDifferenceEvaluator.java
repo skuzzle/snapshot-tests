@@ -30,7 +30,7 @@ final class XPathDifferenceEvaluator implements DifferenceEvaluator {
         final Node targetNode = actualDetails.getTarget();
 
         final Collection<Node> matchedNodes = matchedNodes(targetNode);
-        if (matchedNodes.isEmpty() || !matchedNodes.contains(targetNode)) {
+        if (!matchedNodes.contains(targetNode)) {
             return outcome;
         }
         return matchedXPathDelegate.evaluate(comparison, outcome);
