@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.directoryparams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -157,6 +158,19 @@ public final class TestFile {
      */
     public String asText(Charset charset) throws IOException {
         return new String(asBinary(), Arguments.requireNonNull(charset, "charset must not be null"));
+    }
+
+    /**
+     * Reads the file's contents into a String using the UTF-8 charset.
+     *
+     * @return The file contents as String
+     * @throws IOException If an I/O error occurs.
+     * @see #asText(Charset)
+     * @since 1.3.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.3.0")
+    public String asText() throws IOException {
+        return asText(StandardCharsets.UTF_8);
     }
 
     private static final Pattern REPLACIBLE_VAR = Pattern.compile("\\$\\{(.*)\\}");
