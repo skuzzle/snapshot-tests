@@ -175,7 +175,7 @@ snapshot.assertThat(someObjext)
         .matchesSnapshotStructure()
 ```
 
-JSO example:
+JSON example:
 
 ```java
 snapshot.assertThat(someObjext)
