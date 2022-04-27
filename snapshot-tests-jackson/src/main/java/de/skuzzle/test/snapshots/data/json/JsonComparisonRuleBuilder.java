@@ -21,7 +21,7 @@ final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
 
     @Override
     public ChooseMatcher pathAt(String path) {
-
+        Arguments.requireNonNull(path, "path must not be null");
         return new ChooseMatcher() {
 
             @Override

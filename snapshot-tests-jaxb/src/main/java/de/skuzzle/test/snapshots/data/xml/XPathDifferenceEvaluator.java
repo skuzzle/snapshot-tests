@@ -1,8 +1,5 @@
 package de.skuzzle.test.snapshots.data.xml;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.w3c.dom.Node;
@@ -29,19 +26,15 @@ final class XPathDifferenceEvaluator implements DifferenceEvaluator {
         final Detail actualDetails = comparison.getTestDetails();
         final Node targetNode = actualDetails.getTarget();
 
-        final Collection<Node> matchedNodes = matchedNodes(targetNode);
-        if (!matchedNodes.contains(targetNode)) {
+        if (!isMatchedByXpath(targetNode, this.xPath)) {
             return outcome;
         }
         return matchedXPathDelegate.evaluate(comparison, outcome);
     }
 
-    private Collection<Node> matchedNodes(Node node) {
-        if (node == null) {
-            return Collections.emptySet();
-        }
+    private boolean isMatchedByXpath(Node node, String xPath) {
         final Iterable<Node> selectedNodes = xPathEngine.selectNodes(xPath, node);
         return StreamSupport.stream(selectedNodes.spliterator(), false)
-                .collect(Collectors.toUnmodifiableSet());
+                .anyMatch(node::equals);
     }
 }
