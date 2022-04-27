@@ -1,3 +1,4 @@
+* [#9](https://github.com/skuzzle/snapshot-tests/issues/9): Do not allow null snapshots anymore
 * [#24](https://github.com/skuzzle/snapshot-tests/issues/24): Only create snapshot directory if necessary
 * Simple API to specify custom rules using XPath for XML comparison
 * Change: Custom json matchers are only tested against the new actual result and not against the persisted snapshot anymore
