@@ -21,10 +21,12 @@ final class XmlUnitStructuralAssertions implements StructuralAssertions {
 
     @Override
     public void assertEquals(String storedSnapshot, String serializedActual) {
-        final CompareAssert compareAssert = XmlAssert
+        CompareAssert compareAssert = XmlAssert
                 .assertThat(serializedActual)
-                .and(storedSnapshot)
-                .withDifferenceEvaluator(differenceEvaluator);
+                .and(storedSnapshot);
+        if (differenceEvaluator != null) {
+            compareAssert = compareAssert.withDifferenceEvaluator(differenceEvaluator);
+        }
         compareAssertConsumer.accept(compareAssert);
     }
 

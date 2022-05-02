@@ -10,7 +10,6 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
-import org.xmlunit.diff.DifferenceEvaluators;
 
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
@@ -50,8 +49,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
     private MarshallerSupplier marshallerSupplier;
     // Defines how snapshots are being asserted on using xml-unit
     private Consumer<CompareAssert> compareAssertConsumer = CompareAssert::areIdentical;
-
-    private DifferenceEvaluator differenceEvaluator = DifferenceEvaluators.Default;
+    // null unless customized
+    private DifferenceEvaluator differenceEvaluator;
 
     private XmlSnapshot(JAXBContext jaxbContext) {
         this.jaxbContext = jaxbContext;
@@ -99,6 +98,11 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * <p>
      * You can also use this to apply further customizations to the CompareAssert. Consult
      * the xml-unit documentation for further information.
+     * <p>
+     * Note: if you also use {@link #withComparisonRules(Consumer)}, you can <b>not</b>
+     * {@link CompareAssert#withDifferenceEvaluator(DifferenceEvaluator)} here, as your
+     * {@linkplain DifferenceEvaluator} will always be overridden by the one that is
+     * configured in {@linkplain #withComparisonRules(Consumer)}.
      *
      * @param xmls Consumes the {@link CompareAssert} which compares the actual and
      *            expected xml.
@@ -115,6 +119,10 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * the xml snapshots.
      * <p>
      * Paths on the {@link ComparisonRuleBuilder} must conform to standard XPath syntax.
+     * <p>
+     * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
+     * can not use this method in combination with {@link #withComparisonRules(Consumer)}
+     * if you intend to use an own {@link DifferenceEvaluator}.
      *
      * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
      * @return This instance.
