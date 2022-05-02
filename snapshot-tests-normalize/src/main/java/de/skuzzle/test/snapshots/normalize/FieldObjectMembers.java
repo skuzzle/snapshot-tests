@@ -114,10 +114,21 @@ class FieldObjectMembers implements ObjectMembers {
                     && Objects.equals(field, ((FieldObjectMember) obj).field);
         }
 
+        private String valueAsString() {
+            final Object value = value();
+            if (value == null) {
+                return null;
+            }
+            if (value.getClass().isArray()) {
+                return "[Array]";
+            }
+            return "" + value;
+        }
+
         @Override
         public String toString() {
             return String.format("%s->[%s]%s: %s", parent.getClass().getSimpleName(),
-                    valueType().getName(), name(), "" + value());
+                    valueType().getName(), name(), "" + valueAsString());
         }
     }
 

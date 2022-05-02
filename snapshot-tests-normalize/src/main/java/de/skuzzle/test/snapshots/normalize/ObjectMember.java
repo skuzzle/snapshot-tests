@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.normalize;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apiguardian.api.API;
@@ -25,8 +26,8 @@ public interface ObjectMember {
 
     /**
      * If {@link #parent()} has been discovered in a supported collection type (array,
-     * {@link Iterable}, {@link Collection}) this method returns the respective
-     * collection.
+     * {@link Iterable}, {@link Collection}, {@link Map}) this method returns the
+     * respective collection.
      * <p>
      * Note that, during traversal, only the first occurrence of an object instance is
      * taken into account. If the same object is once referenced in a collection

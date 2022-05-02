@@ -15,13 +15,13 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import de.skuzzle.test.snapshots.validation.Arguments;
 
-final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
+final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
 
     private final List<Customization> customizations = new ArrayList<>();
 
     @Override
     public ChooseMatcher pathAt(String path) {
-
+        Arguments.requireNonNull(path, "path must not be null");
         return new ChooseMatcher() {
 
             @Override
@@ -40,8 +40,7 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
                                     JSONCompareResult result)
                                     throws ValueMatcherException {
 
-                                final boolean match = actual != null && regex.matcher(actual.toString()).matches()
-                                        && snapshot != null && regex.matcher(snapshot.toString()).matches();
+                                final boolean match = actual != null && regex.matcher(actual.toString()).matches();
                                 if (!match) {
                                     result.fail(String.format(
                                             "Expected actual value '%s' of field '%s'  to match the pattern '%s'",
@@ -50,20 +49,19 @@ final class ComparatorCustomizerImpl implements ComparisonRuleBuilder {
                                 return match;
                             }
                         }));
-                return ComparatorCustomizerImpl.this;
+                return JsonComparisonRuleBuilder.this;
             }
 
             @Override
             public ComparisonRuleBuilder ignore() {
-                customizations.add(new Customization(path, (o1, o2) -> true));
-                return ComparatorCustomizerImpl.this;
+                return mustMatch(actual -> true);
             }
 
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                customizations.add(new Customization(path, (o1, o2) -> predicate.test(o1) && predicate.test(o2)));
-                return ComparatorCustomizerImpl.this;
+                customizations.add(new Customization(path, (actual, expected) -> predicate.test(actual)));
+                return JsonComparisonRuleBuilder.this;
             }
         };
     }

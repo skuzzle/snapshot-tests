@@ -81,8 +81,12 @@ final class SnapshotTestImpl implements Snapshot {
         return determineSnapshotDirectory().resolve(snapshotFileName);
     }
 
-    private Path determineSnapshotDirectory() {
-        return this.directoryOverride != null ? this.directoryOverride : configuration.determineSnapshotDirectory();
+    private Path determineSnapshotDirectory() throws IOException {
+        final Path snapshotDirectory = this.directoryOverride != null
+                ? this.directoryOverride
+                : this.configuration.determineSnapshotDirectory();
+        Files.createDirectories(snapshotDirectory);
+        return snapshotDirectory;
     }
 
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {

@@ -158,8 +158,11 @@ public class OrphanedSnapshotDetectionTest {
         }
     }
 
-    private Path determineDefaultSnapshotDirectory(Class<?> testClass) {
-        return DefaultSnapshotConfiguration.forTestClass(testClass).determineSnapshotDirectory();
+    private Path determineDefaultSnapshotDirectory(Class<?> testClass) throws IOException {
+        final Path snapshotDirectory = DefaultSnapshotConfiguration.forTestClass(testClass)
+                .determineSnapshotDirectory();
+        Files.createDirectories(snapshotDirectory);
+        return snapshotDirectory;
     }
 
     private SnapshotFile createArtificialSnapshotFile(

@@ -95,7 +95,7 @@ public final class ObjectTraversal {
             final Collection<?> c = (Collection<?>) root;
             return c.stream().flatMap(element -> membersOfRecursive(element, c, context, strategy));
 
-        } else if (root.getClass().isArray()) {
+        } else if (root.getClass().isArray() && !root.getClass().getComponentType().isPrimitive()) {
             final Object[] c = (Object[]) root;
             return Arrays.stream(c).flatMap(element -> membersOfRecursive(element, c, context, strategy));
 

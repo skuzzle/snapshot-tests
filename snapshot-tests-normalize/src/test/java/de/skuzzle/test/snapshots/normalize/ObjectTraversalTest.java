@@ -4,6 +4,7 @@ import static de.skuzzle.test.snapshots.normalize.ObjectMemberAction.members;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
-@EnableSnapshotTests(forceUpdateSnapshots = false)
+@EnableSnapshotTests
 public class ObjectTraversalTest {
 
     private static Stream<Arguments> strategies() {
@@ -61,7 +62,7 @@ public class ObjectTraversalTest {
 
         ObjectTraversal.applyActions(person, strategy, members()
                 .withStringValueMatching("[a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8}")
-                .consistentlyReplaceWith(Generators.uuidLike()));
+                .consistentlyReplaceWith(Generators.deterministicUUID()));
 
         // intentionally use the same snapshot for all test arguments to make sure they
         // deliver identical results
@@ -166,6 +167,8 @@ public class ObjectTraversalTest {
         private String surname;
         private LocalDate birthdate;
         private final List<Address> addresses = new ArrayList<>();
+        private final byte[] primitiveArray = new byte[10];
+        private final String[] objectArray = new String[10];
 
         public String getName() {
             return this.name;
@@ -203,6 +206,14 @@ public class ObjectTraversalTest {
             return this;
         }
 
+        public byte[] getPrimitiveArray() {
+            return this.primitiveArray;
+        }
+
+        public String[] getObjectArray() {
+            return this.objectArray;
+        }
+
         @Override
         public String toString() {
             return new StringBuilder()
@@ -211,6 +222,8 @@ public class ObjectTraversalTest {
                     .append("Surname: ").append(surname).append("\n")
                     .append("Birthdate: ").append(birthdate).append("\n")
                     .append("Addresses: ").append(addresses).append("\n")
+                    .append("PrimitiveArray: ").append(Arrays.toString(primitiveArray)).append("\n")
+                    .append("ObjectArray: ").append(Arrays.toString(objectArray)).append("\n")
                     .toString();
         }
     }

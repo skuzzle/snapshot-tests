@@ -9,7 +9,9 @@ import javax.xml.bind.Marshaller;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.diff.DifferenceEvaluator;
 
+import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
@@ -47,6 +49,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
     private MarshallerSupplier marshallerSupplier;
     // Defines how snapshots are being asserted on using xml-unit
     private Consumer<CompareAssert> compareAssertConsumer = CompareAssert::areIdentical;
+    // null unless customized
+    private DifferenceEvaluator differenceEvaluator;
 
     private XmlSnapshot(JAXBContext jaxbContext) {
         this.jaxbContext = jaxbContext;
@@ -91,6 +95,14 @@ public final class XmlSnapshot implements StructuredDataProvider {
     /**
      * Defines which Xml-Assert assertion method will actually be used. Defaults to
      * {@link CompareAssert#areIdentical()}.
+     * <p>
+     * You can also use this to apply further customizations to the CompareAssert. Consult
+     * the xml-unit documentation for further information.
+     * <p>
+     * Note: if you also use {@link #withComparisonRules(Consumer)}, you can <b>not</b>
+     * {@link CompareAssert#withDifferenceEvaluator(DifferenceEvaluator)} here, as your
+     * {@linkplain DifferenceEvaluator} will always be overridden by the one that is
+     * configured in {@linkplain #withComparisonRules(Consumer)}.
      *
      * @param xmls Consumes the {@link CompareAssert} which compares the actual and
      *            expected xml.
@@ -102,11 +114,35 @@ public final class XmlSnapshot implements StructuredDataProvider {
         return this;
     }
 
+    /**
+     * Allows to specify extra comparison rules that are applied to certain paths within
+     * the xml snapshots.
+     * <p>
+     * Paths on the {@link ComparisonRuleBuilder} must conform to standard XPath syntax.
+     * <p>
+     * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
+     * can not use this method in combination with {@link #withComparisonRules(Consumer)}
+     * if you intend to use an own {@link DifferenceEvaluator}.
+     *
+     * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
+     * @return This instance.
+     * @since 1.3.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.3.0")
+    public XmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
+        Arguments.requireNonNull(rules, "rules consumer must not be null");
+        final XmlComparisonRuleBuilder comparatorCustomizerImpl = new XmlComparisonRuleBuilder();
+        rules.accept(comparatorCustomizerImpl);
+        this.differenceEvaluator = comparatorCustomizerImpl.build();
+        return this;
+    }
+
     @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = JaxbXmlSnapshotSerializer.withExplicitJaxbContext(
                 jaxbContext, marshallerSupplier);
-        final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(compareAssertConsumer);
+        final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(compareAssertConsumer,
+                differenceEvaluator);
         return StructuredData.with(snapshotSerializer, structuralAssertions);
     }
 

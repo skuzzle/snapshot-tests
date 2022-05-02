@@ -26,9 +26,7 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
 
     @Override
     public ChooseDataFormat assertThat(Object actual) {
-        // #9 (https://github.com/skuzzle/snapshot-tests/issues/9)
-        // Require non-null actual value?
-        this.actual = actual;
+        this.actual = Arguments.requireNonNull(actual, "actual must not be null");
         return this;
     }
 

@@ -150,16 +150,42 @@ result for different parameters).
 Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
 
 ### Dealing with random values
-A common source of problems are random values within the snapshot data such as dates or generated ids. This framework
-comes with no means to resolve those issues. Instead you should design your code up front so that such randomness can 
-easily be mocked away. For example:
+A common source of problems are random values within the snapshot data such as dates or generated ids. Generally, you 
+should design your code up front so that such randomness can easily be mocked away. For example:
 * Instead of using `LocalDateTime.now()` make your code use a shared `Clock` instance that is replacible in tests and 
 use `LocalDateTime.now(clock)`
 * More generally put: If your code uses random values in any place, consider to use a strategy interface instead which 
 can be replaced with a deterministic mock during testing.
 * As a last resort, you can implement some normalization. Either post-process your actual test result before taking the
  snapshot or implement a `SnapshotSerializer` which does the normalization. You could also implement 
- `StructralAssertions` in a way that it ignores such random values during comparison. 
+ `StructralAssertions` in a way that it ignores such random values during comparison.
+ 
+**New**
+The latest version of this library comes with a very simple (and experimental) abstraction for customizing the 
+structural comparison. You can use json-path resp. xpath expressions to customize the comparison on a per-node basis.
+
+XML example:
+
+```java
+snapshot.assertThat(someObjext)
+        .as(XmlSnapshot.inferJaxbContext()
+                .withComparisonRules(rules -> rules
+                        .pathAt("/person/address/city/text()").ignore()
+                        .pathAt("/person/date/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+        .matchesSnapshotStructure()
+```
+
+JSON example:
+
+```java
+snapshot.assertThat(someObjext)
+        .as(JsonSnapshot.withDefaultObjectMapper()
+                .withComparisonRules(rules -> rules
+                        .pathAt("address.city").ignore()
+                        .pathAt("date").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+        .matchesSnapshotStructure();
+```
+ 
 
 ### Changing the snapshot directory
 By default, snapshots are stored in a directory structure according to their test-class's package name relative to 

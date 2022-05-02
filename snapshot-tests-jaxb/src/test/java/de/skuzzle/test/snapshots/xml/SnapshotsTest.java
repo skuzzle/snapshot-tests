@@ -4,6 +4,7 @@ import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -60,6 +61,18 @@ public class SnapshotsTest {
                 .as(XmlSnapshot.inferJaxbContext().compareUsing(CompareAssert::areSimilar))
                 .matchesAccordingTo((expected, actual) -> XmlAssert.assertThat(actual).and(expected)
                         .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences()).areSimilar());
+        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testAsXmlStructureCompareCustomNew(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson().setName("0000-02-02");
+        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+                .as(XmlSnapshot.inferJaxbContext()
+                        .withComparisonRules(rules -> rules
+                                .pathAt("/person/address/city/text()").ignore()
+                                .pathAt("/person/name/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+                .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 

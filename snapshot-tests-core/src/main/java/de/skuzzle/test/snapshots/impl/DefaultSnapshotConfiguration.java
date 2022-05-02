@@ -10,7 +10,6 @@ import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
-import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -42,7 +41,6 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
         final String testDirName = snapshotDirectoryName(testClass);
 
         final Path testDirectory = DirectoryResolver.resolve(testDirName);
-        UncheckedIO.createDirectories(testDirectory);
         return testDirectory;
     }
 
