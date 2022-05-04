@@ -1,9 +1,15 @@
-package de.skuzzle.test.snapshots.data.text;
+package de.skuzzle.test.snapshots.impl;
 
 import java.util.LinkedList;
 
-import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.impl.diff_match_patch.Diff;
 
+/**
+ * Creates a unified diff of 2 Strings using the popular Neil Fraser diff_match_patch
+ * implementation under the hood.
+ *
+ * @author Simon Taddiken
+ */
 final class TextDiff {
 
     private final DiffInterpreter diffInterpreter = new DiffInterpreter().withIgnoreWhitespaceChanges(true);

@@ -8,12 +8,8 @@ final class TextDiffStructuralAssertions implements StructuralAssertions {
 
     @Override
     public void assertEquals(String storedSnapshot, String serializedActual) {
-        final TextDiff textDiff = TextDiff.diffOf(storedSnapshot, serializedActual);
-        if (textDiff.hasDifference()) {
-            throw new AssertionFailedError(
-                    String.format("Stored snapshot doesn't match actual result.%nUnified diff:%n%s", textDiff),
-                    storedSnapshot, serializedActual);
+        if (!storedSnapshot.equals(serializedActual)) {
+            throw new AssertionFailedError("Stored snapshot doesn't match actual result.", storedSnapshot, serializedActual);
         }
     }
-
 }

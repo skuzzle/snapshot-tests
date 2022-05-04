@@ -1,10 +1,10 @@
-package de.skuzzle.test.snapshots.data.text;
+package de.skuzzle.test.snapshots.impl;
 
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
-import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
+import de.skuzzle.test.snapshots.impl.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.impl.diff_match_patch.Operation;
 
 final class DiffInterpreter {
 

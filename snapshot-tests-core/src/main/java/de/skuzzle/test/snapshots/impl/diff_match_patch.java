@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.skuzzle.test.snapshots.data.text;
+package de.skuzzle.test.snapshots.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

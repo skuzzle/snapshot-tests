@@ -2,6 +2,8 @@ package de.skuzzle.test.snapshots.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
@@ -112,9 +114,12 @@ public class FailingSnapshotTests {
                 .expectTestcase(FailBecauseSnapshotMismatch.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage(String.format("Stored snapshot doesn't match actual result.%n"
-                        + "Unified diff:%n"
-                        + "+[NOT ]test"));
+                .hasMessage(String.format("Stored snapshot doesn't match actual result.%n" 
+                        + "%nSnapshot location:%n"
+                        + "\t%s%n"
+                        + "%n"
+                        + "Full unified diff of actual result and stored snapshot:%n"
+                        + "+[NOT ]test", Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatch_snapshots/testWithSnapshot_0.snapshot")));
     }
 
     @EnableSnapshotTests
@@ -178,12 +183,18 @@ public class FailingSnapshotTests {
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format("Stored snapshot doesn't match actual result.%n"
-                        + "Unified diff:%n"
-                        + "test+[2]"))
+                        + "%nSnapshot location:%n"
+                        + "\t%s%n"
+                        + "%n"
+                        + "Full unified diff of actual result and stored snapshot:%n"
+                        + "test+[2]", Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$SoftAssertions_snapshots/testWithSnapshot_0.snapshot")))
                 .hasSuppressedException(
                         new AssertionFailedError(String.format("Stored snapshot doesn't match actual result.%n"
-                                + "Unified diff:%n"
-                                + "test+[3]")));
+                                + "%nSnapshot location:%n"
+                                + "\t%s%n"
+                                + "%n"
+                                + "Full unified diff of actual result and stored snapshot:%n"
+                                + "test+[3]", Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$SoftAssertions_snapshots/testWithSnapshot_1.snapshot"))));
     }
 
     @EnableSnapshotTests(softAssertions = true)

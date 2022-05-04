@@ -136,7 +136,7 @@ final class SnapshotTestImpl implements Snapshot {
             final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
             final String storedSnapshot = snapshotFile.snapshot();
 
-            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual)
+            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath)
                     .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
                     .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
         }
@@ -168,12 +168,12 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private Optional<Throwable> compareTestResults(StructuralAssertions structuralAssertions, String storedSnapshot,
-            String serializedActual) {
+            String serializedActual, Path snapshotFile) {
         try {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);
             return Optional.empty();
         } catch (final AssertionError e) {
-            final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot);
+            final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot, snapshotFile);
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
@@ -181,11 +181,31 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private AssertionError toDiffableAssertionError(AssertionError original, String serializedActual,
-            String storedSnapshot) {
-        if (original instanceof AssertionFailedError) {
-            return original;
+            String storedSnapshot, Path snapshotFile) {
+        final StringBuilder assertionMessage = new StringBuilder();
+        if (original.getMessage() != null) {
+            assertionMessage.append(original.getMessage());
         }
-        return new AssertionFailedError(original.getMessage(), storedSnapshot, serializedActual, original);
+        assertionMessage.append(System.lineSeparator())
+        .append(System.lineSeparator())
+        .append("Snapshot location:")
+        .append(System.lineSeparator()).append("\t")
+        .append(snapshotFile.toString())
+        .append(System.lineSeparator());
+
+        final TextDiff testDiff = TextDiff.diffOf(storedSnapshot, serializedActual);
+        if (testDiff.hasDifference()) {
+            assertionMessage
+            .append(System.lineSeparator())
+            .append("Full unified diff of actual result and stored snapshot:")
+            .append(System.lineSeparator())
+            .append(testDiff);
+        }
+        final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(), 
+                storedSnapshot, serializedActual, original.getCause());
+        final String internalPackage = SnapshotTestImpl.class.getPackageName();
+        Throwables.filterStackTrace(error, element -> element.getClassName().startsWith(internalPackage));
+        return error;
     }
 
 }
