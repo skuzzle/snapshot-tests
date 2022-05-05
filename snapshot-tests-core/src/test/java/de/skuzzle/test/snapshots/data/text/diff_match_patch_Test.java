@@ -23,7 +23,7 @@
  * java -classpath classes name/fraser/neil/plaintext/diff_match_patch_Test
  */
 
-package de.skuzzle.test.snapshots.impl;
+package de.skuzzle.test.snapshots.data.text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +34,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.impl.diff_match_patch;
-import de.skuzzle.test.snapshots.impl.diff_match_patch.Diff;
-import de.skuzzle.test.snapshots.impl.diff_match_patch.LinesToCharsResult;
-import de.skuzzle.test.snapshots.impl.diff_match_patch.Patch;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.LinesToCharsResult;
+import de.skuzzle.test.snapshots.data.text.diff_match_patch.Patch;
 
 public class diff_match_patch_Test {
 

@@ -22,6 +22,7 @@ import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
