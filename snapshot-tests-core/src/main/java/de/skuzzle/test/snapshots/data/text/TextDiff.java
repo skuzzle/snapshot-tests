@@ -2,9 +2,19 @@ package de.skuzzle.test.snapshots.data.text;
 
 import java.util.LinkedList;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
 
-final class TextDiff {
+/**
+ * Creates a unified diff of 2 Strings using the popular Neil Fraser diff_match_patch
+ * implementation under the hood.
+ *
+ * @author Simon Taddiken
+ */
+@API(status = Status.INTERNAL, since = "1.4.0")
+public final class TextDiff {
 
     private final DiffInterpreter diffInterpreter = new DiffInterpreter().withIgnoreWhitespaceChanges(true);
     private final LinkedList<Diff> diffs;
