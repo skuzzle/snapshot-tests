@@ -9,7 +9,7 @@ import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
 final class DiffInterpreter {
 
     private static final Pattern WHITESPACE_ONLY = Pattern.compile("\\s+");
-    private boolean ignoreWhitespaceChanges = false;
+    private boolean ignoreWhitespaceChanges = true;
 
     public DiffInterpreter withIgnoreWhitespaceChanges(boolean ignoreWhitespaceChanges) {
         this.ignoreWhitespaceChanges = ignoreWhitespaceChanges;
@@ -25,8 +25,13 @@ final class DiffInterpreter {
     }
 
     private boolean isFailureDifference(Diff diff) {
-        return diff.operation != Operation.EQUAL
-                && (!ignoreWhitespaceChanges || !isWhitespace(diff));
+        if (diff.operation == Operation.EQUAL) {
+            return false;
+        }
+        if (isWhitespace(diff)) {
+            return !ignoreWhitespaceChanges;
+        }
+        return true;
     }
 
     public String getDisplayDiff(Diff diff) {

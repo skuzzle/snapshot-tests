@@ -1,4 +1,5 @@
 * [#25](https://github.com/skuzzle/snapshot-tests/issues/25): Improve exception messages for comparison failures
+* [#27](https://github.com/skuzzle/snapshot-tests/issues/27): Allow to customize whitespace behavior for text comparison
 
 Maven Central coordinates for this release:
 

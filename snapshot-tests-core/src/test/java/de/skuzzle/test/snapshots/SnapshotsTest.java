@@ -30,7 +30,6 @@ public class SnapshotsTest {
     @ParameterizedTest
     @ValueSource(strings = { "string1", "string2" })
     void testParameterized(String param, Snapshot snapshot) {
-
         snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
                 .assertThat(param).asText().matchesSnapshotText();
     }
