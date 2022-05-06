@@ -48,7 +48,7 @@ public class SnapshotsTest {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(XmlSnapshot
-                        .inferJaxbContext()
+                        .xml()
                         .compareUsing(xmls -> xmls.withDifferenceEvaluator(DifferenceEvaluators.Default).areSimilar()))
                 .matchesSnapshotStructure();
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
@@ -58,7 +58,7 @@ public class SnapshotsTest {
     void testAsXmlStructureCustomStructuralAssertions(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(XmlSnapshot.inferJaxbContext().compareUsing(CompareAssert::areSimilar))
+                .as(XmlSnapshot.xml().compareUsing(CompareAssert::areSimilar))
                 .matchesAccordingTo((expected, actual) -> XmlAssert.assertThat(actual).and(expected)
                         .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences()).areSimilar());
         assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
@@ -68,7 +68,7 @@ public class SnapshotsTest {
     void testAsXmlStructureCompareCustomNew(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson().setName("0000-02-02");
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(XmlSnapshot.inferJaxbContext()
+                .as(XmlSnapshot.xml()
                         .withComparisonRules(rules -> rules
                                 .pathAt("/person/address/city/text()").ignore()
                                 .pathAt("/person/name/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))

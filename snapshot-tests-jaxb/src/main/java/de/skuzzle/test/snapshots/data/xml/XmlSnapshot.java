@@ -38,13 +38,12 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * being set up, use the static factory methods in {@link XmlSnapshot} instead of this
      * static constant.
      *
-     * @see #with(JAXBContext)
-     * @see #inferJaxbContext()
+     * @see #xml()
      */
-    public static final StructuredDataProvider xml = inferJaxbContext().build();
+    public static final StructuredDataProvider xml = xml().build();
 
     // If left null, the JAXBContext will be inferred from the actual test result.
-    private final JAXBContext jaxbContext;
+    private JAXBContext jaxbContext;
     // Creates the Marshaller from the JAXBContext
     private MarshallerSupplier marshallerSupplier;
     // Defines how snapshots are being asserted on using xml-unit
@@ -52,8 +51,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
     // null unless customized
     private DifferenceEvaluator differenceEvaluator;
 
-    private XmlSnapshot(JAXBContext jaxbContext) {
-        this.jaxbContext = jaxbContext;
+    private XmlSnapshot() {
         this.marshallerSupplier = ctx -> {
             final Marshaller marshaller = ctx.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -65,9 +63,24 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * Tries to infer the JAXBContext from the passed in actual test result.
      *
      * @return A builder for building {@link StructuredData}.
+     * @deprecated Since 1.4.0 - Use {@link #xml()} instead.
      */
+    @Deprecated(since = "1.4.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.4.0")
     public static XmlSnapshot inferJaxbContext() {
-        return new XmlSnapshot(null);
+        return xml();
+    }
+
+    /**
+     * Creates a new XML {@link StructuredDataProvider} which will try to infer the
+     * {@link JAXBContext} from the actual test result.
+     *
+     * @return A builder for building {@link StructuredData}.
+     * @since 1.4.0
+     */
+    @API(status = Status.STABLE, since = "1.4.0")
+    public static XmlSnapshot xml() {
+        return new XmlSnapshot();
     }
 
     /**
@@ -75,9 +88,24 @@ public final class XmlSnapshot implements StructuredDataProvider {
      *
      * @param jaxbContext The JAXBContext to use.
      * @return A builder for building {@link StructuredData}.
+     * @deprecated Since 1.4.0 - Use {@link #withJAXBContext(JAXBContext)} instead.
      */
+    @Deprecated(since = "1.4.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.4.0")
     public static XmlSnapshot with(JAXBContext jaxbContext) {
-        return new XmlSnapshot(Arguments.requireNonNull(jaxbContext, "jaxbContext must not be null"));
+        return xml().withJAXBContext(jaxbContext);
+    }
+
+    /**
+     * Uses the given {@link JAXBContext} instead of trying to infer it from the test
+     * result.
+     *
+     * @param jaxbContext The JAXBContext to use.
+     * @return This builder instance.
+     */
+    public XmlSnapshot withJAXBContext(JAXBContext jaxbContext) {
+        this.jaxbContext = Arguments.requireNonNull(jaxbContext, "jaxbContext must not be null");
+        return this;
     }
 
     /**
