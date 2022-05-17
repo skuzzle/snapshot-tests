@@ -22,8 +22,8 @@ import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
-import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -174,7 +174,8 @@ final class SnapshotTestImpl implements Snapshot {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);
             return Optional.empty();
         } catch (final AssertionError e) {
-            final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot, snapshotFile);
+            final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot,
+                    snapshotFile);
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
@@ -188,21 +189,21 @@ final class SnapshotTestImpl implements Snapshot {
             assertionMessage.append(original.getMessage());
         }
         assertionMessage.append(System.lineSeparator())
-        .append(System.lineSeparator())
-        .append("Snapshot location:")
-        .append(System.lineSeparator()).append("\t")
-        .append(snapshotFile.toString())
-        .append(System.lineSeparator());
+                .append(System.lineSeparator())
+                .append("Snapshot location:")
+                .append(System.lineSeparator()).append("\t")
+                .append(snapshotFile.toString())
+                .append(System.lineSeparator());
 
         final TextDiff testDiff = TextDiff.diffOf(storedSnapshot, serializedActual);
         if (testDiff.hasDifference()) {
             assertionMessage
-            .append(System.lineSeparator())
-            .append("Full unified diff of actual result and stored snapshot:")
-            .append(System.lineSeparator())
-            .append(testDiff);
+                    .append(System.lineSeparator())
+                    .append("Full unified diff of actual result and stored snapshot:")
+                    .append(System.lineSeparator())
+                    .append(testDiff);
         }
-        final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(), 
+        final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(),
                 storedSnapshot, serializedActual, original.getCause());
         final String internalPackage = SnapshotTestImpl.class.getPackageName();
         Throwables.filterStackTrace(error, element -> element.getClassName().startsWith(internalPackage));
