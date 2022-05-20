@@ -53,7 +53,7 @@ final class LocalResultCollector {
         if (wasUpdatedForcefully()) {
             return new AssertionError(String.format(
                     "Snapshots have been updated forcefully.%n"
-                            + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                            + "Remove 'updateSnapshots = true' attribute, @ForceUpdateSnapshots annotation, -DforceUpdateSnapshots JVM flag and calls to 'justUpdateSnapshot()' and run the tests again."));
         }
         return null;
     }
