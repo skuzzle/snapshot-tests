@@ -1,6 +1,9 @@
 = Snapshot-Tests User Guide
 Simon Taddiken
 :toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
 :revnumber: {project-version}
 :example-caption!:
 :imagesdir: ./images
@@ -88,8 +91,9 @@ snapshot files to occur as _modified_ files in your local SCM copy after upgradi
 This is a very simple quick start example of how to use this framework, relying only on the `-core` module and the 
 test result's `toString()` representation. 
 
-[source,java]
 .Simple quick start example
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags=quickstart,indent=0]
 ----
@@ -97,6 +101,7 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags
 <2> Declare a parameter of type `Snapshot`. It will be injected by the framework.
 <3> Choose a serialization format. Here we use the `actual` object's `toString()` representation as snapshot format.
 <4> Perform the assertion by comparing the actual object with the persisted snapshot.
+====
 
 === General Snapshot testing workflow
 
@@ -143,15 +148,18 @@ comparison to offer better error messages or to allow customization of the compa
 In order to present a meaningful _assertion failed_ message the framework will always create a unified diff of the
 persisted snapshot and the serialized `actual` result. 
 
-[source,java]
 .Serialize without structured format and apply text-only comparison.
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=text-compare,indent=0]
 ----
 <1> `.matchesSnapshotText()` is _the only_ available option when you choose no structured format using `asText()`.
+====
 
 If the assertions fails because a difference has been found, the framework will provide a rich failure report along 
 with the assertion error's stack trace.
+
 [source]
 .Example text comparison failure.
 ----
@@ -190,13 +198,15 @@ When using a structured serialization format you can make use of advanced compar
 format. See <<snapshot-formats, Snapshot formats>> to learn more about customizing the serialization and comparison 
 details.
 
-[source,java]
 .Serialize to JSON and apply structural comparison.
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
 ----
 <1> Choose to serialize test results as JSON.
 <2> Choose `.matchesSnapshotStructure()` to trigger structural comparison.
+====
 
 When comparison fails, the framework enhances the failure message with additional information from the structural 
 comparison.
@@ -232,11 +242,14 @@ Full unified diff of actual result and stored snapshot:
 ----
 
 Likewise for `XML` serialization:
-[source,java]
+
 .Serialize to XML and apply structural comparison.
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-xml,indent=0]
 ----
+====
 
 [source]
 .Example structural comparison failure for XML snapshots.
@@ -302,17 +315,22 @@ Remove 'updateSnapshots = true' attribute, @ForceUpdateSnapshots annotation, -Df
 ==== Update multiple snapshots within the same test
 You can place the `@ForceUpdateSnapshots` annotation on either your test method or your whole test class to advise 
 the framework to update the snapshots of all affected assertions.
-[source,java]
+
 .Update the snapshots for all assertions in the same test method
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-method,indent=0]
 ----
+====
 
-[source,java]
 .Update the snapshots for all assertions in the same test class
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-class,indent=0]
 ----
+====
 
 NOTE: You might find it irritating that the `@ForceUpdateSnapshots` annotation is marked as deprecated. This is just 
 a hack to make your IDE highlight its usages as it is intended to be only used temporarily. 
@@ -355,16 +373,68 @@ By default, the framework will just log a warning like this to the console about
 WARNING: Found orphaned snapshot file. Run with @DeleteOrphanedSnapshots annotation to remove: testThatHasBeenDeleted_0.snapshot in src/test/resources/de/skuzzle/test/snapshots/impl/OrphanedSnapshotDetectionTest$TestCase_snapshots
 ----
 
-==== Delete orphaned files
+
+
+=== Snapshot files
+By convention, snapshots of your test results are persisted as `.snapshot` files below `src/test/resources`. The 
+framework will create sub directories according to your test class's package and name. The snapshot file's name will 
+be determined from the respective test's method name. 
+
+The snapshot file does not only include the serialized test result but also a small header section containing some 
+meta information. These information are use by the framework to map the snapshot file to the test method and 
+assertion from which it was created.
+
+
+
+==== Changing the snapshot location
+The location where
+
+==== Changing the snapshot file name
+In order to store persisted snapshots, the framework will determine a proper location and file name from the name of 
+the respective test class and test method.  
+
+
+==== Orphaned files
+When the framework observes a snapshot file which can not be mapped to a test method it is considered an _orphan_. There
+are a number of situations in which a snapshot can become an orphan:
+
+* The test containing the snapshot assertion has been removed/renamed.
+* The test class containing the test with the snapshot assertion has been removed/renamed.
+* The test is no longer a snapshot test.
+* Another snapshot assertion has been added/removed to/from the same test method. 
+
+.Info about orphan detection
+****
+Orphan detection is not a straight forward task and quite a lot complexity within the implementation of this library 
+comes from solving this task.
+
+For example, just by examining a snapshot file, the framework can't reliably determine whether the test still contains
+the _snapshot assertion statement_ that created the file in the first place. 
+
+On the other hand there are some criteria that _can_ be examined _statically_. As the snapshot file's header 
+information contain the full qualified name of the test class and the name of the test method, it is quite easy to 
+determine whether those still exists or not.
+
+Consequently, orphan detection implementation is separated into two phases:
+
+. During _dynamic orphan detection_, the framework collects the actual snapshot results of all executed tests. Then it checks all existing snapshot files for whether there exists a matching result.   
+. During _static orphan detection_, the framework examines the header information of all snapshot files to determine whether their originating class/test still exist.
+
+CAUTION: This approach has the drawback that orphans can be reported falsely if you only run a subset of your test suite.  
+****
+
+
 You can advise the framework to automatically delete the detected orphaned files during a test run. This works similar
 to updating snapshot files by either adding an annotation or by passing a flag to the JVM.
 
-[source,java]
 .Delete detected orphans during test execution
+====
+[source,java]
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/DeleteOrphansTest.java[tags=delete-orphans,indent=0]
 ----
 <1> Temporarily add the `@DeleteOrphanedSnapshots` annotations during test execution
+====
 
 NOTE: You might find it irritating that the `@DeleteOrphanedSnapshots` annotation is marked as deprecated. This is just 
 a hack to make your IDE highlight its usages as it is intended to be only used temporarily. 
@@ -383,7 +453,7 @@ TIP: Handling of the parameter is case insensitive.
 
 
 
-=== Changing the snapshot location 
+ 
 === Multiple assertions 
 === Soft assertions
 As learned in the previous section, you can easily have multiple snapshot assertions within the same test method. 
