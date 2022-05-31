@@ -105,8 +105,8 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags
 
 === General Snapshot testing workflow
 
-. Implement your test cases and add one ore more snapshot assertions as shown above.
-. When you now execute these tests the first time, serialized snapshots of your test results will be persisted and the tests will fail.
+. Implement test cases and add one ore more snapshot assertions as shown above.
+. When you execute these tests the _first_ time, serialized snapshots of your test results will be persisted and _the tests will fail_.
 . Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. If your code under test produces deterministic results, tests should now be green.
 . Check in the persisted snapshots into your SCM.
 
@@ -361,19 +361,6 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[t
 ----
 <1> Temporarily remove the actual assertion and replace it with `justUpdateSnapshot()`.
 
-=== Orphaned snapshot files
-Snapshot files can become _orphans_ if you rename or delete test methods/classes. It is desirable to remove orphaned 
-snapshots as well as they will otherwise just add clutter to your repository. The framework comes with a sophisticated 
-approach for detecting and removing such orphaned files.
-
-By default, the framework will just log a warning like this to the console about detected orphan files
-[source]
-.Warning about detected orphan file
-----
-WARNING: Found orphaned snapshot file. Run with @DeleteOrphanedSnapshots annotation to remove: testThatHasBeenDeleted_0.snapshot in src/test/resources/de/skuzzle/test/snapshots/impl/OrphanedSnapshotDetectionTest$TestCase_snapshots
-----
-
-
 
 === Snapshot files
 By convention, snapshots of your test results are persisted as `.snapshot` files below `src/test/resources`. The 
@@ -385,7 +372,6 @@ meta information. These information are use by the framework to map the snapshot
 assertion from which it was created.
 
 
-
 ==== Changing the snapshot location
 The location where
 
@@ -395,10 +381,20 @@ the respective test class and test method.
 
 
 ==== Orphaned files
-When the framework observes a snapshot file which can not be mapped to a test method it is considered an _orphan_. There
-are a number of situations in which a snapshot can become an orphan:
+Snapshot files can become _orphans_ if you rename or delete test methods/classes. It is desirable to remove orphaned 
+snapshots as they will otherwise just add clutter to your repository. The framework comes with a sophisticated 
+approach for detecting and removing such orphaned files.
 
-* The test containing the snapshot assertion has been removed/renamed.
+By default, the framework will just log a warning like this to the console about detected orphan files:
+[source]
+.Warning about detected orphan file
+----
+WARNING: Found orphaned snapshot file. Run with @DeleteOrphanedSnapshots annotation to remove: testThatHasBeenDeleted_0.snapshot in src/test/resources/de/skuzzle/test/snapshots/impl/OrphanedSnapshotDetectionTest$TestCase_snapshots
+----
+
+There are a number of situations in which a snapshot can become an orphan:
+
+* The test method containing the snapshot assertion has been removed/renamed.
 * The test class containing the test with the snapshot assertion has been removed/renamed.
 * The test is no longer a snapshot test.
 * Another snapshot assertion has been added/removed to/from the same test method. 
@@ -454,7 +450,6 @@ TIP: Handling of the parameter is case insensitive.
 
 
  
-=== Multiple assertions 
 === Soft assertions
 As learned in the previous section, you can easily have multiple snapshot assertions within the same test method. 
 Naturally, if the first assertion fails, all subsequent assertions will not be executed, thus potentially hiding further 
@@ -471,9 +466,12 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SoftAssertions.java[tags
 
 NOTE: _Soft assertions_ are currently only supported on a per-class basis.
   
-=== Parameterized tests
 
-=== Structure vs. Text comparison
+  
+=== Snapshot naming & numbering
+==== Multiple assertions 
+==== Parameterized tests
+
 
 
 === Snapshot formats
