@@ -104,6 +104,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
+                        <id>copy-readme</id>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -114,6 +115,21 @@
                                 <resource>
                                     <directory>readme/</directory>
                                     <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-documentation</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/docs/${project.version}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>snapshot-tests-documentation/target/generated-docs/</directory>
                                 </resource>
                             </resources>
                         </configuration>

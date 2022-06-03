@@ -43,9 +43,10 @@ pipeline {
         sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} install'
       }
     }
-    stage('Update readme') {
+    stage('Update readme and documentation') {
       steps {
         sh 'git add README.md RELEASE_NOTES.md'
+        sh 'git add docs/*'
         sh 'git commit -m "Update README and RELEASE_NOTES"'
       }
     }
