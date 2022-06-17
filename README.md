@@ -167,7 +167,7 @@ structural comparison. You can use json-path resp. xpath expressions to customiz
 XML example:
 
 ```java
-snapshot.assertThat(someObjext)
+snapshot.assertThat(someObject)
         .as(XmlSnapshot.inferJaxbContext()
                 .withComparisonRules(rules -> rules
                         .pathAt("/person/address/city/text()").ignore()
@@ -178,7 +178,7 @@ snapshot.assertThat(someObjext)
 JSON example:
 
 ```java
-snapshot.assertThat(someObjext)
+snapshot.assertThat(someObject)
         .as(JsonSnapshot.withDefaultObjectMapper()
                 .withComparisonRules(rules -> rules
                         .pathAt("address.city").ignore()
