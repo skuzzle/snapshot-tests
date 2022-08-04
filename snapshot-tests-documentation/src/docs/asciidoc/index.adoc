@@ -9,7 +9,7 @@ Simon Taddiken
 :imagesdir: ./images
 ifndef::sourcedir[:sourcedir: ../../test/java]
 
-This is a user manual for an example project.
+This is a user manual for the _inofficial_ snapshot testing extension for JUnit5.
 
 == Introduction
 
@@ -42,6 +42,16 @@ it is not uncommon that you want to include multiple modules in your project's d
 .Gradle BOM include
 ----
 testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{revnumber}"))
+----
+
+[source,groovy,subs="attributes+"]
+.Gradle Spring-Boot dpendency management plugin
+----
+dependencyManagement {
+    imports {
+        mavenBom 'de.skuzzle.test:snapshot-tests-bom:{revnumber}'
+    }
+}
 ----
 
 === Modules
@@ -80,7 +90,7 @@ The following principles apply:
 
 * Upgrading to a newer _patch_ or _minor_ version should never break client code or existing tests.
 * Upgrading to a newer _major_ version can potentially break client code or tests.
-* All deprecations will be marked clearly in code an alternatives will be presented in the JavaDoc.
+* All deprecations will be marked clearly in code and alternatives will be presented in the JavaDoc.
 * Deprecated code will be removed in accordance to the code's previous API Guardian `status`. 
 
 NOTE: It is possible that snapshot header information change even during a patch/minor update. This might cause your 
@@ -157,7 +167,7 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tag
 <1> `.matchesSnapshotText()` is _the only_ available option when you choose no structured format using `asText()`.
 ====
 
-If the assertions fails because a difference has been found, the framework will provide a rich failure report along 
+If the assertion fails because a difference has been found, the framework will provide a rich failure report along 
 with the assertion error's stack trace.
 
 [source]
@@ -204,7 +214,7 @@ details.
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
 ----
-<1> Choose to serialize test results as JSON.
+<1> Choose to serialize test results as JSON (Requires the `snapshot-tests-jackson` module).
 <2> Choose `.matchesSnapshotStructure()` to trigger structural comparison.
 ====
 
@@ -365,7 +375,7 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[t
 === Snapshot files
 By convention, snapshots of your test results are persisted as `.snapshot` files below `src/test/resources`. The 
 framework will create sub directories according to your test class's package and name. The snapshot file's name will 
-be determined from the respective test's method name. 
+be derived from the respective test's method name. 
 
 The snapshot file does not only include the serialized test result but also a small header section containing some 
 meta information. These information are use by the framework to map the snapshot file to the test method and 
@@ -449,7 +459,7 @@ TIP: Handling of the parameter is case insensitive.
 
 
 
- 
+
 === Soft assertions
 As learned in the previous section, you can easily have multiple snapshot assertions within the same test method. 
 Naturally, if the first assertion fails, all subsequent assertions will not be executed, thus potentially hiding further 
