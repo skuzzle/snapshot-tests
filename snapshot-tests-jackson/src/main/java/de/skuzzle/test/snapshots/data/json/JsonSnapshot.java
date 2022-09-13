@@ -90,7 +90,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      *
      * @param objectMapper The ObjectMapper to use for taking snapshots.
      * @return A builder for building {@link StructuredData}.
-     * @deprecated Since 1.4.0 - Use {@link #json(ObjectMapper))} instead.
+     * @deprecated Since 1.4.0 - Use {@link #json(ObjectMapper)} instead.
      */
     @Deprecated(since = "1.4.0", forRemoval = true)
     @API(status = Status.DEPRECATED, since = "1.4.0")
