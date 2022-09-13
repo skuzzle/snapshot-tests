@@ -117,6 +117,8 @@ public interface SnapshotDsl {
          * <p>
          * Calling this method is equivalent to calling
          * <code>.as(TextSnapshot.text)</code>.
+         * <p>
+         * <em>Note:</em> This method will always ignore whitespace changes!
          *
          * @return Fluent API object for performing the snapshot assertion. Do NOT assume
          *         it is the same object as 'this'!

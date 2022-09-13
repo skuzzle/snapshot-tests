@@ -37,7 +37,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * Takes Snapshots using jackson {@link ObjectMapper} and compare the results using
      * {@link JSONAssert}.
      */
-    public static final StructuredDataProvider json = withDefaultObjectMapper().build();
+    public static final StructuredDataProvider json = json().build();
 
     private final ObjectMapper objectMapper;
     private JSONComparator jsonComparator;
@@ -52,14 +52,27 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * The object mapper can be configured further using {@link #configure(Consumer)}.
      *
      * @return A builder for building {@link StructuredData}.
+     * @deprecated Since 1.4.0 - Use {@link #json()} instead.
      */
+    @Deprecated(since = "1.4.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.4.0")
     public static JsonSnapshot withDefaultObjectMapper() {
+        return json();
+    }
+
+    /**
+     * Creates an instance using a default {@link ObjectMapper} with sensible defaults.
+     * The object mapper can be configured further using {@link #configure(Consumer)}.
+     *
+     * @return A builder for building {@link StructuredData}.
+     */
+    public static JsonSnapshot json() {
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.registerModules(new Jdk8Module(), new JavaTimeModule());
-        return new JsonSnapshot(objectMapper);
+        return json(objectMapper);
     }
 
     /**
@@ -68,12 +81,26 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * @param objectMapper The ObjectMapper to use for taking snapshots.
      * @return A builder for building {@link StructuredData}.
      */
+    public static JsonSnapshot json(ObjectMapper objectMapper) {
+        return new JsonSnapshot(objectMapper);
+    }
+
+    /**
+     * Creates an instance using the explicitly provided ObjectMapper.
+     *
+     * @param objectMapper The ObjectMapper to use for taking snapshots.
+     * @return A builder for building {@link StructuredData}.
+     * @deprecated Since 1.4.0 - Use {@link #json(ObjectMapper)} instead.
+     */
+    @Deprecated(since = "1.4.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.4.0")
     public static JsonSnapshot withObjectMapper(ObjectMapper objectMapper) {
         return new JsonSnapshot(objectMapper);
     }
 
     /**
-     * Configure the underlying ObjectMapper by passing in a {@link Consumer}.
+     * Configure the underlying ObjectMapper by passing in a {@link Consumer}. Can be used
+     * to tweak the default {@link ObjectMapper}.
      *
      * @param c The consumer to which the ObjectMapper will be passed.
      * @return This instance.

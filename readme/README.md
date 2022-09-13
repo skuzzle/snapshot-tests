@@ -168,7 +168,7 @@ XML example:
 
 ```java
 snapshot.assertThat(someObjext)
-        .as(XmlSnapshot.inferJaxbContext()
+        .as(XmlSnapshot.xml()
                 .withComparisonRules(rules -> rules
                         .pathAt("/person/address/city/text()").ignore()
                         .pathAt("/person/date/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
@@ -179,7 +179,7 @@ JSON example:
 
 ```java
 snapshot.assertThat(someObjext)
-        .as(JsonSnapshot.withDefaultObjectMapper()
+        .as(JsonSnapshot.json()
                 .withComparisonRules(rules -> rules
                         .pathAt("address.city").ignore()
                         .pathAt("date").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))

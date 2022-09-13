@@ -39,7 +39,7 @@ public class SnapshotsTest {
     void testAsJsonStructureCompareCustom(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.withDefaultObjectMapper()
+                .as(JsonSnapshot.json()
                         .withComparator(new CustomComparator(JSONCompareMode.STRICT,
                                 new Customization("address.city", (o1, o2) -> true))))
                 .matchesSnapshotStructure();
@@ -50,7 +50,7 @@ public class SnapshotsTest {
     void testAsJsonStructureCompareCustomNew(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson().setName("0000-02-02");
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.withDefaultObjectMapper()
+                .as(JsonSnapshot.json()
                         .withComparisonRules(rules -> rules
                                 .pathAt("address.city").ignore()
                                 .pathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))

@@ -59,8 +59,8 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  *         snapshot.assertThat(actual).as(XmlSnapshot.xml).matchesSnapshotStructure();
  *     }
  * </pre>
- * <p>
- * <h3>Parameterized tests</h3>
+ *
+ * <h2>Parameterized tests</h2>
  * <p>
  * Snapshot tests can be combined with JUnit5's parameterized tests, but only when you
  * provide an explicit name for each snapshot assertion. With the default automatic
@@ -83,14 +83,14 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  *                 .assertThat(actual).as...;
  * </pre>
  *
- * <h3>Updating snapshots</h3>
+ * <h2>Updating snapshots</h2>
  * <p>
  * Snapshots can become outdated when your code under test changes on purpose. In that
  * case you can advice the framework to override existing snapshots with your code under
  * test's actual result by placing the annotation {@link ForceUpdateSnapshots} on either
  * the whole snapshot test class or on a single test method.
  *
- * <h3>Orphaned snapshots</h3>
+ * <h2>Orphaned snapshots</h2>
  * <p>
  * Snapshot files can become orphans if, for example you rename a test class/method or you
  * change the snapshot assertions within a test. This framework comes with a sophisticated

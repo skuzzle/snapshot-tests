@@ -1,14 +1,12 @@
-* [#9](https://github.com/skuzzle/snapshot-tests/issues/9): Do not allow null snapshots anymore
-* [#24](https://github.com/skuzzle/snapshot-tests/issues/24): Only create snapshot directory if necessary
-* Simple API to specify custom rules using XPath for XML comparison
-* Change: Custom json matchers are only tested against the new actual result and not against the persisted snapshot anymore
-* Add convenience method `TestFile.asText()` which defaults to use UTF-8 as file encoding
+* [#25](https://github.com/skuzzle/snapshot-tests/issues/25): Improve exception messages for comparison failures
+* [#27](https://github.com/skuzzle/snapshot-tests/issues/27): Allow to customize whitespace behavior for text comparison
+* [#28](https://github.com/skuzzle/snapshot-tests/issues/28): Unify static constructors of all `StructuredDataProviders` (see _Deprecations_ below)
 
-### Experimental
-* Fix: object traversal failed on primitive arrays
-* Fix: serious bug in `ObjectMemberAction.replaceConsistently`
-* Add: new simpler overload of `ObjectMemberAction.replaceConsistently`
-* Add: new package for string normalization
+### Deprecations
+* Deprecate `XmlSnapshot.inferJaxbContext()` in favor of `XmlSnapshot.xml()`
+* Deprecate `XmlSnapshot.with(JAXBContext)` in favor of `XmlSnapshot.xml().withJAXBContext(JAXBContext)`
+* Deprecate `JsonSnapshot.withDefaultObjectMapper()` in favor of `JsonSnapshot.json()`
+* Deprecate `JsonSnapshot.withObjectMapper(ObjectMapper)` in favor of `JsonSnapshot.json(ObjectMapper)`
 
 Maven Central coordinates for this release:
 

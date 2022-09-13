@@ -2,6 +2,8 @@ package de.skuzzle.test.snapshots.impl;
 
 import static java.util.stream.Collectors.reducing;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 final class Throwables {
@@ -42,4 +44,11 @@ final class Throwables {
         return t;
     }
 
+    public static void filterStackTrace(Throwable throwable, Predicate<StackTraceElement> elementsToRemove) {
+        final StackTraceElement[] original = throwable.getStackTrace();
+        final StackTraceElement[] filtered = Arrays.stream(original)
+                .filter(elementsToRemove.negate())
+                .toArray(StackTraceElement[]::new);
+        throwable.setStackTrace(filtered);
+    }
 }

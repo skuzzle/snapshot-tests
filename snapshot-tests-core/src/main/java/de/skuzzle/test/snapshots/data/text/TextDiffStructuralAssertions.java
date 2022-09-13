@@ -6,14 +6,19 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 
 final class TextDiffStructuralAssertions implements StructuralAssertions {
 
-    @Override
-    public void assertEquals(String storedSnapshot, String serializedActual) {
-        final TextDiff textDiff = TextDiff.diffOf(storedSnapshot, serializedActual);
-        if (textDiff.hasDifference()) {
-            throw new AssertionFailedError(
-                    String.format("Stored snapshot doesn't match actual result.%nUnified diff:%n%s", textDiff),
-                    storedSnapshot, serializedActual);
-        }
+    private final DiffInterpreter diffInterpreter;
+
+    TextDiffStructuralAssertions(DiffInterpreter diffInterpreter) {
+        this.diffInterpreter = diffInterpreter;
     }
 
+    @Override
+    public void assertEquals(String storedSnapshot, String serializedActual) {
+        final boolean hasDifference = TextDiff.diffOf(diffInterpreter, storedSnapshot, serializedActual)
+                .hasDifference();
+        if (hasDifference) {
+            throw new AssertionFailedError("Stored snapshot doesn't match actual result.", storedSnapshot,
+                    serializedActual);
+        }
+    }
 }

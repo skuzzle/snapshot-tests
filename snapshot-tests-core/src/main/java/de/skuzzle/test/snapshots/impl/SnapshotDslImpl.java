@@ -50,8 +50,18 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
         return this;
     }
 
+    private boolean isCustomTextSnapshot() {
+        return this.structuralAssertions.getClass().equals(TextSnapshot.text.structuralAssertions().getClass());
+    }
+
     @Override
     public SnapshotTestResult matchesSnapshotText() {
+        if (isCustomTextSnapshot()) {
+            // prevent surprises when using a customized TextSnapshot instance. We then
+            // use the actually configured TextStructuralAssertions instead of the default
+            // on
+            return this.matchesAccordingTo(structuralAssertions);
+        }
         return this.matchesAccordingTo(TextSnapshot.text.structuralAssertions());
     }
 
