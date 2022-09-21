@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.4.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.4.0/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.4.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.4.0)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.4.1-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.4.1-SNAPSHOT/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.4.1-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.4.1-SNAPSHOT)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -17,7 +17,7 @@ Read more about snapshot testing in this accompanying [blog post](https://simon.
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.4.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.4.0)
+release [1.4.1-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.4.1-SNAPSHOT)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
@@ -48,7 +48,7 @@ If your code under test produces deterministic results, tests should now be gree
 
 ## Compatibility
 - [x] Requires Java 11
-- [x] Tested against JUnit5 `5.8.2`
+- [x] Tested against JUnit5 `5.9.1`
 
 ## Usage
 

@@ -1,12 +1,4 @@
-* [#25](https://github.com/skuzzle/snapshot-tests/issues/25): Improve exception messages for comparison failures
-* [#27](https://github.com/skuzzle/snapshot-tests/issues/27): Allow to customize whitespace behavior for text comparison
-* [#28](https://github.com/skuzzle/snapshot-tests/issues/28): Unify static constructors of all `StructuredDataProviders` (see _Deprecations_ below)
-
-### Deprecations
-* Deprecate `XmlSnapshot.inferJaxbContext()` in favor of `XmlSnapshot.xml()`
-* Deprecate `XmlSnapshot.with(JAXBContext)` in favor of `XmlSnapshot.xml().withJAXBContext(JAXBContext)`
-* Deprecate `JsonSnapshot.withDefaultObjectMapper()` in favor of `JsonSnapshot.json()`
-* Deprecate `JsonSnapshot.withObjectMapper(ObjectMapper)` in favor of `JsonSnapshot.json(ObjectMapper)`
+* Build against JUnit 5.9.1 (coming from 5.8.2)
 
 Maven Central coordinates for this release:
 
