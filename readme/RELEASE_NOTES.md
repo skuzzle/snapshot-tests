@@ -1,4 +1,6 @@
+* [#23](https://github.com/skuzzle/snapshot-tests/issues/33): Allow to configure strictness of JSON comparison
 * Build against JUnit 5.9.1 (coming from 5.8.2)
+
 
 Maven Central coordinates for this release:
 
