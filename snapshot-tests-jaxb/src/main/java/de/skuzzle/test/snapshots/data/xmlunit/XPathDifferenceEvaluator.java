@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.data.xml;
+package de.skuzzle.test.snapshots.data.xmlunit;
 
 import java.util.stream.StreamSupport;
 

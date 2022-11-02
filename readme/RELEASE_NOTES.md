@@ -78,6 +78,24 @@ testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
 ```
 
+If you need HTML based snapshots (includes `-core`):
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-html/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-html/${project.version})
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-html</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-html:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-html:${project.version}")
+```
+
 ## Experimental
 Directory Params
 

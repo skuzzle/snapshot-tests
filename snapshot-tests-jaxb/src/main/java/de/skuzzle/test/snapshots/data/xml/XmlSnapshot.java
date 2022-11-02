@@ -16,6 +16,8 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitStructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -159,7 +161,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
     @API(status = Status.EXPERIMENTAL, since = "1.3.0")
     public XmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
-        final XmlComparisonRuleBuilder comparatorCustomizerImpl = new XmlComparisonRuleBuilder();
+        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder();
         rules.accept(comparatorCustomizerImpl);
         this.differenceEvaluator = comparatorCustomizerImpl.build();
         return this;

@@ -37,6 +37,7 @@
         <version.jaxb-api>2.3.1</version.jaxb-api>
         <version.glassfish-jaxb>2.3.3</version.glassfish-jaxb>
         <version.xmlunit>2.9.0</version.xmlunit>
+        <version.jsoup>1.15.3</version.jsoup>
 
         <version.jackson>2.10.5.20201202</version.jackson>
         <version.jsonassert>1.5.0</version.jsonassert>
@@ -53,6 +54,8 @@
         <module>snapshot-tests-normalize</module>
         <module>snapshot-tests-jackson</module>
         <module>snapshot-tests-jaxb</module>
+        <module>snapshot-tests-html</module>
+        <module>snapshot-tests-xmlunit</module>
         <module>snapshot-tests-directory-params</module>
         <module>snapshot-tests-common</module>
     </modules>

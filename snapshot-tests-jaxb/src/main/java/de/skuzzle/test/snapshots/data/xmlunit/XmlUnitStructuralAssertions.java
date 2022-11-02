@@ -1,14 +1,17 @@
-package de.skuzzle.test.snapshots.data.xml;
+package de.skuzzle.test.snapshots.data.xmlunit;
 
 import java.util.function.Consumer;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
 
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
-final class XmlUnitStructuralAssertions implements StructuralAssertions {
+@API(status = Status.INTERNAL, since = "1.5.0")
+public final class XmlUnitStructuralAssertions implements StructuralAssertions {
 
     private final DifferenceEvaluator differenceEvaluator;
     private final Consumer<CompareAssert> compareAssertConsumer;
