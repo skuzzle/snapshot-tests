@@ -8,7 +8,7 @@ import org.xmlunit.assertj.XmlAssert;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
-public class HtmlStructuralAssertions implements StructuralAssertions {
+final class HtmlStructuralAssertions implements StructuralAssertions {
 
     @Override
     public void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException {

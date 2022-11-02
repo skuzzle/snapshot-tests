@@ -19,7 +19,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.EXPERIMENTAL, since = "1.5.0")
 public final class HtmlSnapshot implements StructuredDataProvider {
 
-    public static final StructuredDataProvider html = html();
+    public static final StructuredDataProvider html = html().build();
 
     // Defines how snapshots are being asserted on using xml-unit
     private Consumer<CompareAssert> compareAssertConsumer = CompareAssert::areIdentical;

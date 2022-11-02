@@ -4,4 +4,4 @@ snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.html.HtmlSnapshotTests
 test-method: testCompareHtml
 
-<html><body><h1>Test</h2>asdasdas</body></html>
+<html><body><h1>Test</h1></body></html>
