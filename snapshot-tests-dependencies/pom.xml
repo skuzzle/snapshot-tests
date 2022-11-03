@@ -59,11 +59,18 @@
                 <artifactId>jsonassert</artifactId>
                 <version>${version.jsonassert}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.xmlunit</groupId>
+                <artifactId>xmlunit-core</artifactId>
+                <version>${version.xmlunit}</version>
+            </dependency>
             <dependency>
                 <groupId>org.xmlunit</groupId>
                 <artifactId>xmlunit-assertj</artifactId>
                 <version>${version.xmlunit}</version>
             </dependency>
+            
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
