@@ -14,9 +14,9 @@ actual object against the stored snapshot.
 
 Supported snapshot formats:
 - [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.5.0-SNAPSHOT/jar)
-- [x] json via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.5.0-SNAPSHOT/jar)
-- [x] xml via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.5.0-SNAPSHOT/jar)
-- [x] html via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.5.0-SNAPSHOT/jar)
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.5.0-SNAPSHOT/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.5.0-SNAPSHOT/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.5.0-SNAPSHOT/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
