@@ -117,7 +117,8 @@ public final class HtmlSnapshot implements StructuredDataProvider {
      * side effect of parsing the HTML into a valid DOM object.
      * </p>
      *
-     * @param prettyPrintSnapshot Whether to pretty print the snapshots.
+     * @param prettyPrintSnapshot Whether to pretty print the snapshots. Defaults to
+     *            <code>false</code>.
      * @return This instance.
      */
     public HtmlSnapshot withPrettyPrintSnapshot(boolean prettyPrintSnapshot) {

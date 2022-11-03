@@ -32,12 +32,22 @@ public class HtmlSnapshotTests {
     }
 
     @Test
-    void testCompareHtmlWithCustomComparisonRule(Snapshot snapshot) throws Exception {
+    void testCompareHtmlWithCustomComparisonRulePattern(Snapshot snapshot) throws Exception {
         snapshot
                 .assertThat("<html><body><h1>Not_Test</h1></body></html>")
                 .as(HtmlSnapshot.html()
                         .withComparisonRules(rules -> rules
                                 .pathAt("/html/body/h1/text()").mustMatch(Pattern.compile("\\w+"))))
+                .matchesSnapshotStructure();
+    }
+
+    @Test
+    void testCompareHtmlWithCustomComparisonRuleIgnore(Snapshot snapshot) throws Exception {
+        snapshot
+                .assertThat("<html><body><h1>Test 123</h1></body></html>")
+                .as(HtmlSnapshot.html()
+                        .withComparisonRules(rules -> rules
+                                .pathAt("/html/body/h1/text()").ignore()))
                 .matchesSnapshotStructure();
     }
 }
