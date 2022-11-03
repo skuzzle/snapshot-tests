@@ -130,8 +130,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * the xml-unit documentation for further information.
      * <p>
      * Note: if you also use {@link #withComparisonRules(Consumer)}, you can <b>not</b>
-     * {@link CompareAssert#withDifferenceEvaluator(DifferenceEvaluator)} here, as your
-     * {@linkplain DifferenceEvaluator} will always be overridden by the one that is
+     * use {@link CompareAssert#withDifferenceEvaluator(DifferenceEvaluator)} here, as
+     * your {@linkplain DifferenceEvaluator} will always be overridden by the one that is
      * configured in {@linkplain #withComparisonRules(Consumer)}.
      *
      * @param xmls Consumes the {@link CompareAssert} which compares the actual and

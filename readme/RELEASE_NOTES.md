@@ -1,4 +1,5 @@
 * [#23](https://github.com/skuzzle/snapshot-tests/issues/33): Allow to configure strictness of JSON comparison
+* [#24](https://github.com/skuzzle/snapshot-tests/issues/34): Support for HTML snapshots
 * Build against JUnit 5.9.1 (coming from 5.8.2)
 
 

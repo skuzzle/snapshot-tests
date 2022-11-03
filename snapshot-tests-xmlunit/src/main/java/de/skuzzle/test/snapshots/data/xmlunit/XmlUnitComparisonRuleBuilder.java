@@ -17,6 +17,11 @@ import org.xmlunit.xpath.JAXPXPathEngine;
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
+/**
+ * Builds x-path based comparison rules for xml/html comparison.
+ *
+ * @author Simon Taddiken
+ */
 @API(status = Status.INTERNAL, since = "1.5.0")
 public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder {
 
@@ -59,6 +64,13 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
         };
     }
 
+    /**
+     * Builds a xml-unit {@link DifferenceEvaluator} which obeys the configured rules. the
+     * returned instance can be used for constructing a
+     * {@link XmlUnitStructuralAssertions} instance.
+     *
+     * @return A new {@link DifferenceEvaluator}.
+     */
     public DifferenceEvaluator build() {
         return DifferenceEvaluators.chain(customizations.toArray(DifferenceEvaluator[]::new));
     }

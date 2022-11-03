@@ -9,7 +9,14 @@ import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
 
 import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
+/**
+ * Configurable {@link StructuralAssertions} relying on xml-unit.
+ *
+ * @author Simon Taddiken
+ * @since 1.5.0
+ */
 @API(status = Status.INTERNAL, since = "1.5.0")
 public final class XmlUnitStructuralAssertions implements StructuralAssertions {
 
@@ -19,7 +26,8 @@ public final class XmlUnitStructuralAssertions implements StructuralAssertions {
     public XmlUnitStructuralAssertions(Consumer<CompareAssert> compareAssertConsumer,
             DifferenceEvaluator differenceEvaluator) {
         this.differenceEvaluator = differenceEvaluator;
-        this.compareAssertConsumer = compareAssertConsumer;
+        this.compareAssertConsumer = Arguments.requireNonNull(compareAssertConsumer,
+                "compareAssertConsumer must not be null");
     }
 
     @Override
