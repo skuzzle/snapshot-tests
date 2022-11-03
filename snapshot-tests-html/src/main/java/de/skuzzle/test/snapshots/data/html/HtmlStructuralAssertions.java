@@ -16,7 +16,9 @@ final class HtmlStructuralAssertions implements StructuralAssertions {
         final Document parsedSnapshot = Jsoup.parse(storedSnapshot);
         final Document parsedActual = Jsoup.parse(serializedActual);
 
-        XmlAssert.assertThat(w3cDom.fromJsoup(parsedSnapshot)).and(w3cDom.fromJsoup(parsedActual)).areIdentical();
+        XmlAssert.assertThat(w3cDom.fromJsoup(parsedSnapshot))
+                .and(w3cDom.fromJsoup(parsedActual))
+                .areIdentical();
     }
 
 }
