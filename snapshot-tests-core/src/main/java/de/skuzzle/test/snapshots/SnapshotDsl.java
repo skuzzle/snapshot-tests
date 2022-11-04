@@ -43,9 +43,11 @@ public interface SnapshotDsl {
     public interface ChooseActual {
         /**
          * Will create a serialized snapshot of the provided actual test result and store
-         * it on disk.
+         * it on disk. Note that the actual object is expected to be non-null. If it is
+         * null, an AssertionError will be raised when calling any of the final matches...
+         * methods on the snapshot DSL instance.
          *
-         * @param actual The actual test result.
+         * @param actual The actual test result. Must not be null.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
          */

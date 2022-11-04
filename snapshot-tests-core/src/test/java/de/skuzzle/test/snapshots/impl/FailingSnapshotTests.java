@@ -19,6 +19,57 @@ public class FailingSnapshotTests {
     private final MetaTest frameworkTest = new MetaTest();
 
     @Test
+    void testFailBecauseOfNullInputSnapshotAlreadyExists() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputSnapshotAlreadyExists.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null but to match stored snapshot:\n\nsnapshot text");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputSnapshotAlreadyExists {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            snapshot.assertThat(null).asText().matchesSnapshotText();
+        }
+    }
+
+    @Test
+    void testFailBecauseOfNullInputJustUpdateSnapshot() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputJustUpdateSnapshot.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputJustUpdateSnapshot {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            snapshot.assertThat(null).asText().justUpdateSnapshot();
+        }
+    }
+
+    @Test
+    void testFailBecauseOfNullInputInitialSnapshot() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputInitialSnapshot.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputInitialSnapshot {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            snapshot.assertThat(null).asText().matchesSnapshotText();
+        }
+    }
+
+    @Test
     void testFailBecauseForceUpdateFromAnnotationDeprecated() throws Throwable {
         frameworkTest
                 .expectTestcase(FailBecauseForceUpdateFromAnnotationDeprecated.class)

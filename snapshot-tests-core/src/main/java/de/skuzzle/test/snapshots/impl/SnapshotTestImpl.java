@@ -91,6 +91,10 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
+        if (actual == null) {
+            throw new AssertionError("Expected actual not to be null in order to take initial snapshot");
+        }
+
         final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);
         final String serializedActual = snapshotSerializer.serialize(actual);
@@ -115,9 +119,9 @@ final class SnapshotTestImpl implements Snapshot {
     SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
             StructuralAssertions structuralAssertions,
             Object actual) throws Exception {
+
         final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
         final Path snapshotFilePath = determineSnapshotFile(snapshotName);
-        final String serializedActual = snapshotSerializer.serialize(actual);
 
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshotsLocal(testMethod);
         final boolean snapshotFileAlreadyExists = Files.exists(snapshotFilePath);
@@ -126,6 +130,12 @@ final class SnapshotTestImpl implements Snapshot {
 
         final SnapshotTestResult result;
         if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
+            if (actual == null) {
+                throw new AssertionError("Expected actual not to be null in order to take initial snapshot");
+            }
+
+            final String serializedActual = snapshotSerializer.serialize(actual);
+
             final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
                     .writeTo(snapshotFilePath);
 
@@ -136,6 +146,13 @@ final class SnapshotTestImpl implements Snapshot {
         } else {
             final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
             final String storedSnapshot = snapshotFile.snapshot();
+
+            if (actual == null) {
+                throw new AssertionError(
+                        "Expected actual not to be null but to match stored snapshot:\n\n" + storedSnapshot);
+            }
+
+            final String serializedActual = snapshotSerializer.serialize(actual);
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath)
                     .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
