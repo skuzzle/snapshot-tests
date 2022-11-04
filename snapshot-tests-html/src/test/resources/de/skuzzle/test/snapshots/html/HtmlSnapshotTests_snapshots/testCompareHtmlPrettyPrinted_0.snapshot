@@ -1,0 +1,12 @@
+dynamic-directory: false
+snapshot-name: testCompareHtmlPrettyPrinted_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.html.HtmlSnapshotTests
+test-method: testCompareHtmlPrettyPrinted
+
+<html>
+    <head></head>
+    <body someattribute="hehe">
+        <h1>Test</h1>
+    </body>
+</html>

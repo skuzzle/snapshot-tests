@@ -27,6 +27,13 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * <p>
  * Either way, the ObjectMapper can be further configured by calling
  * {@link #configure(Consumer)}.
+ * </p>
+ * <p>
+ * Warning: It is discouraged to use any of this builder's methods after {@link #build()}
+ * has been called. Further modifications to this builder might be reflected in any
+ * objects that have been built earlier. Later API versions might enforce this suggestion
+ * by throwing an exception.
+ * </p>
  *
  * @author Simon Taddiken
  */
@@ -104,6 +111,11 @@ public final class JsonSnapshot implements StructuredDataProvider {
     /**
      * Configure the underlying ObjectMapper by passing in a {@link Consumer}. Can be used
      * to tweak the default {@link ObjectMapper}.
+     * <p>
+     * The passed Consumer will be called immediately to modify the object mapper in
+     * place. That is either the default object mapper or the one that has been passed to
+     * {@link #json(ObjectMapper)} during construction of this object.
+     * </p>
      *
      * @param c The consumer to which the ObjectMapper will be passed.
      * @return This instance.

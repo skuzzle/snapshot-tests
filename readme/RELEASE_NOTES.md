@@ -1,4 +1,5 @@
 * [#23](https://github.com/skuzzle/snapshot-tests/issues/33): Allow to configure strictness of JSON comparison
+* [#24](https://github.com/skuzzle/snapshot-tests/issues/34): Support for HTML snapshots
 * Build against JUnit 5.9.1 (coming from 5.8.2)
 
 
@@ -76,6 +77,24 @@ If you need xml based snapshots (includes `-core`):
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
+```
+
+If you need HTML based snapshots (includes `-core`):
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-html/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-html/${project.version})
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-html</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-html:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-html:${project.version}")
 ```
 
 ## Experimental

@@ -36,15 +36,15 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>snapshot-tests-common</artifactId>
         </dependency>
-
+        
+        <dependency>
+            <groupId>org.apiguardian</groupId>
+            <artifactId>apiguardian-api</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-commons</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>

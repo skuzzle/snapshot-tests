@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testCompareHtmlWithCustomComparisonRulePattern_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.html.HtmlSnapshotTests
+test-method: testCompareHtmlWithCustomComparisonRulePattern
+
+<html><body><h1>Not_Test</h1></body></html>
