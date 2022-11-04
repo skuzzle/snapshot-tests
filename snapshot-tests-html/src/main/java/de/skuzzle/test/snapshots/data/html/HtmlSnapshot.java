@@ -18,10 +18,25 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Allows to create and compare snapshots from HTML strings. Please note that HTML
- * comparison only work on String input, so no real "serialization" happens.
+ * comparison only works on String input.
  * <p>
  * You can either use a pre-configured default instance via {@link #html} or use the
  * static factory method {@link #html()} to customize the construction.
+ *
+ * <pre>
+ * &#64;EnableSnapshotTests
+ * class HtmlSnapshotTest {
+ *
+ *     &#64;Test
+ *     void testHtlmSnapshot(Snapshot snapshot) {
+ *         final String htmlString = testSubject.renderHtml(...);
+ *         snapshot.assertThat(htmlString)
+ *             .as(HtmlSnapshot.html()
+ *                 .withPrettyPrintSnapshot(true))
+ *             .matchesSnapshotStructure();
+ *     }
+ * }
+ * </pre>
  *
  * @author Simon Taddiken
  * @since 1.5.0
