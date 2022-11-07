@@ -4,5 +4,5 @@ snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces
 test-method: testWithSnapshot
 
-line1
 line2
+line3

@@ -206,8 +206,8 @@ public class FailingSnapshotTests {
                         + "Full unified diff of actual result and stored snapshot:%n"
                         + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
                         + "%n"
-                        + "line-[1]+[2]%n"
-                        + "line-[2]+[3]",
+                        + "line-[2]+[4]%n"
+                        + "line-[3]+[5]",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
     }
 
@@ -218,7 +218,7 @@ public class FailingSnapshotTests {
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
-            final SnapshotTestResult snapshotResult = snapshot.assertThat("line2\nline3")
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("line4\nline5")
                     .as(TextSnapshot.text().withIgnoreWhitespaces(false))
                     .matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
