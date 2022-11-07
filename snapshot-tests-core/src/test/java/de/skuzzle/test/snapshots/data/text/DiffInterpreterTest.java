@@ -17,20 +17,20 @@ class DiffInterpreterTest {
                 .collect(joining(LineSeparator.SYSTEM.toString()));
     }
 
-    private final DiffInterpreter subject = new DiffInterpreter();
-
     @Test
     void testContextAsLongAsInput() throws Exception {
+        final DiffInterpreter subject = new DiffInterpreter().withContextLines(4);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString, 4);
+        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
 
         assertThat(formattedString).isEqualTo(formattedString);
     }
 
     @Test
     void testtobenamed() throws Exception {
+        final DiffInterpreter subject = new DiffInterpreter().withContextLines(3);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffAtTheEnd(inputString, 3);
+        final String formattedString = subject.getDisplayDiffOfEqualDiffAtTheEnd(inputString);
 
         final String expectedString = lines(0, 3) + LineSeparator.SYSTEM + "[...]";
         assertThat(formattedString).isEqualTo(expectedString);
@@ -38,8 +38,9 @@ class DiffInterpreterTest {
 
     @Test
     void testContextLongerThanInput() throws Exception {
+        final DiffInterpreter subject = new DiffInterpreter().withContextLines(10);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString, 10);
+        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
 
         assertThat(formattedString).isEqualTo(inputString);
     }
@@ -51,10 +52,10 @@ class DiffInterpreterTest {
             "5, 2",
     })
     void test(int inputLines, int contextLines) {
-        final DiffInterpreter subject = new DiffInterpreter();
+        final DiffInterpreter subject = new DiffInterpreter().withContextLines(contextLines);
         final String inputString = lines(0, inputLines);
 
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString, contextLines);
+        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
 
         final String expectedString = lines(0, contextLines) + LineSeparator.SYSTEM
                 + "[...]" + LineSeparator.SYSTEM +

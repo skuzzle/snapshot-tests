@@ -55,6 +55,23 @@ public final class TextSnapshot implements StructuredDataProvider {
         return this;
     }
 
+    /**
+     * Configures the amount of contextual lines that are printed around a detected
+     * change. Per default, all lines of the full diff will be printed. If you have huge
+     * diffs with only little changes, it might be beneficial to reduce this value to a
+     * low value like 5 or 10.
+     *
+     * @param contextLines The amount of lines to print around a detected change in the
+     *            unified diffs.
+     * @return This instance.
+     * @since 1.5.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.5.0")
+    public TextSnapshot withContextLines(int contextLines) {
+        this.diffInterpreter.withContextLines(contextLines);
+        return this;
+    }
+
     @Override
     public StructuredData build() {
         final StructuralAssertions structuralAssertions = new TextDiffStructuralAssertions(diffInterpreter);

@@ -219,7 +219,7 @@ public class FailingSnapshotTests {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("line4\nline5")
-                    .as(TextSnapshot.text().withIgnoreWhitespaces(false))
+                    .as(TextSnapshot.text().withIgnoreWhitespaces(false).withContextLines(5))
                     .matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }

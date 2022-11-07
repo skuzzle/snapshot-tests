@@ -12,6 +12,12 @@ final class DiffInterpreter {
     private static final Pattern WHITESPACE_ONLY = Pattern.compile("\\s+");
 
     private boolean ignoreWhitespaceChanges = true;
+    private int contextLines = Integer.MAX_VALUE;
+
+    public DiffInterpreter withContextLines(int contextLines) {
+        this.contextLines = contextLines;
+        return this;
+    }
 
     public DiffInterpreter withIgnoreWhitespaceChanges(boolean ignoreWhitespaceChanges) {
         this.ignoreWhitespaceChanges = ignoreWhitespaceChanges;
@@ -58,7 +64,29 @@ final class DiffInterpreter {
         }
     }
 
-    public String getDisplayDiffOfEqualDiffBetween2Changes(String diffText, int contextLines) {
+    public String getDisplayDiffOfEqualDiffAtTheStart(String diffText) {
+        final int totalLines = (int) diffText.lines().count();
+
+        final StringBuilder b = new StringBuilder();
+        boolean appendOnce = true;
+        final Iterator<String> lineIterator = diffText.lines().iterator();
+        for (int lineNr = 0; lineNr < totalLines; ++lineNr) {
+            final String nextLine = lineIterator.next();
+
+            if (lineNr >= totalLines - contextLines) {
+                b.append(nextLine);
+                if (lineNr < totalLines - 1) {
+                    b.append(LineSeparator.SYSTEM);
+                }
+            } else if (appendOnce) {
+                b.append("[...]").append(LineSeparator.SYSTEM);
+                appendOnce = false;
+            }
+        }
+        return b.toString();
+    }
+
+    public String getDisplayDiffOfEqualDiffBetween2Changes(String diffText) {
         final int totalLines = (int) diffText.lines().count();
 
         final StringBuilder b = new StringBuilder();
@@ -80,7 +108,7 @@ final class DiffInterpreter {
         return b.toString();
     }
 
-    public String getDisplayDiffOfEqualDiffAtTheEnd(String diffText, int contextLines) {
+    public String getDisplayDiffOfEqualDiffAtTheEnd(String diffText) {
         final int totalLines = (int) diffText.lines().count();
 
         final StringBuilder b = new StringBuilder();

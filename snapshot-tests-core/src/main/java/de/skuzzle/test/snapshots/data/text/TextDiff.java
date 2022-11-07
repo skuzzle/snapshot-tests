@@ -69,7 +69,6 @@ public final class TextDiff {
             return "";
         }
 
-        final int contextLines = 5;
         final StringBuilder message = new StringBuilder();
 
         if (diffInterpreter.hasLineSeparatorDifference(expectedLineSeparator, actualLineSeparator)) {
@@ -86,16 +85,19 @@ public final class TextDiff {
 
         final ListIterator<Diff> cursor = diffs.listIterator();
         while (cursor.hasNext()) {
+            final boolean hasPrevious = cursor.hasPrevious();
             final Diff current = cursor.next();
-            if (current.operation == Operation.EQUAL && cursor.hasPrevious()) {
+            if (current.operation == Operation.EQUAL && hasPrevious) {
                 if (cursor.hasNext()) {
                     // check if current is an equal operation between 2 changes
                     message.append(
-                            diffInterpreter.getDisplayDiffOfEqualDiffBetween2Changes(current.text, contextLines));
+                            diffInterpreter.getDisplayDiffOfEqualDiffBetween2Changes(current.text));
                 } else {
                     // equal diff at the end
-                    message.append(diffInterpreter.getDisplayDiffOfEqualDiffAtTheEnd(current.text, contextLines));
+                    message.append(diffInterpreter.getDisplayDiffOfEqualDiffAtTheEnd(current.text));
                 }
+            } else if (current.operation == Operation.EQUAL) {
+                message.append(diffInterpreter.getDisplayDiffOfEqualDiffAtTheStart(current.text));
             } else {
                 message.append(diffInterpreter.getDisplayDiff(current));
             }
