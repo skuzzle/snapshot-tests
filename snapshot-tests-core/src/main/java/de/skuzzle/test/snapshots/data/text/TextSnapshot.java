@@ -8,8 +8,8 @@ import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
- * Take snapshots using {@link Object#toString()}. By default, whitespace changes will be
- * ignored during comparison. This behavior can be changed using
+ * Take snapshots using {@link Object#toString()}. By default, whitespace changes of any
+ * kind will be ignored during comparison. This behavior can be changed using
  * {@link #withIgnoreWhitespaces(boolean)}.
  *
  * @author Simon Taddiken
@@ -21,7 +21,7 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a
-     * generic String diff algorithm. Comparison ignores whitespace changes.
+     * generic String diff algorithm. Comparison ignores whitespace changes of any kind.
      */
     public static final StructuredData text = text()
             .withIgnoreWhitespaces(true)
