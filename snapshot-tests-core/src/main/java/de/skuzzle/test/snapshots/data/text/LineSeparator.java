@@ -2,7 +2,13 @@ package de.skuzzle.test.snapshots.data.text;
 
 import java.util.stream.Collectors;
 
-public enum LineSeparator {
+/**
+ * Used to represent a file's line separator.
+ *
+ * @since 1.5.0
+ * @author Simon Taddiken
+ */
+enum LineSeparator {
     // note: don't reorder!
     CRLF("\r\n", "\\r\\n"),
     LF("\n", "\\n"),
@@ -35,6 +41,21 @@ public enum LineSeparator {
         return name() + "(" + displayName + ")";
     }
 
+    public boolean endsWith(String s) {
+        return s.endsWith(this.characters);
+    }
+
+    public boolean startsWith(String s) {
+        return s.startsWith(this.characters);
+    }
+
+    /**
+     * Converts all line separators in the given String to the line separator represented
+     * by the enum constant on which this method is called.
+     *
+     * @param s The string in which to convert the line separators.
+     * @return The string with converted line separators.
+     */
     public String convert(String s) {
         return s.lines().collect(Collectors.joining(characters));
     }

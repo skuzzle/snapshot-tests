@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.data.text.DiffInterpreter.EqualDiffPosition;
 import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
 import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -33,8 +34,11 @@ public final class TextDiff {
         this.actualLineSeparator = actualLineSeparator;
     }
 
-    public static TextDiff diffOf(String expected, String actual) {
-        return diffOf(new DiffInterpreter().withIgnoreWhitespaceChanges(false), expected, actual);
+    public static TextDiff diffOf(String expected, String actual, int contextLines) {
+        return diffOf(new DiffInterpreter()
+                .withIgnoreWhitespaceChanges(false)
+                .withContextLines(contextLines),
+                expected, actual);
     }
 
     static TextDiff diffOf(DiffInterpreter diffInterpreter, String expected, String actual) {
@@ -86,20 +90,21 @@ public final class TextDiff {
         final ListIterator<Diff> cursor = diffs.listIterator();
         while (cursor.hasNext()) {
             final boolean hasPrevious = cursor.hasPrevious();
+
             final Diff current = cursor.next();
-            if (current.operation == Operation.EQUAL && hasPrevious) {
+            if (current.operation == Operation.EQUAL && !hasPrevious) {
+                // equal operation at the beginning
+                message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.START));
+            } else if (current.operation == Operation.EQUAL) {
                 if (cursor.hasNext()) {
-                    // check if current is an equal operation between 2 changes
-                    message.append(
-                            diffInterpreter.getDisplayDiffOfEqualDiffBetween2Changes(current.text));
+                    // equal operation between 2 changes
+                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.MIDDLE));
                 } else {
                     // equal diff at the end
-                    message.append(diffInterpreter.getDisplayDiffOfEqualDiffAtTheEnd(current.text));
+                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.END));
                 }
-            } else if (current.operation == Operation.EQUAL) {
-                message.append(diffInterpreter.getDisplayDiffOfEqualDiffAtTheStart(current.text));
             } else {
-                message.append(diffInterpreter.getDisplayDiff(current));
+                message.append(diffInterpreter.renderFailureDiff(current));
             }
         }
         return message.toString();

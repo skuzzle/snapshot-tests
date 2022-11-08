@@ -11,6 +11,10 @@ import de.skuzzle.test.snapshots.StructuredDataProvider;
  * Take snapshots using {@link Object#toString()}. By default, whitespace changes of any
  * kind will be ignored during comparison. This behavior can be changed using
  * {@link #withIgnoreWhitespaces(boolean)}.
+ * <p>
+ * When rendering unified diffs as String, changes in line separators are not marked at
+ * every occurrence. Instead, detected changes in line separators will result in a single
+ * informative message at the beginning of the diff.
  *
  * @author Simon Taddiken
  */

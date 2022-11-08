@@ -34,6 +34,10 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 final class SnapshotTestImpl implements Snapshot {
 
+    // default number of context lines that will be printed around changes in huge unified
+    // diffs
+    private static final int DEFAULT_CONTEXT_LINES = 5;
+
     private final Method testMethod;
     private final SnapshotTestContext context;
     private final SnapshotConfiguration configuration;
@@ -212,7 +216,7 @@ final class SnapshotTestImpl implements Snapshot {
                 .append(snapshotFile.toString())
                 .append(System.lineSeparator());
 
-        final TextDiff testDiff = TextDiff.diffOf(storedSnapshot, serializedActual);
+        final TextDiff testDiff = TextDiff.diffOf(storedSnapshot, serializedActual, DEFAULT_CONTEXT_LINES);
         if (testDiff.hasDifference()) {
             assertionMessage
                     .append(System.lineSeparator())

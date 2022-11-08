@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import de.skuzzle.test.snapshots.data.text.DiffInterpreter.EqualDiffPosition;
+
 class DiffInterpreterTest {
 
     private String lines(int offset, int n) {
@@ -21,7 +23,7 @@ class DiffInterpreterTest {
     void testContextAsLongAsInput() throws Exception {
         final DiffInterpreter subject = new DiffInterpreter().withContextLines(4);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
+        final String formattedString = subject.renderEqualsDiff(inputString, EqualDiffPosition.MIDDLE);
 
         assertThat(formattedString).isEqualTo(formattedString);
     }
@@ -30,7 +32,7 @@ class DiffInterpreterTest {
     void testtobenamed() throws Exception {
         final DiffInterpreter subject = new DiffInterpreter().withContextLines(3);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffAtTheEnd(inputString);
+        final String formattedString = subject.renderEqualsDiff(inputString, EqualDiffPosition.END);
 
         final String expectedString = lines(0, 3) + LineSeparator.SYSTEM + "[...]";
         assertThat(formattedString).isEqualTo(expectedString);
@@ -40,7 +42,7 @@ class DiffInterpreterTest {
     void testContextLongerThanInput() throws Exception {
         final DiffInterpreter subject = new DiffInterpreter().withContextLines(10);
         final String inputString = lines(0, 4);
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
+        final String formattedString = subject.renderEqualsDiff(inputString, EqualDiffPosition.MIDDLE);
 
         assertThat(formattedString).isEqualTo(inputString);
     }
@@ -55,7 +57,7 @@ class DiffInterpreterTest {
         final DiffInterpreter subject = new DiffInterpreter().withContextLines(contextLines);
         final String inputString = lines(0, inputLines);
 
-        final String formattedString = subject.getDisplayDiffOfEqualDiffBetween2Changes(inputString);
+        final String formattedString = subject.renderEqualsDiff(inputString, EqualDiffPosition.MIDDLE);
 
         final String expectedString = lines(0, contextLines) + LineSeparator.SYSTEM
                 + "[...]" + LineSeparator.SYSTEM +
