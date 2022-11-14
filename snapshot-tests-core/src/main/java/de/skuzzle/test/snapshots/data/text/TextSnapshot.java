@@ -25,7 +25,13 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a
-     * generic String diff algorithm. Comparison ignores whitespace changes of any kind.
+     * generic String diff algorithm. Comparison ignores whitespace changes of any kind
+     * and does not limit the size of the unified diff.
+     * <p>
+     * You can create a more customized text comparison by using {@link #text()} and the
+     * several customization options.
+     *
+     * @see #text()
      */
     public static final StructuredData text = text()
             .withIgnoreWhitespaces(true)
