@@ -31,6 +31,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
             snapshot.assertThat(null).asText().matchesSnapshotText();
         }
     }
@@ -48,6 +50,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
             snapshot.assertThat(null).asText().justUpdateSnapshot();
         }
     }
@@ -65,6 +69,8 @@ public class FailingSnapshotTests {
 
         @Test
         void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
             snapshot.assertThat(null).asText().matchesSnapshotText();
         }
     }
@@ -183,6 +189,38 @@ public class FailingSnapshotTests {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+        }
+    }
+
+    @Test
+    void testFailBecauseSnapshotMismatchWithWhitespaces() throws Throwable {
+        frameworkTest
+                .expectTestcase(FailBecauseSnapshotMismatchWithWhitespaces.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage(String.format("Stored snapshot doesn't match actual result.%n"
+                        + "%nSnapshot location:%n"
+                        + "\t%s%n"
+                        + "%n"
+                        + "Full unified diff of actual result and stored snapshot:%n"
+                        + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
+                        + "%n"
+                        + "line-[2]+[4]%n"
+                        + "line-[3]+[5]",
+                        Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseSnapshotMismatchWithWhitespaces {
+
+        @Test
+        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("line4\nline5")
+                    .as(TextSnapshot.text().withIgnoreWhitespaces(false).withContextLines(5))
+                    .matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
     }

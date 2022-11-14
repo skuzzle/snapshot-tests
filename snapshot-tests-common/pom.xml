@@ -10,7 +10,7 @@
     <artifactId>snapshot-tests-common</artifactId>
     <packaging>jar</packaging>
 
-    <name>Common Utilities</name>
+    <name>Snapshot Tests Common Utilities</name>
     <description></description>
 
     <properties>

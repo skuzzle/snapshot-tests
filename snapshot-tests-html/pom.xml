@@ -10,7 +10,7 @@
     <artifactId>snapshot-tests-html</artifactId>
     <packaging>jar</packaging>
 
-    <name>Snapshot HTML</name>
+    <name>Snapshot HTML Serialization</name>
     <description>XML snapshot comparison</description>
 
     <properties>
