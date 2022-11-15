@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -7,9 +9,42 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 
 @EnableSnapshotTests
 public class SnapshotsTest {
+
+    @Test
+    void testDisabledWithNullInput(Snapshot snapshot) throws Exception {
+        final SnapshotTestResult testResult = snapshot.assertThat(null).asText().disabled();
+        assertThat(testResult.serializedSnapshot().snapshot()).isEqualTo("<<unavailable because actual was null>>");
+    }
+
+    @Test
+    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+
+        assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
+        assertThat(testResultDisabled.targetFile()).doesNotExist();
+
+        final Person phil = determinePerson().setName("Phil");
+        final SnapshotTestResult testResultActive = snapshot.assertThat(phil).asText().matchesSnapshotText();
+
+        assertThat(testResultActive.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    }
+
+    @Test
+    void testWithOneDisabledAssertionForWhichSnapshotHasAlreadyBeenCreated(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+
+        assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
+        assertThat(testResultDisabled.targetFile()).exists();
+
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.assertThat(phil).asText().matchesSnapshotText();
+    }
 
     @Test
     void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) throws Throwable {

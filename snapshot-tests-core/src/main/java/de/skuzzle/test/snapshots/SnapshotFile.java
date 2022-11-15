@@ -24,6 +24,8 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * A snapshot file is a plain text file containing a header and the actual serialized
  * snapshot. The header is a simple key-value format which is separated from the actual
  * snapshot contents by two line breaks (\n).
+ * <p>
+ * This class is immutable.
  *
  * @author Simon Taddiken
  * @since 0.0.5
@@ -89,6 +91,14 @@ public final class SnapshotFile {
         return snapshot;
     }
 
+    /**
+     * Writes this object to the specified file, potentially overriding it if it already
+     * exists.
+     *
+     * @param snapshotFile The target file to write to.
+     * @return The instance.
+     * @throws IOException If an IO error occurs during writing.
+     */
     public SnapshotFile writeTo(Path snapshotFile) throws IOException {
         try (var writer = Files.newBufferedWriter(snapshotFile, StandardCharsets.UTF_8)) {
             writeTo(writer);
@@ -132,11 +142,17 @@ public final class SnapshotFile {
         private final Map<String, String> values;
 
         private SnapshotHeader(Map<String, String> values) {
+            values.forEach((key, value) -> {
+                Arguments.check(key.indexOf('\n') < 0 && key.indexOf('\r') < 0,
+                        "Snapshot header key must not contain linebreaks but was '%s'='%s'", key, value);
+                Arguments.check(value.indexOf('\n') < 0 && value.indexOf('\r') < 0,
+                        "Snapshot header values must not contain linebreaks but was '%s'='%s'", key, value);
+            });
             this.values = Collections.unmodifiableMap(values);
         }
 
         public static SnapshotHeader fromMap(Map<String, String> values) {
-            return new SnapshotHeader(new HashMap<>(values));
+            return new SnapshotHeader(Map.copyOf(values));
         }
 
         public static SnapshotHeader readFrom(BufferedReader reader) throws IOException {

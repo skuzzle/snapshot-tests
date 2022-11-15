@@ -88,4 +88,13 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
             throw new IllegalStateException("Technical problem while updating the snapshot", e);
         }
     }
+
+    @Override
+    public SnapshotTestResult disabled() {
+        try {
+            return snapshot.disabled(snapshotSerializer, structuralAssertions, actual);
+        } catch (final Exception e) {
+            throw new IllegalStateException("Technical problem while handling diabled assertion", e);
+        }
+    }
 }

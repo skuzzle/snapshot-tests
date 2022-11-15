@@ -67,6 +67,13 @@ public class OrphanedSnapshotDetectionTest {
     }
 
     @Test
+    void disabled_assertion_should_not_be_detected_as_orphan() throws IOException {
+        frameworkTest.executeTestcasesIn(TestCase.class);
+
+        orphans.results().areNot(forFileWithName("testWithDisabledAssertion_0.snapshot"));
+    }
+
+    @Test
     void snapshot_for_existing_test_in_different_class_that_was_not_executed_should_not_be_detected_as_orphan()
             throws Throwable {
         frameworkTest.executeTestcasesIn(AnotherTestClass.class);
@@ -93,13 +100,14 @@ public class OrphanedSnapshotDetectionTest {
 
         @Test
         void testWithChangedAssertions(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
             snapshot.assertThat("1").asText().matchesSnapshotText();
             // snapshot.assertThat("2").asText().matchesSnapshotText();
         }
 
         @Test
         void someSnapshotTest(Snapshot snapshot) {
-
+            MetaTest.assumeMetaTest();
         }
 
         @Test
@@ -111,11 +119,19 @@ public class OrphanedSnapshotDetectionTest {
         }
 
         @Test
+        void testWithDisabledAssertion(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("1").asText().matchesSnapshotText();
+        }
+
+        @Test
         void failingTestMethod(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             throw new RuntimeException();
         }
+
     }
 
     @EnableSnapshotTests
