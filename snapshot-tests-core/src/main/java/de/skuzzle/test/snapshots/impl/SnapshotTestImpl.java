@@ -28,11 +28,16 @@ import de.skuzzle.test.snapshots.data.text.TextDiffAssertionError;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Aggregates the logic of executing (possibly multiple) snapshot assertions in the context of a single test method.
+ * Aggregates the logic of executing (possibly multiple) snapshot assertions in the
+ * context of a single test method.
  *
  * @author Simon Taddiken
  */
 final class SnapshotTestImpl implements Snapshot {
+
+    // backup snapshot text that will be used in special case when assertions are disabled
+    // and null input is given as actual object to snapshot.assertThat(...)
+    private static final String UNAVAILABLE_BECAUSE_ACTUAL_WAS_NULL = "<<unavailable because actual was null>>";
 
     // default number of context lines that will be printed around changes in huge unified
     // diffs
@@ -87,8 +92,9 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private Path determineSnapshotDirectory() throws IOException {
-        final Path snapshotDirectory = this.directoryOverride != null ? this.directoryOverride : this.configuration
-                .determineSnapshotDirectory();
+        final Path snapshotDirectory = this.directoryOverride != null
+                ? this.directoryOverride
+                : this.configuration.determineSnapshotDirectory();
         Files.createDirectories(snapshotDirectory);
         return snapshotDirectory;
     }
@@ -119,6 +125,26 @@ final class SnapshotTestImpl implements Snapshot {
         this.context.recordSnapshotTestResult(result);
     }
 
+    SnapshotTestResult disabled(SnapshotSerializer snapshotSerializer,
+            StructuralAssertions structuralAssertions,
+            Object actual) throws Exception {
+
+        final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
+        final Path snapshotFilePath = determineSnapshotFile(snapshotName);
+
+        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
+
+        final String serializedActual = actual == null
+                ? UNAVAILABLE_BECAUSE_ACTUAL_WAS_NULL
+                : snapshotSerializer.serialize(actual);
+        final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual);
+        final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.DISABLED,
+                snapshotFile);
+
+        recordSnapshotTestResult(result);
+        return result;
+    }
+
     SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
             StructuralAssertions structuralAssertions,
             Object actual) throws Exception {
@@ -142,8 +168,8 @@ final class SnapshotTestImpl implements Snapshot {
             final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
                     .writeTo(snapshotFilePath);
 
-            final SnapshotStatus status = snapshotFileAlreadyExists ? SnapshotStatus.UPDATED_FORCEFULLY :
-                    SnapshotStatus.CREATED_INITIALLY;
+            final SnapshotStatus status = snapshotFileAlreadyExists ? SnapshotStatus.UPDATED_FORCEFULLY
+                    : SnapshotStatus.CREATED_INITIALLY;
             result = SnapshotTestResult.of(snapshotFilePath, status, snapshotFile);
         } else {
             final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
@@ -231,7 +257,8 @@ final class SnapshotTestImpl implements Snapshot {
 
     private TextDiff determineDiff(AssertionError original, String storedSnapshot, String serializedActual) {
         if (original instanceof TextDiffAssertionError) {
-            // this is to reuse the diff that has already been created during text comparison
+            // this is to reuse the diff that has already been created during text
+            // comparison
             // in TextDiffStructuralAssertions
             return ((TextDiffAssertionError) original).textDiff();
         } else {

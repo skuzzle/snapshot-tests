@@ -67,6 +67,11 @@ public class SnapshotDslTest {
         }
 
         @Override
+        public SnapshotTestResult disabled() {
+            return null;
+        }
+
+        @Override
         public SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
             return null;
         }

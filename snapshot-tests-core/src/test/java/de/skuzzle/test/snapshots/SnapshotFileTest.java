@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.io.StringWriter;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -17,6 +20,22 @@ public class SnapshotFileTest {
 
     private BufferedReader string(String s) {
         return new BufferedReader(new StringReader(s));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "\r", "\n", "\r\n" })
+    void testCreateHeaderWithLineBreakInKey(String lineBreak) throws Exception {
+        final String illegalKey = String.format("key%swith linebreak", lineBreak);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> SnapshotHeader.fromMap(Map.of(illegalKey, "value")));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "\r", "\n", "\r\n" })
+    void testCreateHeaderWithLinebreakInValue(String lineBreak) throws Exception {
+        final String illegalValue = String.format("value%swith linebreak", lineBreak);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> SnapshotHeader.fromMap(Map.of("key", illegalValue)));
     }
 
     @Test
