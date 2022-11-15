@@ -59,7 +59,8 @@ final class DynamicOrphanedSnapshotsDetector {
 
     private OrphanDetectionResult isOrphanedSnapshot(Path snapshotFile) {
         // we can not detect orphaned snapshots for failed or skipped tests because the
-        // test might have failed before creating the snapshot
+        // test might have failed before creating the snapshot. But for natively disabled
+        // tests we can safely assume that they are not orphaned
         OrphanStatus result;
         if (pertainsToDisabledAssertion(snapshotFile)) {
             result = OrphanStatus.ACTIVE;
