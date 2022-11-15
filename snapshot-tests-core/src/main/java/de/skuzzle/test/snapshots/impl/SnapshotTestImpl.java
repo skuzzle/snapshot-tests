@@ -92,9 +92,9 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private Path determineSnapshotDirectory() throws IOException {
-        final Path snapshotDirectory = this.directoryOverride != null ? this.directoryOverride
-                : this.configuration
-                        .determineSnapshotDirectory();
+        final Path snapshotDirectory = this.directoryOverride != null
+                ? this.directoryOverride
+                : this.configuration.determineSnapshotDirectory();
         Files.createDirectories(snapshotDirectory);
         return snapshotDirectory;
     }
