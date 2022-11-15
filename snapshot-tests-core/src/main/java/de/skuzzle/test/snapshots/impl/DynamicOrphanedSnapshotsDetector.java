@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
 import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -60,7 +61,9 @@ final class DynamicOrphanedSnapshotsDetector {
         // we can not detect orphaned snapshots for failed or skipped tests because the
         // test might have failed before creating the snapshot
         OrphanStatus result;
-        if (pertainsToFailedOrSkippedTest(snapshotFile)) {
+        if (pertainsToDisabledAssertion(snapshotFile)) {
+            result = OrphanStatus.ACTIVE;
+        } else if (pertainsToFailedOrSkippedTest(snapshotFile)) {
             result = OrphanStatus.UNSURE;
         } else {
             final boolean containedInTest = testResultsContain(snapshotFile);
@@ -75,9 +78,16 @@ final class DynamicOrphanedSnapshotsDetector {
                         failedTestMethod));
     }
 
+    private boolean pertainsToDisabledAssertion(Path snapshotFile) {
+        return results.stream()
+                .filter(result -> result.status() == SnapshotStatus.DISABLED)
+                .anyMatch(result -> result.targetFile().equals(snapshotFile));
+    }
+
     private boolean testResultsContain(Path snapshotFile) {
         return results.stream()
                 .map(SnapshotTestResult::targetFile)
+                .filter(Files::exists)
                 .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
                         snapshotFile));
     }

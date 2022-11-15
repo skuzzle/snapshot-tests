@@ -41,7 +41,8 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * The snapshot file.
+     * The snapshot file. Note that it is possible that the file does not exist in case
+     * that {@link #status()} is {@link SnapshotStatus#DISABLED}.
      *
      * @return The snapshot file.
      */
@@ -112,6 +113,13 @@ public final class SnapshotTestResult {
         /**
          * Persistent snapshot has been compared against the actual test result.
          */
-        ASSERTED
+        ASSERTED,
+        /**
+         * No assertion has been performed and the snapshot file has not been created nor
+         * updated.
+         *
+         * @since 1.5.0
+         */
+        DISABLED;
     }
 }
