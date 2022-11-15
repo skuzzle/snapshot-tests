@@ -47,7 +47,7 @@ public interface SnapshotDsl {
          * null, an AssertionError will be raised when calling any of the final matches...
          * methods on the snapshot DSL instance.
          *
-         * @param actual The actual test result. Must not be null.
+         * @param actual The actual test result.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
          *         the same object as 'this'!
          */
@@ -93,6 +93,22 @@ public interface SnapshotDsl {
 
         /**
          * Choose a name for the snapshot file according to the given strategy.
+         * <p>
+         * The {@link SnapshotNaming} interface has some static methods with useful
+         * implementations. You can also easily implement the interface yourself.
+         * <p>
+         * For example, in a parameterized test, snapshot can be named like this:
+         *
+         * <pre>
+         * &#64;ParameterizedTest
+         * &#64;ValueSource(strings = { "a", "b" })
+         * void someTest(String parameter, Snapshot snapshot) {
+         *     snapshot.namedAccordingTo(SnapshotNaming.withParameters(parameter))
+         *             .assertThat(parameter)
+         *             .asText()
+         *             .matchesSnapshotText();
+         * }
+         * </pre>
          *
          * @param namingStrategy The naming strategy to use.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
