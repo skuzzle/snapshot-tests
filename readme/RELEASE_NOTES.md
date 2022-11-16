@@ -5,6 +5,7 @@
 * [#39](https://github.com/skuzzle/snapshot-tests/issues/39): Detect incomplete/illegal DSL usages
 * [#40](https://github.com/skuzzle/snapshot-tests/issues/40): Allow to gracefully disable snapshot assertions
 * Build against JUnit 5.9.1 (coming from 5.8.2)
+* Clean up dependencies
 
 
 Maven Central coordinates for this release:
