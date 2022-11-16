@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -17,6 +18,126 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 public class FailingSnapshotTests {
 
     private final MetaTest frameworkTest = new MetaTest();
+
+    @Test
+    void testDetectIncompleteDSLReuse() throws Exception {
+        frameworkTest.expectTestcase(DetectIncompleteDslReuse.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(IllegalStateException.class)
+                        .hasMessageContaining("Detected illegal reuse of a DSL stage"));
+    }
+
+    @EnableSnapshotTests
+    static class DetectIncompleteDslReuse {
+
+        @Test
+        void testIllegalReuse(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("");
+            snapshot.assertThat("");
+        }
+    }
+
+    @Test
+    void testDetectIncompleteDSLUsage() throws Exception {
+        frameworkTest.expectTestcase(DetectIncompleteDslUsage.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(IllegalStateException.class)
+                        .hasMessageContaining("Detected incomplete DSL usage"));
+    }
+
+    @EnableSnapshotTests
+    static class DetectIncompleteDslUsage {
+
+        @Test
+        void testOnlyAssert(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("");
+        }
+
+        @Test
+        void testOnlyDirectory(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("/"));
+        }
+
+        @Test
+        void testOnlyName(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("whatever");
+        }
+
+        @Test
+        void testNoTerminalOp(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("/"))
+                    .named("whatever")
+                    .assertThat("")
+                    .as(Object::toString);
+        }
+    }
+
+    @Test
+    void testFailBecauseOfNullInputSnapshotAlreadyExists() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputSnapshotAlreadyExists.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null but to match stored snapshot:\n\nsnapshot text");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputSnapshotAlreadyExists {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat(null).asText().matchesSnapshotText();
+        }
+    }
+
+    @Test
+    void testFailBecauseOfNullInputJustUpdateSnapshot() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputJustUpdateSnapshot.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputJustUpdateSnapshot {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat(null).asText().justUpdateSnapshot();
+        }
+    }
+
+    @Test
+    void testFailBecauseOfNullInputInitialSnapshot() throws Throwable {
+        frameworkTest.expectTestcase(FailBecauseOfNullInputInitialSnapshot.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseOfNullInputInitialSnapshot {
+
+        @Test
+        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat(null).asText().matchesSnapshotText();
+        }
+    }
 
     @Test
     void testFailBecauseForceUpdateFromAnnotationDeprecated() throws Throwable {
@@ -132,6 +253,38 @@ public class FailingSnapshotTests {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+        }
+    }
+
+    @Test
+    void testFailBecauseSnapshotMismatchWithWhitespaces() throws Throwable {
+        frameworkTest
+                .expectTestcase(FailBecauseSnapshotMismatchWithWhitespaces.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage(String.format("Stored snapshot doesn't match actual result.%n"
+                        + "%nSnapshot location:%n"
+                        + "\t%s%n"
+                        + "%n"
+                        + "Full unified diff of actual result and stored snapshot:%n"
+                        + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
+                        + "%n"
+                        + "line-[2]+[4]%n"
+                        + "line-[3]+[5]",
+                        Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseSnapshotMismatchWithWhitespaces {
+
+        @Test
+        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("line4\nline5")
+                    .as(TextSnapshot.text().withIgnoreWhitespaces(false).withContextLines(5))
+                    .matchesSnapshotText();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
         }
     }

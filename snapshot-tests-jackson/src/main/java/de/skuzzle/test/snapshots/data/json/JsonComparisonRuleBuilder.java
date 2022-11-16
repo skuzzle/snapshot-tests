@@ -66,8 +66,8 @@ final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
         };
     }
 
-    public JSONComparator build() {
-        return new CustomComparator(JSONCompareMode.STRICT, customizations.toArray(Customization[]::new));
+    public JSONComparator build(JSONCompareMode compareMode) {
+        return new CustomComparator(compareMode, customizations.toArray(Customization[]::new));
     }
 
 }

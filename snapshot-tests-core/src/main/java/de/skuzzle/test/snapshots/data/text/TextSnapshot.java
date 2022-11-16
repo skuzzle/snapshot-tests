@@ -8,9 +8,13 @@ import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
- * Take snapshots using {@link Object#toString()}. By default, whitespace changes will be
- * ignored during comparison. This behavior can be changed using
+ * Take snapshots using {@link Object#toString()}. By default, whitespace changes of any
+ * kind will be ignored during comparison. This behavior can be changed using
  * {@link #withIgnoreWhitespaces(boolean)}.
+ * <p>
+ * When rendering unified diffs as String, changes in line separators are not marked at
+ * every occurrence. Instead, detected changes in line separators will result in a single
+ * informative message at the beginning of the diff.
  *
  * @author Simon Taddiken
  */
@@ -21,7 +25,13 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a
-     * generic String diff algorithm. Comparison ignores whitespace changes.
+     * generic String diff algorithm. Comparison ignores whitespace changes of any kind
+     * and does not limit the size of the unified diff.
+     * <p>
+     * You can create a more customized text comparison by using {@link #text()} and the
+     * several customization options.
+     *
+     * @see #text()
      */
     public static final StructuredData text = text()
             .withIgnoreWhitespaces(true)
@@ -52,6 +62,23 @@ public final class TextSnapshot implements StructuredDataProvider {
     @API(status = Status.STABLE, since = "1.4.0")
     public TextSnapshot withIgnoreWhitespaces(boolean ignoreWhitespaces) {
         this.diffInterpreter.withIgnoreWhitespaceChanges(ignoreWhitespaces);
+        return this;
+    }
+
+    /**
+     * Configures the amount of contextual lines that are printed around a detected
+     * change. Per default, all lines of the full diff will be printed. If you have huge
+     * diffs with only little changes, it might be beneficial to reduce this value to a
+     * low value like 5 or 10.
+     *
+     * @param contextLines The amount of lines to print around a detected change in the
+     *            unified diffs.
+     * @return This instance.
+     * @since 1.5.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.5.0")
+    public TextSnapshot withContextLines(int contextLines) {
+        this.diffInterpreter.withContextLines(contextLines);
         return this;
     }
 

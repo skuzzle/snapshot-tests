@@ -23,7 +23,8 @@ import org.apiguardian.api.API.Status;
 public interface SnapshotSerializer {
 
     /**
-     * Creates a String representation of the provided object.
+     * Creates a String representation of the provided object. The passed object is
+     * guaranteed to be non-null.
      *
      * @param testResult The object to serialize.
      * @return The serialized object.

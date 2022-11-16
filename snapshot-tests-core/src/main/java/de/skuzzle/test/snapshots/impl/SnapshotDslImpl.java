@@ -26,7 +26,7 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
 
     @Override
     public ChooseDataFormat assertThat(Object actual) {
-        this.actual = Arguments.requireNonNull(actual, "actual must not be null");
+        this.actual = actual;
         return this;
     }
 
@@ -86,6 +86,15 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
             return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
         } catch (final Exception e) {
             throw new IllegalStateException("Technical problem while updating the snapshot", e);
+        }
+    }
+
+    @Override
+    public SnapshotTestResult disabled() {
+        try {
+            return snapshot.disabled(snapshotSerializer, structuralAssertions, actual);
+        } catch (final Exception e) {
+            throw new IllegalStateException("Technical problem while handling diabled assertion", e);
         }
     }
 }

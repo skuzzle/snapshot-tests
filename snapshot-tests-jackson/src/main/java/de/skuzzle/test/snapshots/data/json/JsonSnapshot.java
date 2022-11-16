@@ -27,6 +27,13 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * <p>
  * Either way, the ObjectMapper can be further configured by calling
  * {@link #configure(Consumer)}.
+ * </p>
+ * <p>
+ * Warning: It is discouraged to use any of this builder's methods after {@link #build()}
+ * has been called. Further modifications to this builder might be reflected in any
+ * objects that have been built earlier. Later API versions might enforce this suggestion
+ * by throwing an exception.
+ * </p>
  *
  * @author Simon Taddiken
  */
@@ -40,11 +47,14 @@ public final class JsonSnapshot implements StructuredDataProvider {
     public static final StructuredDataProvider json = json().build();
 
     private final ObjectMapper objectMapper;
+    private CompareMode compareMode = CompareMode.STRICT;
+    private JsonComparisonRuleBuilder comparisonRuleBuilder = new JsonComparisonRuleBuilder();
+
+    // legacy field, only set in deprecated #withComparator
     private JSONComparator jsonComparator;
 
     private JsonSnapshot(ObjectMapper objectMapper) {
         this.objectMapper = Arguments.requireNonNull(objectMapper, "objectMapper must not be null");
-        this.jsonComparator = new DefaultComparator(JSONCompareMode.STRICT);
     }
 
     /**
@@ -101,6 +111,11 @@ public final class JsonSnapshot implements StructuredDataProvider {
     /**
      * Configure the underlying ObjectMapper by passing in a {@link Consumer}. Can be used
      * to tweak the default {@link ObjectMapper}.
+     * <p>
+     * The passed Consumer will be called immediately to modify the object mapper in
+     * place. That is either the default object mapper or the one that has been passed to
+     * {@link #json(ObjectMapper)} during construction of this object.
+     * </p>
      *
      * @param c The consumer to which the ObjectMapper will be passed.
      * @return This instance.
@@ -114,6 +129,11 @@ public final class JsonSnapshot implements StructuredDataProvider {
     /**
      * Sets the {@link JSONComparator} for comparing actual and expected. If not set, the
      * {@link DefaultComparator} along with {@link JSONCompareMode#STRICT} will be used.
+     * <p>
+     * Note: this method can not be used in combination with
+     * {@link #withComparisonRules(Consumer)} as they will internally overwrite their
+     * respective configuration.
+     * </p>
      *
      * @param jsonComparator The comparator to use.
      * @return This instance.
@@ -130,8 +150,26 @@ public final class JsonSnapshot implements StructuredDataProvider {
     }
 
     /**
+     * Sets the mode for comparing two json strings. Defaults to
+     * {@link CompareMode#STRICT}.
+     *
+     * @param compareMode The compare mode to use.
+     * @return This instance.
+     */
+    @API(status = Status.STABLE, since = "1.5.0")
+    public JsonSnapshot withCompareMode(CompareMode compareMode) {
+        this.compareMode = Arguments.requireNonNull(compareMode, "compareMode must not be null");
+        return this;
+    }
+
+    /**
      * Allows to specify extra comparison rules that are applied to certain paths within
      * the json snapshots.
+     * <p>
+     * Note: this method can not be used in combination with
+     * {@link #withComparator(JSONComparator)} as they will internally overwrite their
+     * respective configuration.
+     * </p>
      *
      * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
      * @return This instance.
@@ -141,14 +179,21 @@ public final class JsonSnapshot implements StructuredDataProvider {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
         final JsonComparisonRuleBuilder comparatorCustomizerImpl = new JsonComparisonRuleBuilder();
         rules.accept(comparatorCustomizerImpl);
-        this.jsonComparator = comparatorCustomizerImpl.build();
+        this.comparisonRuleBuilder = comparatorCustomizerImpl;
         return this;
+    }
+
+    private JSONComparator determineComparator() {
+        return this.jsonComparator == null
+                ? this.comparisonRuleBuilder.build(this.compareMode.toJSONCompareMode())
+                : this.jsonComparator;
     }
 
     @Override
     public StructuredData build() {
+        final JSONComparator comparator = determineComparator();
         final SnapshotSerializer snapshotSerializer = new JacksonJsonSnapshotSerializer(objectMapper);
-        final StructuralAssertions structuralAssertions = new JsonAssertStructuralAssertions(jsonComparator);
+        final StructuralAssertions structuralAssertions = new JsonAssertStructuralAssertions(comparator);
         return StructuredData.with(snapshotSerializer, structuralAssertions);
     }
 }

@@ -1,12 +1,12 @@
-* [#25](https://github.com/skuzzle/snapshot-tests/issues/25): Improve exception messages for comparison failures
-* [#27](https://github.com/skuzzle/snapshot-tests/issues/27): Allow to customize whitespace behavior for text comparison
-* [#28](https://github.com/skuzzle/snapshot-tests/issues/28): Unify static constructors of all `StructuredDataProviders` (see _Deprecations_ below)
+* [#23](https://github.com/skuzzle/snapshot-tests/issues/33): Allow to configure strictness of JSON comparison
+* [#34](https://github.com/skuzzle/snapshot-tests/issues/34): Support for HTML snapshots
+* [#36](https://github.com/skuzzle/snapshot-tests/issues/36): Throw proper `AssertionError` if actual snapshot input is null
+* [#37](https://github.com/skuzzle/snapshot-tests/issues/37): Improve rendering of huge diffs by leaving out large unchanged parts
+* [#39](https://github.com/skuzzle/snapshot-tests/issues/39): Detect incomplete/illegal DSL usages
+* [#40](https://github.com/skuzzle/snapshot-tests/issues/40): Allow to gracefully disable snapshot assertions
+* Build against JUnit 5.9.1 (coming from 5.8.2)
+* Clean up dependencies
 
-### Deprecations
-* Deprecate `XmlSnapshot.inferJaxbContext()` in favor of `XmlSnapshot.xml()`
-* Deprecate `XmlSnapshot.with(JAXBContext)` in favor of `XmlSnapshot.xml().withJAXBContext(JAXBContext)`
-* Deprecate `JsonSnapshot.withDefaultObjectMapper()` in favor of `JsonSnapshot.json()`
-* Deprecate `JsonSnapshot.withObjectMapper(ObjectMapper)` in favor of `JsonSnapshot.json(ObjectMapper)`
 
 Maven Central coordinates for this release:
 
@@ -82,6 +82,24 @@ If you need xml based snapshots (includes `-core`):
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
+```
+
+If you need HTML based snapshots (includes `-core`):
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-html/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-html/${project.version})
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-html</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-html:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-html:${project.version}")
 ```
 
 ## Experimental
