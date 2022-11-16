@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -17,6 +18,69 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 public class FailingSnapshotTests {
 
     private final MetaTest frameworkTest = new MetaTest();
+
+    @Test
+    void testDetectIncompleteDSLReuse() throws Exception {
+        frameworkTest.expectTestcase(DetectIncompleteDslReuse.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(IllegalStateException.class)
+                        .hasMessageContaining("Detected illegal reuse of a DSL stage"));
+    }
+
+    @EnableSnapshotTests
+    static class DetectIncompleteDslReuse {
+
+        @Test
+        void testIllegalReuse(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("");
+            snapshot.assertThat("");
+        }
+    }
+
+    @Test
+    void testDetectIncompleteDSLUsage() throws Exception {
+        frameworkTest.expectTestcase(DetectIncompleteDslUsage.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(IllegalStateException.class)
+                        .hasMessageContaining("Detected incomplete DSL usage"));
+    }
+
+    @EnableSnapshotTests
+    static class DetectIncompleteDslUsage {
+
+        @Test
+        void testOnlyAssert(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("");
+        }
+
+        @Test
+        void testOnlyDirectory(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("/"));
+        }
+
+        @Test
+        void testOnlyName(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("whatever");
+        }
+
+        @Test
+        void testNoTerminalOp(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("/"))
+                    .named("whatever")
+                    .assertThat("")
+                    .as(Object::toString);
+        }
+    }
 
     @Test
     void testFailBecauseOfNullInputSnapshotAlreadyExists() throws Throwable {

@@ -2,7 +2,9 @@ package de.skuzzle.test.snapshots.impl;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Assertions;
@@ -47,6 +49,14 @@ class MetaTest {
             this.executionResults = executionResults;
         }
 
+        private Collection<Execution> allExecutions() {
+            final List<Execution> executions = executionResults.testEvents().executions().list();
+            if (executions.isEmpty()) {
+                throw new IllegalArgumentException("Expected a single execution but found: " + executions);
+            }
+            return executions;
+        }
+
         private Execution onlyExecution() {
             final List<Execution> executions = executionResults.testEvents().executions().list();
             if (executions.size() != 1) {
@@ -65,9 +75,22 @@ class MetaTest {
         }
 
         public AbstractThrowableAssert<?, ? extends Throwable> toFailWithExceptionWhich() {
-            final Throwable throwable = onlyExecution().getTerminationInfo().getExecutionResult().getThrowable()
+            final Execution onlyExecution = onlyExecution();
+            return expectExecutionToFail(onlyExecution);
+        }
+
+        private AbstractThrowableAssert<?, ? extends Throwable> expectExecutionToFail(Execution execution) {
+            final Throwable throwable = execution.getTerminationInfo().getExecutionResult().getThrowable()
                     .orElseThrow(() -> new AssertionError("Expected test to throw an exception but none was thrown"));
             return Assertions.assertThat(throwable);
+        }
+
+        public void toAllFailWithExceptionWhich(Consumer<AbstractThrowableAssert<?, ? extends Throwable>> matches) {
+            allExecutions().forEach(execution -> {
+                final AbstractThrowableAssert<?, ? extends Throwable> throwableAssert = expectExecutionToFail(
+                        execution);
+                matches.accept(throwableAssert);
+            });
         }
     }
 }
