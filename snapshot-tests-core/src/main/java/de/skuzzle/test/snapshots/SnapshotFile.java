@@ -160,17 +160,13 @@ public final class SnapshotFile {
             String line = reader.readLine();
             while (line != null && !line.isEmpty()) {
                 final String[] parts = line.split(":", 2);
-                if (parts.length != 2) {
-                    throw new IllegalArgumentException("Header contains invalid line: " + line);
-                }
+                Arguments.check(parts.length == 2, "Header contains invalid line: " + line);
                 final String key = parts[0].trim();
                 final String value = parts[1].trim();
                 final String prev = values.put(key, value);
 
-                if (prev != null) {
-                    throw new IllegalArgumentException(String
-                            .format("Header contains duplicate key: '%s' with values '%s' and '%s'", key, value, prev));
-                }
+                Arguments.check(prev == null,
+                        "Header contains duplicate key: '%s' with values '%s' and '%s'", key, value, prev);
                 line = reader.readLine();
             }
             return new SnapshotHeader(values);
