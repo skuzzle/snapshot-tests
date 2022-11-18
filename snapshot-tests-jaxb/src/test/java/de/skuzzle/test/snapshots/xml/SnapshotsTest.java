@@ -23,6 +23,31 @@ import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 public class SnapshotsTest {
 
     @Test
+    void testXmlAlreadyAStringWithPrettyPrint(Snapshot snapshot) throws Exception {
+        final SnapshotTestResult snapshotResult = snapshot
+                .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>").as(xml)
+                .matchesSnapshotStructure();
+
+        assertThat(snapshotResult.serializedSnapshot().snapshot()).isEqualTo(String.format(""
+                + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>%n"
+                + "<root>%n"
+                + "  <node>text</node>%n"
+                + "</root>%n"));
+    }
+
+    @Test
+    void testXmlAlreadyAStringWithoutPrettyPrint(Snapshot snapshot) throws Exception {
+        final SnapshotTestResult snapshotResult = snapshot
+                .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>")
+                .as(XmlSnapshot.xml()
+                        .withPrettyPrintStringXml(false))
+                .matchesSnapshotStructure();
+
+        assertThat(snapshotResult.serializedSnapshot().snapshot())
+                .isEqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>");
+    }
+
+    @Test
     void testAsXmlNoRootObject(Snapshot snapshot) throws Exception {
         final PersonWithoutRootElement myself = determinePersonWithoutRootElement();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotText();

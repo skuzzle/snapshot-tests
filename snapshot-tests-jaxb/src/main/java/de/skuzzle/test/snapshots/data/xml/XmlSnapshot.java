@@ -53,6 +53,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
     // null unless customized
     private DifferenceEvaluator differenceEvaluator;
 
+    private boolean prettyPrintStringXml = true;
+
     private XmlSnapshot() {
         this.marshallerSupplier = ctx -> {
             final Marshaller marshaller = ctx.createMarshaller();
@@ -123,6 +125,28 @@ public final class XmlSnapshot implements StructuredDataProvider {
     }
 
     /**
+     * Only taken into account if you directly pass a String into the snapshot test which
+     * is already a XML is does not need to be serialized. In this case, you can advise
+     * the framework to pretty print the passed in string before persisting it as a
+     * snapshot.
+     * <p>
+     * For non-xml input (java classes that need to be serialized), pretty printing can be
+     * controlled via cusomization of the marshaller using
+     * {@link #withMarshaller(MarshallerSupplier)}.
+     * <p>
+     * Defaults to true.
+     *
+     * @param prettyPrintStringXml Whether to pretty print XML strings.
+     * @return This build instance.
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    public XmlSnapshot withPrettyPrintStringXml(boolean prettyPrintStringXml) {
+        this.prettyPrintStringXml = prettyPrintStringXml;
+        return this;
+    }
+
+    /**
      * Defines which Xml-Assert assertion method will actually be used. Defaults to
      * {@link CompareAssert#areIdentical()}.
      * <p>
@@ -170,7 +194,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
     @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = JaxbXmlSnapshotSerializer.withExplicitJaxbContext(
-                jaxbContext, marshallerSupplier);
+                jaxbContext, marshallerSupplier, prettyPrintStringXml);
         final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(compareAssertConsumer,
                 differenceEvaluator);
         return StructuredData.with(snapshotSerializer, structuralAssertions);

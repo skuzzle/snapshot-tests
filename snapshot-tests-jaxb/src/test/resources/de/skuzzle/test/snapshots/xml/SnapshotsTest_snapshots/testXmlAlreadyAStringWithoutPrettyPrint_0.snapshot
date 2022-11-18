@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testXmlAlreadyAStringWithoutPrettyPrint_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.xml.SnapshotsTest
+test-method: testXmlAlreadyAStringWithoutPrettyPrint
+
+<?xml version="1.0" encoding="UTF-8"?><root><node>text</node></root>
