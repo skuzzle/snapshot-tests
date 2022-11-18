@@ -1,12 +1,4 @@
-* [#23](https://github.com/skuzzle/snapshot-tests/issues/33): Allow to configure strictness of JSON comparison
-* [#34](https://github.com/skuzzle/snapshot-tests/issues/34): Support for HTML snapshots
-* [#36](https://github.com/skuzzle/snapshot-tests/issues/36): Throw proper `AssertionError` if actual snapshot input is null
-* [#37](https://github.com/skuzzle/snapshot-tests/issues/37): Improve rendering of huge diffs by leaving out large unchanged parts
-* [#39](https://github.com/skuzzle/snapshot-tests/issues/39): Detect incomplete/illegal DSL usages
-* [#40](https://github.com/skuzzle/snapshot-tests/issues/40): Allow to gracefully disable snapshot assertions
-* Build against JUnit 5.9.1 (coming from 5.8.2)
-* Clean up dependencies
-
+* [#42](https://github.com/skuzzle/snapshot-tests/issues/42): Publish flattened version of our artifact to fix BOM distribution
 
 Maven Central coordinates for this release:
 
