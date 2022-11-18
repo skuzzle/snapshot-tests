@@ -47,7 +47,7 @@ public class FilesAreProperlyProcessedTest {
     final XPathEngine xpath = new JAXPXPathEngine();
 
     @ParameterizedTest
-    @FilesFrom(directory = "../../../..", recursive = true, filter = FlattenedPoms.class)
+    @FilesFrom(directory = "../../../../", recursive = true, filter = FlattenedPoms.class)
     void testFlattendPomsContainAllRequiredInformationForSonatype(TestFile testFile) throws IOException {
 
         XmlAssert.assertThat(testFile.asText()).nodesByXPath(XPATH_NAME)
@@ -58,7 +58,7 @@ public class FilesAreProperlyProcessedTest {
     }
 
     @ParameterizedTest
-    @FilesFrom(directory = "../../../..", recursive = false, extensions = "md")
+    @FilesFrom(directory = "../../../../", recursive = false, extensions = "md")
     void testPlaceholderResolvedInReadmeFiles(TestFile readmeOrReleaseNotes) throws Exception {
         final String contents = readmeOrReleaseNotes.asText();
         assertThat(contents).doesNotContain("${project.version}");
