@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.skuzzle.test</groupId>
@@ -19,7 +18,7 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>snapshot-tests-bom</artifactId>
+                <artifactId>snapshot-tests-dependencies</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -29,8 +28,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-assertj</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>snapshot-tests-jaxb</artifactId>
+            <artifactId>snapshot-tests-directory-params</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>Directory Contents Parameters</name>
-    <description></description>
+    <description>Inject files/directories into parameterized tests</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.directoryparams</automatic-module-name>

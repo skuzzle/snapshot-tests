@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>Snapshot Tests Common Utilities</name>
-    <description></description>
+    <description>Common utilities</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.common</automatic-module-name>

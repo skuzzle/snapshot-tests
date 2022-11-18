@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>Snapshot Object Normalization</name>
-    <description>Travers/Clean/Normalize object instances</description>
+    <description>Traverse/Clean/Normalize object instances</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.normalize</automatic-module-name>

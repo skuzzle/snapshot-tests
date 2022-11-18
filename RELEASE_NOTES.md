@@ -2,6 +2,7 @@
 * [#43](https://github.com/skuzzle/snapshot-tests/issues/43): Allow XML structure comparison for String input
 * Add `XmlSnapshot.withEnableXPathDebugging(...)` and `HtmlSnapshot.withEnableXPathDebugging(...)` to print results of applying custom comparison rules
 * Fixed bugs and performance issues in XPath comparison engine
+* `toString()` of `TestFile` and `TestDirectory` contain full absoulte path to the file instead of just the file name
 
 Maven Central coordinates for this release:
 

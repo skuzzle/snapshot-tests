@@ -200,6 +200,10 @@ public final class TestFile {
 
     @Override
     public String toString() {
-        return name();
+        try {
+            return this.file.toRealPath().toString();
+        } catch (final IOException e) {
+            return this.file.toAbsolutePath().toString();
+        }
     }
 }

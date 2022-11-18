@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Internal Dependency Management</name>
-    <description></description>
+    <description>Internal dependency management</description>
 
     <dependencyManagement>
         <dependencies>
