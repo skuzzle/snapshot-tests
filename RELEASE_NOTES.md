@@ -1,4 +1,5 @@
 * [#42](https://github.com/skuzzle/snapshot-tests/issues/42): Publish flattened version of our artifact to fix BOM distribution
+* [#43](https://github.com/skuzzle/snapshot-tests/issues/43): Allow XML structure comparison for String input
 
 Maven Central coordinates for this release:
 

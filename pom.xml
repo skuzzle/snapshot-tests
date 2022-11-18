@@ -56,6 +56,7 @@
         <module>snapshot-tests-xmlunit</module>
         <module>snapshot-tests-directory-params</module>
         <module>snapshot-tests-common</module>
+        <module>snapshot-tests-release-test</module>
     </modules>
 
     <build>
@@ -120,7 +121,6 @@
                 <artifactId>flatten-maven-plugin</artifactId>
                 <configuration>
                     <flattenMode>oss</flattenMode>
-                    <flattenDependencyMode>all</flattenDependencyMode>
                 </configuration>
                 <executions>
                     <!-- enable flattening -->
