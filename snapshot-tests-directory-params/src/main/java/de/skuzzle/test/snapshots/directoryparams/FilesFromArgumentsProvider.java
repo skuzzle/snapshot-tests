@@ -20,7 +20,7 @@ class FilesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsume
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        final Path inputFileDirectory = determineDirectory().toRealPath();
+        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
         final PathFilter filter = PathFilter.fromPredicate(Files::isRegularFile)
                 .and(PathFilterExtensions.extensions(directoryContents.extensions()))
                 .and(additionalFilter());
