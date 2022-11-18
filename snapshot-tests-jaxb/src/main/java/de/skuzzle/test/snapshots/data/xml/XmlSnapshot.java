@@ -19,6 +19,7 @@ import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitStructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
+import de.skuzzle.test.snapshots.validation.State;
 
 /**
  * {@link StructuredData} builder for serializing test results to XML, relying on JAXB and
@@ -52,8 +53,10 @@ public final class XmlSnapshot implements StructuredDataProvider {
     private Consumer<CompareAssert> compareAssertConsumer = CompareAssert::areIdentical;
     // null unless customized
     private DifferenceEvaluator differenceEvaluator;
-
+    // used only when actual test result is a string
     private boolean prettyPrintStringXml = true;
+
+    private boolean enableXPathDebugging = false;
 
     private XmlSnapshot() {
         this.marshallerSupplier = ctx -> {
@@ -169,10 +172,34 @@ public final class XmlSnapshot implements StructuredDataProvider {
     }
 
     /**
+     * Enables a simple debug output to System.out for the xpaths that are used in
+     * {@link #withComparisonRules(Consumer)}. This will print out all the nodes that are
+     * matched by the xpaths that are used in custom comparison rules.
+     * <p>
+     * Note that this method must be called before calling
+     * {@link #withComparisonRules(Consumer)}.
+     *
+     * @param enableXPathDebugging Whether to enable debug output for xpaths used in
+     *            {@link #withComparisonRules(Consumer)}.
+     * @return This instance.
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    public XmlSnapshot withEnableXPathDebugging(boolean enableXPathDebugging) {
+        State.check(this.differenceEvaluator == null,
+                "xpath debugging must be enabled before specifying custom comparison rules");
+        this.enableXPathDebugging = enableXPathDebugging;
+        return this;
+    }
+
+    /**
      * Allows to specify extra comparison rules that are applied to certain paths within
      * the xml snapshots.
      * <p>
      * Paths on the {@link ComparisonRuleBuilder} must conform to standard XPath syntax.
+     * You can enable debug output for xpath expressions using
+     * {@link #withEnableXPathDebugging(boolean)}. Note that debug output must be enabled
+     * before calling this method.
      * <p>
      * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
      * can not use this method in combination with {@link #withComparisonRules(Consumer)}
@@ -185,7 +212,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
     @API(status = Status.EXPERIMENTAL, since = "1.3.0")
     public XmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
-        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder();
+        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder(
+                this.enableXPathDebugging);
         rules.accept(comparatorCustomizerImpl);
         this.differenceEvaluator = comparatorCustomizerImpl.build();
         return this;

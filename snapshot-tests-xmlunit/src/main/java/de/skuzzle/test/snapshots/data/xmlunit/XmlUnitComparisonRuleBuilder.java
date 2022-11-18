@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.w3c.dom.Node;
 import org.xmlunit.diff.Comparison;
 import org.xmlunit.diff.Comparison.Detail;
 import org.xmlunit.diff.ComparisonResult;
@@ -25,8 +26,13 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.INTERNAL, since = "1.5.0")
 public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder {
 
+    private final boolean enableXPathDebugging;
     private final JAXPXPathEngine xpathEngine = new JAXPXPathEngine();
     private final List<DifferenceEvaluator> customizations = new ArrayList<>();
+
+    public XmlUnitComparisonRuleBuilder(boolean enableXPathDebugging) {
+        this.enableXPathDebugging = enableXPathDebugging;
+    }
 
     @Override
     public ChooseMatcher pathAt(String path) {
@@ -36,7 +42,7 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
             @Override
             public ComparisonRuleBuilder mustMatch(Pattern regex) {
                 Arguments.requireNonNull(regex, "regex must not be null");
-                return mustMatch(actualDetails -> regex.matcher(((Detail) actualDetails).getTarget().getTextContent())
+                return mustMatch(actualDetails -> regex.matcher(((Node) actualDetails).getTextContent())
                         .matches());
             }
 
@@ -48,17 +54,19 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                customizations.add(new XPathDifferenceEvaluator(xpathEngine, path, new DifferenceEvaluator() {
+                customizations.add(new XPathDifferenceEvaluator(enableXPathDebugging, xpathEngine, path,
+                        new DifferenceEvaluator() {
 
-                    @Override
-                    public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
-                        final Detail actualDetails = comparison.getTestDetails();
+                            @Override
+                            public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
+                                final Detail actualDetails = comparison.getTestDetails();
+                                final Node targetNode = actualDetails.getTarget();
 
-                        return predicate.test(actualDetails)
-                                ? ComparisonResult.EQUAL
-                                : ComparisonResult.DIFFERENT;
-                    }
-                }));
+                                return predicate.test(targetNode)
+                                        ? ComparisonResult.EQUAL
+                                        : ComparisonResult.DIFFERENT;
+                            }
+                        }));
                 return XmlUnitComparisonRuleBuilder.this;
             }
         };

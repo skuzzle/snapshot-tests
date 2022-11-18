@@ -12,8 +12,8 @@
     <artifactId>snapshot-tests-release-test</artifactId>
     <packaging>jar</packaging>
 
-    <name>Snapshot Tests Core</name>
-    <description>Convenient snapshot testing for JUnit5</description>
+    <name>Snapshot Tests Build verification</name>
+    <description>Verifies various aspects of our final build results</description>
 
     <dependencyManagement>
         <dependencies>
