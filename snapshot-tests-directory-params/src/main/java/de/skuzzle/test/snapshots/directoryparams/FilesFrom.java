@@ -45,7 +45,9 @@ public @interface FilesFrom {
     /**
      * The directory, relative to src/test/resources, from which to list the files.
      */
-    String directory();
+    String directory() default "";
+
+    String otherDirectory() default "";
 
     /**
      * Whether to also include files from all sub directories of {@link #directory()}.
