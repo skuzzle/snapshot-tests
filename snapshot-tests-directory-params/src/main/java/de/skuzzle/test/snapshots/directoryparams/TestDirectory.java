@@ -53,7 +53,7 @@ public final class TestDirectory {
     @Override
     public String toString() {
         try {
-            return this.directory.toRealPath().toString();
+            return this.directory.toAbsolutePath().toRealPath().toString();
         } catch (final IOException e) {
             return this.directory.toAbsolutePath().toString();
         }

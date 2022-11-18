@@ -201,7 +201,7 @@ public final class TestFile {
     @Override
     public String toString() {
         try {
-            return this.file.toRealPath().toString();
+            return this.file.toAbsolutePath().toRealPath().toString();
         } catch (final IOException e) {
             return this.file.toAbsolutePath().toString();
         }
