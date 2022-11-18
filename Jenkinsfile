@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'mvn -B clean install'
+        sh 'mvn -B clean install -X'
       }
     }
     stage('Coverage') {
