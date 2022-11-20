@@ -24,6 +24,11 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  *     // ...
  * }
  * </pre>
+ * <p>
+ * You can either use {@link #projectDirectory()} which will take a path that is relative
+ * to the current project root (<code>Path.of(projectDirectory)</code>) or you can use
+ * {@link #testResourcesDirectory()} which will take a path that is relative to the
+ * current project's test resources directory.
  *
  * @see TestDirectory
  * @see TestFile
@@ -40,8 +45,33 @@ public @interface DirectoriesFrom {
 
     /**
      * The directory, relative to src/test/resources, from which to list the directories.
+     *
+     * @deprecated Since 1.6.0 - Use {@link #testResourcesDirectory()} instead for a 1:1
+     *             replacement or {@link #projectDirectory()} to specify a directoy
+     *             relative to the current project.
      */
+    @Deprecated(since = "1.6.0", forRemoval = true)
     String directory();
+
+    /**
+     * The directory, relative to src/test/resources, from which to list the files. Mutual
+     * exclusive to {@link #projectDirectory()} but having one of those properties set is
+     * mandatory.
+     *
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    String testResourcesDirectory() default "";
+
+    /**
+     * The directory, from which to list the files. The actual Path will be resolved as
+     * <code>Path.of(projectDirectoryStringOfTheAnnotation)</code>. Mutual exclusive to
+     * {@link #projectDirectory()} but having one of those properties set is mandatory.
+     *
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    String projectDirectory() default "";
 
     /**
      * Name a class that implements {@link PathFilter} for more control over which

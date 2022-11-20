@@ -12,8 +12,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junit.platform.commons.support.ReflectionSupport;
 
-import de.skuzzle.test.snapshots.io.DirectoryResolver;
-
 class FilesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<FilesFrom> {
 
     private FilesFrom filesFrom;
@@ -43,10 +41,11 @@ class FilesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsume
     }
 
     private Path determineDirectory() throws IOException {
-        if (!filesFrom.otherDirectory().isEmpty()) {
-            return Path.of(filesFrom.otherDirectory());
-        }
-        return DirectoryResolver.resolve(filesFrom.directory());
+        final String legacyDir = filesFrom.directory();
+        final String testResourcesDir = filesFrom.testResourcesDirectory();
+        final String projectDir = filesFrom.projectDirectory();
+
+        return AnnotationDirectoryResolver.resolveDirectory(legacyDir, projectDir, testResourcesDir);
     }
 
     @Override

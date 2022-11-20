@@ -3,7 +3,8 @@
 * Add `XmlSnapshot.withEnableXPathDebugging(...)` and `HtmlSnapshot.withEnableXPathDebugging(...)` to print results of applying custom comparison rules
 * Fixed bugs and performance issues in XPath comparison engine
 * `toString()` of `TestFile` and `TestDirectory` contain full absoulte path to the file instead of just the file name
-
+* Deprecate `FilesFrom.directory` in favor of `FilesFrom.testResourcesDirectory` and `FilesFrom.projectDirectory`
+* Deprecate `DirectoriesFrom.directory` in favor of `DirectoriesFrom.testResourcesDirectory` and `DirectoriesFrom.projectDirectory`
 Maven Central coordinates for this release:
 
 ## BOM Artifact
