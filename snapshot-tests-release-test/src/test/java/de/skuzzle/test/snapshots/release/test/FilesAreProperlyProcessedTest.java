@@ -6,19 +6,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.w3c.dom.Node;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.xpath.JAXPXPathEngine;
 import org.xmlunit.xpath.XPathEngine;
 
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.directoryparams.FilesFrom;
 import de.skuzzle.test.snapshots.directoryparams.PathFilter;
 import de.skuzzle.test.snapshots.directoryparams.TestFile;
 
+@EnableSnapshotTests
 public class FilesAreProperlyProcessedTest {
 
     private static final String EXPECTED_GROUP_ID = "de.skuzzle.test";
@@ -50,10 +56,12 @@ public class FilesAreProperlyProcessedTest {
     @FilesFrom(projectDirectory = "../", recursive = true, filter = FlattenedPoms.class)
     void testFlattendPomsContainAllRequiredInformationForSonatype(TestFile testFile) throws IOException {
 
-        XmlAssert.assertThat(testFile.asText()).nodesByXPath(XPATH_NAME)
+        XmlAssert.assertThat(testFile.asText())
+                .nodesByXPath(XPATH_NAME)
                 .isNotEmpty().allSatisfy(node -> assertThat(node.getTextContent()).isNotEmpty());
 
-        XmlAssert.assertThat(testFile.asText()).nodesByXPath(XPATH_DESCRIPTION)
+        XmlAssert.assertThat(testFile.asText())
+                .nodesByXPath(XPATH_DESCRIPTION)
                 .isNotEmpty().allSatisfy(node -> assertThat(node.getTextContent()).isNotEmpty());
     }
 
@@ -66,16 +74,20 @@ public class FilesAreProperlyProcessedTest {
     }
 
     @Test
-    void testBomFilePlaceholdersResolved() throws Exception {
+    void testBomFilePlaceholdersResolved(Snapshot snapshot) throws Exception {
         final Path flattenedPom = resolveMavenModule("snapshot-tests-bom").resolve(".flattened-pom.xml");
         final String flattenedPomContents = Files.readString(flattenedPom);
 
-        XmlAssert.assertThat(flattenedPomContents).nodesByXPath(XPATH_GROUP_ID)
-                .allSatisfy(node -> assertThat(node.getTextContent()).isEqualTo(EXPECTED_GROUP_ID));
+        snapshot.assertThat(flattenedPomContents).as(XmlSnapshot.xml()
+                .withPrettyPrintStringXml(false)
+                .withComparisonRules(rules -> rules
+                        .pathAt(XPATH_GROUP_ID).mustMatch(nodeText(EXPECTED_GROUP_ID))
+                        .pathAt(XPATH_VERSION).mustMatch(MAVEN_VERSION)))
+                .matchesSnapshotStructure();
+    }
 
-        XmlAssert.assertThat(flattenedPomContents).nodesByXPath(XPATH_VERSION)
-                .allSatisfy(node -> assertThat(node.getTextContent()).matches(MAVEN_VERSION));
-
+    private Predicate<? super Object> nodeText(String text) {
+        return node -> ((Node) node).getTextContent().equals(text);
     }
 
     private Path resolveMavenModule(String moduleName) throws IOException {
