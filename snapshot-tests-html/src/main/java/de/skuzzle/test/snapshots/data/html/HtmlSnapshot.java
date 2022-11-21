@@ -15,6 +15,7 @@ import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitStructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
+import de.skuzzle.test.snapshots.validation.State;
 
 /**
  * Allows to create and compare snapshots from HTML strings. Please note that HTML
@@ -58,6 +59,8 @@ public final class HtmlSnapshot implements StructuredDataProvider {
 
     private boolean prettyPrintSnapshot = false;
 
+    private boolean enableXPathDebugging;
+
     /**
      * Creates a new builder instance on which custom comparison behavior can be
      * configured if required.
@@ -98,10 +101,34 @@ public final class HtmlSnapshot implements StructuredDataProvider {
     }
 
     /**
+     * Enables a simple debug output to System.out for the xpaths that are used in
+     * {@link #withComparisonRules(Consumer)}. This will print out all the nodes that are
+     * matched by the xpaths that are used in custom comparison rules.
+     * <p>
+     * Note that this method must be called before calling
+     * {@link #withComparisonRules(Consumer)}.
+     *
+     * @param enableXPathDebugging Whether to enable debug output for xpaths used in
+     *            {@link #withComparisonRules(Consumer)}.
+     * @return This instance.
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    public HtmlSnapshot withEnableXPathDebugging(boolean enableXPathDebugging) {
+        State.check(this.differenceEvaluator == null,
+                "xpath debugging must be enabled before specifying custom comparison rules");
+        this.enableXPathDebugging = enableXPathDebugging;
+        return this;
+    }
+
+    /**
      * Allows to specify extra comparison rules that are applied to certain paths within
      * the html snapshots.
      * <p>
      * Paths on the {@link ComparisonRuleBuilder} must conform to standard XPath syntax.
+     * You can enable debug output for xpath expressions using
+     * {@link #withEnableXPathDebugging(boolean)}. Note that debug output must be enabled
+     * before calling this method.
      * <p>
      * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
      * can not use this method in combination with {@link #withComparisonRules(Consumer)}
@@ -112,7 +139,8 @@ public final class HtmlSnapshot implements StructuredDataProvider {
      */
     public HtmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
-        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder();
+        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder(
+                this.enableXPathDebugging);
         rules.accept(comparatorCustomizerImpl);
         this.differenceEvaluator = comparatorCustomizerImpl.build();
         return this;

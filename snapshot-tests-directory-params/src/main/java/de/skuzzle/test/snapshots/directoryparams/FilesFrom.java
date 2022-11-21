@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  *
  * <pre>
  * &#64;ParameterizedTest
- * &#64;FilesFrom(directory = "test-input", extensions = "txt", filter = MyCustomPathFilter.class)
+ * &#64;FilesFrom(projectDirectory = "test-input", extensions = "txt", filter = MyCustomPathFilter.class)
  * void test(TestFile testFile) throws IOException {
  *     final String fileContents = testFile.asText(StandardCharsets.UTF_8);
  *     // ...
@@ -30,6 +30,11 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  * Filtering for extensions is optional. If no extensions are specified, then all files
  * will be listed. Likewise, specifying a filter is optional but can be used to gain more
  * fine grained control over which files are being treated as test parameter.
+ * <p>
+ * You can either use {@link #projectDirectory()} which will take a path that is relative
+ * to the current project root (<code>Path.of(projectDirectory)</code>) or you can use
+ * {@link #testResourcesDirectory()} which will take a path that is relative to the
+ * current project's test resources directory.
  *
  * @author Simon Taddiken
  * @see TestFile
@@ -44,11 +49,38 @@ public @interface FilesFrom {
 
     /**
      * The directory, relative to src/test/resources, from which to list the files.
+     *
+     * @deprecated Since 1.6.0 - Use {@link #testResourcesDirectory()} instead for a 1:1
+     *             replacement or {@link #projectDirectory()} to specify a directoy
+     *             relative to the current project.
      */
-    String directory();
+    @Deprecated(since = "1.6.0", forRemoval = true)
+    String directory() default "";
+
+    /**
+     * The directory, relative to src/test/resources, from which to list the files. Mutual
+     * exclusive to {@link #projectDirectory()} but having one of those properties set is
+     * mandatory.
+     *
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    String testResourcesDirectory() default "";
+
+    /**
+     * The directory, from which to list the files. The actual Path will be resolved as
+     * <code>Path.of(projectDirectory)</code>. Mutual exclusive to
+     * {@link #projectDirectory()} but having one of those properties set is mandatory.
+     *
+     * @since 1.6.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.6.0")
+    String projectDirectory() default "";
 
     /**
      * Whether to also include files from all sub directories of {@link #directory()}.
+     * <p>
+     * Defaults to false.
      */
     boolean recursive() default false;
 

@@ -18,20 +18,19 @@ final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
 
     private final JAXBContext jaxb;
     private final MarshallerSupplier marshallerSupplier;
+    private final boolean prettyPrintXmlStrings;
 
-    private JaxbXmlSnapshotSerializer(JAXBContext jaxb, MarshallerSupplier marshallerSupplier) {
+    private JaxbXmlSnapshotSerializer(JAXBContext jaxb, MarshallerSupplier marshallerSupplier,
+            boolean prettyPrintXmlStrings) {
         this.jaxb = jaxb;
         this.marshallerSupplier = Arguments.requireNonNull(marshallerSupplier);
+        this.prettyPrintXmlStrings = prettyPrintXmlStrings;
     }
 
     public static SnapshotSerializer withExplicitJaxbContext(
             JAXBContext jaxb,
-            MarshallerSupplier marshallerSupplier) {
-        return new JaxbXmlSnapshotSerializer(jaxb, marshallerSupplier);
-    }
-
-    public static JaxbXmlSnapshotSerializer withAutomaticJaxbContext(MarshallerSupplier marshallerSupplier) {
-        return new JaxbXmlSnapshotSerializer(null, marshallerSupplier);
+            MarshallerSupplier marshallerSupplier, boolean prettyPrintXmlStrings) {
+        return new JaxbXmlSnapshotSerializer(jaxb, marshallerSupplier, prettyPrintXmlStrings);
     }
 
     private JAXBContext inferJaxbContext(Object object) {
@@ -55,6 +54,13 @@ final class JaxbXmlSnapshotSerializer implements SnapshotSerializer {
     @Override
     public String serialize(Object testResult) throws SnapshotException {
         try {
+            if (testResult instanceof String) {
+                if (prettyPrintXmlStrings) {
+                    return StringXmlPrettyPrint.prettyPrint(testResult.toString());
+                }
+                return testResult.toString();
+            }
+
             final JAXBContext jaxbContext = inferJaxbContext(testResult);
             final StringWriter writer = new StringWriter();
             final Marshaller marshaller = marshallerSupplier.createMarshaller(jaxbContext);

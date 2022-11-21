@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: testCompareHtml_0
-snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.html.HtmlSnapshotTests
-test-method: testCompareHtml
-
-<html><body><h1>Test</h2>asdasdas</body></html>

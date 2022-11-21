@@ -12,15 +12,13 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junit.platform.commons.support.ReflectionSupport;
 
-import de.skuzzle.test.snapshots.io.DirectoryResolver;
-
 class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsumer<DirectoriesFrom> {
 
     private DirectoriesFrom directoryContents;
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        final Path inputFileDirectory = determineDirectory().toAbsolutePath();
+        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
         final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
                 .and(additionalFilter());
 
@@ -40,7 +38,11 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
     }
 
     private Path determineDirectory() throws IOException {
-        return DirectoryResolver.resolve(directoryContents.directory());
+        final String legacyDir = directoryContents.directory();
+        final String testResourcesDir = directoryContents.testResourcesDirectory();
+        final String projectDir = directoryContents.projectDirectory();
+
+        return AnnotationDirectoryResolver.resolveDirectory(legacyDir, projectDir, testResourcesDir);
     }
 
     @Override

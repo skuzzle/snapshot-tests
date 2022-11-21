@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.directoryparams;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -51,6 +52,10 @@ public final class TestDirectory {
 
     @Override
     public String toString() {
-        return name();
+        try {
+            return this.directory.toAbsolutePath().toRealPath().toString();
+        } catch (final IOException e) {
+            return this.directory.toAbsolutePath().toString();
+        }
     }
 }

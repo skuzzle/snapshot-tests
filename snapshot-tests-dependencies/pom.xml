@@ -4,14 +4,14 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>snapshot-tests-dependencies</artifactId>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Internal Dependency Management</name>
-    <description></description>
+    <description>Internal dependency management</description>
 
     <dependencyManagement>
         <dependencies>

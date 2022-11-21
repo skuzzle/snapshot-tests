@@ -1,6 +1,7 @@
 package de.skuzzle.test.snapshots.data.xmlunit;
 
-import java.util.stream.StreamSupport;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.w3c.dom.Node;
 import org.xmlunit.diff.Comparison;
@@ -11,11 +12,15 @@ import org.xmlunit.xpath.XPathEngine;
 
 final class XPathDifferenceEvaluator implements DifferenceEvaluator {
 
+    private final boolean enableXPathDebugging;
     private final String xPath;
     private final XPathEngine xPathEngine;
     private final DifferenceEvaluator matchedXPathDelegate;
+    private Set<Node> matchedNodes;
 
-    public XPathDifferenceEvaluator(XPathEngine xPathEngine, String xPath, DifferenceEvaluator matchedXPathDelegate) {
+    public XPathDifferenceEvaluator(boolean enableXPathDebugging, XPathEngine xPathEngine, String xPath,
+            DifferenceEvaluator matchedXPathDelegate) {
+        this.enableXPathDebugging = enableXPathDebugging;
         this.xPath = xPath;
         this.xPathEngine = xPathEngine;
         this.matchedXPathDelegate = matchedXPathDelegate;
@@ -29,12 +34,27 @@ final class XPathDifferenceEvaluator implements DifferenceEvaluator {
         if (!isMatchedByXpath(targetNode, this.xPath)) {
             return outcome;
         }
+
+        if (enableXPathDebugging) {
+            System.out.println("Applying custom comparison rule to node: " + targetNode);
+        }
         return matchedXPathDelegate.evaluate(comparison, outcome);
     }
 
     private boolean isMatchedByXpath(Node node, String xPath) {
-        final Iterable<Node> selectedNodes = xPathEngine.selectNodes(xPath, node);
-        return StreamSupport.stream(selectedNodes.spliterator(), false)
-                .anyMatch(node::equals);
+        if (this.matchedNodes == null) {
+            final Node root = node.getOwnerDocument() == null ? node : node.getOwnerDocument();
+            final Iterable<Node> selectedNodes = xPathEngine.selectNodes(xPath, root);
+            final Set<Node> nodes = new HashSet<>();
+            selectedNodes.forEach(nodes::add);
+            this.matchedNodes = nodes;
+
+            if (enableXPathDebugging) {
+                System.out.printf("Xpath '%s' matched:%n", xPath);
+                matchedNodes.forEach(System.out::println);
+            }
+        }
+
+        return this.matchedNodes.contains(node);
     }
 }

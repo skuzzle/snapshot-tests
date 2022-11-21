@@ -4,14 +4,14 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>snapshot-tests-common</artifactId>
     <packaging>jar</packaging>
 
     <name>Snapshot Tests Common Utilities</name>
-    <description></description>
+    <description>Common utilities</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.common</automatic-module-name>

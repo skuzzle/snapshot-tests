@@ -5,14 +5,14 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
     </parent>
 
     <artifactId>snapshot-tests-directory-params</artifactId>
     <packaging>jar</packaging>
 
     <name>Directory Contents Parameters</name>
-    <description></description>
+    <description>Inject files/directories into parameterized tests</description>
 
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.directoryparams</automatic-module-name>

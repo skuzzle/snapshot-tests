@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.skuzzle.test</groupId>
@@ -8,16 +8,12 @@
         <version>1.6.0</version>
     </parent>
 
-    <artifactId>snapshot-tests-xmlunit</artifactId>
+    <artifactId>snapshot-tests-release-test</artifactId>
     <packaging>jar</packaging>
 
-    <name>Snapshot Tests XML Unit utility</name>
-    <description>Internal base for working with xmlunit</description>
-    
-    <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.xmlunit</automatic-module-name>
-    </properties>
-    
+    <name>Snapshot Tests Build verification</name>
+    <description>Verifies various aspects of our final build results</description>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -29,31 +25,29 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>snapshot-tests-core</artifactId>
+            <artifactId>snapshot-tests-jaxb</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>snapshot-tests-common</artifactId>
+            <artifactId>snapshot-tests-directory-params</artifactId>
+            <scope>test</scope>
         </dependency>
-        
-        <dependency>
-            <groupId>org.apiguardian</groupId>
-            <artifactId>apiguardian-api</artifactId>
-        </dependency>
-        
         <dependency>
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-core</artifactId>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-assertj</artifactId>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
+
     </dependencies>
+
 </project>
