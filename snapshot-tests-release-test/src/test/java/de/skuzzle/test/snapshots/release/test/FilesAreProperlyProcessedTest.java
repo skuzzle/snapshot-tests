@@ -47,6 +47,9 @@ public class FilesAreProperlyProcessedTest {
 
     private static final String XPATH_DESCRIPTION = xpath("project", "description") + "/text()";
     private static final String XPATH_NAME = xpath("project", "name") + "/text()";
+    private static final String XPATH_URL = xpath("project", "url") + "/text()";
+    private static final String XPATH_LICENSE = xpath("project", "licenses", "license");
+    private static final String XPATH_DEVELOPER = xpath("project", "developers", "developer");
     private static final String XPATH_VERSION = "//*[local-name()='version']/text()";
     private static final String XPATH_GROUP_ID = "//*[local-name()='groupId']/text()";
 
@@ -63,6 +66,18 @@ public class FilesAreProperlyProcessedTest {
         XmlAssert.assertThat(testFile.asText())
                 .nodesByXPath(XPATH_DESCRIPTION)
                 .isNotEmpty().allSatisfy(node -> assertThat(node.getTextContent()).isNotEmpty());
+
+        XmlAssert.assertThat(testFile.asText())
+                .nodesByXPath(XPATH_URL)
+                .isNotEmpty().allSatisfy(node -> assertThat(node.getTextContent()).isNotEmpty());
+
+        XmlAssert.assertThat(testFile.asText())
+                .nodesByXPath(XPATH_DEVELOPER)
+                .isNotEmpty();
+
+        XmlAssert.assertThat(testFile.asText())
+                .nodesByXPath(XPATH_LICENSE)
+                .isNotEmpty();
     }
 
     @ParameterizedTest

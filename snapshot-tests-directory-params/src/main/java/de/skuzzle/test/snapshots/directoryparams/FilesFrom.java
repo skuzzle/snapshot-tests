@@ -69,7 +69,7 @@ public @interface FilesFrom {
 
     /**
      * The directory, from which to list the files. The actual Path will be resolved as
-     * <code>Path.of(projectDirectoryStringOfTheAnnotation)</code>. Mutual exclusive to
+     * <code>Path.of(projectDirectory)</code>. Mutual exclusive to
      * {@link #projectDirectory()} but having one of those properties set is mandatory.
      *
      * @since 1.6.0
@@ -79,6 +79,8 @@ public @interface FilesFrom {
 
     /**
      * Whether to also include files from all sub directories of {@link #directory()}.
+     * <p>
+     * Defaults to false.
      */
     boolean recursive() default false;
 

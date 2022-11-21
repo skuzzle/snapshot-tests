@@ -53,7 +53,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
     private Consumer<CompareAssert> compareAssertConsumer = CompareAssert::areIdentical;
     // null unless customized
     private DifferenceEvaluator differenceEvaluator;
-    // used only when actual test result is a string
+    // used only when actual test result is already a string
     private boolean prettyPrintStringXml = true;
 
     private boolean enableXPathDebugging = false;

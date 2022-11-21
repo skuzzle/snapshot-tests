@@ -24,8 +24,8 @@ final class StringXmlPrettyPrint {
             return result.getWriter().toString()
                     .replace("?><", String.format("?>%n<")) // soap
                     .replace("\" xmlns:", String.format("\"%n\t\t\txmlns:"));
-        } catch (final TransformerException ex) {
-            return null;
+        } catch (final TransformerException e) {
+            throw new IllegalStateException("Error while pretty printing XML", e);
         }
     }
 
