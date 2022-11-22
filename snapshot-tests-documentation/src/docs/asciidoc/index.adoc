@@ -45,7 +45,7 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{revnumber}"))
 ----
 
 [source,groovy,subs="attributes+"]
-.Gradle Spring-Boot dpendency management plugin
+.Gradle Spring-Boot dependency management plugin
 ----
 dependencyManagement {
     imports {
@@ -73,12 +73,15 @@ learn how to properly combine them to employ _snapshot testing_ in your own proj
 |https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/{revnumber}/jar[`snapshot-tests-jaxb`]
 | XML snapshot serialization using `jaxb` and structured comparison using `xmlunit`.
 
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/{revnumber}/jar[`snapshot-tests-html`]
+| HTML snapshots using `jsoup` and structured comparison using `xmlunit`.
+
 |https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/{revnumber}/jar[`snapshot-tests-directory-params`]
 | JUnit5 `ArgumentProvider` implementations that allow to iterate over files/directories. 
 |===
 
-NOTE: If you use the `-jackson` or `-jaxb` module there is no need to additionally declare a dependency to the 
-`-core` module.
+NOTE: If you use the `-jackson`, `-html` or `-jaxb` module there is no need to additionally declare a dependency to the 
+`-core` module. It will be pulled in automatically.
 
 === Versioning, Compatibility and Upgrading
 This project strongly aims to provide a stable public API with little surprises for clients when they upgrade to a new 
