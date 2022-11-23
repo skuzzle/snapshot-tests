@@ -12,7 +12,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 public class DirectoriesFromTest {
 
     @ParameterizedTest
-    @DirectoriesFrom(directory = "test-directories")
+    @DirectoriesFrom(testResourcesDirectory = "test-directories")
     void testDirectories(TestDirectory directory, Snapshot snapshot) throws IOException {
         // Given
         final String input1 = directory.resolve("input1.txt").asText(StandardCharsets.UTF_8);

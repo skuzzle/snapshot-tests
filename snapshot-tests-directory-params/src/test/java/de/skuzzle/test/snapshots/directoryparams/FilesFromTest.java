@@ -13,7 +13,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 public class FilesFromTest {
 
     @ParameterizedTest
-    @FilesFrom(directory = "test-input", extensions = "txt")
+    @FilesFrom(testResourcesDirectory = "test-input", extensions = "txt")
     void test(TestFile testFile, Snapshot snapshot) throws IOException {
         // Given
         final String testInput = testFile.asText(StandardCharsets.UTF_8, Map.of("variable", testFile.name()));
