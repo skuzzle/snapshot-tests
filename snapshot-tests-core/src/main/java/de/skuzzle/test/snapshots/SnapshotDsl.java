@@ -49,7 +49,7 @@ public interface SnapshotDsl {
      * </pre>
      *
      * This snippet does not only use two incomplete usages, but also tries to re-use the
-     * 'choose-actual' stage without having called er terminaly operation.
+     * 'choose-actual' stage without having called a terminal operation.
      *
      * @author Simon Taddiken
      * @see EnableSnapshotTests

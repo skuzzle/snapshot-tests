@@ -9,7 +9,6 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
-import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -37,21 +36,7 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     @Override
     public Path determineSnapshotDirectory() {
-        final Class<?> testClass = testClass();
-        final String testDirName = snapshotDirectoryName(testClass);
-
-        final Path testDirectory = DirectoryResolver.resolve(testDirName);
-        return testDirectory;
-    }
-
-    private String snapshotDirectoryName(Class<?> testClass) {
-        final EnableSnapshotTests snapshotAssertions = testClass
-                .getAnnotation(EnableSnapshotTests.class);
-
-        final String testDirName = snapshotAssertions.snapshotDirectory().isEmpty()
-                ? testClass().getName().replace('.', '/') + "_snapshots"
-                : snapshotAssertions.snapshotDirectory();
-        return testDirName;
+        return DetermineSnapshotDirectory.forTestclass(testClass);
     }
 
     @Override

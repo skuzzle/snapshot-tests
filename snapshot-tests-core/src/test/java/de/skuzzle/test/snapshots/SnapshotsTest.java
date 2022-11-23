@@ -17,7 +17,7 @@ public class SnapshotsTest {
     @Test
     void testDisabledWithNullInput(Snapshot snapshot) throws Exception {
         final SnapshotTestResult testResult = snapshot.assertThat(null).asText().disabled();
-        assertThat(testResult.serializedSnapshot().snapshot()).isEqualTo("<<unavailable because actual was null>>");
+        assertThat(testResult.serializedActual()).isEqualTo("<<unavailable because actual was null>>");
     }
 
     @Test

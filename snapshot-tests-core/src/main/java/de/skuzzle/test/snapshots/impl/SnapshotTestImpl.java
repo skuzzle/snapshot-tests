@@ -119,7 +119,7 @@ final class SnapshotTestImpl implements Snapshot {
                 .writeTo(snapshotFilePath);
 
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.UPDATED_FORCEFULLY,
-                snapshotFile);
+                snapshotFile, serializedActual);
 
         recordSnapshotTestResult(result);
 
@@ -145,7 +145,7 @@ final class SnapshotTestImpl implements Snapshot {
                 : snapshotSerializer.serialize(actual);
         final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual);
         final SnapshotTestResult result = SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.DISABLED,
-                snapshotFile);
+                snapshotFile, serializedActual);
 
         recordSnapshotTestResult(result);
         return result;
@@ -176,7 +176,7 @@ final class SnapshotTestImpl implements Snapshot {
 
             final SnapshotStatus status = snapshotFileAlreadyExists ? SnapshotStatus.UPDATED_FORCEFULLY
                     : SnapshotStatus.CREATED_INITIALLY;
-            result = SnapshotTestResult.of(snapshotFilePath, status, snapshotFile);
+            result = SnapshotTestResult.of(snapshotFilePath, status, snapshotFile, serializedActual);
         } else {
             final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
             final String storedSnapshot = snapshotFile.snapshot();
@@ -189,8 +189,10 @@ final class SnapshotTestImpl implements Snapshot {
             final String serializedActual = snapshotSerializer.serialize(actual);
 
             result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath)
-                    .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, assertionError))
-                    .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile));
+                    .map(assertionError -> forFailedTest(snapshotFilePath, snapshotFile, serializedActual,
+                            assertionError))
+                    .orElseGet(() -> SnapshotTestResult.of(snapshotFilePath, SnapshotStatus.ASSERTED, snapshotFile,
+                            serializedActual));
         }
         recordSnapshotTestResult(result);
 

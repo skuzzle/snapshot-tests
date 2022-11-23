@@ -22,22 +22,30 @@ public final class SnapshotTestResult {
     private final SnapshotFile snapshot;
     private final Path targetFile;
     private final SnapshotStatus status;
+    private final String serializedActual;
     private final Throwable failure;
 
-    private SnapshotTestResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshot, Throwable failure) {
+    private SnapshotTestResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshotFile,
+            String serializedActual,
+            Throwable failure) {
         this.targetFile = Arguments.requireNonNull(targetFile);
         this.status = Arguments.requireNonNull(status);
-        this.snapshot = Arguments.requireNonNull(snapshot);
+        this.snapshot = Arguments.requireNonNull(snapshotFile);
+        this.serializedActual = serializedActual;
         this.failure = failure;
     }
 
-    public static SnapshotTestResult forFailedTest(Path targetFile, SnapshotFile snapshot, Throwable failure) {
-        return new SnapshotTestResult(targetFile, SnapshotStatus.ASSERTED, snapshot,
+    @API(status = Status.INTERNAL)
+    public static SnapshotTestResult forFailedTest(Path targetFile, SnapshotFile snapshotFile, String serializedActual,
+            Throwable failure) {
+        return new SnapshotTestResult(targetFile, SnapshotStatus.ASSERTED, snapshotFile, serializedActual,
                 Arguments.requireNonNull(failure));
     }
 
-    public static SnapshotTestResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshot) {
-        return new SnapshotTestResult(targetFile, status, snapshot, null);
+    @API(status = Status.INTERNAL)
+    public static SnapshotTestResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshotFile,
+            String serializedActual) {
+        return new SnapshotTestResult(targetFile, status, snapshotFile, serializedActual, null);
     }
 
     /**
@@ -60,12 +68,41 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * The snapshot.
+     * The contents of the persisted snapshot file.
      *
      * @return The serialized snapshot.
+     * @deprecated Since 1.7.0 - Use {@link #snapshotFile()} instead.
      */
+    @Deprecated(since = "1.7.0")
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     public SnapshotFile serializedSnapshot() {
         return this.snapshot;
+    }
+
+    /**
+     * The contents of the persisted snapshot file. Note that the file's content and the
+     * value of {@link #serializedActual()} can be different, even though the snapshot
+     * test did not fail. For example they could differ in whitespaces if whitespaces were
+     * ignored during comparison. Or they can differ in certain attributes if you used
+     * structure compare with custom comparison rules.
+     *
+     * @return The snapshot file.
+     */
+    public SnapshotFile snapshotFile() {
+        return this.snapshot;
+    }
+
+    /**
+     * Returns the serialized string value of the actual test input. Note that this value
+     * can be different from the contents of {@link #snapshotFile()} (see the method's
+     * documentation for details).
+     *
+     * @return The serialized actual value.
+     * @since 1.7.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public String serializedActual() {
+        return this.serializedActual;
     }
 
     /**

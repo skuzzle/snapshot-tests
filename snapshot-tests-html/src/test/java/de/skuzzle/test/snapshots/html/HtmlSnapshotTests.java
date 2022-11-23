@@ -21,7 +21,7 @@ public class HtmlSnapshotTests {
                 .as(HtmlSnapshot.html().withPrettyPrintSnapshot(true))
                 .matchesSnapshotStructure();
 
-        final String snapshotText = result.serializedSnapshot().snapshot();
+        final String snapshotText = result.serializedActual();
         assertThat(snapshotText).isEqualTo(""
                 + "<html>\n"
                 + "    <head></head>\n"

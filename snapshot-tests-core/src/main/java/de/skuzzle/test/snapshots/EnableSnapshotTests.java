@@ -116,7 +116,10 @@ public @interface EnableSnapshotTests {
      * package name of the test class.
      *
      * @return The relative directory to store the snapshots.
+     * @deprecated Since 1.7.0 - Use {@link SnapshotDirectory} annotation instead.
      */
+    @Deprecated(since = "1.7.0")
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     String snapshotDirectory() default "";
 
     /**
@@ -147,6 +150,10 @@ public @interface EnableSnapshotTests {
      * collected and reported after the test method completed.
      *
      * @return Whether to enable soft assertions. Defaults to <code>false</code>.
+     * @deprecated Since 1.7.0 - Soft assertions will no longer be supported from version
+     *             2.0 on
      */
+    @Deprecated(since = "1.7.0")
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     boolean softAssertions() default false;
 }
