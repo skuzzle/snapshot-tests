@@ -51,7 +51,7 @@ public @interface DirectoriesFrom {
      *             relative to the current project.
      */
     @Deprecated(since = "1.6.0", forRemoval = true)
-    String directory();
+    String directory() default "";
 
     /**
      * The directory, relative to src/test/resources, from which to list the files. Mutual
