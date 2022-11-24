@@ -9,7 +9,7 @@ import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.validation.State;
 
-class DetermineSnapshotDirectory {
+final class DetermineSnapshotDirectory {
 
     static Path forTestclass(Class<?> testClass) {
         final Path testDirectoryLegacy = snapshotDirectoryLegacy(testClass);
@@ -41,7 +41,11 @@ class DetermineSnapshotDirectory {
 
     private static Path pathFromStrategy(Class<?> testClass, SnapshotDirectory directory) {
         try {
-            return newInstanceOf(directory.determinedBy()).determineSnapshotDirectory(testClass, directory);
+            final Path snapshotDirectory = newInstanceOf(directory.determinedBy())
+                    .determineSnapshotDirectory(testClass, directory);
+            State.check(snapshotDirectory != null, "Custom SnapshotDirectoryStrategy %s returned null for %s",
+                    directory.determinedBy().getName(), directory);
+            return snapshotDirectory;
         } catch (final SnapshotException e) {
             throw new IllegalStateException(
                     "Error determining snapshot directory from strategy " + directory.determinedBy(), e);

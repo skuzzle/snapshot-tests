@@ -12,9 +12,10 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Strategy interface for dynamically determining snapshot names. By default, the snapshot
- * name is made up of the test's method name and a serial number representing the count of
- * snapshot assertions within this test method.
+ * Strategy interface for dynamically determining snapshot names. Snapshot name will be
+ * used as file name of the persisted snapshot file.By default, the snapshot name is made
+ * up of the test's method name and a serial number representing the count of snapshot
+ * assertions within this test method.
  * <p>
  * An instance of this strategy can be passed to the DSL to customize the snapshot naming
  * like this:
@@ -25,6 +26,9 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * <p>
  * Customizing the naming strategy is especially needed for paramterized tests, as
  * automatic naming would choose the same snapshot name for each execution.
+ * <p>
+ * Note that you can not change the extension of snapshot files which will always be
+ * <code>.snapshot</code>.
  *
  * @see ChooseName
  * @since 1.1.0
@@ -87,7 +91,8 @@ public interface SnapshotNaming {
      *
      * @param testMethod The test method.
      * @param counter Serial number of snapshot assertions within that test method (0
-     *            based).
+     *            based). Will be incremented for every terminal DSL operation within the
+     *            same test method.
      * @return The name of the snapshot.
      */
     String determineSnapshotName(Method testMethod, int counter);

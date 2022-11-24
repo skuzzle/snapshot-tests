@@ -19,4 +19,9 @@ final class DefaultSnapshotDirectoryStrategy implements SnapshotDirectoryStrateg
         throw new UnsupportedOperationException();
     }
 
+    private DefaultSnapshotDirectoryStrategy() {
+        // not meant to be instantiated by anyone
+        throw new UnsupportedOperationException();
+    }
+
 }

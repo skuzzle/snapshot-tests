@@ -33,8 +33,8 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * <p>
  * <code>asText()</code> will 'serialize' actual test results using
  * {@link Object#toString()}. There are additional {@link StructuredDataProvider}
- * implementations that allow to serialize snapshots as json or xml. To use them, you need
- * to declare their respective maven modules as dependency.
+ * implementations that allow to serialize snapshots as json, xml or html. To use them,
+ * you need to declare their respective maven modules as dependency.
  *
  * <pre>
  *     &#64;Test
@@ -101,6 +101,7 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * @author Simon Taddiken
  * @see Snapshot
  * @see SnapshotNaming
+ * @see SnapshotDirectory
  * @see DeleteOrphanedSnapshots
  * @see ForceUpdateSnapshots
  */
@@ -136,6 +137,7 @@ public @interface EnableSnapshotTests {
      * @deprecated Since 1.1.0 - Use the {@link ForceUpdateSnapshots} annotation instead.
      * @return Whether to update the stored snapshots.
      * @see ChooseAssertions#justUpdateSnapshot()
+     * @see ForceUpdateSnapshots
      */
     @API(status = Status.DEPRECATED, since = "1.1.0")
     @Deprecated(since = "1.1.0")
@@ -151,7 +153,7 @@ public @interface EnableSnapshotTests {
      *
      * @return Whether to enable soft assertions. Defaults to <code>false</code>.
      * @deprecated Since 1.7.0 - Soft assertions will no longer be supported from version
-     *             2.0 on
+     *             2.0 on. You could use AssertJ's SoftAssertions as a replacement.
      */
     @Deprecated(since = "1.7.0")
     @API(status = Status.DEPRECATED, since = "1.7.0")
