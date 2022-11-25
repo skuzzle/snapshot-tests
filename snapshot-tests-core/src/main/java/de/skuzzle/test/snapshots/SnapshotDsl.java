@@ -49,7 +49,7 @@ public interface SnapshotDsl {
      * </pre>
      *
      * This snippet does not only use two incomplete usages, but also tries to re-use the
-     * 'choose-actual' stage without having called er terminaly operation.
+     * 'choose-actual' stage without having called a terminal operation.
      *
      * @author Simon Taddiken
      * @see EnableSnapshotTests
@@ -79,8 +79,8 @@ public interface SnapshotDsl {
 
         /**
          * Allows to choose the directory into which the snapshot will be persisted. The
-         * path configured here takes precedence over what is configured in
-         * {@link EnableSnapshotTests#snapshotDirectory()}
+         * path configured here takes precedence over what is configured via
+         * {@link SnapshotDirectory}
          * <p>
          * <b>Warning:</b> Changing the directory has severe impact on orphan detection
          * and might lead to false positives. Use with caution as long as this API is
@@ -102,6 +102,9 @@ public interface SnapshotDsl {
          * of using <code>method name + consecutive number</code>. Note that, when you
          * specify the same name twice within test cases for the same snapshot directory,
          * snapshots will be silently overridden and tests may subsequently fail.
+         * <p>
+         * Note that you can not change the extension of snapshot files which will always
+         * be <code>.snapshot</code>.
          *
          * @param snapshotName The name of the snapshot to create.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is
@@ -129,6 +132,9 @@ public interface SnapshotDsl {
          *             .matchesSnapshotText();
          * }
          * </pre>
+         * <p>
+         * Note that you can not change the extension of snapshot files which will always
+         * be <code>.snapshot</code>.
          *
          * @param namingStrategy The naming strategy to use.
          * @return Fluent API object for choosing the snapshot format. Do NOT assume it is

@@ -28,7 +28,7 @@ public class SnapshotsTest {
                 .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>").as(xml)
                 .matchesSnapshotStructure();
 
-        assertThat(snapshotResult.serializedSnapshot().snapshot()).isEqualTo(String.format(""
+        assertThat(snapshotResult.serializedActual()).isEqualTo(String.format(""
                 + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>%n"
                 + "<root>%n"
                 + "  <node>text</node>%n"
@@ -43,7 +43,7 @@ public class SnapshotsTest {
                         .withPrettyPrintStringXml(false))
                 .matchesSnapshotStructure();
 
-        assertThat(snapshotResult.serializedSnapshot().snapshot())
+        assertThat(snapshotResult.serializedActual())
                 .isEqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>");
     }
 
