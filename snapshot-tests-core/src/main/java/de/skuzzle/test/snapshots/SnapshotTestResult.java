@@ -11,7 +11,8 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Result details of a single snapshot assertion.
+ * Result details of a single snapshot assertion. An instance of this class is returned by
+ * every DSL terminal operation.
  *
  * @author Simon Taddiken
  * @since 0.0.2
@@ -152,7 +153,7 @@ public final class SnapshotTestResult {
          */
         ASSERTED,
         /**
-         * No assertion has been performed and the snapshot file has not been created nor
+         * No assertion has been performed and the snapshot file has not been created or
          * updated.
          *
          * @since 1.5.0

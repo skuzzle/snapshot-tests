@@ -17,6 +17,10 @@ public interface SnapshotDirectoryStrategy {
 
     /**
      * Determine the directory into which snapshots will be persisted.
+     * <p>
+     * Note that, when returning a path outside src/test/resources, snapshots stored there
+     * are currently not subjected to static orphan detection (see
+     * {@link DeleteOrphanedSnapshots} for details).
      *
      * @param testClass The test class for which snapshot tests are enabled.
      * @param directory The {@link SnapshotDirectory} annotation instance.

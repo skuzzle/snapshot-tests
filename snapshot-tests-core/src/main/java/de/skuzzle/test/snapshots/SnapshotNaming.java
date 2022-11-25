@@ -24,7 +24,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * snapshot.namedAccordingTo(MyCustomNamingScheme.getInstance()).assertThat(...)...
  * </pre>
  * <p>
- * Customizing the naming strategy is especially needed for paramterized tests, as
+ * Customizing the naming strategy is especially needed for parameterized tests, as
  * automatic naming would choose the same snapshot name for each execution.
  * <p>
  * Note that you can not change the extension of snapshot files which will always be
