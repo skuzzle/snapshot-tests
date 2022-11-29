@@ -1,7 +1,12 @@
+* [#19](https://github.com/skuzzle/snapshot-tests/issues/19): Deprecate the whole `@EnabledSnapshotTests` annotation in favor of annotation with same name within `junit5` package
+* [#30](https://github.com/skuzzle/snapshot-tests/issues/30): Deprecate `EnableSnapshotTests.softAssertions`. Soft assertions will no longer be supported in the next major version
 * Deprecate `EnableSnapshotTests.snapshotDirectory` in favor of new annotation `@SnapshotDirectory`
 * Deprecate `SnapshotTestResult.serializedSnapshot` in favor of `SnapshotTestResult.snapshotFile`
 * Add `SnapshotTestResult.serializedActual`
 
+_Note_: This release comes with a few major deprecations that are preparing our transition to the next major version 
+that is 2.0. That version will likely see all those deprecated methods to be removed. In general, simple drop in 
+replacements are provided to ensure an easy migration.
 
 Maven Central coordinates for this release:
 

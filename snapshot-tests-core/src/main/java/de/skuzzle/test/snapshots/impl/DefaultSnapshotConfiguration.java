@@ -7,7 +7,6 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
@@ -54,12 +53,7 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     @Override
     public boolean isForceUpdateSnapshotsGlobal() {
-        // Annotation on test class
-        final boolean valueFromLegacyAnnotation = testClass()
-                .getAnnotation(EnableSnapshotTests.class)
-                .forceUpdateSnapshots();
-        if (valueFromLegacyAnnotation
-                || testClass().isAnnotationPresent(ForceUpdateSnapshots.class)) {
+        if (testClass().isAnnotationPresent(ForceUpdateSnapshots.class)) {
             return true;
         }
 
@@ -81,8 +75,6 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     @Override
     public boolean isSoftAssertions() {
-        return testClass()
-                .getAnnotation(EnableSnapshotTests.class)
-                .softAssertions();
+        return false;
     }
 }

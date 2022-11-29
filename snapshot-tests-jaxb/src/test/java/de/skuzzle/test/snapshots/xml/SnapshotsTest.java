@@ -13,11 +13,11 @@ import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluators;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
 public class SnapshotsTest {

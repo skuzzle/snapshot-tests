@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -97,6 +99,11 @@ public final class SnapshotTestResult {
      * Returns the serialized string value of the actual test input. Note that this value
      * can be different from the contents of {@link #snapshotFile()} (see the method's
      * documentation for details).
+     * <p>
+     * Note that this value can be null in case you passed a null value into
+     * {@link Snapshot#assertThat(Object)}. Unless you called
+     * {@link ChooseAssertions#disabled()}, passing a null value into a snapshot test will
+     * fail the test anyway.
      *
      * @return The serialized actual value.
      * @since 1.7.0

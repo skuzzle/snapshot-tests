@@ -14,11 +14,11 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class OrphanedSnapshotDetectionTest {

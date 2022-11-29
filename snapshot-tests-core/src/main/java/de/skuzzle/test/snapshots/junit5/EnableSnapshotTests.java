@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.junit5;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -10,9 +10,12 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
+import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
+import de.skuzzle.test.snapshots.SnapshotNaming;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
  * <h1>Enabling snapshot tests</h1>
@@ -106,65 +109,11 @@ import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
  * @see SnapshotDirectory
  * @see DeleteOrphanedSnapshots
  * @see ForceUpdateSnapshots
- * @deprecated Since 1.7.0 - This class is deprecated in favor of the
- *             {@link de.skuzzle.test.snapshots.junit5.EnableSnapshotTests} class within
- *             the <code>junit5</code> package. Note that the variant in the
- *             <code>junit5</code> package already comes with all the deprecated methods
- *             removed and replaced with their respective alternatives. For details,
- *             inspect the deprecation notes on the attributes within this class.
  */
 @Retention(RUNTIME)
 @Target({ TYPE })
-@ExtendWith(LegacyJUnit5SnapshotExtension.class)
-@API(status = Status.DEPRECATED, since = "1.7.0")
-@Deprecated(since = "1.7.0", forRemoval = true)
+@ExtendWith(JUnit5SnapshotExtension.class)
+@API(status = Status.STABLE, since = "1.7.0")
 public @interface EnableSnapshotTests {
 
-    /**
-     * Define the snapshot directory relative to <code>src/test/resources</code>. If this
-     * is not defined, snapshots will be stored in a directory structure according to the
-     * package name of the test class.
-     *
-     * @return The relative directory to store the snapshots.
-     * @deprecated Since 1.7.0 - Use {@link SnapshotDirectory} annotation instead.
-     */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.7.0")
-    String snapshotDirectory() default "";
-
-    /**
-     * Can be set to <code>true</code> <b>temporarily</b> in order to force to update the
-     * persisted snapshots with the current test results.
-     * <p>
-     * <b>Warning:</b> While this is attribute is set to true, all tests containing
-     * snapshot assertions will fail with an error. This is to prevent accidentally
-     * checking in disabled assertions.
-     * <p>
-     * After snapshots have been updated, you should reset this flag to <code>false</code>
-     * and run the tests again before checking your code into any SCM.
-     *
-     * @deprecated Since 1.1.0 - Use the {@link ForceUpdateSnapshots} annotation instead.
-     * @return Whether to update the stored snapshots.
-     * @see ChooseAssertions#justUpdateSnapshot()
-     * @see ForceUpdateSnapshots
-     */
-    @API(status = Status.DEPRECATED, since = "1.1.0")
-    @Deprecated(since = "1.1.0", forRemoval = true)
-    boolean forceUpdateSnapshots() default false;
-
-    /**
-     * When enabled, a test method using snapshot assertions will continue to execute,
-     * even if a snapshot assertion failed. This allows to collect multiple failing
-     * snapshots with a single test execution.
-     * <p>
-     * The failures from all snapshot comparisons within the single test methods will be
-     * collected and reported after the test method completed.
-     *
-     * @return Whether to enable soft assertions. Defaults to <code>false</code>.
-     * @deprecated Since 1.7.0 - Soft assertions will no longer be supported from version
-     *             2.0 on. You could use AssertJ's SoftAssertions as a replacement.
-     */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.7.0")
-    boolean softAssertions() default false;
 }

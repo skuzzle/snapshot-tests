@@ -1,3 +1,4 @@
+* Deprecate `EnableSnapshotTests.snapshotDirectory` in favor of new annotation `@SnapshotDirectory`
 * Deprecate `SnapshotTestResult.serializedSnapshot` in favor of `SnapshotTestResult.snapshotFile`
 * Add `SnapshotTestResult.serializedActual`
 

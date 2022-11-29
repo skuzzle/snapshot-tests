@@ -61,9 +61,9 @@ final class DetermineSnapshotDirectory {
     }
 
     private static Path snapshotDirectoryLegacy(Class<?> testClass) {
-        final EnableSnapshotTests snapshotAssertions = testClass
-                .getAnnotation(EnableSnapshotTests.class);
-        if (snapshotAssertions.snapshotDirectory().isEmpty()) {
+        final EnableSnapshotTests snapshotAssertions = testClass.getAnnotation(EnableSnapshotTests.class);
+
+        if (snapshotAssertions == null || snapshotAssertions.snapshotDirectory().isEmpty()) {
             return null;
         }
         final String testDirName = snapshotAssertions.snapshotDirectory();

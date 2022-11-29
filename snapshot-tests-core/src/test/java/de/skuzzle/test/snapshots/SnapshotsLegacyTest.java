@@ -1,61 +1,72 @@
-package de.skuzzle.test.snapshots.json;
+package de.skuzzle.test.snapshots;
 
-import static de.skuzzle.test.snapshots.data.json.JsonSnapshot.json;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
-import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
-import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
-public class SnapshotsTest {
+public class SnapshotsLegacyTest {
 
     @Test
-    void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        snapshot.assertThat(myself).as(json).matchesSnapshotText();
+    void testDisabledWithNullInput(Snapshot snapshot) throws Exception {
+        final SnapshotTestResult testResult = snapshot.assertThat(null).asText().disabled();
+        assertThat(testResult.serializedActual()).isEqualTo("<<unavailable because actual was null>>");
     }
 
     @Test
-    void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(json)
-                .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+
+        assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
+        assertThat(testResultDisabled.targetFile()).doesNotExist();
+
+        final Person phil = determinePerson().setName("Phil");
+        final SnapshotTestResult testResultActive = snapshot.assertThat(phil).asText().matchesSnapshotText();
+
+        assertThat(testResultActive.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
-    void testAsJsonStructureCompareCustom(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.json()
-                        .withComparator(new CustomComparator(JSONCompareMode.STRICT,
-                                new Customization("address.city", (o1, o2) -> true))))
-                .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    void testWithOneDisabledAssertionForWhichSnapshotHasAlreadyBeenCreated(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+
+        assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
+        assertThat(testResultDisabled.targetFile()).exists();
+
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.assertThat(phil).asText().matchesSnapshotText();
     }
 
     @Test
-    void testAsJsonStructureCompareCustomNew(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson().setName("0000-02-02");
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.json()
-                        .withComparisonRules(rules -> rules
-                                .pathAt("address.city").ignore()
-                                .pathAt("name").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
-                .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+    void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) throws Throwable {
+        final Person simon = determinePerson();
+        snapshot.assertThat(simon).asText().matchesSnapshotText();
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @Test
+    void testWithExplicitSnapshotName(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.named("phil").assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "string1", "string2" })
+    void testParameterized(String param, Snapshot snapshot) {
+        snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
+                .assertThat(param).asText().matchesSnapshotText();
     }
 
     private Person determinePerson() {

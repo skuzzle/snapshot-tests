@@ -7,13 +7,36 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDirectoryStrategy;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
-import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
-class DetermineSnapshotDirectoryTest {
+class DetermineSnapshotDirectoryLegacyTest {
+
+    @Test
+    void testDirectoryFromLegacy() throws Exception {
+        final Path snapshotDirectory = DetermineSnapshotDirectory.forTestclass(Legacy.class);
+        assertThat(snapshotDirectory).isEqualTo(DirectoryResolver.resolve("test"));
+    }
+
+    @EnableSnapshotTests(snapshotDirectory = "test")
+    private static class Legacy {
+
+    }
+
+    @Test
+    void legacy_and_new_annotation_should_raise_exception() throws Exception {
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> DetermineSnapshotDirectory.forTestclass(LegacyAndNewAnnotation.class));
+    }
+
+    @EnableSnapshotTests(snapshotDirectory = "test")
+    @SnapshotDirectory("test")
+    private static class LegacyAndNewAnnotation {
+
+    }
 
     @Test
     void empty_snapshot_directory_annotation_should_raise_exception() throws Exception {
