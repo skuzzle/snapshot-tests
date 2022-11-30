@@ -19,15 +19,10 @@ import de.skuzzle.test.snapshots.EnableSnapshotTests;
 @API(status = Status.DEPRECATED, since = "1.7.0")
 final class LegacySnapshotConfiguration implements SnapshotConfiguration {
 
-    private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
-    private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphanedSnapshots";
-
-    private final Class<?> testClass;
     private final SnapshotConfiguration delegate;
 
     private LegacySnapshotConfiguration(Class<?> testClass) {
         this.delegate = DefaultSnapshotConfiguration.forTestClass(testClass);
-        this.testClass = testClass;
     }
 
     public static SnapshotConfiguration forTestClass(Class<?> testClass) {
