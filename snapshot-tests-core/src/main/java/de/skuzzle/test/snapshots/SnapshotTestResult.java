@@ -34,7 +34,7 @@ public final class SnapshotTestResult {
         this.targetFile = Arguments.requireNonNull(targetFile);
         this.status = Arguments.requireNonNull(status);
         this.snapshot = Arguments.requireNonNull(snapshotFile);
-        this.serializedActual = serializedActual;
+        this.serializedActual = Arguments.requireNonNull(serializedActual);
         this.failure = failure;
     }
 
@@ -100,10 +100,10 @@ public final class SnapshotTestResult {
      * can be different from the contents of {@link #snapshotFile()} (see the method's
      * documentation for details).
      * <p>
-     * Note that this value can be null in case you passed a null value into
+     * Note that this value can be a placeholder in case you passed a null value into
      * {@link Snapshot#assertThat(Object)}. Unless you called
-     * {@link ChooseAssertions#disabled()}, passing a null value into a snapshot test will
-     * fail the test anyway.
+     * {@link ChooseAssertions#disabled()}, passing a null value into a snapshot test
+     * would fail the test anyway.
      *
      * @return The serialized actual value.
      * @since 1.7.0
