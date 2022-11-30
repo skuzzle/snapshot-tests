@@ -33,6 +33,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-html</artifactId>
                 <version>${project.version}</version>
             </dependency>

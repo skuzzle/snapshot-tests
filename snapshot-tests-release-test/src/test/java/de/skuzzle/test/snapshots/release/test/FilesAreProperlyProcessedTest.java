@@ -17,12 +17,12 @@ import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.xpath.JAXPXPathEngine;
 import org.xmlunit.xpath.XPathEngine;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.directoryparams.FilesFrom;
 import de.skuzzle.test.snapshots.directoryparams.PathFilter;
 import de.skuzzle.test.snapshots.directoryparams.TestFile;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
 public class FilesAreProperlyProcessedTest {
@@ -97,7 +97,10 @@ public class FilesAreProperlyProcessedTest {
                 .withPrettyPrintStringXml(false)
                 .withComparisonRules(rules -> rules
                         .pathAt(XPATH_GROUP_ID).mustMatch(nodeText(EXPECTED_GROUP_ID))
-                        .pathAt(XPATH_VERSION).mustMatch(MAVEN_VERSION)))
+                        .pathAt(XPATH_VERSION).mustMatch(MAVEN_VERSION))
+                .compareUsing(xmls -> xmls
+                        .normalizeWhitespace()
+                        .areIdentical()))
                 .matchesSnapshotStructure();
     }
 

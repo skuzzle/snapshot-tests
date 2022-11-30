@@ -7,14 +7,14 @@
         <version>1.7.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>snapshot-tests-html</artifactId>
+    <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
     <packaging>jar</packaging>
 
-    <name>Snapshot HTML Serialization</name>
-    <description>XML snapshot comparison</description>
+    <name>Snapshot XML Serialization</name>
+    <description>XML snapshot serialization using jaxb with new jakarta namespaces</description>
 
     <properties>
-        <automatic-module-name>de.skuzzle.test.snapshots.html</automatic-module-name>
+        <automatic-module-name>de.skuzzle.test.snapshots.xml.jaxbjakarta</automatic-module-name>
     </properties>
 
     <dependencyManagement>
@@ -23,6 +23,14 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-dependencies</artifactId>
                 <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-bom</artifactId>
+                <version>${version.glassfish-jaxb-jakarta}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -42,15 +50,19 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>snapshot-tests-common</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apiguardian</groupId>
             <artifactId>apiguardian-api</artifactId>
         </dependency>
-        
+
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
         </dependency>
 
         <dependency>
@@ -72,17 +84,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-testkit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -90,10 +92,18 @@
             <artifactId>assertj-core</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>nl.jqno.equalsverifier</groupId>
-            <artifactId>equalsverifier</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <usedDependencies>
+                        <usedDependency>org.glassfish.jaxb:jaxb-runtime</usedDependency>
+                    </usedDependencies>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

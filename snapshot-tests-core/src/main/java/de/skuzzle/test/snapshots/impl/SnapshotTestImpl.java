@@ -269,8 +269,7 @@ final class SnapshotTestImpl implements Snapshot {
     private TextDiff determineDiff(AssertionError original, String storedSnapshot, String serializedActual) {
         if (original instanceof TextDiffAssertionError) {
             // this is to reuse the diff that has already been created during text
-            // comparison
-            // in TextDiffStructuralAssertions
+            // comparison in TextDiffStructuralAssertions
             return ((TextDiffAssertionError) original).textDiff();
         } else {
             return TextDiff.diffOf(storedSnapshot, serializedActual, DEFAULT_CONTEXT_LINES);

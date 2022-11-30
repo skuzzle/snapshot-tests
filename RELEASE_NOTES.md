@@ -1,5 +1,6 @@
 * [#19](https://github.com/skuzzle/snapshot-tests/issues/19): Deprecate the whole `@EnabledSnapshotTests` annotation in favor of annotation with same name within `junit5` package
 * [#30](https://github.com/skuzzle/snapshot-tests/issues/30): Deprecate `EnableSnapshotTests.softAssertions`. Soft assertions will no longer be supported in the next major version
+* [#32](https://github.com/skuzzle/snapshot-tests/issues/32): Support for jakarta namespaces via new `snapshot-tests-jaxb-jakarta` module
 * Deprecate `EnableSnapshotTests.snapshotDirectory` in favor of new annotation `@SnapshotDirectory`
 * Deprecate `SnapshotTestResult.serializedSnapshot` in favor of `SnapshotTestResult.snapshotFile`
 * Add `SnapshotTestResult.serializedActual`
@@ -66,7 +67,7 @@ testImplementation 'de.skuzzle.test:snapshot-tests-jackson:1.7.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.7.0-SNAPSHOT")
 ```
 
-If you need xml based snapshots (includes `-core`):
+If you need xml based snapshots using `javax.xml` legacy namespaces (includes `-core`):
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb/1.7.0-SNAPSHOT)
 
@@ -82,6 +83,24 @@ If you need xml based snapshots (includes `-core`):
 ```
 testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:1.7.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.7.0-SNAPSHOT")
+```
+
+If you need xml based snapshots using new `jakarta.xml` namespaces (includes `-core`):
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.0-SNAPSHOT)
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
+    <version>1.7.0-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.7.0-SNAPSHOT'
+testImplementation("de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.7.0-SNAPSHOT")
 ```
 
 If you need HTML based snapshots (includes `-core`):
