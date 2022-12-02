@@ -6,10 +6,12 @@ import java.util.Map;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
-@EnableSnapshotTests(snapshotDirectory = "test-input")
+@EnableSnapshotTests
+@SnapshotDirectory("test-input")
 public class FilesFromTest {
 
     @ParameterizedTest
