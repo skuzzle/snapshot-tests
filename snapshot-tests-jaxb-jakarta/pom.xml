@@ -104,6 +104,7 @@
                 <configuration>
                     <usedDependencies>
                         <usedDependency>org.glassfish.jaxb:jaxb-runtime</usedDependency>
+                        <usedDependency>org.xmlunit:xmlunit-jakarta-jaxb-impl</usedDependency>
                     </usedDependencies>
                 </configuration>
             </plugin>
