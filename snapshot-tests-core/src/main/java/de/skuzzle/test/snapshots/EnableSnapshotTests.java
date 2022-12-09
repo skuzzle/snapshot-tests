@@ -104,6 +104,7 @@ import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
  * @see Snapshot
  * @see SnapshotNaming
  * @see SnapshotDirectory
+ * @see SnapshotTestOptions
  * @see DeleteOrphanedSnapshots
  * @see ForceUpdateSnapshots
  * @deprecated Since 1.7.0 - This class is deprecated in favor of the

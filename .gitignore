@@ -18,4 +18,7 @@ target
 # IntelliJ
 .idea/
 *.iml
-.flattened-pom.xml
+*.flattened-pom.xml
+
+*.snapshot_raw
+*.snapshot_actual

@@ -44,21 +44,18 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
         return delegate.isDeleteOrphanedSnapshots();
     }
 
-    @Override
-    public boolean isForceUpdateSnapshotsGlobal() {
+    private boolean isForceUpdateSnapshotsGlobal() {
         // Annotation on test class
         final boolean valueFromLegacyAnnotation = testClass()
                 .getAnnotation(EnableSnapshotTests.class)
                 .forceUpdateSnapshots();
-        if (valueFromLegacyAnnotation) {
-            return true;
-        }
-        return delegate.isForceUpdateSnapshotsGlobal();
+
+        return valueFromLegacyAnnotation;
     }
 
     @Override
-    public boolean isForceUpdateSnapshotsLocal(Method testMethod) {
-        return delegate.isForceUpdateSnapshotsLocal(testMethod) || isForceUpdateSnapshotsGlobal();
+    public boolean isForceUpdateSnapshots(Method testMethod) {
+        return delegate.isForceUpdateSnapshots(testMethod) || isForceUpdateSnapshotsGlobal();
     }
 
     @Override
@@ -66,5 +63,20 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
         return testClass()
                 .getAnnotation(EnableSnapshotTests.class)
                 .softAssertions();
+    }
+
+    @Override
+    public boolean alwaysPersistActualResult(Method testMethod) {
+        return delegate.alwaysPersistActualResult(testMethod);
+    }
+
+    @Override
+    public boolean alwaysPersistRawResult(Method testMethod) {
+        return delegate.alwaysPersistRawResult(testMethod);
+    }
+
+    @Override
+    public int textDiffContextLines(Method testMethod) {
+        return delegate.textDiffContextLines(testMethod);
     }
 }

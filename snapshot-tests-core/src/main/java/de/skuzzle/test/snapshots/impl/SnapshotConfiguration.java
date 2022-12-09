@@ -53,6 +53,12 @@ public interface SnapshotConfiguration {
      */
     Class<?> testClass();
 
+    boolean alwaysPersistActualResult(Method testMethod);
+
+    boolean alwaysPersistRawResult(Method testMethod);
+
+    int textDiffContextLines(Method testMethod);
+
     /**
      * Whether to delete orphaned snapshot files during test execution.
      *
@@ -61,21 +67,13 @@ public interface SnapshotConfiguration {
     boolean isDeleteOrphanedSnapshots();
 
     /**
-     * Determines whether snapshots are to be forcefully updated during the execution of a
-     * whole test class.
-     *
-     * @return Whether to forcefully update snapshots.
-     */
-    boolean isForceUpdateSnapshotsGlobal();
-
-    /**
      * Determines whether snapshots are to be forcefully updated during the execution of
      * the given test method.
      *
      * @param testMethod The test method.
      * @return Whether to forcefully update snapshots.
      */
-    boolean isForceUpdateSnapshotsLocal(Method testMethod);
+    boolean isForceUpdateSnapshots(Method testMethod);
 
     /**
      * Whether soft assertions shall be used. When set to true, a failing snapshot

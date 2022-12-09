@@ -8,6 +8,7 @@ import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -22,6 +23,10 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
     private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphanedSnapshots";
+
+    // default number of context lines that will be printed around changes in huge unified
+    // diffs
+    private static final int DEFAULT_CONTEXT_LINES = 5;
 
     private final Class<?> testClass;
 
@@ -51,8 +56,7 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
                         .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);
     }
 
-    @Override
-    public boolean isForceUpdateSnapshotsGlobal() {
+    private boolean isForceUpdateSnapshotsGlobal() {
         if (testClass().isAnnotationPresent(ForceUpdateSnapshots.class)) {
             return true;
         }
@@ -64,13 +68,41 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
-    public boolean isForceUpdateSnapshotsLocal(Method testMethod) {
+    public boolean isForceUpdateSnapshots(Method testMethod) {
         // Annotation on test method
         if (testMethod.isAnnotationPresent(ForceUpdateSnapshots.class)) {
             return true;
         }
 
         return isForceUpdateSnapshotsGlobal();
+    }
+
+    private SnapshotTestOptions determineOptions(Method testMethod) {
+        final SnapshotTestOptions options = testMethod.getAnnotation(SnapshotTestOptions.class);
+        if (options != null) {
+            return options;
+        }
+        return testClass.getAnnotation(SnapshotTestOptions.class);
+    }
+
+    @Override
+    public boolean alwaysPersistActualResult(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions != null && snapshotTestOptions.alwaysPersistActualResult();
+    }
+
+    @Override
+    public boolean alwaysPersistRawResult(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions != null && snapshotTestOptions.alwaysPersistRawResult();
+    }
+
+    @Override
+    public int textDiffContextLines(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions == null
+                ? DEFAULT_CONTEXT_LINES
+                : snapshotTestOptions.textDiffContextLines();
     }
 
     @Override

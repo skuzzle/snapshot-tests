@@ -24,14 +24,19 @@ public final class SnapshotTestResult {
 
     private final SnapshotFile snapshot;
     private final Path targetFile;
+    private final Path actualResultFile;
+    private final Path rawActualResultFile;
     private final SnapshotStatus status;
     private final String serializedActual;
     private final Throwable failure;
 
-    private SnapshotTestResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshotFile,
+    private SnapshotTestResult(Path targetFile, Path actualResultFile, Path rawActualResultFile, SnapshotStatus status,
+            SnapshotFile snapshotFile,
             String serializedActual,
             Throwable failure) {
         this.targetFile = Arguments.requireNonNull(targetFile);
+        this.actualResultFile = Arguments.requireNonNull(actualResultFile);
+        this.rawActualResultFile = Arguments.requireNonNull(rawActualResultFile);
         this.status = Arguments.requireNonNull(status);
         this.snapshot = Arguments.requireNonNull(snapshotFile);
         this.serializedActual = Arguments.requireNonNull(serializedActual);
@@ -39,16 +44,19 @@ public final class SnapshotTestResult {
     }
 
     @API(status = Status.INTERNAL)
-    public static SnapshotTestResult forFailedTest(Path targetFile, SnapshotFile snapshotFile, String serializedActual,
-            Throwable failure) {
-        return new SnapshotTestResult(targetFile, SnapshotStatus.ASSERTED, snapshotFile, serializedActual,
+    public static SnapshotTestResult forFailedTest(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+            SnapshotFile snapshotFile, String serializedActual, Throwable failure) {
+        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, SnapshotStatus.ASSERTED,
+                snapshotFile, serializedActual,
                 Arguments.requireNonNull(failure));
     }
 
     @API(status = Status.INTERNAL)
-    public static SnapshotTestResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshotFile,
+    public static SnapshotTestResult of(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+            SnapshotStatus status, SnapshotFile snapshotFile,
             String serializedActual) {
-        return new SnapshotTestResult(targetFile, status, snapshotFile, serializedActual, null);
+        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, status, snapshotFile,
+                serializedActual, null);
     }
 
     /**
@@ -56,9 +64,44 @@ public final class SnapshotTestResult {
      * that {@link #status()} is {@link SnapshotStatus#DISABLED}.
      *
      * @return The snapshot file.
+     * @see #actualResultFile()
+     * @see #rawActualResultFile()
+     *
      */
     public Path targetFile() {
         return this.targetFile;
+    }
+
+    /**
+     * Path to the file in which the latest actual result will be stored. The file will
+     * only exist if the recent snapshot assertion was executed with
+     * {@link SnapshotTestOptions#alwaysPersistActualResult()} being true.
+     *
+     * @return The path to the file with the latest actual result file.
+     * @since 1.7.0
+     * @see #targetFile()
+     * @see #rawActualResultFile()
+     * @see SnapshotTestOptions#alwaysPersistActualResult()
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public Path actualResultFile() {
+        return this.actualResultFile;
+    }
+
+    /**
+     * Path to the file in which the latest raw actual result will be stored (without the
+     * snapshot header). The file will only exist if the recent snapshot assertion was
+     * executed with {@link SnapshotTestOptions#alwaysPersistRawResult()} being true.
+     *
+     * @return The path to the file with the latest raw actual result file.
+     * @since 1.7.0
+     * @see #targetFile()
+     * @see #actualResultFile()
+     * @see SnapshotTestOptions#alwaysPersistRawResult()
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public Path rawActualResultFile() {
+        return this.rawActualResultFile;
     }
 
     /**

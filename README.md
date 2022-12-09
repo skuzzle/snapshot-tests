@@ -213,3 +213,26 @@ snapshot test class to have those files deleted automatically.
 
 **Warning:** Deleting orphans should be handled with care. There might be raw occasions where we falsely detect a 
 snapshot file as orphan (especially if you are running only parts of your test suite or have disabled tests).
+
+### Configuring some more details
+**New**
+Since version `1.7.0` there is a new `@SnapshotTestOptions` annotation that can either be placed on a test method or 
+test class. It allows to configure some details of the snapshot testing engine.
+
+#### Generating additional context files
+Besides persisting the actual snapshot file, the framework can be advised to generate additional context files via 
+`@SnapshotTestOptions.alwaysPersistActualResult()` and `@SnapshotTestOptions.alwaysPersistRawResult()`.
+Disregarding the outcome of the snapshot assertion, these options will advises the framework to always create a file
+containing the latest actual test results. The `..._raw` file will contain the pure serialized actual result without 
+the snapshot header.
+
+Note that these context files should _not_ be checked into the SCM. You should add these two lines to your `.gitignore`
+file:
+```
+*.snapshot_raw
+*.snapshot_actual
+```
+
+#### Showing more context in unified diffs
+Using `@SnapshotTestOptions.textDiffContextLines()` you can advise the framework to print more lines surrounding a
+detected change in the unified diffs. Per default, we will only print 5 lines around a change.

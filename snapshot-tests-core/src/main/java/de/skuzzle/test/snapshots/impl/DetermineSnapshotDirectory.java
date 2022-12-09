@@ -26,7 +26,9 @@ final class DetermineSnapshotDirectory {
             return DirectoryResolver.resolve(dirName);
         }
 
-        State.check(!isDefaultValue(annotation.determinedBy()) || !annotation.value().isEmpty(), "TBD");
+        State.check(!isDefaultValue(annotation.determinedBy()) || !annotation.value().isEmpty(),
+                "Either specify the value() attribute or the determinedBy() attribute within the @SnapshotDirectory annotation on %s",
+                testClass.getName());
 
         if (isDefaultValue(annotation.determinedBy())) {
             return DirectoryResolver.resolve(annotation.value());
