@@ -59,7 +59,7 @@ final class SnapshotTestImpl implements Snapshot {
     SnapshotTestImpl(SnapshotTestContext context, SnapshotConfiguration configuration, Method testMethod) {
         this.configuration = Arguments.requireNonNull(configuration, "configuration must not be null");
         this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
-        this.context = context;
+        this.context = Arguments.requireNonNull(context, "context must not be null");
     }
 
     @Override

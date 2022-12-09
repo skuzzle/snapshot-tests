@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
@@ -93,7 +94,8 @@ import de.skuzzle.test.snapshots.StructuredDataProvider;
  * Snapshots can become outdated when your code under test changes on purpose. In that
  * case you can advice the framework to override existing snapshots with your code under
  * test's actual result by placing the annotation {@link ForceUpdateSnapshots} on either
- * the whole snapshot test class or on a single test method.
+ * the whole snapshot test class or on a single test method. You can also use the
+ * {@link ChooseAssertions#justUpdateSnapshot()} terminal operation of the DSL.
  *
  * <h2>Orphaned snapshots</h2>
  * <p>

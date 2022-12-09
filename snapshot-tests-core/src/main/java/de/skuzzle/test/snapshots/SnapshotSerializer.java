@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots;
 
+import java.nio.charset.Charset;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -25,6 +27,11 @@ public interface SnapshotSerializer {
     /**
      * Creates a String representation of the provided object. The passed object is
      * guaranteed to be non-null.
+     * <p>
+     * It is strongly advised that serializers should produce system-independent output.
+     * That is, implementors should NOT use {@link System#lineSeparator()},
+     * {@link Charset#defaultCharset()} or similar system dependent information to render
+     * the snapshot string.
      *
      * @param testResult The object to serialize.
      * @return The serialized object.

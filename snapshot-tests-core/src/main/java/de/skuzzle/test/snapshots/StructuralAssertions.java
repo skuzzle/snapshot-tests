@@ -18,6 +18,11 @@ public interface StructuralAssertions {
     /**
      * Structurally compares two serialized objects. If comparison fails, this method
      * should throw an {@link AssertionError} with a helpful error message.
+     * <p>
+     * Note that, if you don't throw an instance of {@link AssertionFailedError} then the
+     * framework will take care of rethrowing your assertion failure as an
+     * {@linkplain AssertionFailedError} to make sure that the diff can be viewed in the
+     * IDE's diff viewer.
      *
      * @param storedSnapshot The persisted snapshot.
      * @param serializedActual The serialized actual test result.

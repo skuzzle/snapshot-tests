@@ -50,6 +50,4 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 @Target({ TYPE })
 @API(status = Status.EXPERIMENTAL, since = "1.1.0")
 @Deprecated
-public @interface DeleteOrphanedSnapshots {
-
-}
+public @interface DeleteOrphanedSnapshots {}
