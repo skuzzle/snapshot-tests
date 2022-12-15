@@ -28,6 +28,34 @@ public class TextDiffTest {
         }
 
         @Test
+        void testMultipleLinesAdded() throws Exception {
+            final TextDiff textDiff = TextDiff.compare(settings,
+                    join("line1", "line5"),
+                    join("line1", "line2", "line3", "line4", "line5"));
+            assertThat(textDiff.differencesDetected()).isTrue();
+            assertThat(textDiff.toString()).isEqualTo(LineSeparator.SYSTEM.convert(""
+                    + "  1  1   line1\n"
+                    + "     2 + line2\n"
+                    + "     3 + line3\n"
+                    + "     4 + line4\n"
+                    + "  2  5   line5"));
+        }
+
+        @Test
+        void testMultipleLinesDeleted() throws Exception {
+            final TextDiff textDiff = TextDiff.compare(settings,
+                    join("line1", "line2", "line3", "line4", "line5"),
+                    join("line1", "line5"));
+            assertThat(textDiff.differencesDetected()).isTrue();
+            assertThat(textDiff.toString()).isEqualTo(LineSeparator.SYSTEM.convert(""
+                    + "  1  1   line1\n"
+                    + "  2    - line2\n"
+                    + "  3    - line3\n"
+                    + "  4    - line4\n"
+                    + "  5  2   line5"));
+        }
+
+        @Test
         void testSingleLineRemoved() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "Just a single line", "");
             assertThat(textDiff.differencesDetected()).isTrue();

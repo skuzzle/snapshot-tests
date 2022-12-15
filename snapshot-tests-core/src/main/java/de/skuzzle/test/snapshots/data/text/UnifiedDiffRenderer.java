@@ -73,13 +73,16 @@ final class UnifiedDiffRenderer implements DiffRenderer {
                         .append(padLeft("" + expectedLine, rowNumberWidth))
                         .append(" ".repeat(rowNumberWidth))
                         .append(" - ").append(diffRow.getOldLine());
+
+                expectedLine++;
                 break;
             case INSERT:
                 indexOfLastDifference = i;
                 b
                         .append(" ".repeat(rowNumberWidth))
-                        .append(padLeft("" + expectedLine, rowNumberWidth))
+                        .append(padLeft("" + actualLine, rowNumberWidth))
                         .append(" + ").append(diffRow.getNewLine());
+                actualLine++;
 
                 break;
             default:
