@@ -26,7 +26,7 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     // default number of context lines that will be printed around changes in huge unified
     // diffs
-    private static final int DEFAULT_CONTEXT_LINES = SnapshotTestOptions.DEFAULT_TEXT_DIFF_CONTEXT_LINES;
+    private static final int DEFAULT_CONTEXT_LINES = 5;
 
     private final Class<?> testClass;
 

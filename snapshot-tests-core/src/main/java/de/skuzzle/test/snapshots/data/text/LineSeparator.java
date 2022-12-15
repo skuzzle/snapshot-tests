@@ -13,8 +13,8 @@ enum LineSeparator {
     CRLF("\r\n", "\\r\\n"),
     LF("\n", "\\n"),
     CR("\r", "\\r"),
-    SYSTEM(System.lineSeparator(), System.lineSeparator().replace("\r", "\\r").replace("\n", "\\n")),
-    NONE("\n", "");
+    DEFAULT("\n", "\\n"),
+    SYSTEM(System.lineSeparator(), System.lineSeparator().replace("\r", "\\r").replace("\n", "\\n"));
 
     private final String characters;
     private final String displayName;
@@ -30,7 +30,7 @@ enum LineSeparator {
                 return lineSeparator;
             }
         }
-        return NONE;
+        return DEFAULT;
     }
 
     private boolean existsIn(String s) {

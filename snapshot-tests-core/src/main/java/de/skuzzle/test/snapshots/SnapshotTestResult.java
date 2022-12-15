@@ -66,6 +66,7 @@ public final class SnapshotTestResult {
      * @return The snapshot file.
      * @see #actualResultFile()
      * @see #rawActualResultFile()
+     *
      */
     public Path targetFile() {
         return this.targetFile;
@@ -165,15 +166,12 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * Deletes the snapshot file and all the context files ({@link #rawActualResultFile()}
-     * and {@link #actualResultFile()}) if any.
+     * Deletes the snapshot file.
      *
      * @throws IOException if an I/O error occurs
      */
     public void deleteSnapshot() throws IOException {
-        Files.deleteIfExists(targetFile);
-        Files.deleteIfExists(actualResultFile);
-        Files.deleteIfExists(rawActualResultFile);
+        Files.delete(targetFile);
     }
 
     @Override

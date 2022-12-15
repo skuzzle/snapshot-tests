@@ -13,8 +13,8 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 /**
  * Allows to configure some behavior details of the snapshot testing engine. This
  * annotation can either be placed on the test class itself or on single test methods.
- * Annotations on test methods take precedence over the one on the test class. If this
- * annotation is not specified at all, then the documented defaults apply.
+ * Annotations on test methods take precedence over the one on the test class. If the
+ * annotation is not specified at all, the the documented defaults apply.
  * <p>
  * If you want to globally modify the snapshot directory, see the
  * {@link SnapshotDirectory} annotation.
@@ -26,13 +26,6 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SnapshotTestOptions {
-
-    /**
-     * Default number of context lines to print in unified diffs of structural comparison
-     * failures.
-     */
-    public static final int DEFAULT_TEXT_DIFF_CONTEXT_LINES = 5;
-
     /**
      * Defines the number of context lines that are printed around a comparison failure.
      * Note that this setting only applies to unified diffs created for structural
@@ -44,7 +37,7 @@ public @interface SnapshotTestOptions {
      * @return The number of context lines to print in unified diffs within our structural
      *         assertion failures.
      */
-    int textDiffContextLines() default DEFAULT_TEXT_DIFF_CONTEXT_LINES;
+    int textDiffContextLines() default 5;
 
     /**
      * Whether to always persist the latest actual test result in a parallel file next to
