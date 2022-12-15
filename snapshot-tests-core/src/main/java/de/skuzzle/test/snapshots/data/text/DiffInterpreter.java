@@ -10,7 +10,8 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 
 final class DiffInterpreter {
 
-    private static final Pattern WHITESPACE_ONLY = Pattern.compile("\\h+");
+    private static final Pattern WHITESPACE_ONLY = Pattern.compile("\\s+");
+    private static final Pattern HORIZONTAL_WHITESPACE_ONLY = Pattern.compile("\\h+");
 
     private boolean ignoreWhitespaceChanges = true;
     private int contextLines = Integer.MAX_VALUE;
@@ -30,8 +31,19 @@ final class DiffInterpreter {
         return WHITESPACE_ONLY.matcher(diff.text).matches();
     }
 
+    private boolean isHorizontalWhitespace(Diff diff) {
+        return HORIZONTAL_WHITESPACE_ONLY.matcher(diff.text).matches();
+    }
+
     public boolean hasFailures(Collection<Diff> diffs) {
         return diffs.stream().anyMatch(this::isFailureDifference);
+    }
+
+    public int countLinebreaks(Diff diff) {
+        final int rawLines = (int) diff.text.lines().count();
+        return diff.operation == Operation.DELETE
+                ? -rawLines
+                : (int) rawLines;
     }
 
     private boolean isFailureDifference(Diff diff) {
@@ -70,22 +82,24 @@ final class DiffInterpreter {
         // invariant: Diff instances always use System line separators
         final String lineSeparator = LineSeparator.SYSTEM.toString();
 
-        if (text.endsWith(lineSeparator)) {
+        if (text.equals(lineSeparator)) {
+            return text;
+        } else if (text.endsWith(lineSeparator)) {
             return "[" + text.substring(0, text.length() - lineSeparator.length()) + "]" + lineSeparator;
         } else {
             return "[" + text + "]";
         }
     }
 
-    public String renderEqualsDiff(String diffText, EqualDiffPosition position) {
-        return position.render(diffText, contextLines);
+    public String renderEqualsDiff(String diffText, EqualDiffPosition position, int lineNumber) {
+        return position.render(diffText, contextLines, lineNumber);
     }
 
     enum EqualDiffPosition {
         START {
 
             @Override
-            protected String render(String diffText, int contextLines) {
+            protected String render(String diffText, int contextLines, int lineNumber) {
                 final int totalLines = (int) diffText.lines().count();
 
                 final StringBuilder b = new StringBuilder();
@@ -110,7 +124,7 @@ final class DiffInterpreter {
         },
         MIDDLE {
             @Override
-            protected String render(String diffText, int contextLines) {
+            protected String render(String diffText, int contextLines, int lineNumber) {
                 final int totalLines = (int) diffText.lines().count();
 
                 final StringBuilder b = new StringBuilder();
@@ -134,7 +148,7 @@ final class DiffInterpreter {
         },
         END {
             @Override
-            protected String render(String diffText, int contextLines) {
+            protected String render(String diffText, int contextLines, int lineNumber) {
                 final int totalLines = (int) diffText.lines().count();
 
                 final StringBuilder b = new StringBuilder();
@@ -157,7 +171,7 @@ final class DiffInterpreter {
             }
         };
 
-        protected abstract String render(String diffText, int contextLines);
+        protected abstract String render(String diffText, int contextLines, int lineNumber);
     }
 
 }

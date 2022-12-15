@@ -88,24 +88,28 @@ public final class TextDiff {
         }
 
         final ListIterator<Diff> cursor = diffs.listIterator();
+        int lineNr = 1;
         while (cursor.hasNext()) {
-            final boolean hasPrevious = cursor.hasPrevious();
+            final boolean isBeginning = cursor.hasPrevious();
 
             final Diff current = cursor.next();
-            if (current.operation == Operation.EQUAL && !hasPrevious) {
-                // equal operation at the beginning
-                message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.START));
-            } else if (current.operation == Operation.EQUAL) {
-                if (cursor.hasNext()) {
+
+            if (current.operation == Operation.EQUAL) {
+                if (!isBeginning) {
+                    // equal operation at the beginning of the whole diff
+                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.START, lineNr));
+                } else if (cursor.hasNext()) {
                     // equal operation between 2 changes
-                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.MIDDLE));
+                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.MIDDLE, lineNr));
                 } else {
                     // equal diff at the end
-                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.END));
+                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.END, lineNr));
                 }
             } else {
                 message.append(diffInterpreter.renderFailureDiff(current));
             }
+
+            lineNr += diffInterpreter.countLinebreaks(current);
         }
         return message.toString();
     }
