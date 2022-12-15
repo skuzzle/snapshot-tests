@@ -241,7 +241,8 @@ public class FailingSnapshotTests {
                         + "\t%s%n"
                         + "%n"
                         + "Full unified diff of actual result and stored snapshot:%n"
-                        + "+[NOT ]test",
+                        + "  1    - test%n"
+                        + "     1 + NOT test",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatch_snapshots/testWithSnapshot_0.snapshot")));
     }
 
@@ -270,8 +271,10 @@ public class FailingSnapshotTests {
                         + "Full unified diff of actual result and stored snapshot:%n"
                         + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
                         + "%n"
-                        + "line-[2]+[4]%n"
-                        + "line-[3]+[5]",
+                        + "  1    - <<line2>>%n"
+                        + "     1 + <<line4>>%n"
+                        + "  2    - <<line3>>%n"
+                        + "     2 + <<line5>>",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
     }
 
@@ -342,7 +345,8 @@ public class FailingSnapshotTests {
                         + "\t%s%n"
                         + "%n"
                         + "Full unified diff of actual result and stored snapshot:%n"
-                        + "test+[2]",
+                        + "  1    - <<test>>%n"
+                        + "     1 + <<test2>>",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$SoftAssertions_snapshots/testWithSnapshot_0.snapshot")))
                 .hasSuppressedException(
                         new AssertionFailedError(String.format("Stored snapshot doesn't match actual result.%n"
@@ -350,7 +354,8 @@ public class FailingSnapshotTests {
                                 + "\t%s%n"
                                 + "%n"
                                 + "Full unified diff of actual result and stored snapshot:%n"
-                                + "test+[3]",
+                                + "  1    - <<test>>%n"
+                                + "     1 + <<test3>>",
                                 Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$SoftAssertions_snapshots/testWithSnapshot_1.snapshot"))));
     }
 

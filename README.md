@@ -123,8 +123,8 @@ void testSnapshotToString(Snapshot snapshot) throws Exception {
 
 ### Structural assertions
 Once serialized, the library uses `StructuralAssertions` to compare two serialized objects. By default, we use 
-`xml-unit` for comparing xmls and `jsonassert` for comparing jsons. Generic text comparison is implemented using the 
-awesome `diff_match_patch` class from Neil Fraser.
+`xml-unit` for comparing xmls and `jsonassert` for comparing jsons. Generic text comparison is implemented using `java-diff-utils`.
+
 When using a custom `SnapshotSerializer` you can also supply a custom `StructuralAssertions` implementation to implement
 comparisons specific to your serialization format.
 

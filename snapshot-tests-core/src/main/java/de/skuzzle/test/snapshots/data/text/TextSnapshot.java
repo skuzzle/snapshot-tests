@@ -6,6 +6,7 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
 
 /**
  * Take snapshots using {@link Object#toString()}. By default, whitespace changes of any
@@ -21,7 +22,7 @@ import de.skuzzle.test.snapshots.StructuredDataProvider;
 @API(status = Status.STABLE)
 public final class TextSnapshot implements StructuredDataProvider {
 
-    private final DiffInterpreter diffInterpreter = new DiffInterpreter();
+    private final Settings settings = Settings.defaultSettings();
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a
@@ -61,7 +62,7 @@ public final class TextSnapshot implements StructuredDataProvider {
      */
     @API(status = Status.STABLE, since = "1.4.0")
     public TextSnapshot withIgnoreWhitespaces(boolean ignoreWhitespaces) {
-        this.diffInterpreter.withIgnoreWhitespaceChanges(ignoreWhitespaces);
+        settings.withIgnoreWhitespaces(ignoreWhitespaces);
         return this;
     }
 
@@ -78,13 +79,13 @@ public final class TextSnapshot implements StructuredDataProvider {
      */
     @API(status = Status.EXPERIMENTAL, since = "1.5.0")
     public TextSnapshot withContextLines(int contextLines) {
-        this.diffInterpreter.withContextLines(contextLines);
+        settings.withContextLines(contextLines);
         return this;
     }
 
     @Override
     public StructuredData build() {
-        final StructuralAssertions structuralAssertions = new TextDiffStructuralAssertions(diffInterpreter);
+        final StructuralAssertions structuralAssertions = new TextDiffStructuralAssertions(settings);
         return StructuredData.with(Object::toString, structuralAssertions);
     }
 

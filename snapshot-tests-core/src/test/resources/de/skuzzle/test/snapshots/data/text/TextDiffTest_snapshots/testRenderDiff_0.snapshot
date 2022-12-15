@@ -1,0 +1,34 @@
+dynamic-directory: false
+snapshot-name: testRenderDiff_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.data.text.TextDiffTest
+test-method: testRenderDiff
+
+[...]
+  6  6   Some unchanged lines6
+  7  7   Some unchanged lines7
+  8  8   Some unchanged lines8
+  9    - This is a test <<senctence>>.
+     9 + This is a test <<for diffutils>>.
+ 10 10   This is the second line.
+ 11 11   Some unchanged lines9
+ 12 12   Some unchanged lines10
+ 13 13   Some unchanged lines11
+ 14 14   Some unchanged lines12
+ 15    - And here is the finish with way more than 80 characters and I'm very curious how this is going to be displayed in split view diff.
+ 15 15   This line is unchanged
+    16 + This line has been added
+ 16 16   Some unchanged lines13
+ 17 17   Some unchanged lines14
+ 18 18   Some unchanged lines15
+[...]
+[...]
+ 21 21   Some unchanged lines18
+ 22 22   Some unchanged lines19
+ 23 23   Some unchanged lines20
+ 24    - <<Another>> <<difference>>
+    24 + <<This>> <<has changed>>
+ 25 25   Some unchanged lines21
+ 26 26   Some unchanged lines22
+ 27 27   Some unchanged lines23
+[...]

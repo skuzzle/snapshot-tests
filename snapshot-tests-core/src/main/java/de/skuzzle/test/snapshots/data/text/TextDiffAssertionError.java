@@ -6,9 +6,9 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Internal exception that is used to communicate the {@link TextDiff} instance created by the
- * {@link TextDiffStructuralAssertions} to the snapshot test.
- * 
+ * Internal exception that is used to communicate the {@link TextDiff} instance created by
+ * the {@link TextDiffStructuralAssertions} to the snapshot test.
+ *
  * @author Simon Taddiken
  * @since 1.5.0
  */
