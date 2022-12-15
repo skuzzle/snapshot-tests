@@ -16,14 +16,4 @@ class DiffListLookahead {
         return fullDiff.size();
     }
 
-    public static int lookBehind(List<DiffRow> fullDiff, int startIndex) {
-        int count = 0;
-        for (int i = startIndex; i >= 0; --i) {
-            if (fullDiff.get(i).getTag() != Tag.EQUAL) {
-                return count;
-            }
-            count++;
-        }
-        return count;
-    }
 }
