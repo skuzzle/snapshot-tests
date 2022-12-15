@@ -30,21 +30,21 @@ public class TextDiffTest {
         @Test
         void testSingleLineRemoved() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "Just a single line", "");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("  1    - Just a single line");
         }
 
         @Test
         void testSingleLineAdded() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "", "Just a single line");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("     1 + Just a single line");
         }
 
         @Test
         void testLinebreakChangeIgnoreWhitespaces() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "line1\nline2", "line1\r\nline2");
-            assertThat(textDiff.changesDetected()).isFalse();
+            assertThat(textDiff.differencesDetected()).isFalse();
             assertThat(textDiff.toString()).isEqualTo("");
         }
     }
@@ -58,14 +58,14 @@ public class TextDiffTest {
         @Test
         void testSingleLineRemoved() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "Just a single line", "");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("  1    - Just a single line");
         }
 
         @Test
         void testSingleLineAdded() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings, "", "Just a single line");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("     1 + Just a single line");
         }
 
@@ -73,7 +73,7 @@ public class TextDiffTest {
         void testWhitespaceChangeWithinSingleLine() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings,
                     "Just a single     line", "Just a single line");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo(LineSeparator.SYSTEM.convert(""
                     + "  1    - Just a single<<     >>line\n"
                     + "     1 + Just a single<< >>line"));
@@ -83,7 +83,7 @@ public class TextDiffTest {
         void testLinebreakChangeObeyWhitespaces() throws Exception {
             final TextDiff textDiff = TextDiff.compare(settings,
                     "line1\nline2", "line1\r\nline2");
-            assertThat(textDiff.changesDetected()).isTrue();
+            assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString())
                     .isEqualTo("Strings differ in linebreaks. Expected: 'LF(\\n)', Actual encountered: 'CRLF(\\r\\n)'");
         }

@@ -116,7 +116,7 @@ public final class TextDiff {
         }
     }
 
-    private boolean hasLinebreakChange() {
+    private boolean hasLinebreakDifference() {
         return expectedLineSeparator != actualLineSeparator && !settings.ignoreWhitespaces;
     }
 
@@ -124,24 +124,30 @@ public final class TextDiff {
         return diffRows.stream().map(DiffRow::getTag).anyMatch(tag -> tag != Tag.EQUAL);
     }
 
-    public boolean changesDetected() {
-        return hasLinebreakChange() || hasTextDifference();
+    public boolean differencesDetected() {
+        return hasLinebreakDifference() || hasTextDifference();
     }
 
     @Override
     public String toString() {
         final StringBuilder result = new StringBuilder();
-        if (hasLinebreakChange()) {
+        final boolean hasTextDifference = hasTextDifference();
+        final boolean hasLinebreakDifference = hasLinebreakDifference();
+
+        if (hasLinebreakDifference) {
             result.append("Strings differ in linebreaks. Expected: '")
                     .append(expectedLineSeparator.displayName())
                     .append("', Actual encountered: '").append(actualLineSeparator.displayName()).append("'");
 
-            if (hasTextDifference()) {
+            if (hasTextDifference) {
                 result.append(LineSeparator.SYSTEM)
                         .append(LineSeparator.SYSTEM);
             }
         }
-        result.append(settings.diffRenderer.renderDiff(diffRows, settings.contextLines));
+
+        if (hasTextDifference) {
+            result.append(settings.diffRenderer.renderDiff(diffRows, settings.contextLines));
+        }
         return result.toString();
     }
 }

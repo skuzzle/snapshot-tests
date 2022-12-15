@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.data.text;
 import java.util.List;
 
 import com.github.difflib.text.DiffRow;
-import com.github.difflib.text.DiffRow.Tag;
 
 final class UnifiedDiffRenderer implements DiffRenderer {
 
@@ -12,15 +11,8 @@ final class UnifiedDiffRenderer implements DiffRenderer {
         return " ".repeat(missingSpaces) + text;
     }
 
-    private boolean equalOnly(List<DiffRow> rows) {
-        return rows.stream().map(DiffRow::getTag).allMatch(Tag.EQUAL::equals);
-    }
-
     @Override
     public String renderDiff(List<DiffRow> rows, int contextLines) {
-        if (equalOnly(rows)) {
-            return "";
-        }
         final int rowCountEstimate = rows.size();
         final int rowNumberWidth = Math.max(2, (int) Math.log10(rowCountEstimate) + 1) + 1;
 

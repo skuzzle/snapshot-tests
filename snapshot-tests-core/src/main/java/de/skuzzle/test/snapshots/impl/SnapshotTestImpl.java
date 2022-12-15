@@ -308,7 +308,7 @@ final class SnapshotTestImpl implements Snapshot {
                 .append(System.lineSeparator());
 
         final TextDiff testDiff = determineDiff(original, storedSnapshot, serializedActual);
-        if (testDiff.changesDetected()) {
+        if (testDiff.differencesDetected()) {
             assertionMessage
                     .append(System.lineSeparator())
                     .append("Full unified diff of actual result and stored snapshot:")
