@@ -186,4 +186,76 @@ public class TextDiffTest {
         System.out.println(textDiff);
         snapshot.assertThat(textDiff).asText().matchesSnapshotText();
     }
+
+    @Test
+    void testRenderDiffSplit(Snapshot snapshot) throws Exception {
+        final String expected = join(
+                "Some unchanged lines1",
+                "Some unchanged lines2",
+                "Some unchanged lines3",
+                "Some unchanged lines4",
+                "Some unchanged lines5",
+                "Some unchanged lines6",
+                "Some unchanged lines7",
+                "Some unchanged lines8",
+                "This is a test senctence.",
+                "This is the second line.",
+                "Some unchanged lines9",
+                "Some unchanged lines10",
+                "Some unchanged lines11",
+                "Some unchanged lines12",
+                "And here is the finish with way more than 80 characters and I'm very curious how this is going to be displayed in split view diff.",
+                "This line is unchanged",
+                "Some unchanged lines13",
+                "Some unchanged lines14",
+                "Some unchanged lines15",
+                "Some unchanged lines16",
+                "Some unchanged lines17",
+                "Some unchanged lines18",
+                "Some unchanged lines19",
+                "Some unchanged lines20",
+                "Another difference",
+                "Some unchanged lines21",
+                "Some unchanged lines22",
+                "Some unchanged lines23",
+                "Some unchanged lines24");
+
+        final String actual = join(
+                "Some unchanged lines1",
+                "Some unchanged lines2",
+                "Some unchanged lines3",
+                "Some unchanged lines4",
+                "Some unchanged lines5",
+                "Some unchanged lines6",
+                "Some unchanged lines7",
+                "Some unchanged lines8",
+                "This is a test for diffutils.",
+                "This is the second line.",
+                "Some unchanged lines9",
+                "Some unchanged lines10",
+                "Some unchanged lines11",
+                "Some unchanged lines12",
+                "This line is unchanged",
+                "This line has been added",
+                "Some unchanged lines13",
+                "Some unchanged lines14",
+                "Some unchanged lines15",
+                "Some unchanged lines16",
+                "Some unchanged lines17",
+                "Some unchanged lines18",
+                "Some unchanged lines19",
+                "Some unchanged lines20",
+                "This has changed",
+                "Some unchanged lines21",
+                "Some unchanged lines22",
+                "Some unchanged lines23",
+                "Some unchanged lines24");
+
+        final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings()
+                .withContextLines(3)
+                .withDiffRenderer(new SplitDiffRenderer()), expected, actual);
+
+        System.out.println(textDiff);
+        snapshot.assertThat(textDiff).asText().matchesSnapshotText();
+    }
 }

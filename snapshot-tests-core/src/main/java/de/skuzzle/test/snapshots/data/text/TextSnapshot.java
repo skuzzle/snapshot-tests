@@ -83,6 +83,45 @@ public final class TextSnapshot implements StructuredDataProvider {
         return this;
     }
 
+    /**
+     * Specify the format of how diffs are rendered within our assertion failure messages.
+     *
+     * @param diffFormat The diff format to use.
+     * @return This instance.
+     * @since 1.7.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public TextSnapshot withDiffFormat(DiffFormat diffFormat) {
+        settings.withDiffRenderer(diffFormat.renderer);
+        return this;
+    }
+
+    /**
+     * Format in which diffs will be rendered within assertion failure messages.
+     *
+     * @author Simon Taddiken
+     * @since 1.7.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public enum DiffFormat {
+        /**
+         * Render diffs in unified format, where changes are displayed line by line and
+         * lines from expected and actual results are printed interleaved.
+         */
+        UNIFIED(new UnifiedDiffRenderer()),
+        /**
+         * Render diff in split view format, where the lines from the expected and actual
+         * result will be printed side by side.
+         */
+        SPLIT(new SplitDiffRenderer());
+
+        private final DiffRenderer renderer;
+
+        private DiffFormat(DiffRenderer renderer) {
+            this.renderer = renderer;
+        }
+    }
+
     @Override
     public StructuredData build() {
         final StructuralAssertions structuralAssertions = new TextDiffStructuralAssertions(settings);
