@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.data.text;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
@@ -15,7 +16,12 @@ import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
  * <p>
  * When rendering unified diffs as String, changes in line separators are not marked at
  * every occurrence. Instead, detected changes in line separators will result in a single
- * informative message at the beginning of the diff.
+ * informative message at the beginning of the diff, but only if set
+ * {@link #withIgnoreWhitespaces(boolean)} to false.
+ * <p>
+ * By default, rendered diffs will display 5 lines of context around a detected change.
+ * This can be changed using {@link #withContextLines(int)}. Note that
+ * {@link SnapshotTestOptions#textDiffContextLines()} does not apply to text snapshots.
  *
  * @author Simon Taddiken
  */
@@ -26,8 +32,7 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Take Snapshots using {@link Object#toString()} and compare the results using a
-     * generic String diff algorithm. Comparison ignores whitespace changes of any kind
-     * and does not limit the size of the unified diff.
+     * generic String diff algorithm. Comparison ignores whitespace changes of any kind.
      * <p>
      * You can create a more customized text comparison by using {@link #text()} and the
      * several customization options.
@@ -36,6 +41,7 @@ public final class TextSnapshot implements StructuredDataProvider {
      */
     public static final StructuredData text = text()
             .withIgnoreWhitespaces(true)
+            .withContextLines(Integer.MAX_VALUE)
             .build();
 
     private TextSnapshot() {
@@ -56,6 +62,8 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Allows to customize the whitespace comparison behavior.
+     * <p>
+     * Defaults to false.
      *
      * @param ignoreWhitespaces Whether to ignore whitespaces during comparison.
      * @return This instance.
@@ -68,9 +76,9 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Configures the amount of contextual lines that are printed around a detected
-     * change. Per default, all lines of the full diff will be printed. If you have huge
-     * diffs with only little changes, it might be beneficial to reduce this value to a
-     * low value like 5 or 10.
+     * change. Per default, all lines of the full diff will be printed.
+     * <p>
+     * Defaults to 5
      *
      * @param contextLines The amount of lines to print around a detected change in the
      *            unified diffs.
@@ -85,6 +93,8 @@ public final class TextSnapshot implements StructuredDataProvider {
 
     /**
      * Specify the format of how diffs are rendered within our assertion failure messages.
+     * <p>
+     * Defaults to {@link DiffFormat#UNIFIED}
      *
      * @param diffFormat The diff format to use.
      * @return This instance.

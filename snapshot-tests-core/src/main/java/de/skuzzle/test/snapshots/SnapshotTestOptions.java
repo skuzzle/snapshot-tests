@@ -28,15 +28,15 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 public @interface SnapshotTestOptions {
 
     /**
-     * DEfault number of context lines that are displayed in diffs.
+     * Default number of context lines that are displayed in diffs.
      */
     public static final int DEFAULT_CONTEXT_LINES = 5;
 
     /**
      * Defines the number of context lines that are printed around a comparison failure.
      * Note that this setting only applies to unified diffs created for structural
-     * comparisons. If you use text comparison, then you can control the amount of context
-     * lines using {@link TextSnapshot#withContextLines(int)}.
+     * comparisons. If you use text comparison, then you must control the amount of
+     * context lines using {@link TextSnapshot#withContextLines(int)}.
      * <p>
      * Defaults to 5.
      *
