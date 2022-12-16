@@ -13,10 +13,11 @@ import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRow.Tag;
 import com.github.difflib.text.DiffRowGenerator;
 
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Creates a diff of 2 Strings. For internal use only. Public API is encapsulated in
+ * Creates a diff of 2 Strings. For internal use only. Public API is provided by
  * {@link TextSnapshot}.
  *
  * @author Simon Taddiken
@@ -51,9 +52,10 @@ public final class TextDiff {
         return new TextDiff(settings, diffRows, expectedLineSeparator, actualLineSeparator);
     }
 
+    @API(status = Status.INTERNAL, since = "1.7.0")
     public static final class Settings {
         private boolean ignoreWhitespaces = false;
-        private int contextLines = Integer.MAX_VALUE;
+        private int contextLines = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
         private String inlineOpeningChangeMarker = "<<";
         private String inlineClosingChangeMarker = ">>";
         private DiffRenderer diffRenderer = new UnifiedDiffRenderer();

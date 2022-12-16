@@ -46,6 +46,7 @@ final class UnifiedDiffRenderer implements DiffRenderer {
                 } else {
                     expectedLine++;
                     actualLine++;
+                    // continue here to not print extra linebreaks for skipped lines
                     continue;
                 }
 
