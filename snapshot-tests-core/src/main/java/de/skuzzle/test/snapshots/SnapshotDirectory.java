@@ -18,7 +18,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * single test method.
  * <p>
  * If you don't customize the snapshot directory at all, then snapshots will by default be
- * stored in a directory structure according to the package name if the test class. If you
+ * stored in a directory structure according to the package name of the test class. If you
  * already specified a custom directory using the DSL (via
  * {@link Snapshot#in(java.nio.file.Path)}) then this annotation will have no effect for
  * that particular assertion.

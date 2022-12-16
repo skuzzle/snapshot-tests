@@ -26,18 +26,24 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SnapshotTestOptions {
+
+    /**
+     * Default number of context lines that are displayed in diffs.
+     */
+    public static final int DEFAULT_CONTEXT_LINES = 5;
+
     /**
      * Defines the number of context lines that are printed around a comparison failure.
      * Note that this setting only applies to unified diffs created for structural
-     * comparisons. If you use text comparison, then you can control the amount of context
-     * lines using {@link TextSnapshot#withContextLines(int)}.
+     * comparisons. If you use text comparison, then you must control the amount of
+     * context lines using {@link TextSnapshot#withContextLines(int)}.
      * <p>
      * Defaults to 5.
      *
      * @return The number of context lines to print in unified diffs within our structural
      *         assertion failures.
      */
-    int textDiffContextLines() default 5;
+    int textDiffContextLines() default DEFAULT_CONTEXT_LINES;
 
     /**
      * Whether to always persist the latest actual test result in a parallel file next to

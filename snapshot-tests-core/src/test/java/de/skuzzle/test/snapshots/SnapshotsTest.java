@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
@@ -95,6 +97,16 @@ public class SnapshotsTest {
         snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
         snapshot.named("phil").assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @Test
+    void testCustomizeTextSnapshot(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+
+        snapshot.assertThat(simon).as(TextSnapshot.text()
+                .withContextLines(10)
+                .withDiffFormat(DiffFormat.SPLIT)
+                .withIgnoreWhitespaces(true)).matchesSnapshotText();
     }
 
     @ParameterizedTest

@@ -48,12 +48,6 @@ final class Junit5SnapshotTestContextProvider {
      * @return The attached {@link SnapshotTestContext}.
      */
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
-        searchParents(extensionContext)
-                .ifPresent(existingContext -> {
-                    throw new IllegalStateException(
-                            "There is already a SnapshotTestContext attached to the given ExtensionContext or any of its parents");
-                });
-
         final var testClass = extensionContext.getRequiredTestClass();
         final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
         final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
@@ -73,12 +67,6 @@ final class Junit5SnapshotTestContextProvider {
      */
     @Deprecated(since = "1.7.0")
     public static SnapshotTestContext createLegacy(ExtensionContext extensionContext) {
-        searchParents(extensionContext)
-                .ifPresent(existingContext -> {
-                    throw new IllegalStateException(
-                            "There is already a SnapshotTestContext attached to the given ExtensionContext or any of its parents");
-                });
-
         final var testClass = extensionContext.getRequiredTestClass();
         final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.legacyConfigurationFor(testClass);
         final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);

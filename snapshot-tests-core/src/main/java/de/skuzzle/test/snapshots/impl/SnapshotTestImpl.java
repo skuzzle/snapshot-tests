@@ -23,6 +23,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.data.text.TextDiff;
+import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
 import de.skuzzle.test.snapshots.data.text.TextDiffAssertionError;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
@@ -307,7 +308,7 @@ final class SnapshotTestImpl implements Snapshot {
                 .append(System.lineSeparator());
 
         final TextDiff testDiff = determineDiff(original, storedSnapshot, serializedActual);
-        if (testDiff.hasDifference()) {
+        if (testDiff.differencesDetected()) {
             assertionMessage
                     .append(System.lineSeparator())
                     .append("Full unified diff of actual result and stored snapshot:")
@@ -327,7 +328,12 @@ final class SnapshotTestImpl implements Snapshot {
             // comparison in TextDiffStructuralAssertions
             return ((TextDiffAssertionError) original).textDiff();
         } else {
-            return TextDiff.diffOf(storedSnapshot, serializedActual, configuration.textDiffContextLines(testMethod));
+            return TextDiff.compare(
+                    Settings.defaultSettings()
+                            .withInlineOpeningChangeMarker("~~~~")
+                            .withInlineClosingChangeMarker("~~~~")
+                            .withContextLines(configuration.textDiffContextLines(testMethod)),
+                    storedSnapshot, serializedActual);
         }
     }
 

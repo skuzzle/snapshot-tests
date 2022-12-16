@@ -10,6 +10,8 @@
 * Add the possibility to configure the number of context lines printed around a change in the default unified diff via `@SnapshotTestOptions.textDiffContextLines()`
 * Add the possibility to always persist the latest actual result as a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistActualResult()`
 * Add the possibility to additionally persist the raw actual result in a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistRawResult()`. The raw result does not contain the snapshot header information.
+* Improve compatibility with JUnit5's `@Nested` tests (general support for `@Nested` is still experimental though)
+* Unified diffs within assertion failure messages now come with full line information
 
 
 _Note_: This release comes with a few major deprecations that are preparing our transition to the next major version 

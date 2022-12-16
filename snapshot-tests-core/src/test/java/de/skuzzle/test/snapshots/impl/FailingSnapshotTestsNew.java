@@ -218,7 +218,8 @@ public class FailingSnapshotTestsNew {
                         + "\t%s%n"
                         + "%n"
                         + "Full unified diff of actual result and stored snapshot:%n"
-                        + "+[NOT ]test",
+                        + "  1    - test%n"
+                        + "     1 + NOT test",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatch_snapshots/testWithSnapshot_0.snapshot")));
     }
 
@@ -247,8 +248,10 @@ public class FailingSnapshotTestsNew {
                         + "Full unified diff of actual result and stored snapshot:%n"
                         + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
                         + "%n"
-                        + "line-[2]+[4]%n"
-                        + "line-[3]+[5]",
+                        + "  1    - <<line2>>%n"
+                        + "     1 + <<line4>>%n"
+                        + "  2    - <<line3>>%n"
+                        + "     2 + <<line5>>",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
     }
 

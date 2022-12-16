@@ -38,6 +38,12 @@
             </dependency>
 
             <dependency>
+                <groupId>io.github.java-diff-utils</groupId>
+                <artifactId>java-diff-utils</artifactId>
+                <version>${version.java-diff-utils}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apiguardian</groupId>
                 <artifactId>apiguardian-api</artifactId>
                 <version>${version.api-guardian}</version>
@@ -69,7 +75,7 @@
                 <artifactId>assertj-core</artifactId>
                 <version>${version.assertj}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.opentest4j</groupId>
                 <artifactId>opentest4j</artifactId>
