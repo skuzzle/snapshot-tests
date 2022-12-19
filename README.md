@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.6.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.6.1/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.6.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.6.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.7.0/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.7.0)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -13,17 +13,17 @@ serialized version of the object during the first test execution and during subs
 actual object against the stored snapshot.
 
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.6.1/jar)
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.6.1/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.6.1/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.6.1/jar)
+- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.7.0/jar)
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.7.0/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.0/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.0/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.7.0/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.6.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.6.1)
+release [1.7.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.7.0)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
@@ -123,8 +123,8 @@ void testSnapshotToString(Snapshot snapshot) throws Exception {
 
 ### Structural assertions
 Once serialized, the library uses `StructuralAssertions` to compare two serialized objects. By default, we use 
-`xml-unit` for comparing xmls and `jsonassert` for comparing jsons. Generic text comparison is implemented using the 
-awesome `diff_match_patch` class from Neil Fraser.
+`xml-unit` for comparing xmls and `jsonassert` for comparing jsons. Generic text comparison is implemented using `java-diff-utils`.
+
 When using a custom `SnapshotSerializer` you can also supply a custom `StructuralAssertions` implementation to implement
 comparisons specific to your serialization format.
 
@@ -213,3 +213,26 @@ snapshot test class to have those files deleted automatically.
 
 **Warning:** Deleting orphans should be handled with care. There might be raw occasions where we falsely detect a 
 snapshot file as orphan (especially if you are running only parts of your test suite or have disabled tests).
+
+### Configuring some more details
+**New**
+Since version `1.7.0` there is a new `@SnapshotTestOptions` annotation that can either be placed on a test method or 
+test class. It allows to configure some details of the snapshot testing engine.
+
+#### Generating additional context files
+Besides persisting the actual snapshot file, the framework can be advised to generate additional context files via 
+`@SnapshotTestOptions.alwaysPersistActualResult()` and `@SnapshotTestOptions.alwaysPersistRawResult()`.
+Disregarding the outcome of the snapshot assertion, these options will advises the framework to always create a file
+containing the latest actual test results. The `..._raw` file will contain the pure serialized actual result without 
+the snapshot header.
+
+Note that these context files should _not_ be checked into the SCM. You should add these two lines to your `.gitignore`
+file:
+```
+*.snapshot_raw
+*.snapshot_actual
+```
+
+#### Showing more context in unified diffs
+Using `@SnapshotTestOptions.textDiffContextLines()` you can advise the framework to print more lines surrounding a
+detected change in the unified diffs. Per default, we will only print 5 lines around a change.

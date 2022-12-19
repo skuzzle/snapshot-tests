@@ -14,6 +14,14 @@ final class InternalSnapshotNaming {
         return snapshotName + ".snapshot";
     }
 
+    public static String getSnapshotFileNameActual(String snapshotName) {
+        return snapshotName + ".snapshot_actual";
+    }
+
+    public static String getSnapshotFileNameRaw(String snapshotName) {
+        return snapshotName + ".snapshot_raw";
+    }
+
     public static boolean isSnapshotFile(Path path) {
         return path.getFileName().toString().endsWith(".snapshot");
     }

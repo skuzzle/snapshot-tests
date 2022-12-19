@@ -1,5 +1,22 @@
-* Deprecated property `DirectoriesFrom.directory` should not be mandatory
+* [#19](https://github.com/skuzzle/snapshot-tests/issues/19): Deprecate the whole `@EnabledSnapshotTests` annotation in favor of annotation with same name within `junit5` package
+* [#30](https://github.com/skuzzle/snapshot-tests/issues/30): Deprecate `EnableSnapshotTests.softAssertions`. Soft assertions will no longer be supported in the next major version
+* [#32](https://github.com/skuzzle/snapshot-tests/issues/32): Support for jakarta namespaces via new `snapshot-tests-jaxb-jakarta` module
+* [#47](https://github.com/skuzzle/snapshot-tests/issues/47): Add new `SnapshotTestOptions` annotation which allows to configure some detailed aspects of the snapshot engine
+* Deprecate `EnableSnapshotTests.snapshotDirectory` in favor of new annotation `@SnapshotDirectory`
+* Deprecate `SnapshotTestResult.serializedSnapshot()` in favor of `SnapshotTestResult.snapshotFile()`
+* Add `SnapshotTestResult.serializedActual()`
+* Add `SnapshotTestResult.actualResultFile()`
+* Add `SnapshotTestResult.rawActualResultFile()`
+* Add the possibility to configure the number of context lines printed around a change in the default unified diff via `@SnapshotTestOptions.textDiffContextLines()`
+* Add the possibility to always persist the latest actual result as a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistActualResult()`
+* Add the possibility to additionally persist the raw actual result in a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistRawResult()`. The raw result does not contain the snapshot header information.
+* Improve compatibility with JUnit5's `@Nested` tests (general support for `@Nested` is still experimental though)
+* Unified diffs within assertion failure messages now come with full line information
 
+
+_Note_: This release comes with a few major deprecations that are preparing our transition to the next major version 
+that is 2.0. That version will likely see all those deprecated methods to be removed. In general, simple drop in 
+replacements are provided and documented to ensure an easy migration.
 
 Maven Central coordinates for this release:
 
@@ -59,7 +76,7 @@ testImplementation '${project.groupId}:snapshot-tests-jackson:${project.version}
 testImplementation("${project.groupId}:snapshot-tests-jackson:${project.version}")
 ```
 
-If you need xml based snapshots (includes `-core`):
+If you need xml based snapshots using `javax.xml` legacy namespaces (includes `-core`):
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-jaxb/${project.version})
 
@@ -75,6 +92,24 @@ If you need xml based snapshots (includes `-core`):
 ```
 testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
 testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
+```
+
+If you need xml based snapshots using new `jakarta.xml` namespaces (includes `-core`):
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb-jakarta/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-jaxb-jakarta/${project.version})
+
+```xml
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation '${project.groupId}:snapshot-tests-jaxb-jakarta:${project.version}'
+testImplementation("${project.groupId}:snapshot-tests-jaxb-jakarta:${project.version}")
 ```
 
 If you need HTML based snapshots (includes `-core`):

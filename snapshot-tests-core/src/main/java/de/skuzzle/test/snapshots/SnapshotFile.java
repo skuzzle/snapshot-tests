@@ -25,10 +25,14 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * snapshot. The header is a simple key-value format which is separated from the actual
  * snapshot contents by two line breaks (\n).
  * <p>
- * This class is immutable.
+ * You can use this class to manually read the contents of a persisted snapshot file.
+ * <p>
+ * This class is immutable and only holds the file's contents. It is not a reference to
+ * the actually stored file.
  *
  * @author Simon Taddiken
  * @since 0.0.5
+ * @see SnapshotTestResult
  */
 @API(status = Status.EXPERIMENTAL)
 public final class SnapshotFile {

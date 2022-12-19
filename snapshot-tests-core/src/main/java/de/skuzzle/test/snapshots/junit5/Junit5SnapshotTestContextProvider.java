@@ -7,6 +7,7 @@ import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
+import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
 import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 /**
@@ -47,14 +48,28 @@ final class Junit5SnapshotTestContextProvider {
      * @return The attached {@link SnapshotTestContext}.
      */
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
-        searchParents(extensionContext)
-                .ifPresent(existingContext -> {
-                    throw new IllegalStateException(
-                            "There is already a SnapshotTestContext attached to the given ExtensionContext or any of its parents");
-                });
-
         final var testClass = extensionContext.getRequiredTestClass();
-        final var snapshotTestContext = SnapshotTestContext.forTestClass(testClass);
+        final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
+        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
+        extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
+        return snapshotTestContext;
+    }
+
+    /**
+     * Creates a {@link SnapshotTestContext} and attaches it to the given JUnit5
+     * {@link ExtensionContext}. The extension context is assumed to be pertaining to the
+     * test class (as opposed to pertaining to a single test method)
+     *
+     * @param extensionContext The extension context to attach to.
+     * @return The attached {@link SnapshotTestContext}.
+     * @since 1.7.0
+     * @deprecated Since 1.7.0 - Only introduced to handle backward compatibility.
+     */
+    @Deprecated(since = "1.7.0")
+    public static SnapshotTestContext createLegacy(ExtensionContext extensionContext) {
+        final var testClass = extensionContext.getRequiredTestClass();
+        final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.legacyConfigurationFor(testClass);
+        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;
     }

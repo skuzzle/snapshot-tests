@@ -8,10 +8,13 @@ import java.util.Optional;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Result details of a single snapshot assertion.
+ * Result details of a single snapshot assertion. An instance of this class is returned by
+ * every DSL terminal operation.
  *
  * @author Simon Taddiken
  * @since 0.0.2
@@ -21,23 +24,39 @@ public final class SnapshotTestResult {
 
     private final SnapshotFile snapshot;
     private final Path targetFile;
+    private final Path actualResultFile;
+    private final Path rawActualResultFile;
     private final SnapshotStatus status;
+    private final String serializedActual;
     private final Throwable failure;
 
-    private SnapshotTestResult(Path targetFile, SnapshotStatus status, SnapshotFile snapshot, Throwable failure) {
+    private SnapshotTestResult(Path targetFile, Path actualResultFile, Path rawActualResultFile, SnapshotStatus status,
+            SnapshotFile snapshotFile,
+            String serializedActual,
+            Throwable failure) {
         this.targetFile = Arguments.requireNonNull(targetFile);
+        this.actualResultFile = Arguments.requireNonNull(actualResultFile);
+        this.rawActualResultFile = Arguments.requireNonNull(rawActualResultFile);
         this.status = Arguments.requireNonNull(status);
-        this.snapshot = Arguments.requireNonNull(snapshot);
+        this.snapshot = Arguments.requireNonNull(snapshotFile);
+        this.serializedActual = Arguments.requireNonNull(serializedActual);
         this.failure = failure;
     }
 
-    public static SnapshotTestResult forFailedTest(Path targetFile, SnapshotFile snapshot, Throwable failure) {
-        return new SnapshotTestResult(targetFile, SnapshotStatus.ASSERTED, snapshot,
+    @API(status = Status.INTERNAL)
+    public static SnapshotTestResult forFailedTest(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+            SnapshotFile snapshotFile, String serializedActual, Throwable failure) {
+        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, SnapshotStatus.ASSERTED,
+                snapshotFile, serializedActual,
                 Arguments.requireNonNull(failure));
     }
 
-    public static SnapshotTestResult of(Path targetFile, SnapshotStatus status, SnapshotFile snapshot) {
-        return new SnapshotTestResult(targetFile, status, snapshot, null);
+    @API(status = Status.INTERNAL)
+    public static SnapshotTestResult of(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+            SnapshotStatus status, SnapshotFile snapshotFile,
+            String serializedActual) {
+        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, status, snapshotFile,
+                serializedActual, null);
     }
 
     /**
@@ -45,9 +64,44 @@ public final class SnapshotTestResult {
      * that {@link #status()} is {@link SnapshotStatus#DISABLED}.
      *
      * @return The snapshot file.
+     * @see #actualResultFile()
+     * @see #rawActualResultFile()
+     *
      */
     public Path targetFile() {
         return this.targetFile;
+    }
+
+    /**
+     * Path to the file in which the latest actual result will be stored. The file will
+     * only exist if the recent snapshot assertion was executed with
+     * {@link SnapshotTestOptions#alwaysPersistActualResult()} being true.
+     *
+     * @return The path to the file with the latest actual result file.
+     * @since 1.7.0
+     * @see #targetFile()
+     * @see #rawActualResultFile()
+     * @see SnapshotTestOptions#alwaysPersistActualResult()
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public Path actualResultFile() {
+        return this.actualResultFile;
+    }
+
+    /**
+     * Path to the file in which the latest raw actual result will be stored (without the
+     * snapshot header). The file will only exist if the recent snapshot assertion was
+     * executed with {@link SnapshotTestOptions#alwaysPersistRawResult()} being true.
+     *
+     * @return The path to the file with the latest raw actual result file.
+     * @since 1.7.0
+     * @see #targetFile()
+     * @see #actualResultFile()
+     * @see SnapshotTestOptions#alwaysPersistRawResult()
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public Path rawActualResultFile() {
+        return this.rawActualResultFile;
     }
 
     /**
@@ -60,12 +114,46 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * The snapshot.
+     * The contents of the persisted snapshot file.
      *
      * @return The serialized snapshot.
+     * @deprecated Since 1.7.0 - Use {@link #snapshotFile()} instead.
      */
+    @Deprecated(since = "1.7.0")
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     public SnapshotFile serializedSnapshot() {
         return this.snapshot;
+    }
+
+    /**
+     * The contents of the persisted snapshot file. Note that the file's content and the
+     * value of {@link #serializedActual()} can be different, even though the snapshot
+     * test did not fail. For example they could differ in whitespaces if whitespaces were
+     * ignored during comparison. Or they can differ in certain attributes if you used
+     * structure compare with custom comparison rules.
+     *
+     * @return The snapshot file.
+     */
+    public SnapshotFile snapshotFile() {
+        return this.snapshot;
+    }
+
+    /**
+     * Returns the serialized string value of the actual test input. Note that this value
+     * can be different from the contents of {@link #snapshotFile()} (see the method's
+     * documentation for details).
+     * <p>
+     * Note that this value can be a placeholder in case you passed a null value into
+     * {@link Snapshot#assertThat(Object)}. Unless you called
+     * {@link ChooseAssertions#disabled()}, passing a null value into a snapshot test
+     * would fail the test anyway.
+     *
+     * @return The serialized actual value.
+     * @since 1.7.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    public String serializedActual() {
+        return this.serializedActual;
     }
 
     /**
@@ -115,7 +203,7 @@ public final class SnapshotTestResult {
          */
         ASSERTED,
         /**
-         * No assertion has been performed and the snapshot file has not been created nor
+         * No assertion has been performed and the snapshot file has not been created or
          * updated.
          *
          * @since 1.5.0

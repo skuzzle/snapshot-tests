@@ -1,112 +1,155 @@
 package de.skuzzle.test.snapshots.data.text;
 
-import java.util.LinkedList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
-import java.util.ListIterator;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
-import de.skuzzle.test.snapshots.data.text.DiffInterpreter.EqualDiffPosition;
-import de.skuzzle.test.snapshots.data.text.diff_match_patch.Diff;
-import de.skuzzle.test.snapshots.data.text.diff_match_patch.Operation;
+import com.github.difflib.text.DiffRow;
+import com.github.difflib.text.DiffRow.Tag;
+import com.github.difflib.text.DiffRowGenerator;
+
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
- * Creates a unified diff of 2 Strings using the popular Neil Fraser diff_match_patch
- * implementation under the hood.
+ * Creates a diff of 2 Strings. For internal use only. Public API is provided by
+ * {@link TextSnapshot}.
  *
  * @author Simon Taddiken
  */
 @API(status = Status.INTERNAL, since = "1.4.0")
 public final class TextDiff {
 
-    private final DiffInterpreter diffInterpreter;
-    private final List<Diff> diffs;
+    private final Settings settings;
+    private final List<DiffRow> diffRows;
     private final LineSeparator expectedLineSeparator;
     private final LineSeparator actualLineSeparator;
 
-    private TextDiff(DiffInterpreter diffInterpreter, List<Diff> diffs,
-            LineSeparator expectedLineSeparator, LineSeparator actualLineSeparator) {
-        this.diffInterpreter = diffInterpreter;
-        this.diffs = diffs;
+    private TextDiff(Settings settings, List<DiffRow> diffRows, LineSeparator expectedLineSeparator,
+            LineSeparator actualLineSeparator) {
+        this.settings = settings;
+        this.diffRows = diffRows;
         this.expectedLineSeparator = expectedLineSeparator;
         this.actualLineSeparator = actualLineSeparator;
     }
 
-    public static TextDiff diffOf(String expected, String actual, int contextLines) {
-        return diffOf(new DiffInterpreter()
-                .withIgnoreWhitespaceChanges(false)
-                .withContextLines(contextLines),
-                expected, actual);
-    }
-
-    static TextDiff diffOf(DiffInterpreter diffInterpreter, String expected, String actual) {
+    public static TextDiff compare(Settings settings, String expected, String actual) {
+        Arguments.requireNonNull(settings != null, "settings must not be null");
         Arguments.requireNonNull(expected, "expected String must not be null");
         Arguments.requireNonNull(actual, "actual String must not be null");
 
         final LineSeparator expectedLineSeparator = LineSeparator.determineFrom(expected);
         final LineSeparator actualLineSeparator = LineSeparator.determineFrom(actual);
 
-        final diff_match_patch diff_match_patch = new diff_match_patch();
-
-        final LinkedList<Diff> diffs = diff_match_patch.diff_main(
-                sanitizeLineSeparators(expected),
-                sanitizeLineSeparators(actual));
-        diff_match_patch.diff_cleanupSemanticLossless(diffs);
-
-        return new TextDiff(diffInterpreter, diffs, expectedLineSeparator, actualLineSeparator);
+        final List<DiffRow> diffRows = settings.buildDiffRowGenerator().generateDiffRows(
+                expected.lines().collect(toList()),
+                actual.lines().collect(toList()));
+        return new TextDiff(settings, diffRows, expectedLineSeparator, actualLineSeparator);
     }
 
-    private static String sanitizeLineSeparators(String s) {
-        return LineSeparator.SYSTEM.convert(s);
+    @API(status = Status.INTERNAL, since = "1.7.0")
+    public static final class Settings {
+        private boolean ignoreWhitespaces = false;
+        private int contextLines = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
+        private String inlineOpeningChangeMarker = "<<";
+        private String inlineClosingChangeMarker = ">>";
+        private DiffRenderer diffRenderer = new UnifiedDiffRenderer();
+
+        private Settings() {
+            // hidden
+        }
+
+        public static Settings defaultSettings() {
+            return new Settings();
+        }
+
+        public Settings withIgnoreWhitespaces(boolean ignoreWhitespaces) {
+            this.ignoreWhitespaces = ignoreWhitespaces;
+            return this;
+        }
+
+        public Settings withContextLines(int contextLines) {
+            Arguments.check(contextLines >= 0, "contextLines must be a positive integer");
+            this.contextLines = contextLines;
+            return this;
+        }
+
+        public Settings withInlineOpeningChangeMarker(String inlineOpeningChangeMarker) {
+            this.inlineOpeningChangeMarker = Arguments.requireNonNull(inlineOpeningChangeMarker,
+                    "opening marker must not be null");
+            ;
+            return this;
+        }
+
+        public Settings withInlineClosingChangeMarker(String inlineClosingChangeMarker) {
+            this.inlineClosingChangeMarker = Arguments.requireNonNull(inlineClosingChangeMarker,
+                    "closing marker must not be null");
+            return this;
+        }
+
+        public Settings withDiffRenderer(DiffRenderer renderer) {
+            this.diffRenderer = Arguments.requireNonNull(renderer, "renderer must not be null");
+            return this;
+        }
+
+        private BiFunction<Tag, Boolean, String> inlineMarker() {
+            return (tag, isOpening) -> {
+                if (tag != Tag.CHANGE) {
+                    return "";
+                }
+                return isOpening ? inlineOpeningChangeMarker : inlineClosingChangeMarker;
+            };
+        }
+
+        private DiffRowGenerator buildDiffRowGenerator() {
+            return DiffRowGenerator.create()
+                    .showInlineDiffs(true)
+                    .lineNormalizer(Function.identity())
+                    .inlineDiffByWord(true)
+                    .ignoreWhiteSpaces(ignoreWhitespaces)
+                    .newTag(inlineMarker())
+                    .oldTag(inlineMarker())
+                    .build();
+        }
     }
 
-    public boolean hasDifference() {
-        return diffInterpreter.hasFailures(diffs)
-                || diffInterpreter.hasLineSeparatorDifference(expectedLineSeparator, actualLineSeparator);
+    private boolean hasLinebreakDifference() {
+        return expectedLineSeparator != actualLineSeparator && !settings.ignoreWhitespaces;
+    }
+
+    private boolean hasTextDifference() {
+        return diffRows.stream().map(DiffRow::getTag).anyMatch(tag -> tag != Tag.EQUAL);
+    }
+
+    public boolean differencesDetected() {
+        return hasLinebreakDifference() || hasTextDifference();
     }
 
     @Override
     public String toString() {
-        if (diffs.isEmpty()) {
-            return "";
-        }
+        final StringBuilder result = new StringBuilder();
+        final boolean hasTextDifference = hasTextDifference();
+        final boolean hasLinebreakDifference = hasLinebreakDifference();
 
-        final StringBuilder message = new StringBuilder();
+        if (hasLinebreakDifference) {
+            result.append("Strings differ in linebreaks. Expected: '")
+                    .append(expectedLineSeparator.displayName())
+                    .append("', Actual encountered: '").append(actualLineSeparator.displayName()).append("'");
 
-        if (diffInterpreter.hasLineSeparatorDifference(expectedLineSeparator, actualLineSeparator)) {
-            message.append(String.format(
-                    "Strings differ in linebreaks. Expected: '%s', Actual encountered: '%s'",
-                    expectedLineSeparator.displayName(), actualLineSeparator.displayName()));
-
-            if (diffs.size() == 1 && diffs.get(0).operation == Operation.EQUAL) {
-                return message.toString();
-            }
-
-            message.append(LineSeparator.SYSTEM).append(LineSeparator.SYSTEM);
-        }
-
-        final ListIterator<Diff> cursor = diffs.listIterator();
-        while (cursor.hasNext()) {
-            final boolean hasPrevious = cursor.hasPrevious();
-
-            final Diff current = cursor.next();
-            if (current.operation == Operation.EQUAL && !hasPrevious) {
-                // equal operation at the beginning
-                message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.START));
-            } else if (current.operation == Operation.EQUAL) {
-                if (cursor.hasNext()) {
-                    // equal operation between 2 changes
-                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.MIDDLE));
-                } else {
-                    // equal diff at the end
-                    message.append(diffInterpreter.renderEqualsDiff(current.text, EqualDiffPosition.END));
-                }
-            } else {
-                message.append(diffInterpreter.renderFailureDiff(current));
+            if (hasTextDifference) {
+                result.append(LineSeparator.SYSTEM)
+                        .append(LineSeparator.SYSTEM);
             }
         }
-        return message.toString();
+
+        if (hasTextDifference) {
+            result.append(settings.diffRenderer.renderDiff(diffRows, settings.contextLines));
+        }
+        return result.toString();
     }
 }

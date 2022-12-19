@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.6.1</version>
+        <version>1.7.0</version>
     </parent>
 
     <artifactId>snapshot-tests-bom</artifactId>
@@ -29,6 +29,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-jaxb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

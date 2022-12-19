@@ -21,6 +21,15 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 /**
  * Context object that pertains to the execution of a whole test class which is annotated
  * with {@link EnableSnapshotTests}.
+ * <p>
+ * In order to initiate the run of a test class which uses snapshot assertions, you need
+ * to meet two requirements:
+ * <ol>
+ * <li>You need to obtain a {@link SnapshotConfiguration} instance from the resp. test
+ * class via {@link SnapshotConfiguration#defaultConfigurationFor(Class)}. You can then
+ * create a {@link SnapshotTestContext} instance from that configuration.</li>
+ * <li>You need to call the lifecycle methods of the context object.</li>
+ * </ol>
  *
  * @author Simon Taddiken
  * @since 1.1.0
@@ -40,12 +49,13 @@ public final class SnapshotTestContext {
                 "snapshotConfiguration must not be null");
     }
 
+    @Deprecated(since = "1.7.0")
     public static SnapshotTestContext forTestClass(Class<?> testClass) {
         final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
         return new SnapshotTestContext(configuration);
     }
 
-    static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
+    public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
         return new SnapshotTestContext(snapshotConfiguration);
     }
 

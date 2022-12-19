@@ -14,13 +14,8 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestWatcher;
 
-/**
- * This class is only public so it can be referenced by the entry point annotation.
- *
- * @author Simon Taddiken
- */
 @API(status = Status.INTERNAL)
-public final class JUnit5SnapshotExtension implements
+class JUnit5SnapshotExtension implements
         ParameterResolver,
         BeforeAllCallback,
         AfterEachCallback,

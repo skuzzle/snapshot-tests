@@ -12,9 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
+import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
 
 /**
+ * <h1>Enabling snapshot tests</h1>
+ * <p>
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
  * can use snapshot assertions by declaring a parameter of type {@link Snapshot} in your
  * test case like this:
@@ -33,8 +35,8 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * <p>
  * <code>asText()</code> will 'serialize' actual test results using
  * {@link Object#toString()}. There are additional {@link StructuredDataProvider}
- * implementations that allow to serialize snapshots as json or xml. To use them, you need
- * to declare their respective maven modules as dependency.
+ * implementations that allow to serialize snapshots as json, xml or html. To use them,
+ * you need to declare their respective maven modules as dependency.
  *
  * <pre>
  *     &#64;Test
@@ -101,13 +103,22 @@ import de.skuzzle.test.snapshots.junit5.JUnit5SnapshotExtension;
  * @author Simon Taddiken
  * @see Snapshot
  * @see SnapshotNaming
+ * @see SnapshotDirectory
+ * @see SnapshotTestOptions
  * @see DeleteOrphanedSnapshots
  * @see ForceUpdateSnapshots
+ * @deprecated Since 1.7.0 - This class is deprecated in favor of the
+ *             {@link de.skuzzle.test.snapshots.junit5.EnableSnapshotTests} class within
+ *             the <code>junit5</code> package. Note that the variant in the
+ *             <code>junit5</code> package already comes with all the deprecated methods
+ *             removed and replaced with their respective alternatives. For details,
+ *             inspect the deprecation notes on the attributes within this class.
  */
 @Retention(RUNTIME)
 @Target({ TYPE })
-@ExtendWith(JUnit5SnapshotExtension.class)
-@API(status = Status.STABLE)
+@ExtendWith(LegacyJUnit5SnapshotExtension.class)
+@API(status = Status.DEPRECATED, since = "1.7.0")
+@Deprecated(since = "1.7.0", forRemoval = true)
 public @interface EnableSnapshotTests {
 
     /**
@@ -116,7 +127,10 @@ public @interface EnableSnapshotTests {
      * package name of the test class.
      *
      * @return The relative directory to store the snapshots.
+     * @deprecated Since 1.7.0 - Use {@link SnapshotDirectory} annotation instead.
      */
+    @Deprecated(since = "1.7.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     String snapshotDirectory() default "";
 
     /**
@@ -133,9 +147,10 @@ public @interface EnableSnapshotTests {
      * @deprecated Since 1.1.0 - Use the {@link ForceUpdateSnapshots} annotation instead.
      * @return Whether to update the stored snapshots.
      * @see ChooseAssertions#justUpdateSnapshot()
+     * @see ForceUpdateSnapshots
      */
     @API(status = Status.DEPRECATED, since = "1.1.0")
-    @Deprecated(since = "1.1.0")
+    @Deprecated(since = "1.1.0", forRemoval = true)
     boolean forceUpdateSnapshots() default false;
 
     /**
@@ -147,6 +162,10 @@ public @interface EnableSnapshotTests {
      * collected and reported after the test method completed.
      *
      * @return Whether to enable soft assertions. Defaults to <code>false</code>.
+     * @deprecated Since 1.7.0 - Soft assertions will no longer be supported from version
+     *             2.0 on. You could use AssertJ's SoftAssertions as a replacement.
      */
+    @Deprecated(since = "1.7.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.7.0")
     boolean softAssertions() default false;
 }
