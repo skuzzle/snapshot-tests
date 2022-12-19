@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 /**
@@ -32,6 +33,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * @author Simon Taddiken
  * @since 1.7.0
  * @see SnapshotDirectoryStrategy
+ * @See {@link ChooseDirectory}
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })

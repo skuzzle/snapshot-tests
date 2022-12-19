@@ -3,7 +3,7 @@ package de.skuzzle.test.snapshots.data.text;
 import java.util.stream.Collectors;
 
 /**
- * Used to represent a file's line separator.
+ * Used to represent and detect a file's line separator character(s).
  *
  * @since 1.5.0
  * @author Simon Taddiken
