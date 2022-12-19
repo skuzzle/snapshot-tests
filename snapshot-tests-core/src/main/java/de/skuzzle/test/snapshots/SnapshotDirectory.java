@@ -33,7 +33,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * @author Simon Taddiken
  * @since 1.7.0
  * @see SnapshotDirectoryStrategy
- * @See {@link ChooseDirectory}
+ * @see {@link ChooseDirectory}
  */
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
