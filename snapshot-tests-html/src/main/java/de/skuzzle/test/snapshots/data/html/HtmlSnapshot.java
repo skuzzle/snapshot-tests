@@ -13,7 +13,6 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
-import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitStructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
 
@@ -172,7 +171,7 @@ public final class HtmlSnapshot implements StructuredDataProvider {
     @Override
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = new HtmlSnapshotSerializer(prettyPrintSnapshot);
-        final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(compareAssertConsumer,
+        final StructuralAssertions structuralAssertions = new HtmlStructuralAssertions(compareAssertConsumer,
                 differenceEvaluator);
         return StructuredData.with(snapshotSerializer, structuralAssertions);
     }

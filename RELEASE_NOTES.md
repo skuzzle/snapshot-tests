@@ -1,4 +1,5 @@
 * [#51](https://github.com/skuzzle/snapshot-tests/issues/51): Line numbers in diff are off by number of header lines.
+* HTML comparison used generic `XmlUnitStructuralAssertions` instead of specialized `HtmlStructuralAssertions`
 
 Maven Central coordinates for this release:
 
