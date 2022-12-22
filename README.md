@@ -222,7 +222,7 @@ test class. It allows to configure some details of the snapshot testing engine.
 #### Generating additional context files
 Besides persisting the actual snapshot file, the framework can be advised to generate additional context files via 
 `@SnapshotTestOptions.alwaysPersistActualResult()` and `@SnapshotTestOptions.alwaysPersistRawResult()`.
-Disregarding the outcome of the snapshot assertion, these options will advises the framework to always create a file
+Disregarding the outcome of the snapshot assertion, these options will advise the framework to always create a file
 containing the latest actual test results. The `..._raw` file will contain the pure serialized actual result without 
 the snapshot header.
 

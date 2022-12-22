@@ -117,7 +117,7 @@ public @interface SnapshotTestOptions {
          */
         ACCORDING_TO_RAW_DATA,
         /**
-         * Adds an offset according to the number of snapshot file eader lines. Line
+         * Adds an offset according to the number of snapshot file header lines. Line
          * number 1 in rendered diffs maps to line number 1 in persisted snapshot files.
          * Consequently, real snapshot data starts at 1 + Number of header lines + 1.
          * <p>
