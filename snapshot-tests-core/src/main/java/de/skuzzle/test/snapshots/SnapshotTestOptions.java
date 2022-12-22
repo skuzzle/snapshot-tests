@@ -99,10 +99,12 @@ public @interface SnapshotTestOptions {
     boolean alwaysPersistRawResult() default false;
 
     /**
-     * Defines whether an offset is added to the line numbers when rendering diffs.
+     * Defines whether an offset is added to the line numbers when rendering diffs in
+     * assertion failure messages.
      *
      * @author Simon
      * @since 1.7.1
+     * @see SnapshotTestOptions#renderLineNumbers()
      */
     @API(status = Status.EXPERIMENTAL, since = "1.7.1")
     enum DiffLineNumbers {

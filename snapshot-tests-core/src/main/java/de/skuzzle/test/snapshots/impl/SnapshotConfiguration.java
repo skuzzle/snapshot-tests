@@ -53,12 +53,46 @@ public interface SnapshotConfiguration {
      */
     Class<?> testClass();
 
+    /**
+     * Determines whether to persist most recent actual test result in a separate file
+     * next to the snapshot.
+     *
+     * @param testMethod The test method.
+     * @return Whether to persist most recent actual result.
+     * @since 1.7.0
+     */
+    @API(status = Status.INTERNAL, since = "1.7.0")
     boolean alwaysPersistActualResult(Method testMethod);
 
+    /**
+     * Determines whether to persist raw snapshot result in a separate file.
+     *
+     * @param testMethod The test method.
+     * @return Whether to persist raw results.
+     * @since 1.7.0
+     */
+    @API(status = Status.INTERNAL, since = "1.7.0")
     boolean alwaysPersistRawResult(Method testMethod);
 
+    /**
+     * Defines how many lines of context are rendered around a changed line-
+     *
+     * @param testMethod The test method.
+     * @return Number of context lines.
+     * @since 1.7.0
+     */
+    @API(status = Status.INTERNAL, since = "1.7.0")
     int textDiffContextLines(Method testMethod);
 
+    /**
+     * Whether to add an offset to the line numbers in rendered diffs so that the rendered
+     * line numbers match the physical lines in the snapshot file.
+     *
+     * @param testMethod The test method.
+     * @return Whether to add a line number offset.
+     * @since 1.7.1
+     */
+    @API(status = Status.INTERNAL, since = "1.7.1")
     boolean addOffsetToReportedLinenumbers(Method testMethod);
 
     /**
