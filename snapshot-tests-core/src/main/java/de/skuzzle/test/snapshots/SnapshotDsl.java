@@ -180,8 +180,8 @@ public interface SnapshotDsl {
          * Implementations are generally provided by each of the available extension
          * modules and follow the naming scheme <code>[Format]Snapshot</code>. The
          * following implementations are provided by the respective maven artifacts:
-         * <table summary="StructuredDataProvider implementations">
-         * <thead>
+         * <table>
+         * <caption>StructuredDataProvider implementations</caption> <thead>
          * <tr>
          * <th>StructuredDataProvider</th>
          * <th>Maven Artifact</th>
