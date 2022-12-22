@@ -46,6 +46,21 @@ public @interface SnapshotTestOptions {
     int textDiffContextLines() default DEFAULT_CONTEXT_LINES;
 
     /**
+     * Controls whether an offset is added to the line numbers that are displayed when
+     * rendering diffs. You can choose to render line numbers according to the original
+     * raw test result or according to the physical lines in the persisted snapshot files.
+     * The latter includes some header information at the beginning of the file which add
+     * an offset to the actual data lines.
+     * <p>
+     * Defaults to {@link DiffLineNumbers#ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE}.
+     *
+     * @return How to calculate line numbers in rendered diffs.
+     * @since 1.7.1
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.1")
+    DiffLineNumbers renderLineNumbers() default DiffLineNumbers.ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
+
+    /**
      * Whether to always persist the latest actual test result in a parallel file next to
      * the <code>.snapshot</code> file. The actual result will be persisted in a file with
      * identical name but with <code>.snapshot_actual</code> file extension.
@@ -82,5 +97,33 @@ public @interface SnapshotTestOptions {
      * @return Whether to additionally persist the raw snapshot results.
      */
     boolean alwaysPersistRawResult() default false;
+
+    /**
+     * Defines whether an offset is added to the line numbers when rendering diffs.
+     *
+     * @author Simon
+     * @since 1.7.1
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.7.1")
+    enum DiffLineNumbers {
+        /**
+         * No offset will be added to line numbers. Line number 1 in rendered diffs maps
+         * directly to line number 1 in the raw serialized test output.
+         * <p>
+         * Note: when using this mode, the line numbers reported in assertion failure
+         * message to not match the line numbers in persisted snapshot files.
+         */
+        ACCORDING_TO_RAW_DATA,
+        /**
+         * Adds an offset according to the number of snapshot file eader lines. Line
+         * number 1 in rendered diffs maps to line number 1 in persisted snapshot files.
+         * Consequently, real snapshot data starts at 1 + Number of header lines + 1.
+         * <p>
+         * Note: this option might be preferable over {@link #ACCORDING_TO_RAW_DATA} as
+         * line numbers reported in assertion failures directly map to physical lines
+         * within the persisted snapshot file.
+         */
+        ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
+    }
 
 }

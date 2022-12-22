@@ -9,6 +9,7 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -103,6 +104,14 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
         return snapshotTestOptions == null
                 ? DEFAULT_CONTEXT_LINES
                 : snapshotTestOptions.textDiffContextLines();
+    }
+
+    @Override
+    public boolean addOffsetToReportedLinenumbers(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions == null
+                ? true
+                : snapshotTestOptions.renderLineNumbers() == DiffLineNumbers.ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
     }
 
     @Override

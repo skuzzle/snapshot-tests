@@ -79,4 +79,9 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     public int textDiffContextLines(Method testMethod) {
         return delegate.textDiffContextLines(testMethod);
     }
+
+    @Override
+    public boolean addOffsetToReportedLinenumbers(Method testMethod) {
+        return delegate.addOffsetToReportedLinenumbers(testMethod);
+    }
 }

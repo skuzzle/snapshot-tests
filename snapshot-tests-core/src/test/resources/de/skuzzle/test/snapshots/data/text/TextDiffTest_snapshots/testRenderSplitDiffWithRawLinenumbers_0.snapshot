@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: testRenderDiffSplit_0
+snapshot-name: testRenderSplitDiffWithRawLinenumbers_0
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.data.text.TextDiffTest
-test-method: testRenderDiffSplit
+test-method: testRenderSplitDiffWithRawLinenumbers
 
 [...]
   6   Some unchanged lines6                                                                                                              |  6   Some unchanged lines6

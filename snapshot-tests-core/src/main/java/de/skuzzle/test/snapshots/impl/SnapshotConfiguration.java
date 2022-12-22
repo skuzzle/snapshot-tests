@@ -59,6 +59,8 @@ public interface SnapshotConfiguration {
 
     int textDiffContextLines(Method testMethod);
 
+    boolean addOffsetToReportedLinenumbers(Method testMethod);
+
     /**
      * Whether to delete orphaned snapshot files during test execution.
      *

@@ -35,13 +35,13 @@ final class SplitDiffRenderer implements DiffRenderer {
     }
 
     @Override
-    public String renderDiff(List<DiffRow> rows, int contextLines) {
+    public String renderDiff(List<DiffRow> rows, int contextLines, int lineNumberOffset) {
         final int columnWidth = rows.stream().map(DiffRow::getOldLine).mapToInt(String::length).max().orElse(80);
         final int rowCountEstimate = rows.size();
         final int rowNumberWidth = Math.max(2, (int) Math.log10(rowCountEstimate) + 1) + 1;
 
-        int expectedLine = 1;
-        int actualLine = 1;
+        int expectedLine = 1 + lineNumberOffset;
+        int actualLine = 1 + lineNumberOffset;
         final StringBuilder b = new StringBuilder();
 
         int indexOfLastDifference = -1;

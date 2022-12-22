@@ -235,20 +235,24 @@ final class SnapshotTestImpl implements Snapshot {
             }
 
             final String serializedActual = snapshotSerializer.serialize(actual);
+            final int lineNumberOffset = configuration.addOffsetToReportedLinenumbers(testMethod)
+                    ? snapshotFile.header().lineNumberOffset()
+                    : 0;
 
             writeAdditionalContextFiles(snapshotFilePaths, SnapshotFile.of(snapshotHeader, serializedActual));
 
-            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath)
-                    .map(assertionError -> SnapshotTestResult.forFailedTest(
-                            snapshotFilePaths.snapshotFile,
-                            snapshotFilePaths.latestActualSnapshotFile,
-                            snapshotFilePaths.rawSnapshotFile,
-                            snapshotFile, serializedActual, assertionError))
-                    .orElseGet(() -> SnapshotTestResult.of(
-                            snapshotFilePaths.snapshotFile,
-                            snapshotFilePaths.latestActualSnapshotFile,
-                            snapshotFilePaths.rawSnapshotFile,
-                            SnapshotStatus.ASSERTED, snapshotFile, serializedActual));
+            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath,
+                    lineNumberOffset)
+                            .map(assertionError -> SnapshotTestResult.forFailedTest(
+                                    snapshotFilePaths.snapshotFile,
+                                    snapshotFilePaths.latestActualSnapshotFile,
+                                    snapshotFilePaths.rawSnapshotFile,
+                                    snapshotFile, serializedActual, assertionError))
+                            .orElseGet(() -> SnapshotTestResult.of(
+                                    snapshotFilePaths.snapshotFile,
+                                    snapshotFilePaths.latestActualSnapshotFile,
+                                    snapshotFilePaths.rawSnapshotFile,
+                                    SnapshotStatus.ASSERTED, snapshotFile, serializedActual));
         }
         recordSnapshotTestResult(result);
 
@@ -281,13 +285,13 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private Optional<Throwable> compareTestResults(StructuralAssertions structuralAssertions, String storedSnapshot,
-            String serializedActual, Path snapshotFile) {
+            String serializedActual, Path snapshotFile, int lineNumberOffset) {
         try {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);
             return Optional.empty();
         } catch (final AssertionError e) {
             final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot,
-                    snapshotFile);
+                    snapshotFile, lineNumberOffset);
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
@@ -295,7 +299,7 @@ final class SnapshotTestImpl implements Snapshot {
     }
 
     private AssertionError toDiffableAssertionError(AssertionError original, String serializedActual,
-            String storedSnapshot, Path snapshotFile) {
+            String storedSnapshot, Path snapshotFile, int lineNumberOffset) {
         final StringBuilder assertionMessage = new StringBuilder();
         if (original.getMessage() != null) {
             assertionMessage.append(original.getMessage());
@@ -313,7 +317,7 @@ final class SnapshotTestImpl implements Snapshot {
                     .append(System.lineSeparator())
                     .append("Full unified diff of actual result and stored snapshot:")
                     .append(System.lineSeparator())
-                    .append(testDiff);
+                    .append(testDiff.renderDiffWithOffset(lineNumberOffset));
         }
         final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(),
                 storedSnapshot, serializedActual, original.getCause());

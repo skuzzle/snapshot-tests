@@ -1,22 +1,4 @@
-* [#19](https://github.com/skuzzle/snapshot-tests/issues/19): Deprecate the whole `@EnabledSnapshotTests` annotation in favor of annotation with same name within `junit5` package
-* [#30](https://github.com/skuzzle/snapshot-tests/issues/30): Deprecate `EnableSnapshotTests.softAssertions`. Soft assertions will no longer be supported in the next major version
-* [#32](https://github.com/skuzzle/snapshot-tests/issues/32): Support for jakarta namespaces via new `snapshot-tests-jaxb-jakarta` module
-* [#47](https://github.com/skuzzle/snapshot-tests/issues/47): Add new `SnapshotTestOptions` annotation which allows to configure some detailed aspects of the snapshot engine
-* Deprecate `EnableSnapshotTests.snapshotDirectory` in favor of new annotation `@SnapshotDirectory`
-* Deprecate `SnapshotTestResult.serializedSnapshot()` in favor of `SnapshotTestResult.snapshotFile()`
-* Add `SnapshotTestResult.serializedActual()`
-* Add `SnapshotTestResult.actualResultFile()`
-* Add `SnapshotTestResult.rawActualResultFile()`
-* Add the possibility to configure the number of context lines printed around a change in the default unified diff via `@SnapshotTestOptions.textDiffContextLines()`
-* Add the possibility to always persist the latest actual result as a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistActualResult()`
-* Add the possibility to additionally persist the raw actual result in a sibling file of the real `.snapshot` file via `@SnapshotTestOptions.alwaysPersistRawResult()`. The raw result does not contain the snapshot header information.
-* Improve compatibility with JUnit5's `@Nested` tests (general support for `@Nested` is still experimental though)
-* Unified diffs within assertion failure messages now come with full line information
-
-
-_Note_: This release comes with a few major deprecations that are preparing our transition to the next major version 
-that is 2.0. That version will likely see all those deprecated methods to be removed. In general, simple drop in 
-replacements are provided and documented to ensure an easy migration.
+* [#51](https://github.com/skuzzle/snapshot-tests/issues/51): Line numbers in diff are off by number of header lines.
 
 Maven Central coordinates for this release:
 
