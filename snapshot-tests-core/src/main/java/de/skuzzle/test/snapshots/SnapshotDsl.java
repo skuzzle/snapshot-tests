@@ -176,6 +176,36 @@ public interface SnapshotDsl {
          * Specify the serialization format <em>and</em> the way in which serialized
          * objects are compared. A {@link StructuredData} instance combines both a
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
+         * <p>
+         * Implementations are generally provided by each of the available extension
+         * modules and follow the naming scheme <code>[Format]Snapshot</code>. The
+         * following implementations are provided by the respective maven artifacts:
+         * <table>
+         * <caption>StructuredDataProvider implementations</caption> <thead>
+         * <tr>
+         * <th>StructuredDataProvider</th>
+         * <th>Maven Artifact</th>
+         * </tr>
+         * </thead> <tbody>
+         * <tr>
+         * <td>{@link TextSnapshot}</td>
+         * <td>included in <code>snapshot-tests-core</code></td>
+         * </tr>
+         * <tr>
+         * <td><code>de.skuzzle.tests.snapshots.data.JsonSnapshot</code></td>
+         * <td><code>snapshot-tests-jackson</code></td>
+         * </tr>
+         * <tr>
+         * <td><code>de.skuzzle.tests.snapshots.data.XmlSnapshot</code></td>
+         * <td><code>snapshot-tests-jaxb</code> or
+         * <code>snapshot-tests-jaxb-jakarta</code></td>
+         * </tr>
+         * <tr>
+         * <td><code>de.skuzzle.tests.snapshots.data.HtmlSnapshot</code></td>
+         * <td><code>snapshot-tests-html</code></td>
+         * </tr>
+         * </tbody>
+         * </table>
          *
          * @param structuredDataProvider The {@link StructuredDataProvider} instance.
          * @return Fluent API object for performing the snapshot assertion. Do NOT assume

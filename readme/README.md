@@ -198,7 +198,7 @@ By default, snapshots are stored in a directory structure according to their tes
 `src/test/resources`. You can change the relative path using 
 
 ```java
-@EnableSnapshotTests(snapshotDirectory = "snapshots")
+SnapshotDirectory("snapshots")
 ```
 Currently it is not possible to use a directory outside `src/test/resources`.
 
@@ -222,7 +222,7 @@ test class. It allows to configure some details of the snapshot testing engine.
 #### Generating additional context files
 Besides persisting the actual snapshot file, the framework can be advised to generate additional context files via 
 `@SnapshotTestOptions.alwaysPersistActualResult()` and `@SnapshotTestOptions.alwaysPersistRawResult()`.
-Disregarding the outcome of the snapshot assertion, these options will advises the framework to always create a file
+Disregarding the outcome of the snapshot assertion, these options will advise the framework to always create a file
 containing the latest actual test results. The `..._raw` file will contain the pure serialized actual result without 
 the snapshot header.
 
@@ -236,3 +236,14 @@ file:
 #### Showing more context in unified diffs
 Using `@SnapshotTestOptions.textDiffContextLines()` you can advise the framework to print more lines surrounding a
 detected change in the unified diffs. Per default, we will only print 5 lines around a change.
+
+
+#### Line number behavior in diffs
+By default, line numbers in the diffs that are rendered in our assertion failure messages reflect the physical line 
+number within the snapshot file. That number differs from the line number within the raw test result data because 
+snapshot files contain some header information at the beginning.
+If you want line numbers in the diffs to reflect the number within the raw data, you can use
+
+```java
+@SnapshotTestOptions(renderLineNumbers = DiffLineNumbers.ACCORDING_TO_RAW_DATA)
+```

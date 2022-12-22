@@ -6,5 +6,5 @@ import com.github.difflib.text.DiffRow;
 
 interface DiffRenderer {
 
-    String renderDiff(List<DiffRow> rows, int contextLines);
+    String renderDiff(List<DiffRow> rows, int contextLines, int lineNumerOffset);
 }

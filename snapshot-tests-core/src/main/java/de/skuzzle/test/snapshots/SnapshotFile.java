@@ -176,6 +176,19 @@ public final class SnapshotFile {
             return new SnapshotHeader(values);
         }
 
+        /**
+         * Returns the number of lines (including the blank separator line) that the
+         * header information are taking at the beginning of the snapshot file.
+         *
+         * @return Number of lines in the persisted snapshot file that are taken by header
+         *         information.
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.7.1")
+        public int lineNumberOffset() {
+            // +1 to include the blank separator line
+            return this.values.size() + 1;
+        }
+
         public String getOrDefault(String key, String defaultValue) {
             final String value = values.get(Arguments.requireNonNull(key, "key must not be null"));
             return value == null ? defaultValue : value;

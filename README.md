@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.7.0/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.7.0)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.7.1/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.7.1)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -13,17 +13,17 @@ serialized version of the object during the first test execution and during subs
 actual object against the stored snapshot.
 
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.7.0/jar)
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.7.0/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.0/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.0/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.7.0/jar)
+- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.7.1/jar)
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.7.1/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.1/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.1/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.7.1/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.7.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.7.0)
+release [1.7.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.7.1)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
@@ -198,7 +198,7 @@ By default, snapshots are stored in a directory structure according to their tes
 `src/test/resources`. You can change the relative path using 
 
 ```java
-@EnableSnapshotTests(snapshotDirectory = "snapshots")
+SnapshotDirectory("snapshots")
 ```
 Currently it is not possible to use a directory outside `src/test/resources`.
 
@@ -222,7 +222,7 @@ test class. It allows to configure some details of the snapshot testing engine.
 #### Generating additional context files
 Besides persisting the actual snapshot file, the framework can be advised to generate additional context files via 
 `@SnapshotTestOptions.alwaysPersistActualResult()` and `@SnapshotTestOptions.alwaysPersistRawResult()`.
-Disregarding the outcome of the snapshot assertion, these options will advises the framework to always create a file
+Disregarding the outcome of the snapshot assertion, these options will advise the framework to always create a file
 containing the latest actual test results. The `..._raw` file will contain the pure serialized actual result without 
 the snapshot header.
 
@@ -236,3 +236,14 @@ file:
 #### Showing more context in unified diffs
 Using `@SnapshotTestOptions.textDiffContextLines()` you can advise the framework to print more lines surrounding a
 detected change in the unified diffs. Per default, we will only print 5 lines around a change.
+
+
+#### Line number behavior in diffs
+By default, line numbers in the diffs that are rendered in our assertion failure messages reflect the physical line 
+number within the snapshot file. That number differs from the line number within the raw test result data because 
+snapshot files contain some header information at the beginning.
+If you want line numbers in the diffs to reflect the number within the raw data, you can use
+
+```java
+@SnapshotTestOptions(renderLineNumbers = DiffLineNumbers.ACCORDING_TO_RAW_DATA)
+```

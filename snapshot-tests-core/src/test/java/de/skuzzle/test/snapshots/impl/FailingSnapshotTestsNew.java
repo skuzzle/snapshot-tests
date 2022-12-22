@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
@@ -218,8 +220,8 @@ public class FailingSnapshotTestsNew {
                         + "\t%s%n"
                         + "%n"
                         + "Full unified diff of actual result and stored snapshot:%n"
-                        + "  1    - test%n"
-                        + "     1 + NOT test",
+                        + "  7    - test%n"
+                        + "     7 + NOT test",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatch_snapshots/testWithSnapshot_0.snapshot")));
     }
 
@@ -227,6 +229,35 @@ public class FailingSnapshotTestsNew {
     static class FailBecauseSnapshotMismatch {
 
         @Test
+        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
+        }
+    }
+
+    @Test
+    void testFailBecauseSnapshotMismatchWithRawLinenumbers() throws Throwable {
+        frameworkTest
+                .expectTestcase(FailBecauseSnapshotMismatchWithRawLinenumbers.class)
+                .toFailWithExceptionWhich()
+                .isInstanceOf(AssertionError.class)
+                .hasMessage(String.format("Stored snapshot doesn't match actual result.%n"
+                        + "%nSnapshot location:%n"
+                        + "\t%s%n"
+                        + "%n"
+                        + "Full unified diff of actual result and stored snapshot:%n"
+                        + "  1    - test%n"
+                        + "     1 + NOT test",
+                        Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatchWithRawLinenumbers_snapshots/testWithSnapshot_0.snapshot")));
+    }
+
+    @EnableSnapshotTests
+    static class FailBecauseSnapshotMismatchWithRawLinenumbers {
+
+        @Test
+        @SnapshotTestOptions(renderLineNumbers = DiffLineNumbers.ACCORDING_TO_RAW_DATA)
         void testWithSnapshot(Snapshot snapshot) throws Throwable {
             MetaTest.assumeMetaTest();
 
@@ -248,10 +279,10 @@ public class FailingSnapshotTestsNew {
                         + "Full unified diff of actual result and stored snapshot:%n"
                         + "Strings differ in linebreaks. Expected: 'CRLF(\\r\\n)', Actual encountered: 'LF(\\n)'%n"
                         + "%n"
-                        + "  1    - <<line2>>%n"
-                        + "     1 + <<line4>>%n"
-                        + "  2    - <<line3>>%n"
-                        + "     2 + <<line5>>",
+                        + "  7    - <<line2>>%n"
+                        + "     7 + <<line4>>%n"
+                        + "  8    - <<line3>>%n"
+                        + "     8 + <<line5>>",
                         Path.of("src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot")));
     }
 
