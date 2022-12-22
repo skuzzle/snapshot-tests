@@ -66,35 +66,31 @@ final class SnapshotDslImpl implements ChooseActual, ChooseDataFormat, ChooseStr
     }
 
     @Override
-    public SnapshotTestResult matchesSnapshotStructure() throws Exception {
+    public SnapshotTestResult matchesSnapshotStructure() {
         return this.matchesAccordingTo(structuralAssertions);
     }
 
     @Override
     public SnapshotTestResult matchesAccordingTo(StructuralAssertions structuralAssertions) {
         Arguments.requireNonNull(structuralAssertions, "structuralAssertions must not be null");
-        try {
-            return snapshot.executeAssertionWith(snapshotSerializer, structuralAssertions, actual);
-        } catch (final Exception e) {
-            throw new IllegalStateException("Technical problem while performing the snapshot assertion", e);
-        }
+        return terminal(TerminalOperation.ASSERT, structuralAssertions);
     }
 
     @Override
     public SnapshotTestResult justUpdateSnapshot() {
-        try {
-            return snapshot.justUpdateSnapshotWith(snapshotSerializer, actual);
-        } catch (final Exception e) {
-            throw new IllegalStateException("Technical problem while updating the snapshot", e);
-        }
+        return terminal(TerminalOperation.FORCE_UPDATE, this.structuralAssertions);
     }
 
     @Override
     public SnapshotTestResult disabled() {
+        return terminal(TerminalOperation.DISABLE, this.structuralAssertions);
+    }
+
+    private SnapshotTestResult terminal(TerminalOperation operation, StructuralAssertions structuralAssertions) {
         try {
-            return snapshot.disabled(snapshotSerializer, structuralAssertions, actual);
+            return snapshot.executeTerminalOperation(snapshotSerializer, structuralAssertions, operation, actual);
         } catch (final Exception e) {
-            throw new IllegalStateException("Technical problem while handling diabled assertion", e);
+            throw new IllegalStateException("Technical problem while performing snapshot test terminal operation", e);
         }
     }
 }

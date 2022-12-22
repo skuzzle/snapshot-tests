@@ -25,6 +25,7 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
 import de.skuzzle.test.snapshots.data.text.TextDiffAssertionError;
+import de.skuzzle.test.snapshots.impl.SnapshotAssertionContext.ContextFilePaths;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
 
@@ -87,8 +88,8 @@ final class SnapshotTestImpl implements Snapshot {
                 SnapshotHeader.DYNAMIC_DIRECTORY, "" + (this.directoryOverride != null)));
     }
 
-    private SnapshotFilePaths determineSnapshotFilePaths(String snapshotName) throws IOException {
-        return new SnapshotFilePaths(
+    private ContextFilePaths determineContextFilePaths(String snapshotName) throws IOException {
+        return new ContextFilePaths(
                 determineSnapshotFile(snapshotName),
                 determineSnapshotFileActual(snapshotName),
                 determineSnapshotFileRaw(snapshotName));
@@ -109,7 +110,7 @@ final class SnapshotTestImpl implements Snapshot {
         return determineSnapshotDirectory().resolve(snapshotFileName);
     }
 
-    private void writeAdditionalContextFiles(SnapshotFilePaths snapshotFilePaths, SnapshotFile actualSnapshotFile)
+    private void writeAdditionalContextFiles(ContextFilePaths snapshotFilePaths, SnapshotFile actualSnapshotFile)
             throws IOException {
         final Path snapshotFileActual = snapshotFilePaths.latestActualSnapshotFile;
         if (configuration.alwaysPersistActualResult(testMethod)) {
@@ -134,126 +135,122 @@ final class SnapshotTestImpl implements Snapshot {
         return snapshotDirectory;
     }
 
-    SnapshotTestResult justUpdateSnapshotWith(SnapshotSerializer snapshotSerializer, Object actual) throws Exception {
-        state.reset();
-        if (actual == null) {
-            throw new AssertionError("Expected actual not to be null in order to take initial snapshot");
-        }
-
+    private SnapshotAssertionContext newAssertionContext(SnapshotSerializer snapshotSerializer,
+            TerminalOperation operation, Object actual)
+            throws Exception {
         final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
-        final SnapshotFilePaths snapshotFilePaths = determineSnapshotFilePaths(snapshotName);
+        final ContextFilePaths contextFilePaths = determineContextFilePaths(snapshotName);
+        final Path snapshotFilePath = contextFilePaths.snapshotFile;
 
-        final String serializedActual = snapshotSerializer.serialize(actual);
-
-        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
-        final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
-                .writeTo(snapshotFilePaths.snapshotFile);
-        writeAdditionalContextFiles(snapshotFilePaths, snapshotFile);
-
-        final SnapshotTestResult result = SnapshotTestResult.of(
-                snapshotFilePaths.snapshotFile,
-                snapshotFilePaths.latestActualSnapshotFile,
-                snapshotFilePaths.rawSnapshotFile,
-                SnapshotStatus.UPDATED_FORCEFULLY, snapshotFile, serializedActual);
-
-        recordSnapshotTestResult(result);
-
-        return result;
-    }
-
-    private void recordSnapshotTestResult(final SnapshotTestResult result) {
-        this.localResultCollector.recordSnapshotTestResult(result);
-        this.context.recordSnapshotTestResult(result);
-    }
-
-    SnapshotTestResult disabled(SnapshotSerializer snapshotSerializer,
-            StructuralAssertions structuralAssertions,
-            Object actual) throws Exception {
-        state.reset();
-        final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
-        final SnapshotFilePaths snapshotFilePaths = determineSnapshotFilePaths(snapshotName);
-
-        final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
-
-        final String serializedActual = actual == null
-                ? UNAVAILABLE_BECAUSE_ACTUAL_WAS_NULL
-                : snapshotSerializer.serialize(actual);
-
-        final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual);
-        writeAdditionalContextFiles(snapshotFilePaths, snapshotFile);
-
-        final SnapshotTestResult result = SnapshotTestResult.of(
-                snapshotFilePaths.snapshotFile,
-                snapshotFilePaths.latestActualSnapshotFile,
-                snapshotFilePaths.rawSnapshotFile,
-                SnapshotStatus.DISABLED, snapshotFile, serializedActual);
-
-        recordSnapshotTestResult(result);
-        return result;
-    }
-
-    SnapshotTestResult executeAssertionWith(SnapshotSerializer snapshotSerializer,
-            StructuralAssertions structuralAssertions,
-            Object actual) throws Exception {
-        state.reset();
-        final String snapshotName = namingStrategy.determineSnapshotName(testMethod, localResultCollector.size());
-        final SnapshotFilePaths snapshotFilePaths = determineSnapshotFilePaths(snapshotName);
-        final Path snapshotFilePath = snapshotFilePaths.snapshotFile;
-
-        final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots(testMethod);
+        final boolean disableAssertion = operation == TerminalOperation.DISABLE;
+        final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots(testMethod)
+                || operation == TerminalOperation.FORCE_UPDATE;
         final boolean snapshotFileAlreadyExists = Files.exists(snapshotFilePath);
 
         final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName);
+        final String serializedActual = actual == null
+                ? UNAVAILABLE_BECAUSE_ACTUAL_WAS_NULL
+                : snapshotSerializer.serialize(actual);
+        final SnapshotFile actualSnapshotFile = SnapshotFile.of(snapshotHeader, serializedActual);
+
+        return new SnapshotAssertionContext(snapshotName,
+                contextFilePaths,
+                actualSnapshotFile,
+                disableAssertion,
+                forceUpdateSnapshots,
+                snapshotFileAlreadyExists, operation);
+    }
+
+    private SnapshotStatus determineStatus(SnapshotAssertionContext snapshotAssertionContext) {
+        if (snapshotAssertionContext.isDisableAssertion()) {
+            return SnapshotStatus.DISABLED;
+        } else if (!snapshotAssertionContext.isSnapshotFileAreadyExists()) {
+            return SnapshotStatus.CREATED_INITIALLY;
+        } else if (snapshotAssertionContext.isForceUpdateSnapshots()) {
+            return SnapshotStatus.UPDATED_FORCEFULLY;
+        } else {
+            return SnapshotStatus.ASSERTED;
+        }
+    }
+
+    private boolean decideWriteContextFiles(SnapshotAssertionContext snapshotAssertionContext) {
+        return !snapshotAssertionContext.isDisableAssertion();
+    }
+
+    private boolean decideCheckNull(SnapshotAssertionContext snapshotAssertionContext) {
+        return !snapshotAssertionContext.isDisableAssertion();
+    }
+
+    SnapshotTestResult executeTerminalOperation(SnapshotSerializer snapshotSerializer,
+            StructuralAssertions structuralAssertions, TerminalOperation operation,
+            Object actual) throws Exception {
+        state.reset();
+
+        final SnapshotAssertionContext snapshotAssertionContext = newAssertionContext(
+                snapshotSerializer, operation, actual);
+
+        if (decideCheckNull(snapshotAssertionContext)) {
+            if (actual == null) {
+                throw new AssertionError("Expected actual not to be null in order to take snapshot");
+            }
+        }
+
+        final SnapshotFile actualSnapshotFile = snapshotAssertionContext.getActualSnapshotFile();
+
+        if (decideWriteContextFiles(snapshotAssertionContext)) {
+            writeAdditionalContextFiles(snapshotAssertionContext.getContextFiles(), actualSnapshotFile);
+        }
+
+        final String serializedActual = actualSnapshotFile.snapshot();
+        final SnapshotStatus status = determineStatus(snapshotAssertionContext);
 
         final SnapshotTestResult result;
-        if (forceUpdateSnapshots || !snapshotFileAlreadyExists) {
-            if (actual == null) {
-                throw new AssertionError("Expected actual not to be null in order to take initial snapshot");
-            }
+        switch (status) {
+        case ASSERTED:
+            final SnapshotFile existingSnapshotFile = readSnapshotFileAndUpdateHeader(
+                    snapshotAssertionContext.getContextFiles().snapshotFile,
+                    snapshotAssertionContext.getActualSnapshotFile().header());
 
-            final String serializedActual = snapshotSerializer.serialize(actual);
+            final String serializedExpected = existingSnapshotFile.snapshot();
 
-            final SnapshotFile snapshotFile = SnapshotFile.of(snapshotHeader, serializedActual)
-                    .writeTo(snapshotFilePath);
-
-            writeAdditionalContextFiles(snapshotFilePaths, snapshotFile);
-
-            final SnapshotStatus status = snapshotFileAlreadyExists
-                    ? SnapshotStatus.UPDATED_FORCEFULLY
-                    : SnapshotStatus.CREATED_INITIALLY;
-            result = SnapshotTestResult.of(snapshotFilePaths.snapshotFile,
-                    snapshotFilePaths.latestActualSnapshotFile,
-                    snapshotFilePaths.rawSnapshotFile,
-                    status, snapshotFile, serializedActual);
-        } else {
-            final SnapshotFile snapshotFile = readSnapshotFileAndUpdateHeader(snapshotFilePath, snapshotHeader);
-            final String storedSnapshot = snapshotFile.snapshot();
-
-            if (actual == null) {
-                throw new AssertionError(
-                        "Expected actual not to be null but to match stored snapshot:\n\n" + storedSnapshot);
-            }
-
-            final String serializedActual = snapshotSerializer.serialize(actual);
             final int lineNumberOffset = configuration.addOffsetToReportedLinenumbers(testMethod)
-                    ? snapshotFile.header().lineNumberOffset()
+                    ? snapshotAssertionContext.getActualSnapshotFile().header().lineNumberOffset()
                     : 0;
 
-            writeAdditionalContextFiles(snapshotFilePaths, SnapshotFile.of(snapshotHeader, serializedActual));
-
-            result = compareTestResults(structuralAssertions, storedSnapshot, serializedActual, snapshotFilePath,
-                    lineNumberOffset)
+            result = compareTestResults(structuralAssertions, serializedExpected, serializedActual,
+                    snapshotAssertionContext.getContextFiles().snapshotFile, lineNumberOffset)
                             .map(assertionError -> SnapshotTestResult.forFailedTest(
-                                    snapshotFilePaths.snapshotFile,
-                                    snapshotFilePaths.latestActualSnapshotFile,
-                                    snapshotFilePaths.rawSnapshotFile,
-                                    snapshotFile, serializedActual, assertionError))
+                                    snapshotAssertionContext.getContextFiles().snapshotFile,
+                                    snapshotAssertionContext.getContextFiles().latestActualSnapshotFile,
+                                    snapshotAssertionContext.getContextFiles().rawSnapshotFile,
+                                    existingSnapshotFile, serializedActual, assertionError))
                             .orElseGet(() -> SnapshotTestResult.of(
-                                    snapshotFilePaths.snapshotFile,
-                                    snapshotFilePaths.latestActualSnapshotFile,
-                                    snapshotFilePaths.rawSnapshotFile,
-                                    SnapshotStatus.ASSERTED, snapshotFile, serializedActual));
+                                    snapshotAssertionContext.getContextFiles().snapshotFile,
+                                    snapshotAssertionContext.getContextFiles().latestActualSnapshotFile,
+                                    snapshotAssertionContext.getContextFiles().rawSnapshotFile,
+                                    status, existingSnapshotFile, serializedActual));
+            break;
+
+        case CREATED_INITIALLY:
+        case UPDATED_FORCEFULLY:
+            actualSnapshotFile.writeTo(snapshotAssertionContext.getContextFiles().snapshotFile);
+
+            result = SnapshotTestResult.of(snapshotAssertionContext.getContextFiles().snapshotFile,
+                    snapshotAssertionContext.getContextFiles().latestActualSnapshotFile,
+                    snapshotAssertionContext.getContextFiles().rawSnapshotFile,
+                    status, actualSnapshotFile, serializedActual);
+            break;
+        case DISABLED:
+            result = SnapshotTestResult.of(
+                    snapshotAssertionContext.getContextFiles().snapshotFile,
+                    snapshotAssertionContext.getContextFiles().latestActualSnapshotFile,
+                    snapshotAssertionContext.getContextFiles().rawSnapshotFile,
+                    status, actualSnapshotFile, serializedActual);
+            break;
+        default:
+            throw new IllegalStateException();
         }
+
         recordSnapshotTestResult(result);
 
         if (!configuration.isSoftAssertions()) {
@@ -261,6 +258,11 @@ final class SnapshotTestImpl implements Snapshot {
         }
 
         return result;
+    }
+
+    private void recordSnapshotTestResult(final SnapshotTestResult result) {
+        this.localResultCollector.recordSnapshotTestResult(result);
+        this.context.recordSnapshotTestResult(result);
     }
 
     private SnapshotFile readSnapshotFileAndUpdateHeader(Path snapshotFilePath, SnapshotHeader newHeader)
@@ -339,19 +341,6 @@ final class SnapshotTestImpl implements Snapshot {
                             .withContextLines(configuration.textDiffContextLines(testMethod)),
                     storedSnapshot, serializedActual);
         }
-    }
-
-    private static class SnapshotFilePaths {
-        private final Path snapshotFile;
-        private final Path rawSnapshotFile;
-        private final Path latestActualSnapshotFile;
-
-        private SnapshotFilePaths(Path snapshotFile, Path latestActualSnapshotFile, Path rawSnapshotFile) {
-            this.snapshotFile = snapshotFile;
-            this.latestActualSnapshotFile = latestActualSnapshotFile;
-            this.rawSnapshotFile = rawSnapshotFile;
-        }
-
     }
 
 }

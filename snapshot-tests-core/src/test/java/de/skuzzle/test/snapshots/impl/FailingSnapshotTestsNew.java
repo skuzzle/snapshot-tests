@@ -88,7 +88,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputSnapshotAlreadyExists.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null but to match stored snapshot:\n\nsnapshot text");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
@@ -107,7 +107,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputJustUpdateSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
@@ -126,7 +126,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputInitialSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
