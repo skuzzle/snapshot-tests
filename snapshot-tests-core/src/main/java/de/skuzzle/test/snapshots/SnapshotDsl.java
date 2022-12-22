@@ -180,7 +180,7 @@ public interface SnapshotDsl {
          * Implementations are generally provided by each of the available extension
          * modules and follow the naming scheme <code>[Format]Snapshot</code>. The
          * following implementations are provided by the respective maven artifacts:
-         * <table>
+         * <table summary="StructuredDataProvider implementations">
          * <thead>
          * <tr>
          * <th>StructuredDataProvider</th>
@@ -192,16 +192,16 @@ public interface SnapshotDsl {
          * <td>included in <code>snapshot-tests-core</code></td>
          * </tr>
          * <tr>
-         * <td><code>de.skuzzle.tests.snapshots.data.JsonSnapshot</td>
+         * <td><code>de.skuzzle.tests.snapshots.data.JsonSnapshot</code></td>
          * <td><code>snapshot-tests-jackson</code></td>
          * </tr>
          * <tr>
-         * <td><code>de.skuzzle.tests.snapshots.data.XmlSnapshot</td>
+         * <td><code>de.skuzzle.tests.snapshots.data.XmlSnapshot</code></td>
          * <td><code>snapshot-tests-jaxb</code> or
          * <code>snapshot-tests-jaxb-jakarta</code></td>
          * </tr>
          * <tr>
-         * <td><code>de.skuzzle.tests.snapshots.data.HtmlSnapshot</td>
+         * <td><code>de.skuzzle.tests.snapshots.data.HtmlSnapshot</code></td>
          * <td><code>snapshot-tests-html</code></td>
          * </tr>
          * </tbody>
