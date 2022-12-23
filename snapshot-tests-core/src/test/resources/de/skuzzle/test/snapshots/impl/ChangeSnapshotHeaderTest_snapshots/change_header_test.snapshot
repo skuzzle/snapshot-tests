@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: change_header_test
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.impl.ChangeSnapshotHeaderTest
+test-method: testUpdateSnapshotHeader
+
+abc

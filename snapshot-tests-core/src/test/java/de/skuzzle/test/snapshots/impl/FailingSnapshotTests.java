@@ -33,11 +33,27 @@ public class FailingSnapshotTests {
     static class DetectIncompleteDslReuse {
 
         @Test
-        void testIllegalReuse(Snapshot snapshot) throws Exception {
+        void testIllegalReuseOfAssertThat(Snapshot snapshot) throws Exception {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("");
             snapshot.assertThat("");
+        }
+
+        @Test
+        void testIllegalReuseOfNamed(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("");
+            snapshot.named("");
+        }
+
+        @Test
+        void testIllegalReuseOfIn(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("egal"));
+            snapshot.in(Paths.get("egal"));
         }
     }
 
@@ -148,7 +164,7 @@ public class FailingSnapshotTests {
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
-                        "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                        "Snapshots have been updated forcefully.%nRemove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests(forceUpdateSnapshots = true) // leave force true
@@ -170,7 +186,7 @@ public class FailingSnapshotTests {
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
-                        "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                        "Snapshots have been updated forcefully.%nRemove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests
@@ -194,7 +210,7 @@ public class FailingSnapshotTests {
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
                         "Snapshots have been updated forcefully.%n"
-                                + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                                + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests
@@ -216,7 +232,7 @@ public class FailingSnapshotTests {
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
                         "Snapshots have been updated forcefully.%n"
-                                + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                                + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests

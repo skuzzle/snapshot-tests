@@ -42,7 +42,7 @@ public final class SnapshotTestContext {
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
 
-    private SnapshotTestImpl currentSnapshotTest;
+    private SnapshotDslImpl currentSnapshotTest;
 
     private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
         this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
@@ -87,7 +87,8 @@ public final class SnapshotTestContext {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        currentSnapshotTest = new SnapshotTestImpl(this, snapshotConfiguration, testMethod);
+        final ResultRecorder resultRecorder = ResultRecorder.forFreshTestMethod(this);
+        currentSnapshotTest = new SnapshotDslImpl(resultRecorder, snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }
 
@@ -99,7 +100,7 @@ public final class SnapshotTestContext {
      * @see #createSnapshotTestFor(Method)
      */
     public void finalizeSnapshotTest() throws Exception {
-        final SnapshotTestImpl current = this.currentSnapshotTest;
+        final SnapshotDslImpl current = this.currentSnapshotTest;
         this.currentSnapshotTest = null;
         if (current != null) {
             current.executeFinalAssertions();

@@ -25,7 +25,7 @@ final class LocalResultCollector {
         return results.size();
     }
 
-    public void assertSuccess() throws Exception {
+    public void throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully() throws Exception {
         Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
@@ -34,7 +34,7 @@ final class LocalResultCollector {
         Throwables.throwIfNotNull(failures);
     }
 
-    public void assertSuccessEagerly() throws Exception {
+    public void throwIfNotSuccessful() throws Exception {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
@@ -42,7 +42,7 @@ final class LocalResultCollector {
     }
 
     private Throwable failIfCreatedInitially() {
-        if (wasCreatedInitially()) {
+        if (wasAnyCreatedInitially()) {
             return new AssertionError(String.format(
                     "Snapshots have been created the first time.%nRun the test again and you should see it succeed."));
         }
@@ -50,19 +50,19 @@ final class LocalResultCollector {
     }
 
     private Throwable failIfUpdatedForcefully() {
-        if (wasUpdatedForcefully()) {
+        if (wasAnyUpdatedForcefully()) {
             return new AssertionError(String.format(
                     "Snapshots have been updated forcefully.%n"
-                            + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                            + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
         }
         return null;
     }
 
-    private boolean wasCreatedInitially() {
+    private boolean wasAnyCreatedInitially() {
         return results.stream().map(SnapshotTestResult::status).anyMatch(SnapshotStatus.CREATED_INITIALLY::equals);
     }
 
-    private boolean wasUpdatedForcefully() {
+    private boolean wasAnyUpdatedForcefully() {
         return results.stream().map(SnapshotTestResult::status).anyMatch(SnapshotStatus.UPDATED_FORCEFULLY::equals);
     }
 
