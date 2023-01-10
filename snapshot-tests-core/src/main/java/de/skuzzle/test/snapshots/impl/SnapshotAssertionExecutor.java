@@ -18,18 +18,6 @@ import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.ContextFilePaths;
 
 final class SnapshotAssertionExecutor {
 
-    private SnapshotStatus determineStatus(SnapshotAssertionInput assertionInput) {
-        if (assertionInput.isDisableAssertion()) {
-            return SnapshotStatus.DISABLED;
-        } else if (!assertionInput.isSnapshotFileAreadyExists()) {
-            return SnapshotStatus.CREATED_INITIALLY;
-        } else if (assertionInput.isForceUpdateSnapshots()) {
-            return SnapshotStatus.UPDATED_FORCEFULLY;
-        } else {
-            return SnapshotStatus.ASSERTED;
-        }
-    }
-
     /**
      * Executes a snapshot assertion and creates a {@link SnapshotTestResult} containing
      * detailed result information.
@@ -72,18 +60,25 @@ final class SnapshotAssertionExecutor {
 
         case CREATED_INITIALLY:
         case UPDATED_FORCEFULLY:
-            return SnapshotTestResult.of(contextFiles.snapshotFile,
-                    contextFiles.latestActualSnapshotFile,
-                    contextFiles.rawSnapshotFile,
-                    status, actualSnapshotFile, serializedActual);
         case DISABLED:
-            return SnapshotTestResult.of(
-                    contextFiles.snapshotFile,
+            return SnapshotTestResult.of(contextFiles.snapshotFile,
                     contextFiles.latestActualSnapshotFile,
                     contextFiles.rawSnapshotFile,
                     status, actualSnapshotFile, serializedActual);
         default:
             throw new IllegalStateException();
+        }
+    }
+
+    private SnapshotStatus determineStatus(SnapshotAssertionInput assertionInput) {
+        if (assertionInput.isDisableAssertion()) {
+            return SnapshotStatus.DISABLED;
+        } else if (!assertionInput.isSnapshotFileAreadyExists()) {
+            return SnapshotStatus.CREATED_INITIALLY;
+        } else if (assertionInput.isForceUpdateSnapshots()) {
+            return SnapshotStatus.UPDATED_FORCEFULLY;
+        } else {
+            return SnapshotStatus.ASSERTED;
         }
     }
 
