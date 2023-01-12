@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.opentest4j.AssertionFailedError;
 
+import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
@@ -14,7 +15,6 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
 import de.skuzzle.test.snapshots.data.text.TextDiffAssertionError;
-import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.ContextFilePaths;
 
 final class SnapshotAssertionExecutor {
 
@@ -22,51 +22,36 @@ final class SnapshotAssertionExecutor {
      * Executes a snapshot assertion and creates a {@link SnapshotTestResult} containing
      * detailed result information.
      * <p>
-     * This method may have side effects. It will create the snapshot file if it did not
-     * already exist and it will update it if either the header information changed since
-     * the last execution or the test was run in 'force-update' mode.
+     * If the assertion failed, the respective assertion error is captured and returned
+     * within the result as {@link SnapshotTestResult#failure()}.
      *
      * @param structuralAssertions {@link StructuralAssertions} instance that is used to
-     *            do the assertion based on the sertialized snapshot.
-     * @param assertionInput
+     *            do the assertion based on the serialized snapshot.
+     * @param assertionInput The assertion input that is being executed.
      * @return The test result.
-     * @throws IOException If an I/O error occurred while writing/updating a snapshot.
+     * @throws IOException If an I/O error occurred while reading the existing snapshot.
      */
     public SnapshotTestResult execute(StructuralAssertions structuralAssertions, SnapshotAssertionInput assertionInput)
             throws IOException {
 
         final SnapshotFile actualSnapshotFile = assertionInput.actualSnapshotFile();
-        final ContextFilePaths contextFiles = assertionInput.contextFiles();
+        final ContextFiles contextFiles = assertionInput.contextFiles();
         final String serializedActual = actualSnapshotFile.snapshot();
         final SnapshotStatus status = determineStatus(assertionInput);
 
-        switch (status) {
-        case ASSERTED:
-            final SnapshotFile existingSnapshotFile = SnapshotFile.fromSnapshotFile(contextFiles.snapshotFile);
+        if (assertionInput.isSnapshotFileAreadyExists()) {
+            final SnapshotFile existingSnapshotFile = SnapshotFile.fromSnapshotFile(contextFiles.snapshotFile());
             final String serializedExpected = existingSnapshotFile.snapshot();
 
             return compareTestResults(structuralAssertions, serializedExpected, serializedActual,
-                    contextFiles.snapshotFile, assertionInput.lineNumberOffset(), assertionInput.contextLines())
+                    contextFiles.snapshotFile(), assertionInput.lineNumberOffset(), assertionInput.contextLines())
                             .map(assertionError -> SnapshotTestResult.forFailedTest(
-                                    contextFiles.snapshotFile,
-                                    contextFiles.latestActualSnapshotFile,
-                                    contextFiles.rawSnapshotFile,
-                                    existingSnapshotFile, serializedActual, assertionError))
+                                    contextFiles, existingSnapshotFile, serializedActual, assertionError))
                             .orElseGet(() -> SnapshotTestResult.of(
-                                    contextFiles.snapshotFile,
-                                    contextFiles.latestActualSnapshotFile,
-                                    contextFiles.rawSnapshotFile,
-                                    status, existingSnapshotFile, serializedActual));
-
-        case CREATED_INITIALLY:
-        case UPDATED_FORCEFULLY:
-        case DISABLED:
-            return SnapshotTestResult.of(contextFiles.snapshotFile,
-                    contextFiles.latestActualSnapshotFile,
-                    contextFiles.rawSnapshotFile,
+                                    contextFiles, status, existingSnapshotFile, serializedActual));
+        } else {
+            return SnapshotTestResult.of(contextFiles,
                     status, actualSnapshotFile, serializedActual);
-        default:
-            throw new IllegalStateException();
         }
     }
 

@@ -6,11 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
-import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.ContextFilePaths;
 import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.TerminalOperation;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
@@ -80,18 +80,29 @@ final class SnapshotDslResult {
         return snapshotDirectory;
     }
 
+    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName)
+            throws IOException {
+        final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
+        final String actualFileName = InternalSnapshotNaming.getSnapshotFileNameActual(snapshotName);
+        final String rawFileName = InternalSnapshotNaming.getSnapshotFileNameRaw(snapshotName);
+
+        return ContextFiles.of(
+                snapshotDirectory.resolve(snapshotFileName),
+                snapshotDirectory.resolve(actualFileName),
+                snapshotDirectory.resolve(rawFileName));
+    }
+
     SnapshotAssertionInput createAssertionInput() throws Exception {
         final int snapshotNumber = resultRecorder.size();
         final Path snapshotDirectory = determineSnapshotDirectory();
         final String snapshotName = namingStrategy.determineSnapshotName(testMethod, snapshotNumber);
-        final ContextFilePaths contextFilePaths = ContextFilePaths.determineContextFilePaths(snapshotDirectory,
-                snapshotName);
+        final ContextFiles contextFilePaths = determineContextFiles(snapshotDirectory, snapshotName);
 
         final boolean disableAssertion = operation == TerminalOperation.DISABLE;
         final boolean forceUpdateSnapshots = configuration.isForceUpdateSnapshots(testMethod)
                 || operation == TerminalOperation.FORCE_UPDATE;
 
-        final boolean snapshotFileAlreadyExists = Files.exists(contextFilePaths.snapshotFile);
+        final boolean snapshotFileAlreadyExists = Files.exists(contextFilePaths.snapshotFile());
         final boolean alwaysPersistActualResult = configuration.alwaysPersistActualResult(testMethod);
         final boolean alwaysPersistRawResult = configuration.alwaysPersistRawResult(testMethod);
 

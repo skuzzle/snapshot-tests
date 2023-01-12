@@ -7,7 +7,6 @@ import java.nio.file.Path;
 
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 final class DefaultExecutionLifecycle implements ExecutionLifecycle {
@@ -67,20 +66,20 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
     }
 
     private boolean decideUpdateHeader(SnapshotAssertionInput assertionInput, SnapshotTestResult result) {
-        return result.status() == SnapshotStatus.ASSERTED
+        return assertionInput.isSnapshotFileAreadyExists()
                 && !assertionInput.actualSnapshotFile().header().equals(result.snapshotFile().header());
     }
 
     private void updatePersistedSnapshotHeader(SnapshotAssertionInput assertionInput, SnapshotTestResult result)
             throws IOException {
-        final Path snapshotFilePath = assertionInput.contextFiles().snapshotFile;
+        final Path snapshotFilePath = assertionInput.contextFiles().snapshotFile();
         result.snapshotFile().changeHeader(assertionInput.actualSnapshotFile().header()).writeTo(snapshotFilePath);
     }
 
     private void writeAdditionalContextFiles(SnapshotAssertionInput assertionInput)
             throws IOException {
         final SnapshotFile snapshotFile = assertionInput.actualSnapshotFile();
-        final Path latestActualSnapshotFile = assertionInput.contextFiles().latestActualSnapshotFile;
+        final Path latestActualSnapshotFile = assertionInput.contextFiles().actualResultFile();
 
         if (assertionInput.alwaysPersistActualResult()) {
             snapshotFile.writeTo(latestActualSnapshotFile);
@@ -88,7 +87,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
             Files.deleteIfExists(latestActualSnapshotFile);
         }
 
-        final Path rawSnapshotFile = assertionInput.contextFiles().rawSnapshotFile;
+        final Path rawSnapshotFile = assertionInput.contextFiles().rawActualResultFile();
         if (assertionInput.isAlwaysPersistRawResult()) {
             Files.writeString(rawSnapshotFile, snapshotFile.snapshot(), StandardCharsets.UTF_8);
         } else {
@@ -107,7 +106,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
     }
 
     private void updatePersistedSnapshot(SnapshotAssertionInput assertionInput) throws IOException {
-        final Path snapshotFilePath = assertionInput.contextFiles().snapshotFile;
+        final Path snapshotFilePath = assertionInput.contextFiles().snapshotFile();
         assertionInput.actualSnapshotFile().writeTo(snapshotFilePath);
     }
 }

@@ -1,8 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
+import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -17,7 +15,7 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 final class SnapshotAssertionInput {
 
     private final String snapshotName;
-    private final ContextFilePaths contextFiles;
+    private final ContextFiles contextFiles;
     private final SnapshotFile actualSnapshotFile;
     private final boolean softAssertions;
     private final boolean actualWasNull;
@@ -30,7 +28,7 @@ final class SnapshotAssertionInput {
     private final int contextLines;
 
     SnapshotAssertionInput(String snapshotName,
-            ContextFilePaths contextFiles,
+            ContextFiles contextFiles,
             SnapshotFile actualSnapshotFile,
             boolean softAssertions,
             boolean actualWasNull,
@@ -82,7 +80,7 @@ final class SnapshotAssertionInput {
         return snapshotName;
     }
 
-    public ContextFilePaths contextFiles() {
+    public ContextFiles contextFiles() {
         return contextFiles;
     }
 
@@ -120,27 +118,4 @@ final class SnapshotAssertionInput {
         FORCE_UPDATE
     }
 
-    static final class ContextFilePaths {
-        final Path snapshotFile;
-        final Path rawSnapshotFile;
-        final Path latestActualSnapshotFile;
-
-        private ContextFilePaths(Path snapshotFile, Path latestActualSnapshotFile, Path rawSnapshotFile) {
-            this.snapshotFile = snapshotFile;
-            this.latestActualSnapshotFile = latestActualSnapshotFile;
-            this.rawSnapshotFile = rawSnapshotFile;
-        }
-
-        public static ContextFilePaths determineContextFilePaths(Path snapshotDirectory, String snapshotName)
-                throws IOException {
-            final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
-            final String actualFileName = InternalSnapshotNaming.getSnapshotFileNameActual(snapshotName);
-            final String rawFileName = InternalSnapshotNaming.getSnapshotFileNameRaw(snapshotName);
-
-            return new ContextFilePaths(
-                    snapshotDirectory.resolve(snapshotFileName),
-                    snapshotDirectory.resolve(actualFileName),
-                    snapshotDirectory.resolve(rawFileName));
-        }
-    }
 }
