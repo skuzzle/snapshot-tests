@@ -1,8 +1,9 @@
 * [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and o failed assertions will properly be marked as 'skipped' by the test framework
+* Build against JUnit `5.9.2` (coming from `5.9.1`)
 * Stream line internal implementation
 * Add `ContextFiles` class which groups the paths to all generated files
 * Deprecate `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
-
+* Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 
 Maven Central coordinates for this release:
 

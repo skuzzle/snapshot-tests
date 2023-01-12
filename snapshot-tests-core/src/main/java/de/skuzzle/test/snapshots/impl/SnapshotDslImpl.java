@@ -130,6 +130,13 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
         return terminal(TerminalOperation.DISABLE, this.structuralAssertions);
     }
 
+    @Override
+    public SnapshotTestResult disabledBecause(String message) {
+        // message param intentionally ignored. It only exists for the call site to tell
+        // readers why this assertion has been disabled.
+        return terminal(TerminalOperation.DISABLE, this.structuralAssertions);
+    }
+
     private SnapshotTestResult terminal(TerminalOperation operation, StructuralAssertions structuralAssertions) {
         try {
             this.state.reset();

@@ -131,6 +131,17 @@ comparisons specific to your serialization format.
 ### Multiple snapshots in same test case
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
+Note though that, as with any test, it is generally a good idea to only have a single assertion per test case.
+
+### Disabling assertions
+You can temporarily disable a snapshot assertion by calling the `.disabled()` or `disabledBecause(String)` 
+terminal operation on the assertion DSL.  The latter has the advantage that you can leave an informative message to 
+your team which describes why the assertion has been disabled.
+
+This terminal operation is especially useful if you have multiple snapshot assertions within one test case and you want 
+to disable just a single one. If you rely on the automatic consecutive snapshot numbering, the framework will
+ gracefully count in _disabled_ assertions. Otherwise, if you'd just comment or remove the assertion, the numbering of 
+ all following assertions would be out of order, causing the assertions to pick up the wrong snapshot file.
 
 ### Parameterized tests
 _(since 1.1.0)_

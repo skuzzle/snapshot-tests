@@ -66,7 +66,7 @@ public class SnapshotsTest {
     @Test
     void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) throws Exception {
         final Person simon = determinePerson();
-        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabledBecause("Reasons");
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
         assertThat(testResultDisabled.targetFile()).doesNotExist();

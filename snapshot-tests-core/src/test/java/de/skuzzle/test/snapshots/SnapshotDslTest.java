@@ -101,6 +101,11 @@ public class SnapshotDslTest {
             return this;
         }
 
+        @Override
+        public SnapshotTestResult disabledBecause(String message) {
+            return null;
+        }
+
     }
 
 }
