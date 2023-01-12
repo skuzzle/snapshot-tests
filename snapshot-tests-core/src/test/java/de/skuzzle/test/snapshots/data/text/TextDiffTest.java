@@ -190,9 +190,9 @@ public class TextDiffTest {
 
     @Test
     void testRenderUnifiedDiffWithLinenumberOffset(Snapshot snapshot) throws Exception {
-        final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings().withContextLines(3), expected, actual);
+        final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings(), expected, actual);
 
-        snapshot.assertThat(textDiff).as(diffWithOffset(5)).matchesSnapshotText();
+        snapshot.assertThat(textDiff).as(diffWithOffset(5, 3)).matchesSnapshotText();
     }
 
     @Test
@@ -207,18 +207,17 @@ public class TextDiffTest {
     @Test
     void testRenderSplitDiffWithLinenumberOffset(Snapshot snapshot) throws Exception {
         final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings()
-                .withContextLines(3)
                 .withDiffRenderer(new SplitDiffRenderer()), expected, actual);
 
-        snapshot.assertThat(textDiff).as(diffWithOffset(5)).matchesSnapshotText();
+        snapshot.assertThat(textDiff).as(diffWithOffset(5, 3)).matchesSnapshotText();
     }
 
-    private SnapshotSerializer diffWithOffset(int lineNumberOffset) {
+    private SnapshotSerializer diffWithOffset(int lineNumberOffset, int contextLines) {
         return new SnapshotSerializer() {
 
             @Override
             public String serialize(Object testResult) throws SnapshotException {
-                return ((TextDiff) testResult).renderDiffWithOffset(lineNumberOffset);
+                return ((TextDiff) testResult).renderDiffWithOffsetAndContextLines(lineNumberOffset, contextLines);
             }
         };
     }

@@ -177,6 +177,9 @@ public interface SnapshotDsl {
          * objects are compared. A {@link StructuredData} instance combines both a
          * {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.
          * <p>
+         * Note: This method immediately unwraps the given {@link StructuredDataProvider}
+         * by calling its {@link StructuredDataProvider#build() build} method.
+         * <p>
          * Implementations are generally provided by each of the available extension
          * modules and follow the naming scheme <code>[Format]Snapshot</code>. The
          * following implementations are provided by the respective maven artifacts:
@@ -270,8 +273,8 @@ public interface SnapshotDsl {
          * JUnit5's native mechanism for disabling tests. In such cases, we try to make a
          * best effort guess based on statically available information.
          *
-         * @return Details about the snapshot. Note that the reference snapshot file might
-         *         not necessarily exist.
+         * @return Details about the snapshot. Note that the referenced snapshot file
+         *         might not necessarily exist.
          * @deprecated This method is <b>NOT</b> deprecated. Deprecation serves only to
          *             mark this method in your IDE as it should only be used temporarily.
          * @since 1.5.0

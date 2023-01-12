@@ -1,5 +1,7 @@
-* [#51](https://github.com/skuzzle/snapshot-tests/issues/51): Line numbers in diff are off by number of header lines.
-* HTML comparison used generic `XmlUnitStructuralAssertions` instead of specialized `HtmlStructuralAssertions`
+* Stream line internal implementation
+* Add `ContextFiles` class which groups the paths to all generated files
+* Deprecate `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
+
 
 Maven Central coordinates for this release:
 

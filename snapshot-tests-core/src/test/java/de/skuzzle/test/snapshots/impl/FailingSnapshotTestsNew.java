@@ -32,11 +32,27 @@ public class FailingSnapshotTestsNew {
     static class DetectIncompleteDslReuse {
 
         @Test
-        void testIllegalReuse(Snapshot snapshot) throws Exception {
+        void testIllegalReuseOfAssertThat(Snapshot snapshot) throws Exception {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("");
             snapshot.assertThat("");
+        }
+
+        @Test
+        void testIllegalReuseOfNamed(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("");
+            snapshot.named("");
+        }
+
+        @Test
+        void testIllegalReuseOfIn(Snapshot snapshot) throws Exception {
+            MetaTest.assumeMetaTest();
+
+            snapshot.in(Paths.get("egal"));
+            snapshot.in(Paths.get("egal"));
         }
     }
 
@@ -88,7 +104,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputSnapshotAlreadyExists.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null but to match stored snapshot:\n\nsnapshot text");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
@@ -107,7 +123,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputJustUpdateSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
@@ -126,7 +142,7 @@ public class FailingSnapshotTestsNew {
         frameworkTest.expectTestcase(FailBecauseOfNullInputInitialSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
-                .hasMessage("Expected actual not to be null in order to take initial snapshot");
+                .hasMessage("Expected actual not to be null in order to take snapshot");
     }
 
     @EnableSnapshotTests
@@ -147,7 +163,7 @@ public class FailingSnapshotTestsNew {
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
-                        "Snapshots have been updated forcefully.%nRemove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                        "Snapshots have been updated forcefully.%nRemove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests
@@ -171,7 +187,7 @@ public class FailingSnapshotTestsNew {
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
                         "Snapshots have been updated forcefully.%n"
-                                + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                                + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests
@@ -193,7 +209,7 @@ public class FailingSnapshotTestsNew {
                 .isInstanceOf(AssertionError.class)
                 .hasMessage(String.format(
                         "Snapshots have been updated forcefully.%n"
-                                + "Remove 'updateSnapshots = true' attribute from your test class and calls to 'justUpdateSnapshot()' and run the tests again."));
+                                + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
     }
 
     @EnableSnapshotTests

@@ -130,7 +130,7 @@ public final class TextDiff {
         return hasLinebreakDifference() || hasTextDifference();
     }
 
-    public String renderDiffWithOffset(int lineNumberOffset) {
+    public String renderDiffWithOffsetAndContextLines(int lineNumberOffset, int contextLines) {
         final StringBuilder result = new StringBuilder();
         final boolean hasTextDifference = hasTextDifference();
         final boolean hasLinebreakDifference = hasLinebreakDifference();
@@ -147,13 +147,13 @@ public final class TextDiff {
         }
 
         if (hasTextDifference) {
-            result.append(settings.diffRenderer.renderDiff(diffRows, settings.contextLines, lineNumberOffset));
+            result.append(settings.diffRenderer.renderDiff(diffRows, contextLines, lineNumberOffset));
         }
         return result.toString();
     }
 
     @Override
     public String toString() {
-        return renderDiffWithOffset(0);
+        return renderDiffWithOffsetAndContextLines(0, settings.contextLines);
     }
 }

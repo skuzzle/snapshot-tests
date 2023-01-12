@@ -1,7 +1,7 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.7.1/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.7.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.8.0-SNAPSHOT/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -13,17 +13,17 @@ serialized version of the object during the first test execution and during subs
 actual object against the stored snapshot.
 
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.7.1/jar)
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.7.1/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.1/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.1/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.7.1/jar)
+- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar)
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.8.0-SNAPSHOT/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.8.0-SNAPSHOT/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0-SNAPSHOT/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.8.0-SNAPSHOT/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.7.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.7.1)
+release [1.8.0-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.8.0-SNAPSHOT)
 
 ## Quick start
 _(assumes using `snapshot-tests-jackson` artifact)_
@@ -54,7 +54,7 @@ If your code under test produces deterministic results, tests should now be gree
 
 ## Compatibility
 - [x] Requires Java 11
-- [x] Tested against JUnit5 `5.9.1`
+- [x] Tested against JUnit5 `5.9.2`
 
 ## Usage
 
