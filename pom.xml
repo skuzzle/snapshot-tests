@@ -9,7 +9,7 @@
 
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-parent</artifactId>
-    <version>1.7.2-SNAPSHOT</version>
+    <version>1.8.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Snapshot Tests Parent</name>
@@ -29,7 +29,7 @@
 
         <!-- Versions are defined here (to be able to use the properties while filtering the readme during release), actual dependencies are managed in 
             a sub-module -->
-        <version.junit>5.9.1</version.junit>
+        <version.junit>5.9.2</version.junit>
         <version.assertj>3.22.0</version.assertj>
         <version.opentest4j>1.2.0</version.opentest4j>
 
@@ -38,7 +38,7 @@
         <version.jaxb-api-legacy>2.3.1</version.jaxb-api-legacy>
         <version.glassfish-jaxb-legacy>2.3.3</version.glassfish-jaxb-legacy>
         <version.glassfish-jaxb-jakarta>4.0.1</version.glassfish-jaxb-jakarta>
-        
+
         <version.xmlunit>2.9.0</version.xmlunit>
         <version.jsoup>1.15.3</version.jsoup>
 
