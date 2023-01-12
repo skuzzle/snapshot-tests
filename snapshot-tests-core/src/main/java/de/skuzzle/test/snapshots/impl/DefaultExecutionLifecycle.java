@@ -9,6 +9,11 @@ import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
+/**
+ * 
+ * @author Simon Taddiken
+ * @since 1.8.0
+ */
 final class DefaultExecutionLifecycle implements ExecutionLifecycle {
 
     private final SnapshotAssertionExecutor assertionExecutor;
@@ -20,7 +25,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
     }
 
     @Override
-    public SnapshotTestResult execute(final SnapshotAssertionInput assertionInput,
+    public SnapshotTestResult executeAssertion(final SnapshotAssertionInput assertionInput,
             StructuralAssertions structuralAssertions) throws Exception {
         return assertionExecutor.execute(structuralAssertions, assertionInput);
     }

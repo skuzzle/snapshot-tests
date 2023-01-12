@@ -146,7 +146,8 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
             final SnapshotAssertionInput assertionInput = dslResult.createAssertionInput();
             final SnapshotAssertionExecutor assertionExecutor = new SnapshotAssertionExecutor();
             final ExecutionLifecycle lifecycle = new DefaultExecutionLifecycle(assertionExecutor, resultRecorder);
-            return assertionInput.executeWith(structuralAssertions, lifecycle);
+
+            return lifecycle.executeLifecycleWith(structuralAssertions, assertionInput);
         } catch (final Exception e) {
             throw new IllegalStateException("Technical problem while performing snapshot test terminal operation", e);
         }

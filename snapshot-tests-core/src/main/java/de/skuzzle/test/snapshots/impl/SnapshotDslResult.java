@@ -16,7 +16,8 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Aggregates the outcome of a single full DSL invocation. Encapsulates all information
- * that are required to perform a single snapshot assertion.
+ * that are required to perform a single snapshot assertion and provides the logic to
+ * create a {@link SnapshotAssertionInput} object.
  * <p>
  * Some state within this class maybe shared with other assertions within the same test
  * method.

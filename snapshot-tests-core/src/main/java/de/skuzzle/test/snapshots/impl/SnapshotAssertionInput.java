@@ -2,15 +2,16 @@ package de.skuzzle.test.snapshots.impl;
 
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
-import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
  * Holds all the input that is required to execute a single terminal snapshot operation.
  * These information are resolved from the values configured via the DSL as well as
  * contextual information from the surrounding test method and test class.
+ * <p>
+ * Instances are created from {@link SnapshotDslResult#createAssertionInput()}.
  *
  * @author Simon
+ * @since 1.8.0
  */
 final class SnapshotAssertionInput {
 
@@ -51,16 +52,6 @@ final class SnapshotAssertionInput {
         this.actualSnapshotFile = actualSnapshotFile;
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
-    }
-
-    SnapshotTestResult executeWith(StructuralAssertions structuralAssertions, ExecutionLifecycle lifecycle)
-            throws Exception {
-        lifecycle.beforeExecution(this);
-
-        final SnapshotTestResult testResult = lifecycle.execute(this, structuralAssertions);
-
-        lifecycle.afterExecution(this, testResult);
-        return testResult;
     }
 
     @Deprecated
