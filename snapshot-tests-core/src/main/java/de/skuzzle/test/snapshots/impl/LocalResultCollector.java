@@ -31,6 +31,7 @@ final class LocalResultCollector {
                 .flatMap(Optional::stream));
         failures = Throwables.combine(failures, failIfCreatedInitially());
         failures = Throwables.combine(failures, failIfUpdatedForcefully());
+        failures = Throwables.combine(failures, abortIfNoneFailedAndAtLeastOneWasDisabled());
         Throwables.throwIfNotNull(failures);
     }
 
@@ -56,6 +57,21 @@ final class LocalResultCollector {
                             + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
         }
         return null;
+    }
+
+    private Throwable abortIfNoneFailedAndAtLeastOneWasDisabled() {
+        if (wasAtLeastOneDisabledAndAllOthersSuccessful()) {
+            return AssumptionExceptionDetector.assumptionFailed("Assertion was disabled")
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    private boolean wasAtLeastOneDisabledAndAllOthersSuccessful() {
+        final boolean atLeastOneDisabled = results.stream().map(SnapshotTestResult::status)
+                .anyMatch(SnapshotStatus.DISABLED::equals);
+        final boolean noFailed = results.stream().map(SnapshotTestResult::failure).noneMatch(Optional::isPresent);
+        return atLeastOneDisabled && noFailed && !wasAnyCreatedInitially() && !wasAnyUpdatedForcefully();
     }
 
     private boolean wasAnyCreatedInitially() {

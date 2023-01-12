@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
+import org.opentest4j.TestAbortedException;
 
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
@@ -320,10 +321,10 @@ public class FailingSnapshotTestsNew {
     void testFailBecauseInitial() throws Throwable {
         frameworkTest
                 .expectTestcase(FailBecauseInitial.class)
-                .toFailWithExceptionWhich()
-                .isInstanceOf(AssertionError.class)
-                .hasMessage(String.format("Snapshots have been created the first time.%n"
-                        + "Run the test again and you should see it succeed."));
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(AssertionError.class)
+                        .hasMessage(String.format("Snapshots have been created the first time.%n"
+                                + "Run the test again and you should see it succeed.")));
     }
 
     @EnableSnapshotTests
@@ -334,7 +335,18 @@ public class FailingSnapshotTestsNew {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
-            snapshotResult.deleteSnapshot();
+            snapshotResult.contextFiles().deleteFiles();
+            assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
+        }
+
+        @Test
+        void testDisabledAssertionAndInitialAssertion(Snapshot snapshot) throws Throwable {
+            MetaTest.assumeMetaTest();
+
+            snapshot.assertThat("xyz").asText().disabled();
+            final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
+            assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
+            snapshotResult.contextFiles().deleteFiles();
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
     }
@@ -393,6 +405,27 @@ public class FailingSnapshotTestsNew {
 
             snapshot.assertThat("   test   ").as(TextSnapshot.text().withIgnoreWhitespaces(false))
                     .matchesSnapshotStructure();
+        }
+    }
+
+    @Test
+    void testFailWithAssumptionFailed() throws Exception {
+        frameworkTest.expectTestcase(ClassWithDisabledTest.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(TestAbortedException.class));
+    }
+
+    @EnableSnapshotTests
+    static class ClassWithDisabledTest {
+        @Test
+        void testWithDisabledAssertion(Snapshot snapshot) throws Exception {
+            snapshot.assertThat("xyz").asText().disabled();
+        }
+
+        @Test
+        void testWithDisabledAndSuccessfulAssertion(Snapshot snapshot) throws Exception {
+            snapshot.assertThat("xyz").asText().disabled();
+            snapshot.assertThat("xyz").asText().matchesSnapshotText();
         }
     }
 }

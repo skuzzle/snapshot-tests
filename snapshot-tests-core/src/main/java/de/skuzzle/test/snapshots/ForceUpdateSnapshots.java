@@ -21,6 +21,9 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
  * snapshots created within that test will be forcefully updated with latest actual test
  * result.
  * <p>
+ * Snapshot files for snapshot assertions that are {@link ChooseAssertions#disabled()
+ * disabled} will not be updated.
+ * <p>
  * This annotation replaces the {@link EnableSnapshotTests#forceUpdateSnapshots()} flag
  * because it is easier to use.
  * <p>
