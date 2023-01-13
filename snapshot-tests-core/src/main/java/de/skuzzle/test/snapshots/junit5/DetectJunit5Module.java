@@ -13,7 +13,9 @@ final class DetectJunit5Module {
     private static final boolean PLACEHOLDER_AVAILABLE = Classes
             .isClassPresent("de.skuzzle.test.snapshot.junit5.PlaceHolder");
     private static final boolean JUNIT5_AVAILABLE = Classes.isClassPresent("org.junit.jupiter.api.Test");
-    static {
+    static volatile boolean WARNING_PRINTED = false;
+
+    public DetectJunit5Module() {
         if (!PLACEHOLDER_AVAILABLE && JUNIT5_AVAILABLE) {
             System.err.println(
                     "WARNING: Starting from snapshot-tests version 1.8.0, you should depend on 'snapshot-tests-junit5' module.");
@@ -40,6 +42,7 @@ final class DetectJunit5Module {
             System.err.println("This warning will disapear once you have added the respective dependency");
             System.err.println();
             System.err.println();
+            WARNING_PRINTED = true;
         }
     }
 }

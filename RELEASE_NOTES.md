@@ -1,19 +1,19 @@
 ⚠️ℹ️ **Migration Info**: 
 
-Starting with this version, instead of depending on `snapshot-tests-core` you should depend on either 
+When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should depend on either 
 `snapshot-tests-junit5` or `snapshot-tests-junit4`. This will become mandatory with the next major version!
 
 **All Changes**: 
 
-* [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and o failed assertions will properly be marked as 'skipped' by the test framework
+* [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and no failed assertions will properly be marked as 'skipped' by the test framework
 * [#54](https://github.com/skuzzle/snapshot-tests/pull/54): Add support for JUnit4
+* Move JUnit5 support into separate module
 * Build against JUnit `5.9.2` (coming from `5.9.1`)
-* Stream line internal implementation
 * Add `ContextFiles` class which groups the paths to all generated files
 * Deprecate `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
-* Move JUnit5 support into separate module
 * Improve formatting of orphaned snapshot warning
+* Streamline internal implementation
 
 
 Maven Central coordinates for this release:
@@ -41,7 +41,7 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.8.0-SNAPSHOT")
 
 ### Choose a test framework
 
-ℹ️ ALl options include support for plain text snapshots.
+ℹ️ All options include support for plain text snapshots.
 
 If you are using **JUnit5**:
 

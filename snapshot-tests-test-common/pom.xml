@@ -9,7 +9,7 @@
     <artifactId>snapshot-tests-test-common</artifactId>
     <packaging>jar</packaging>
     
-    <name>Snapshot Tests Test common</name>
+    <name>Snapshot Tests Common Testing Utilities</name>
     <description>Provides support for JUnit4</description>
     <properties>
         <automatic-module-name>de.skuzzle.test.snapshots.testcommon</automatic-module-name>

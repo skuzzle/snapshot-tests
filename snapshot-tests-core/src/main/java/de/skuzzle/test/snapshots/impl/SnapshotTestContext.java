@@ -36,8 +36,6 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
 
-    private static final System.Logger log = System.getLogger(SnapshotTestContext.class.getName());
-
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
 
@@ -156,26 +154,18 @@ public final class SnapshotTestContext {
                 .distinct()
                 .peek(orphaned -> {
 
-                    final Path path = DirectoryResolver.relativize(orphaned.getParent());
+                    final Path relativePath = DirectoryResolver.relativize(orphaned.getParent());
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
                         System.err.printf("Deleted orphaned snapshot file %s in %s%n",
-                                orphaned.getFileName(), path);
+                                orphaned.getFileName(), relativePath);
                     } else {
                         System.err.printf(
                                 "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: %s in %s%n",
-                                orphaned.getFileName(), path);
+                                orphaned.getFileName(), relativePath);
                     }
                 })
                 .collect(Collectors.toList());
-    }
-
-    private int commonPrefixLength(String s1, String s2) {
-        final int length = Math.min(s1.length(), s2.length());
-        int pos = 0;
-        while (s1.charAt(pos) == s2.charAt(pos))
-            ++pos;
-        return pos;
     }
 }
