@@ -59,6 +59,7 @@ If your code under test produces deterministic results, tests should now be gree
 ## Compatibility
 - [x] Requires Java 11
 - [x] Tested against JUnit5 `5.9.2`
+- [x] Tested against JUnit4 `4.13.2`
 
 ## Usage
 

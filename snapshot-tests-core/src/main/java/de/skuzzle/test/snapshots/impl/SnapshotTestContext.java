@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -156,18 +155,27 @@ public final class SnapshotTestContext {
                 .map(OrphanDetectionResult::snapshotFile)
                 .distinct()
                 .peek(orphaned -> {
+
+                    final Path path = DirectoryResolver.relativize(orphaned.getParent());
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
-                        log.log(Level.INFO, "Deleted orphaned snapshot file {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf("Deleted orphaned snapshot file %s in %s%n",
+                                orphaned.getFileName(), path);
                     } else {
-                        log.log(Level.WARNING,
-                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf(
+                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: %s in %s%n",
+                                orphaned.getFileName(), path);
                     }
                 })
                 .collect(Collectors.toList());
     }
 
+    private int commonPrefixLength(String s1, String s2) {
+        final int length = Math.min(s1.length(), s2.length());
+        int pos = 0;
+        while (s1.charAt(pos) == s2.charAt(pos))
+            ++pos;
+        return pos;
+    }
 }

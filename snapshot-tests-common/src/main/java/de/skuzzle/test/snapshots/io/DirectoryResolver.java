@@ -25,6 +25,17 @@ public class DirectoryResolver {
         return BASE.resolve(Arguments.requireNonNull(directory, "directory must not be null"));
     }
 
+    @API(status = Status.INTERNAL, since = "1.8.0")
+    public static Path relativize(Path path) {
+        try {
+            return resolve(BASE.toAbsolutePath().relativize(path.toAbsolutePath()).toString());
+        } catch (final Exception e) {
+            // i dont trust this thing and its only used for pretty printing orphan
+            // warnings. So as fallback we can just use the original path here
+            return path;
+        }
+    }
+
     private DirectoryResolver() {
         // hidden
     }

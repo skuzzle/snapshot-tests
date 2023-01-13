@@ -59,6 +59,7 @@ If your code under test produces deterministic results, tests should now be gree
 ## Compatibility
 - [x] Requires Java ${version.java}
 - [x] Tested against JUnit5 `${version.junit}`
+- [x] Tested against JUnit4 `${version.junit4}`
 
 ## Usage
 
