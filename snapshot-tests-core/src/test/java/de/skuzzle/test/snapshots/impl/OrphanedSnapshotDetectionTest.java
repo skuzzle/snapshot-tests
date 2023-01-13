@@ -19,11 +19,12 @@ import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class OrphanedSnapshotDetectionTest {
 
-    private final MetaTest frameworkTest = new MetaTest();
+    private final MetaTest frameworkTest = MetaTest.junit5();
     private final MockOrphanCollector orphans = MockOrphanCollector.installNewInstance();
 
     @AfterEach
@@ -122,7 +123,7 @@ public class OrphanedSnapshotDetectionTest {
         void testWithDisabledAssertion(Snapshot snapshot) throws Exception {
             MetaTest.assumeMetaTest();
 
-            snapshot.assertThat("1").asText().matchesSnapshotText();
+            snapshot.assertThat("1").asText().disabled();
         }
 
         @Test

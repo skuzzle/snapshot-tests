@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -36,8 +35,6 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
-
-    private static final System.Logger log = System.getLogger(SnapshotTestContext.class.getName());
 
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
@@ -156,18 +153,19 @@ public final class SnapshotTestContext {
                 .map(OrphanDetectionResult::snapshotFile)
                 .distinct()
                 .peek(orphaned -> {
+
+                    final Path relativePath = DirectoryResolver.relativize(orphaned.getParent());
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
-                        log.log(Level.INFO, "Deleted orphaned snapshot file {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf("Deleted orphaned snapshot file %s in %s%n",
+                                orphaned.getFileName(), relativePath);
                     } else {
-                        log.log(Level.WARNING,
-                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf(
+                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: %s in %s%n",
+                                orphaned.getFileName(), relativePath);
                     }
                 })
                 .collect(Collectors.toList());
     }
-
 }

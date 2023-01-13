@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.impl;
+package de.skuzzle.test.snapshots.testcommons;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
@@ -14,7 +14,24 @@ import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
 import org.junit.platform.testkit.engine.Execution;
 
-class MetaTest {
+public class MetaTest {
+
+    private static final String JUNIT4_ENGINE = "junit-vintage";
+    private static final String JUNIT5_ENGINE = "junit-jupiter";
+
+    private final String engineName;
+
+    private MetaTest(String engineName) {
+        this.engineName = engineName;
+    }
+
+    public static MetaTest junit4() {
+        return new MetaTest(JUNIT4_ENGINE);
+    }
+
+    public static MetaTest junit5() {
+        return new MetaTest(JUNIT5_ENGINE);
+    }
 
     public void executeTestcasesIn(Class<?> testClass) {
         expectTestcase(testClass);
@@ -22,15 +39,16 @@ class MetaTest {
 
     public TestResult expectTestcase(Class<?> testClass) {
         final EngineExecutionResults executionResults = EngineTestKit
-                .engine("junit-jupiter")
+                .engine(engineName)
                 .selectors(selectClass(testClass))
                 .execute();
 
         return new TestResult(executionResults, testClass);
     }
 
-    static void assumeMetaTest() {
-        Assumptions.assumeThat(containedInStacktrace())
+    public static void assumeMetaTest() {
+        final boolean isMetaTest = containedInStacktrace();
+        Assumptions.assumeThat(isMetaTest)
                 .as("This test cas will be executed as meta-test case")
                 .isTrue();
     }
@@ -42,7 +60,7 @@ class MetaTest {
                         || stackFrame.getMethodName().equals("executeTestcasesIn")));
     }
 
-    static class TestResult {
+    public static class TestResult {
         private final EngineExecutionResults executionResults;
 
         private TestResult(EngineExecutionResults executionResults, Class<?> testClass) {

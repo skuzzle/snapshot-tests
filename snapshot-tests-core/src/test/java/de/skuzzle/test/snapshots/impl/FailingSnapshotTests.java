@@ -17,10 +17,11 @@ import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 public class FailingSnapshotTests {
 
-    private final MetaTest frameworkTest = new MetaTest();
+    private final MetaTest frameworkTest = MetaTest.junit5();
 
     @Test
     void testDetectIncompleteDSLReuse() throws Exception {
@@ -395,7 +396,7 @@ public class FailingSnapshotTests {
 
     @Test
     void testSoftAssertions() throws Exception {
-        new MetaTest()
+        MetaTest.junit5()
                 .expectTestcase(SoftAssertions.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)

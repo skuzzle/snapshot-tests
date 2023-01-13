@@ -33,8 +33,9 @@ public interface SnapshotDsl {
      * <p>
      * Note that the Snapshot instance that is being injected into your test is stateful
      * and not thread safe. You should also refrain from using incomplete DSL usages. You
-     * should always end the DSL call chain with any of the terminal operations
+     * must always end the DSL call chain with any of the terminal operations
      * {@link ChooseAssertions#disabled()},
+     * {@link ChooseAssertions#disabledBecause(String)},
      * {@link ChooseAssertions#matchesAccordingTo(StructuralAssertions)},
      * {@link ChooseAssertions#matchesSnapshotText()} or
      * {@link ChooseStructure#matchesSnapshotStructure()}.
@@ -275,13 +276,40 @@ public interface SnapshotDsl {
          *
          * @return Details about the snapshot. Note that the referenced snapshot file
          *         might not necessarily exist.
-         * @deprecated This method is <b>NOT</b> deprecated. Deprecation serves only to
-         *             mark this method in your IDE as it should only be used temporarily.
          * @since 1.5.0
          */
         @API(status = Status.EXPERIMENTAL, since = "1.5.0")
-        @Deprecated
         SnapshotTestResult disabled();
+
+        /**
+         * This is a terminal DSL operation which just advances the internal state of the
+         * injected Snapshot instance but which does not apply any comparisons. This
+         * method is useful if you have multiple assertions within a single test case and
+         * you want to temporarily one. If you rely on automatic snapshot naming,
+         * subsequent assertions will still work as expected when using this method as
+         * opposed to just commenting out the assertion.
+         * <p>
+         * When a DSL statement is terminated with this operation and no persisted
+         * snapshot file exists, none will be created. However the actual test result will
+         * still be serialized. Thus it is still possible to inspect the serialized result
+         * within the return {@link SnapshotTestResult} object. However, the referenced
+         * snapshot file will not exist in such cases.
+         * <p>
+         * If a snapshot file already exists, it will not be reported as orphan file as
+         * long as the assertion is disabled.
+         * <p>
+         * Note: We can not make the same guarantees about orphan detection when using
+         * JUnit5's native mechanism for disabling tests. In such cases, we try to make a
+         * best effort guess based on statically available information.
+         * 
+         * @param message Just an informative message describing why this assertion is
+         *            disabled.
+         * @return Details about the snapshot. Note that the referenced snapshot file
+         *         might not necessarily exist.
+         * @since 1.8.0
+         */
+        @API(status = Status.EXPERIMENTAL, since = "1.8.0")
+        SnapshotTestResult disabledBecause(String message);
 
         /**
          * Asserts that the serialized actual test result matches the persisted snapshot

@@ -30,6 +30,7 @@
         <!-- Versions are defined here (to be able to use the properties while filtering the readme during release), actual dependencies are managed in 
             a sub-module -->
         <version.junit>5.9.2</version.junit>
+        <version.junit4>4.13.2</version.junit4>
         <version.assertj>3.22.0</version.assertj>
         <version.opentest4j>1.2.0</version.opentest4j>
 
@@ -53,6 +54,9 @@
         <module>snapshot-tests-dependencies</module>
         <module>snapshot-tests-bom</module>
         <module>snapshot-tests-core</module>
+        <module>snapshot-tests-test-common</module>
+        <module>snapshot-tests-junit4</module>
+        <module>snapshot-tests-junit5</module>
         <module>snapshot-tests-normalize</module>
         <module>snapshot-tests-jackson</module>
         <module>snapshot-tests-jaxb</module>

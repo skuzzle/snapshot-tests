@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testWithSnapshot_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTestsJUnit4$FailBecauseJustUpdate
+test-method: testWithSnapshot
+
+test

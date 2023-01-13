@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
@@ -134,9 +133,12 @@ final class StaticOrphanedSnapshotDetector {
 
         private boolean isSnapshotTest(Method method) {
             return !Modifier.isStatic(method.getModifiers())
-                    && !Modifier.isPrivate(method.getModifiers())
-                    && Arrays.stream(method.getParameterTypes())
-                            .anyMatch(parameterType -> Snapshot.class.isAssignableFrom(parameterType));
+                    && !Modifier.isPrivate(method.getModifiers());
+
+            // This condition breaks static orphan detection for JUnit4 because we do not
+            // have parameters there
+            // && Arrays.stream(method.getParameterTypes())
+            // .anyMatch(parameterType -> Snapshot.class.isAssignableFrom(parameterType));
         }
 
     }

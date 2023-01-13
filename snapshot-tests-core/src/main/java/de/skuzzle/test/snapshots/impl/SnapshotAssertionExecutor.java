@@ -39,7 +39,7 @@ final class SnapshotAssertionExecutor {
         final String serializedActual = actualSnapshotFile.snapshot();
         final SnapshotStatus status = determineStatus(assertionInput);
 
-        if (assertionInput.isSnapshotFileAreadyExists()) {
+        if (status == SnapshotStatus.ASSERTED) {
             final SnapshotFile existingSnapshotFile = SnapshotFile.fromSnapshotFile(contextFiles.snapshotFile());
             final String serializedExpected = existingSnapshotFile.snapshot();
 

@@ -22,6 +22,10 @@ class JUnit5SnapshotExtension implements
         AfterAllCallback,
         TestWatcher {
 
+    // just load the class to execute its static block for printing a
+    // deprecation/migration warning
+    static final DetectJunit5Module DETECT_JUNIT5 = new DetectJunit5Module();
+
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
         Junit5SnapshotTestContextProvider.create(extensionContext);

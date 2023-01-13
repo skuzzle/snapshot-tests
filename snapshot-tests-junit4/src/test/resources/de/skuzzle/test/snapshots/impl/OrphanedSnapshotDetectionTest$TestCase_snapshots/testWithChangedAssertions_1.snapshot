@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testWithChangedAssertions_1
+snapshot-number: 1
+test-class: de.skuzzle.test.snapshots.impl.OrphanedSnapshotDetectionTest$TestCase
+test-method: testWithChangedAssertions
+
+2

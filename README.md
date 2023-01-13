@@ -6,14 +6,18 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
 # snapshot-tests
-Convenient snapshot testing for JUnit5. 
+Convenient snapshot testing for JUnit5 and JUnit4. 
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+Supported test frameworks:
+- [x] JUnit4 via [snapshot-tests-junit4](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.8.0-SNAPSHOT/jar)
+- [x] JUnit5 via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT/jar)
+
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar)
+- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar))
 - [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.8.0-SNAPSHOT/jar)
 - [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.8.0-SNAPSHOT/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0-SNAPSHOT/jar)
 - [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.8.0-SNAPSHOT/jar)
@@ -55,6 +59,7 @@ If your code under test produces deterministic results, tests should now be gree
 ## Compatibility
 - [x] Requires Java 11
 - [x] Tested against JUnit5 `5.9.2`
+- [x] Tested against JUnit4 `4.13.2`
 
 ## Usage
 
@@ -131,6 +136,17 @@ comparisons specific to your serialization format.
 ### Multiple snapshots in same test case
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
+Note though that, as with any test, it is generally a good idea to only have a single assertion per test case.
+
+### Disabling assertions
+You can temporarily disable a snapshot assertion by calling the `.disabled()` or `disabledBecause(String)` 
+terminal operation on the assertion DSL.  The latter has the advantage that you can leave an informative message to 
+your team which describes why the assertion has been disabled.
+
+This terminal operation is especially useful if you have multiple snapshot assertions within one test case and you want 
+to disable just a single one. If you rely on the automatic consecutive snapshot numbering, the framework will
+ gracefully count in _disabled_ assertions. Otherwise, if you'd just comment or remove the assertion, the numbering of 
+ all following assertions would be out of order, causing the assertions to pick up the wrong snapshot file.
 
 ### Parameterized tests
 _(since 1.1.0)_

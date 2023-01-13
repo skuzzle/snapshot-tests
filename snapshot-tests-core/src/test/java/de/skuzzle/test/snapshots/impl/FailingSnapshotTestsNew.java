@@ -16,10 +16,11 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 public class FailingSnapshotTestsNew {
 
-    private final MetaTest frameworkTest = new MetaTest();
+    private final MetaTest frameworkTest = MetaTest.junit5();
 
     @Test
     void testDetectIncompleteDSLReuse() throws Exception {

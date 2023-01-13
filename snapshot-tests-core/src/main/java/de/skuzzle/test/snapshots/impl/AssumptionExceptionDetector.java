@@ -13,9 +13,9 @@ import java.util.Optional;
 final class AssumptionExceptionDetector {
 
     private static final List<String> CLASS_NAMES = List.of(
-            "org.opentest4j.TestAbortedException",
             "org.junit.AssumptionViolatedException",
-            "org.testng.SkipException");
+            "org.testng.SkipException",
+            "org.opentest4j.TestAbortedException");
     private static final Class<? extends Throwable> EXCEPTION_CLASS;
     static {
         Class<? extends Throwable> result = null;
