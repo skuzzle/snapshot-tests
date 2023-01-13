@@ -6,14 +6,18 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
 # snapshot-tests
-Convenient snapshot testing for JUnit5. 
+Convenient snapshot testing for JUnit5 and JUnit4. 
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+Supported test frameworks:
+- [x] JUnit4 via [snapshot-tests-junit4](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.8.0-SNAPSHOT/jar)
+- [x] JUnit5 via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT/jar)
+
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar)
+- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar))
 - [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.8.0-SNAPSHOT/jar)
 - [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.8.0-SNAPSHOT/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0-SNAPSHOT/jar)
 - [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.8.0-SNAPSHOT/jar)

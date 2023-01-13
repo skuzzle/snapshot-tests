@@ -1,9 +1,14 @@
+ℹ️ **Info**: starting with this version, instead of depending on `snapshot-tests-core` you should depend on either `snapshot-tests-junit5` or `snapshot-tests-junit4`. This will become mandatory with the next major version! ℹ️ 
+
 * [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and o failed assertions will properly be marked as 'skipped' by the test framework
 * Build against JUnit `5.9.2` (coming from `5.9.1`)
 * Stream line internal implementation
 * Add `ContextFiles` class which groups the paths to all generated files
 * Deprecate `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
+* Add support for JUnit4
+* Move JUnit5 support into separate module
+
 
 Maven Central coordinates for this release:
 
@@ -27,25 +32,49 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.8.0-SNAPSHOT")
 ```
 
 ## Artifacts
-If you only need text based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT)
+### Choose a test framework
+If you are using JUnit5:
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
-    <artifactId>snapshot-tests-core</artifactId>
+    <artifactId>snapshot-tests-junit5</artifactId>
     <version>1.8.0-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-core:1.8.0-SNAPSHOT'
-testImplementation("de.skuzzle.test:snapshot-tests-core:1.8.0-SNAPSHOT")
+testImplementation 'de.skuzzle.test:snapshot-tests-junit5:1.8.0-SNAPSHOT'
+testImplementation("de.skuzzle.test:snapshot-tests-junit5:1.8.0-SNAPSHOT")
 ```
 
-If you need json based snapshots (includes `-core`):
+If you are using JUnit4:
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT)
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-junit5</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation 'de.skuzzle.test:snapshot-tests-junit5:1.8.0-SNAPSHOT'
+testImplementation("de.skuzzle.test:snapshot-tests-junit5:1.8.0-SNAPSHOT")
+```
+
+### Choose a snapshot format (optional)
+<details>
+    <summary>Show supported snapshot format artifacts</summary>
+    
+If you want json based snapshots:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jackson/1.8.0-SNAPSHOT)
 
@@ -63,7 +92,7 @@ testImplementation 'de.skuzzle.test:snapshot-tests-jackson:1.8.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.8.0-SNAPSHOT")
 ```
 
-If you need xml based snapshots using `javax.xml` legacy namespaces (includes `-core`):
+If you want xml based snapshots using `javax.xml` legacy namespaces:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb/1.8.0-SNAPSHOT)
 
@@ -81,7 +110,7 @@ testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:1.8.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.8.0-SNAPSHOT")
 ```
 
-If you need xml based snapshots using new `jakarta.xml` namespaces (includes `-core`):
+If you want xml based snapshots using new `jakarta.xml` namespaces:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0-SNAPSHOT)
 
@@ -99,7 +128,7 @@ testImplementation 'de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.8.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.8.0-SNAPSHOT")
 ```
 
-If you need HTML based snapshots (includes `-core`):
+If you want HTML based snapshots:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-html/1.8.0-SNAPSHOT)
 
@@ -116,8 +145,13 @@ If you need HTML based snapshots (includes `-core`):
 testImplementation 'de.skuzzle.test:snapshot-tests-html:1.8.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-html:1.8.0-SNAPSHOT")
 ```
+</details>
 
-## Experimental
+### Additional utilities
+
+<details>
+    <summary>Show utility artifacts</summary>
+
 Directory Params
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/1.8.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-directory-params/1.8.0-SNAPSHOT)
@@ -153,3 +187,4 @@ Object normalization
 testImplementation 'de.skuzzle.test:snapshot-tests-normalize:1.8.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.8.0-SNAPSHOT")
 ```
+</details>

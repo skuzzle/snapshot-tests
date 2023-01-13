@@ -10,7 +10,7 @@ test-method: testBomFilePlaceholdersResolved
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.skuzzle.test</groupId>
   <artifactId>snapshot-tests-bom</artifactId>
-  <version>1.7.0-SNAPSHOT</version>
+  <version>1.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Snapshot Tests BOM</name>
   <description>Manages all child artifact versions in case you need to reference multiple in a client project</description>
@@ -46,47 +46,52 @@ test-method: testBomFilePlaceholdersResolved
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-core</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>de.skuzzle.test</groupId>
+        <artifactId>snapshot-tests-junit4</artifactId>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-jackson</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-jaxb</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-html</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-xmlunit</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-directory-params</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-normalize</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-common</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

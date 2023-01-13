@@ -6,13 +6,10 @@
         <artifactId>snapshot-tests-parent</artifactId>
         <version>1.8.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>snapshot-tests-dependencies</artifactId>
     <packaging>pom</packaging>
-
     <name>Snapshot Tests Internal Dependency Management</name>
     <description>Internal dependency management</description>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -36,25 +33,28 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-test-common</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            
             <dependency>
                 <groupId>io.github.java-diff-utils</groupId>
                 <artifactId>java-diff-utils</artifactId>
                 <version>${version.java-diff-utils}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.apiguardian</groupId>
                 <artifactId>apiguardian-api</artifactId>
                 <version>${version.api-guardian}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>
                 <version>${version.jsonassert}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.xmlunit</groupId>
                 <artifactId>xmlunit-core</artifactId>
@@ -75,7 +75,6 @@
                 <artifactId>assertj-core</artifactId>
                 <version>${version.assertj}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.opentest4j</groupId>
                 <artifactId>opentest4j</artifactId>
@@ -86,13 +85,16 @@
                 <artifactId>equalsverifier</artifactId>
                 <version>${version.equals-verifier}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${version.jsoup}</version>
             </dependency>
-
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit4}</version>
+            </dependency>
             <dependency>
                 <groupId>com.tngtech.archunit</groupId>
                 <artifactId>archunit</artifactId>
@@ -108,4 +110,3 @@
         </dependencies>
     </dependencyManagement>
 </project>
-

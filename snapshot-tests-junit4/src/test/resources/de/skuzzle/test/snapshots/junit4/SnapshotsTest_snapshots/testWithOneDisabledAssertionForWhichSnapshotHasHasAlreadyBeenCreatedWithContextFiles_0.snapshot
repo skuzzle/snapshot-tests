@@ -1,0 +1,15 @@
+dynamic-directory: false
+snapshot-name: testWithOneDisabledAssertionForWhichSnapshotHasHasAlreadyBeenCreatedWithContextFiles_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.junit4.SnapshotsTest
+test-method: testWithOneDisabledAssertionForWhichSnapshotHasHasAlreadyBeenCreatedWithContextFiles
+
+Name: Simon
+Surname: Taddiken
+Birthdate: 1777-01-12
+Address: Street: Gibtsnicht-Straße
+Number: 1337
+Zip: 4711
+City: Bielefeld
+Country: Germany
+
