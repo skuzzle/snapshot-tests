@@ -134,6 +134,9 @@ final class StaticOrphanedSnapshotDetector {
         private boolean isSnapshotTest(Method method) {
             return !Modifier.isStatic(method.getModifiers())
                     && !Modifier.isPrivate(method.getModifiers());
+
+            // This condition breaks static orphan detection for JUnit4 because we do not
+            // have parameters there
             // && Arrays.stream(method.getParameterTypes())
             // .anyMatch(parameterType -> Snapshot.class.isAssignableFrom(parameterType));
         }
