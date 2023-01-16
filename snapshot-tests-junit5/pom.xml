@@ -29,5 +29,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>snapshot-tests-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>snapshot-tests-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

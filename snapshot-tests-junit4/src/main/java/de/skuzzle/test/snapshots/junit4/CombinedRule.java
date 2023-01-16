@@ -47,18 +47,15 @@ interface CombinedRule extends TestRule {
     }
 
     default void before(Description description) throws Exception {
-        // let the implementer decide whether this method is useful to implement
     }
 
     default void after(Description description) throws Exception {
-        // let the implementer decide whether this method is useful to implement
     }
 
     /**
      * Only runs for Tests that pass
      */
     default void verify(Description description) {
-        // let the implementer decide whether this method is useful to implement
     }
 
     default void beforeClass(Description description) throws Exception {

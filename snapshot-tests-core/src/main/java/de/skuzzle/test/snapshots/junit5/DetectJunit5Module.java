@@ -11,7 +11,7 @@ import de.skuzzle.test.snapshots.reflection.Classes;
 final class DetectJunit5Module {
 
     private static final boolean PLACEHOLDER_AVAILABLE = Classes
-            .isClassPresent("de.skuzzle.test.snapshot.junit5.PlaceHolder");
+            .isClassPresent("de.skuzzle.test.snapshots.junit5.PlaceHolder");
     private static final boolean JUNIT5_AVAILABLE = Classes.isClassPresent("org.junit.jupiter.api.Test");
     static volatile boolean WARNING_PRINTED = false;
 

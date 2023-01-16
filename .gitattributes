@@ -1,3 +1,3 @@
-snapshot-tests-core/src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTests$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf
-snapshot-tests-core/src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsNew$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf
-snapshot-tests-junit4/src/test/resources/de/skuzzle/test/snapshots/impl/FailingSnapshotTestsJUnit4$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf
+snapshot-tests-junit4/src/test/resources/de/skuzzle/test/snapshots/junit4/FailingSnapshotTestsJUnit4$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf
+snapshot-tests-junit5/src/test/resources/de/skuzzle/test/snapshots/junit5/FailingSnapshotTestsJUnit5$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf
+snapshot-tests-junit5/src/test/resources/de/skuzzle/test/snapshots/junit5/FailingSnapshotTestsJUnit5Legacy$FailBecauseSnapshotMismatchWithWhitespaces_snapshots/testWithSnapshot_0.snapshot eol=crlf

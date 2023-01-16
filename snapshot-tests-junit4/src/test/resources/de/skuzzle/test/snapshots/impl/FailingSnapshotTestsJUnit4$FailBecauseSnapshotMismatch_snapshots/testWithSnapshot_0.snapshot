@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: testWithSnapshot_0
-snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTestsJUnit4$FailBecauseSnapshotMismatch
-test-method: testWithSnapshot
-
-test

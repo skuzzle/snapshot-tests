@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: testWithSnapshot_1
-snapshot-number: 1
-test-class: de.skuzzle.test.snapshots.impl.FailingSnapshotTestsJUnit4$MultipleAssertions
-test-method: testWithSnapshot
-
-test
