@@ -29,7 +29,11 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * create a {@link SnapshotTestContext} instance from that configuration.</li>
  * <li>You need to call the lifecycle methods of the context object.</li>
  * </ol>
- *
+ * Most aspects of snapshot testing will already work if you just call
+ * {@link #finalizeSnapshotTest()} after a test method. However, in order to support full
+ * orphan detection capabilities, you need to register both all ignored tests and all
+ * failed tests of the current test execution.
+ * 
  * @author Simon Taddiken
  * @since 1.1.0
  */
@@ -120,7 +124,7 @@ public final class SnapshotTestContext {
      *
      * @param result A snapshot test result of a single snapshot assertion.
      */
-    public void recordSnapshotTestResult(SnapshotTestResult result) {
+    void recordSnapshotTestResult(SnapshotTestResult result) {
         this.dynamicOrphanedSnapshotsDetector.addResult(result);
     }
 
