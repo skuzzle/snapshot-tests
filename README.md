@@ -30,9 +30,26 @@ Please check out the GitHub release page to find Maven & Gradle coordinates for 
 release [1.8.0-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.8.0-SNAPSHOT)
 
 ## Quick start
-_(assumes using `snapshot-tests-jackson` artifact)_
+_(assumes using `maven`, `JUnit5` and `snapshot-tests-jackson` artifact)_
 
-Annotate your test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
+Add the following dependencies to your build
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-junit5</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
+    <scope>test</scope>
+</dependency>
+```
+
+Annotate any test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
 
 ```java
 @EnableSnapshotTests
@@ -60,6 +77,55 @@ If your code under test produces deterministic results, tests should now be gree
 - [x] Requires Java 11
 - [x] Tested against JUnit5 `5.9.2`
 - [x] Tested against JUnit4 `4.13.2`
+
+
+# Notes on test framework support
+
+## JUnit5
+Historically, JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
+configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
+preferred snapshot format (i.e. like `snapshot-tests-jackson`).
+
+## JUnit5 legacy
+The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
+direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which 
+would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being 
+printed to `System.err` stating the required migration steps.
+
+> **Warning**
+⚠️ Starting from version `2.0.0` this scenario will no longer be supported.
+
+## JUnit4
+JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
+add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
+
+> **Warning**
+⚠️ In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
+transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you 
+might want to add a respective exclusion to your dependency:
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+or
+
+```
+testImplementation('de.skuzzle.test:snapshot-tests-jackson:1.8.0-SNAPSHOT') {
+    exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+}
+```
 
 ## Usage
 
