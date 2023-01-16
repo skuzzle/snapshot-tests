@@ -46,7 +46,7 @@ pipeline {
     stage('Update readme and documentation') {
       steps {
         sh 'git add README.md RELEASE_NOTES.md'
-        sh 'git add docs/*'
+        sh 'git add --force docs/*'
         sh 'git commit -m "Update README and RELEASE_NOTES"'
       }
     }

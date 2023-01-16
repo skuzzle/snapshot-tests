@@ -18,7 +18,11 @@
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 * Improve formatting of orphaned snapshot warning
 * Streamline internal implementation
+* Add new reference documentation at 
 
+## Reference Documentation
+
+Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT
 
 Maven Central coordinates for this release:
 

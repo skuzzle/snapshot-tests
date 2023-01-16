@@ -29,6 +29,13 @@ Read more about snapshot testing in this accompanying [blog post](https://simon.
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
 release [1.8.0-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.8.0-SNAPSHOT)
 
+### Reference Documentation
+Starting with release `1.8.0` you can find the NEW reference documentation for the latest release [here](https://skuzzle.github.io/snapshot-tests/docs/latest)
+Or you can refer to the documentation of a specific release at [1.8.0-SNAPSHOT](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT)
+
+Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
+documentation.
+
 ## Quick start
 _(assumes using `maven`, `JUnit5` and `snapshot-tests-jackson` artifact)_
 

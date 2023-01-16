@@ -23,6 +23,7 @@
         <github.name>snapshot-tests</github.name>
         <github.main-branch>main</github.main-branch>
         <github.dev-branch>dev</github.dev-branch>
+        
 
         <automatic-module-name>de.skuzzle.test.snapshots</automatic-module-name>
         <failOnWarning>false</failOnWarning>
