@@ -1,6 +1,6 @@
 **Migration Info**: 
 
-> **Warning**
+> **Note**
 > When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now 
 > either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`. 
 > This will become mandatory with the next major version!

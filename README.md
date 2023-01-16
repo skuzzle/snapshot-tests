@@ -93,16 +93,16 @@ would pull in the `-core` module transitively. This setup still works but is dis
 printed to `System.err` stating the required migration steps.
 
 > **Warning**
-⚠️ Starting from version `2.0.0` this scenario will no longer be supported.
+> Starting from version `2.0.0` this scenario will no longer be supported.
 
 ## JUnit4
 JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
 add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
 
 > **Warning**
-⚠️ In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
-transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you 
-might want to add a respective exclusion to your dependency:
+> In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
+> transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you 
+> might want to add a respective exclusion to your dependency:
 
 ```xml
 <dependency>
