@@ -3,10 +3,12 @@ package de.skuzzle.test.snapshots.snippets;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
+@Disabled
+@EnableSnapshotTests
 class UpdatingSnapshots {
 
     // tag::justupdate[]

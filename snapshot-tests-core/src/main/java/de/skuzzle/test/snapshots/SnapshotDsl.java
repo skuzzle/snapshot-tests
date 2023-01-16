@@ -81,7 +81,11 @@ public interface SnapshotDsl {
         /**
          * Allows to choose the directory into which the snapshot will be persisted. The
          * path configured here takes precedence over what is configured via
-         * {@link SnapshotDirectory}
+         * {@link SnapshotDirectory}.
+         * <p>
+         * The path configured here will not be resolved against the
+         * <code>src/test/resources</code> directory. If you provide a relative path, it
+         * will be considered to be relative to the project's root directory.
          * <p>
          * <b>Warning:</b> Changing the directory has severe impact on orphan detection
          * and might lead to false positives. Use with caution as long as this API is

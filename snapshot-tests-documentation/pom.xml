@@ -4,14 +4,11 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <version>1.8.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>snapshot-tests-documentation</artifactId>
-
     <name>Snapshot Tests Documentation</name>
     <description>Documentation and usage guide</description>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -23,7 +20,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -36,7 +32,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
