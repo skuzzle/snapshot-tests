@@ -22,9 +22,10 @@
 
 ## Reference Documentation
 
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0-SNAPSHOT&color=orange)](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT)
+
 Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT
 
-Maven Central coordinates for this release:
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project

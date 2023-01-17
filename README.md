@@ -2,6 +2,7 @@
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.8.0-SNAPSHOT/jar)
 [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.8.0-SNAPSHOT)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0-SNAPSHOT&color=orange)](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -30,8 +31,9 @@ Please check out the GitHub release page to find Maven & Gradle coordinates for 
 release [1.8.0-SNAPSHOT](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.8.0-SNAPSHOT)
 
 ### Reference Documentation
-Starting with release `1.8.0` you can find the NEW reference documentation for the latest release [here](https://skuzzle.github.io/snapshot-tests/docs/latest)
-Or you can refer to the documentation of a specific release at [1.8.0-SNAPSHOT](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT)
+Starting with release `1.8.0` we provide a new external reference documentation:
+* [Latest](https://skuzzle.github.io/snapshot-tests/docs/latest) : Always points to the latest version
+* [1.8.0-SNAPSHOT](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT) : Points to a specific version
 
 Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
 documentation.
