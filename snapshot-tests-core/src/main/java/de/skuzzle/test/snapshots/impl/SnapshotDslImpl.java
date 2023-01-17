@@ -34,9 +34,9 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
 
     private Object actual;
     private Path directoryOverride;
-    private SnapshotNaming namingStrategy = SnapshotNaming.defaultNaming();
-    private SnapshotSerializer snapshotSerializer = TextSnapshot.text.snapshotSerializer();
-    private StructuralAssertions structuralAssertions = TextSnapshot.text.structuralAssertions();
+    private SnapshotNaming namingStrategy;
+    private SnapshotSerializer snapshotSerializer;
+    private StructuralAssertions structuralAssertions;
 
     public SnapshotDslImpl(ResultRecorder resultRecorder, SnapshotConfiguration snapshotConfiguration,
             Method testMethod) {
@@ -45,6 +45,17 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
         this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
                 "snapshotConfiguration must not be null");
         this.testMethod = Arguments.requireNonNull(testMethod, "testMethod must not be null");
+
+        this.resetDSL();
+    }
+
+    private void resetDSL() {
+        this.state.reset();
+        this.actual = null;
+        this.directoryOverride = null;
+        this.namingStrategy = SnapshotNaming.defaultNaming();
+        this.snapshotSerializer = TextSnapshot.text.snapshotSerializer();
+        this.structuralAssertions = TextSnapshot.text.structuralAssertions();
     }
 
     @Override
@@ -139,7 +150,6 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
 
     private SnapshotTestResult terminal(TerminalOperation operation, StructuralAssertions structuralAssertions) {
         try {
-            this.state.reset();
             final SnapshotDslResult dslResult = new SnapshotDslResult(
                     snapshotConfiguration,
                     resultRecorder,
@@ -157,6 +167,8 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
             return lifecycle.executeLifecycleWith(structuralAssertions, assertionInput);
         } catch (final Exception e) {
             throw new IllegalStateException("Technical problem while performing snapshot test terminal operation", e);
+        } finally {
+            resetDSL();
         }
     }
 

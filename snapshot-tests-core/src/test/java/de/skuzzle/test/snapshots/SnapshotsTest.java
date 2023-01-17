@@ -108,6 +108,14 @@ public class SnapshotsTest {
     }
 
     @Test
+    void testMixExplicitAndAutomaticNaming(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @Test
     void testCustomizeTextSnapshot(Snapshot snapshot) throws Exception {
         final Person simon = determinePerson();
 
