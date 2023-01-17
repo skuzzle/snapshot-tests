@@ -18,9 +18,14 @@
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 * Improve formatting of orphaned snapshot warning
 * Streamline internal implementation
+* Provide new reference documentation at https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT
 
+## Reference Documentation
 
-Maven Central coordinates for this release:
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0-SNAPSHOT&color=orange)](https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT)
+
+Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/docs/1.8.0-SNAPSHOT
+
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project

@@ -18,9 +18,14 @@
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 * Improve formatting of orphaned snapshot warning
 * Streamline internal implementation
+* Provide new reference documentation at https://${github.user}.github.io/${github.name}/docs/${project.version}
 
+## Reference Documentation
 
-Maven Central coordinates for this release:
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/docs/${project.version})
+
+Reference documentation for this release: https://${github.user}.github.io/${github.name}/docs/${project.version}
+
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project

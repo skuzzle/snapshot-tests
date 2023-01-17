@@ -1,0 +1,793 @@
+= Snapshot-Tests User Guide
+Simon Taddiken
+:toc:
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 2
+:sectlinks: 
+:revnumber: {project-version}
+:example-caption!:
+:imagesdir: ./images
+ifndef::sourcedir[:sourcedir: ../../test/java]
+
+This is the user manual for the snapshot-tests extension for JUnit5 and JUnit4.
+
+NOTE: The documentation is still in beta phase and might not be exhaustive. If you are missing any information feel free 
+to open a GitHub ticket and ask for help.
+
+== Introduction
+
+This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
+serialized version of the object during the first test execution and during subsequent test executions, compare the 
+actual object against the stored snapshot.
+
+Read more about _snapshot testing_ in this accompanying https://simon.taddiken.net/the-case-for-snapshot-testing[blog post].
+
+
+=== Versioning, Compatibility and Upgrading
+This project strongly aims to provide a stable public API with little surprises for clients when they upgrade to a new 
+version. We rely on the principles of _semantic versioning_ and use 
+https://github.com/apiguardian-team/apiguardian[@API Guardian] to communicate the intention of all of public 
+classes/methods. Consequently you should not use any public types that are marked as `INTERNAL`.
+
+The following principles apply:
+
+* Upgrading to a newer _patch_ or _minor_ version should never break client code or existing tests.
+* Upgrading to a newer _major_ version can potentially break client code or tests.
+* All deprecations will be marked clearly in code and alternatives will be presented in the JavaDoc.
+* Deprecated code will be removed in accordance to the code's previous API Guardian `status`. 
+
+NOTE: It is possible that snapshot header information change even during a patch/minor update. This might cause your 
+snapshot files to occur as _modified_ files in your local SCM copy after upgrading to a newer framework version. This 
+doesn't pose a problem and you can safely update the files in your SCM.
+
+
+== Getting Started
+
+=== Artifacts
+
+The library comes with different modules that can be used and combined to fulfill different testing purposes. As such 
+it is not uncommon that you want to include multiple modules in your project's dependencies. We provide a BOM artifact 
+for your convenience:
+
+[source,xml,subs="attributes+"]
+.Maven BOM artifact
+----
+<dependencyManagement>
+    <dependency>
+        <groupId>de.skuzzle.test</groupId>
+        <artifactId>snapshot-tests-bom</artifactId>
+        <version>{revnumber}</version>
+        <type>pom</type>
+        <scope>import</scope>
+    </dependency>
+</dependencyManagement>
+----
+
+[source,groovy,subs="attributes+"]
+.Gradle BOM include
+----
+testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{revnumber}"))
+----
+
+[source,groovy,subs="attributes+"]
+.Gradle Spring-Boot dependency management plugin
+----
+dependencyManagement {
+    imports {
+        mavenBom 'de.skuzzle.test:snapshot-tests-bom:{revnumber}'
+    }
+}
+----
+
+The following modules are managed in the previously mentioned BOM artifact. Follow the remaining documentation to 
+learn how to properly combine them to employ _snapshot testing_ in your own project. 
+
+.Available modules. Click the module's name to view it on Maven Central.
+|===
+|Module name|Description
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/{revnumber}/jar[`snapshot-tests-junit5`]
+| JUnit5 extension. 
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/{revnumber}/jar[`snapshot-tests-junit4`]
+| JUnit4 support via `@Rule` and `@ClassRule`. 
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/{revnumber}/jar[`snapshot-tests-core`]
+| Core API and unstructured text comparison. 
+
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/{revnumber}/jar[`snapshot-tests-jackson`]
+| JSON snapshot serialization using `jackson` and structured comparison using `jsonassert`.
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/{revnumber}/jar[`snapshot-tests-jaxb-jakarta`]
+| XML snapshot serialization using `jaxb` with new jakarta dependencies and structured comparison using `xmlunit`.
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/{revnumber}/jar[`snapshot-tests-jaxb`]
+| XML snapshot serialization using `jaxb` and structured comparison using `xmlunit`.
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/{revnumber}/jar[`snapshot-tests-html`]
+| HTML snapshots using `jsoup` and structured comparison using `xmlunit`.
+
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/{revnumber}/jar[`snapshot-tests-directory-params`]
+| JUnit5 `ArgumentProvider` implementations that allow to iterate over files/directories. 
+|===
+
+=== Choosing the Right Modules
+In order to use snapshot-tests you have to answer two simple questions:
+
+* Which test framework are you using?
+* Which format do you want to use for serializing objects into persistable snapshot files?
+
+==== Use With JUnit5
+Historically JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
+configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
+preferred snapshot format (i.e. like `snapshot-tests-jackson`).
+
+==== Use With JUnit5 (Legacy)
+The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
+direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which 
+would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being 
+printed to `System.err` stating the required migration steps.
+
+WARNING: Starting from version `2.0.0` this scenario will no longer be supported.
+
+==== Use With JUnit4
+JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
+add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
+
+[WARNING]
+====
+In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
+ transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major version.
+
+[source,xml]
+.Exclude JUnit5 dependencies from snapshot format artifacts (maven)
+----
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>{revnumber}</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+----
+or
+
+[source,groovy]
+.Exclude JUnit5 dependencies from snapshot format artifacts (gradle, groovy syntax)
+----
+testImplementation('de.skuzzle.test:snapshot-tests-jackson:{revnumber}') {
+    exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+}
+----
+====
+
+=== Quick Start Code Example
+
+This is a very simple quick start example of how to use this framework, using the `-junit5` module and no particular
+snapshot format. Instead, it simply uses the `toString()` representation of the test result to create a persistable
+snapshot file.
+
+
+.Simple quick start example using maven and JUnit5
+====
+[source,xml]
+.Add Maven dependency
+----
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-junit5</artifactId>
+    <version>{revnumber}</version>
+</dependency>
+----
+
+[source,java]
+.Write a simple snapshot test
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags=quickstart,indent=0]
+----
+<1> Enable the _JUnit5_  extension for your test class.
+<2> Declare a parameter of type `Snapshot`. It will be injected by the framework.
+<3> Choose a serialization format. Here we use the `actual` object's `toString()` representation as snapshot format.
+<4> Perform the assertion by comparing the actual object with the persisted snapshot.
+====
+
+=== General Snapshot Testing Workflow
+
+. Implement test cases and add one ore more snapshot assertions as shown above.
+. When you execute these tests the _first_ time, serialized snapshots of your test results will be persisted and _the tests will fail_.
+. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. If your code under test produces deterministic results, tests should now be green.
+. Check in the persisted snapshots into your SCM.
+
+[IMPORTANT]
+====
+The framework will fail all snapshot assertions when they are initially executed and there is no previous 
+snapshot file to compare the current result against. This guards against accidently checking in broken or flaky tests 
+into your SCM.
+[source]
+.Assertion error after snapshots have been created initially
+----
+java.lang.AssertionError: Snapshots have been created the first time.
+Run the test again and you should see it succeed.
+----
+====
+
+TIP: If you find that your tests are flaky or continue to fail even after the initial test execution, take a look at 
+the section about dealing with <<_dealing_with_random_values_in_test_results, random values>>.
+
+
+== Reference
+
+=== Entrypoint
+As shown in the <<_getting_started, Getting Started>> section, you need to enable snapshot tests capabilities for your 
+test class by annotating it with `@EnabledSnapshotTests`. This registers a _JUnit5_ `ArgumentResolver` which 
+takes care of injecting a `Snapshot` instance into your test methods. The `Snapshot` interface is the entrypoint 
+for the _assertion DSL_.
+
+If you are using `JUnit4`, you need to declare the SnapshotRule like this:
+
+[source]
+.Enabling snapshot test capabilities in a JUnit4 test
+----
+@Rule
+@ClassRule
+public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
+----
+
+IMPORTANT: You need to declare the rule as both `@Rule` and `@ClassRule` as there is no other possibility for the 
+snapshot-tests framework to obtain all the relevant test execution information from the JUnit4 engine.
+
+Besides the different way of enabling the snapshot testing capabilities there are no further differences between
+usage in JUnit4 and JUnit5. The `Snapshot` class is the main entrypoint for writing snapshot assertions. 
+
+=== Snapshot Serialization and Comparison
+The framework needs to create a `String` representation of the test results in order to store it in a _snapshot file_. 
+Creating such a String representation is referred to as _serialization_ and this aspect is handled by implementations
+of the `SnapshotSerializer` interface.
+
+To compare persisted snapshot data against actual test results, the framework serializes the actual test result as well 
+and passes both Strings to an instance of `StructuralAssertions`.
+
+Though serialization and comparison are handled by different components the aspects are still related. As 
+`StructuralAssertions` solely work on the String representation it is important that the implementation understands the
+Strings that have been produced by the `SnapshotSerializer` (i.e. you should not mix a serializer that produces XML with 
+an `StructualAssertions` instance that compares JSON).
+
+The Snapshot DSL allows you to configure these aspects separately but also provides a convenient API for configuring
+the Serializer and Assertions at once via the `StructuredData` class.
+
+The DSL distinguishes between _just text_ and _structured text_ snapshots. This distinction influences the way in which 
+new test results can be compared to persisted snapshots:
+
+* If a snapshot uses a _structured format_ such as `XML` or `JSON` the framework can make use of that structure during 
+comparison to offer better error messages or to allow customization of the comparison details. 
+* If a snapshot consists of _just text_ the framework can only make a text comparison.
+
+
+==== Text-only Comparison
+In order to present a meaningful _assertion failed_ message the framework will always create a unified diff of the
+persisted snapshot and the serialized `actual` result. 
+
+.Serialize without structured format and apply text-only comparison.
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=text-compare,indent=0]
+----
+<1> `.matchesSnapshotText()` is _the only_ available option when you choose no structured format using `asText()`.
+====
+
+If the assertion fails because a difference has been found, the framework will provide a rich failure report along 
+with the assertion error's stack trace.
+
+[source]
+.Example text comparison failure.
+----
+org.opentest4j.AssertionFailedError: Stored snapshot doesn't match actual result.
+
+Snapshot location:
+    src\test\resources\de\skuzzle\test\snapshots\snippets\ComparisonTests_snapshots\testCreateSnapshotAsText_0.snapshot
+
+Full unified diff of actual result and stored snapshot:
+  7    - Name: <<Simon>>
+     7 + Name: <<Peter>>
+  8    - Surname: <<Taddiken>>
+     8 + Surname: <<Pan>>
+  9  9   Birthdate: 1777-01-12
+ 10 10   Address: Street: Gibtsnicht-Straße
+ 11 11   Number: 1337
+ 12 12   Zip: 4711
+ 13 13   City: Bielefeld
+[...]
+
+    at de.skuzzle.test.snapshots.snippets.ComparisonTests.testCreateSnapshotAsText(ComparisonTests.java:29)
+    [...]
+----
+
+Most IDEs will additionally allow you to display the differences in a dedicated diff viewer. For example, if you double 
+click the assertion failure in eclipse's _Failure Trace_ view you will be presented with the following view.
+[#img-eclipse_diff]
+.The same assertion error as displayed in eclipse's diff viewer.
+image::eclipse_diff.jpg[align=center]
+
+NOTE: Displaying multiple differences _at once_ is one key strength of snapshot testing. It gives you the value of 
+`n` assertions for only writing a *single* one.
+
+
+==== Structural Comparison
+When using a structured serialization format you can make use of advanced comparison features offered by the respective 
+format.
+
+.Serialize to JSON and apply structural comparison.
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
+----
+<1> Choose to serialize test results as JSON (Requires the `snapshot-tests-jackson` module).
+<2> Choose `.matchesSnapshotStructure()` to trigger structural comparison.
+====
+
+When comparison fails, the framework enhances the failure message with additional information from the structural 
+comparison.
+[source]
+.Example structural comparison failure for JSON snapshots.
+----
+org.opentest4j.AssertionFailedError: name
+Expected: Simon
+     got: Peter
+ ; surname
+Expected: Taddiken
+     got: Pan
+
+
+Snapshot location:
+    src\test\resources\de\skuzzle\test\snapshots\snippets\ComparisonTests_snapshots\testCreateSnapshotAsJson_0.snapshot
+
+Full unified diff of actual result and stored snapshot:
+  7  7   {
+  8    -   "name" : ~~~~"Simon"~~~~,
+     8 +   "name" : ~~~~"Peter"~~~~,
+  9    -   "surname" : ~~~~"Taddiken"~~~~,
+     9 +   "surname" : ~~~~"Pan"~~~~,
+ 10 10     "birthdate" : "1777-01-12",
+ 11 11     "address" : {
+ 12 12       "street" : "Gibtsnicht-Straße",
+ 13 13       "number" : "1337",
+ 14 14       "zipCode" : "4711",
+[...]
+
+    at de.skuzzle.test.snapshots.snippets.ComparisonTests.testCreateSnapshotAsJson(ComparisonTests.java:41)
+    [...]
+----
+
+Likewise for `XML` serialization:
+
+.Serialize to XML and apply structural comparison.
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-xml,indent=0]
+----
+====
+
+[source]
+.Example structural comparison failure for XML snapshots.
+----
+org.opentest4j.AssertionFailedError: 
+
+Expecting:
+ <control instance> and <test instance> to be identical
+Expected text value 'Simon' but was 'Peter' - comparing <name ...>Simon</name> at /person[1]/name[1]/text()[1] to <name ...>Peter</name> at /person[1]/name[1]/text()[1]
+Expected :<<name>Simon</name>>
+Actual   :<<name>Peter</name>>
+
+
+Snapshot location:
+    src\test\resources\de\skuzzle\test\snapshots\snippets\ComparisonTests_snapshots\testCreateSnapshotAsXml_0.snapshot
+
+Full unified diff of actual result and stored snapshot:
+[...]
+ 12 12           <number>1337</number>
+ 13 13           <street>Gibtsnicht-Straße</street>
+ 14 14           <zipCode>4711</zipCode>
+ 15 15       </address>
+ 16 16       <birthdate/>
+ 17    -     ~~~~<name>Simon<~~~~/name>
+    17 +     ~~~~<name>Peter<~~~~/name>
+ 18    -     ~~~~<surname>Taddiken<~~~~/surname>
+    18 +     ~~~~<surname>Pan<~~~~/surname>
+ 19 19   </person>
+    at de.skuzzle.test.snapshots.snippets.ComparisonTests.testCreateSnapshotAsXml(ComparisonTests.java:53)
+    [...]
+----
+
+
+=== Updating Snapshot Files
+One aspect that makes _snapshot testing_ so powerful is that you can generate the _expected output_ from your 
+_code under test_ itself. This removes the necessity to manually update test cases when the behavior of your 
+code under test changes. The framework comes with a convenient approach for updating multiple snapshot files at once. 
+You should stick to the following workflow:
+
+. Make the desired changes to your code under test. If you run the snapshot tests now they should fail.
+. Advise the framework to update the snapshot files with the latest actual results. 
+. Inspect the changes within your snapshot files to see whether they reflect your desired outcome (your 
+SCM should mark the changed files as _modified_ and should thus be able display a neat diff to the previous version). 
+. Remove the advice to update snapshots.
+
+[IMPORTANT]
+====
+Whenever the framework overrides a snapshot with the new actual test result, the respective assertion will 
+fail. As already stated in the <<_general_snapshot_testing_workflow, Getting Started>> section, this is to prevent you 
+from accidently checking in broken tests into your SCM.
+
+[source]
+.Assertion error after forcefully updating snapshots
+----
+java.lang.AssertionError: Snapshots have been updated forcefully.
+Remove 'updateSnapshots = true' attribute, @ForceUpdateSnapshots annotation, -DforceUpdateSnapshots JVM flag and calls to 'justUpdateSnapshot()' and run the tests again.
+----  
+====
+
+==== Update Multiple Snapshots Within the Same Test
+You can place the `@ForceUpdateSnapshots` annotation on either your test method or your whole test class to advise 
+the framework to update the snapshots of all affected assertions.
+
+.Update the snapshots for all assertions in the same test method
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-method,indent=0]
+----
+====
+
+.Update the snapshots for all assertions in the same test class
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-class,indent=0]
+----
+====
+
+NOTE: You might find it irritating that the `@ForceUpdateSnapshots` annotation is marked as deprecated. This is just 
+a hack to make your IDE highlight its usages as it is intended to be only used temporarily. 
+
+==== Update the Snapshots for the Whole Project
+Snapshots can also be updated globally by passing the `-DforceUpdateSnapshots` parameter to the JVM. This will 
+update the snapshots of all tests executed within the JVM. 
+
+[TIP]
+====
+When using `maven` you can pass the option to the `surefire-plugin` on the command line using this little trick:
+ 
+ mvn clean verify -DargLine=-DforceUpdateSnapshots
+====
+
+TIP: Handling of the parameter is case-insensitive.
+
+
+==== Updating the Snapshot for a Single Assertion
+You can replace the call to `.matchesSnapshotText()` or `.matchesSnapshotStructure()` of your assertion with 
+`.justUpdateSnapshot()`. When executing the test, the framework will simply override the existing snapshot for this
+assertion with the passed in `actual` result.
+
+[source,java]
+.Change the assertion to update the snapshot file
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=justupdate,indent=0]
+----
+<1> Temporarily remove the actual assertion and replace it with `justUpdateSnapshot()`.
+
+
+=== Snapshot Files
+By convention, snapshots of your test results are persisted as `.snapshot` files below `src/test/resources`. The 
+framework will create sub directories according to your test class's package and name. The snapshot file's name will 
+be derived from the respective test's method name. 
+
+The snapshot file does not only include the serialized test result but also a small header section containing some 
+meta information. These information are used by the framework to map the snapshot file to the test method and 
+assertion from which it was created.
+
+
+==== Changing the Snapshot Location
+If you don not want to use the automatic way of determining the snapshot directory there are multiple options to manually
+specify the directory to which snapshot files will be written.
+
+[source,java]
+.Change the directory of a snapshot via the DSL
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaDSL,indent=0]
+----
+<1> Before calling `assertThat(...)` you can use `in(...)` to specify the snapshot directory for this assertion.
+
+NOTE: The path you provide here will not be resolved against the `src/test/resources` directory.
+
+
+Another way is to use the `@SnapshotDirectory` annotation to provide a static snapshot directory.
+[source,java]
+.Change the directory of a snapshot via annotation.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaAnnotation,indent=0]
+----
+<1> Statically provide a snapshot directory relative to `src/test/resources` via `@SnapshotDirectory.`
+
+Finally, you can provide an implementation of `SnapshotDirectoryStrategy` like this:
+[source,java]
+.Change the directory of a snapshot via strategy.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaStrategy,indent=0]
+----
+<1> Point the framework to an implementation of `SnapshotDirectoryStrategy`.
+<2> Implement the strategy.
+
+All three examples given will resolve to the same directory `src/test/resources/snapshots`.
+Instead of placing the `@SnapshotDirectory` annotation on each test method, you can also put it globally on the test
+class itself.
+
+==== Changing the Snapshot File Name
+In order to store persisted snapshots, the framework will determine a proper location and file name from the name of 
+the respective test class and test method. By default, the snapshot will be named after the test method's name. For
+each snapshot assertion within the same method, a consecutive number will be appended to the name (see also the section 
+about <<_multiple_assertions_in_the_same_test_case,Multiple Assertions in the Same Test Case>>).
+
+The DSL offers a method to provide a custom name. Either by directly passing in a static string or by providing an
+implementation of `SnapshotNaming`:
+
+[source,java]
+.Provide a static snapshot file name as string.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticString,indent=0]
+----
+<1> Provide a static name. The resulting snapshot file will be named `person.snapshot`.
+
+[source,java]
+.Provide a static snapshot file name via `NamingStrategy`.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticStrategy,indent=0]
+----
+<1> Provide an instance of `SnapshotNaming`. In this case the strategy will again just return the static string
+
+[WARNING]
+====
+If you use parameterized tests, the automatic snapshot naming will determine the same snapshot file name for
+every parameter, thus overridding the snapshot file for each parameterization. See 
+<<_parameterized_tests, Parameterized Tests>> section for details.
+====
+
+==== Additional Context Files
+The framework offers the possibility to not only generate the `.snapshot` file which will be used in the assertions but
+it can also generate additional contextual files.
+
+You can advise the framework to _always_ persist the actual results of the most recent test execution. In that case the 
+framework will generate a sibling file with `.snapshot_actual` extension next to the regular `.snapshot` file. This 
+file contains the serialized actual result of the most recent test execution as well as the same header information as 
+the regular `.snapshot` file. This allows you to quickly replace the snapshot with the most recent test results without
+having to execute the test suite again. You can enable this feature via `@SnapshotTestOptions` annotation: 
+
+[source,java]
+.Advise the framework to always persist latest test results.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualResult,indent=0]
+----
+
+In the same way you can advise the framework to also persist the most recent test results as a raw file which does not
+contain the snapshot header information. This wil lresult in another sibling file with `.snapshot_raw` extension.
+[source,java]
+.Advise the framework to always persist latest test results without header information.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualRawResult,indent=0]
+----
+
+The annotation can as well be placed on the test class to change these options globally.
+
+[TIP]
+====
+You should add the extensions of these context files to your `.gitignore` file. Unlike the main snapshot files, 
+the context files are not meant to be checked into the SCM.
+[source]
+.Add context files to .gitignore
+----
+*.snapshot_actual
+*.snapshot_raw
+----
+====
+
+==== Orphaned Snapshots
+Snapshot files can become _orphans_ if you rename or delete test methods/classes. It is desirable to remove orphaned 
+snapshots as they will otherwise just add clutter to your repository. The framework comes with a sophisticated 
+approach for detecting and removing such orphaned files.
+
+By default, the framework will just log a warning like this to the console about detected orphan files:
+[source]
+.Warning about detected orphan file
+----
+WARNING: Found orphaned snapshot file. Run with @DeleteOrphanedSnapshots annotation to remove: testThatHasBeenDeleted_0.snapshot in src/test/resources/de/skuzzle/test/snapshots/impl/OrphanedSnapshotDetectionTest$TestCase_snapshots
+----
+
+There are a number of situations in which a snapshot can become an orphan:
+
+* The test method containing the snapshot assertion has been removed/renamed.
+* The test class containing the test with the snapshot assertion has been removed/renamed.
+* The test is no longer a snapshot test.
+* Another snapshot assertion has been added/removed to/from the same test method. 
+
+.Info about orphan detection
+****
+Orphan detection is not a straight forward task and quite a lot complexity within the implementation of this library 
+comes from solving this task.
+
+For example, just by examining a snapshot file, the framework can't reliably determine whether the test still contains
+the _snapshot assertion statement_ that created the file in the first place. 
+
+On the other hand there are some criteria that _can_ be examined _statically_. As the snapshot file's header 
+information contain the full qualified name of the test class and the name of the test method, it is quite easy to 
+determine whether those still exists or not.
+
+Consequently, orphan detection implementation is separated into two phases:
+
+. During _dynamic orphan detection_, the framework collects the actual snapshot results of all executed tests. Then it checks all existing snapshot files for whether there exists a matching result.   
+. During _static orphan detection_, the framework examines the header information of all snapshot files to determine whether their originating class/test still exist.
+
+CAUTION: This approach has the drawback that orphans can be reported falsely if you only run a subset of your test suite.  
+****
+
+
+You can advise the framework to automatically delete the detected orphaned files during a test run. This works similar
+to updating snapshot files by either adding an annotation or by passing a flag to the JVM.
+
+.Delete detected orphans during test execution
+====
+[source,java]
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/DeleteOrphansTest.java[tags=delete-orphans,indent=0]
+----
+<1> Temporarily add the `@DeleteOrphanedSnapshots` annotations during test execution.
+====
+
+NOTE: You might find it irritating that the `@DeleteOrphanedSnapshots` annotation is marked as deprecated. This is just 
+a hack to make your IDE highlight its usages as it is intended to be only used temporarily. 
+
+
+You can also pass the flag `-DdeleteOrphanedSnapshots` to the JVM.
+
+[TIP]
+====
+When using `maven` you can pass the option to the `surefire-plugin` on the command line using this little trick:
+ 
+ mvn clean verify -DargLine=-DdeleteOrphanedSnapshots
+====
+
+TIP: Handling of the parameter is case insensitive.
+
+=== Multiple Assertions in the Same Test Case
+You can have multiple assertions in the same test case. The framework will assign each snapshot file a 
+consecutive number.
+
+[source,java]
+.Use multiple assertions in the same Test Case
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=multiple-assertions,indent=0]
+----
+
+CAUTION: As the snapshot files are numbered in order of their assertion's execution, you can not easily reorder the
+assertions within the test case. If you do, the framework would not be able to map the assertion to the correct 
+snapshot file. 
+
+TIP: As is the case with _normal_ tests you should avoid having multiple/many/too many assertions in a single test case.
+
+
+=== Disabling Snapshot Assertions
+The framework offers a possibility to _gracefully_ disable a snapshot assertion. This means that the assertion will
+still be registered with the framework in order to not confuse the consecutive numbering. It won't do any comparison 
+though and thus won't cause a test failure.
+
+CAUTION: You can not simply comment the assertion or remove the terminal DSL operation. Commenting the assertion 
+would confuse the numbering and removing the terminal operation is not allowed and will lead to an exception.
+
+NOTE: If a test case contains only _disabled_ and _successfully_ executed snapshot assertions, the framework will 
+properly report the test case as _skipped_ to the test framework by throwing the appropriate assumption failure. 
+
+[source,java]
+.Advise the framework to always persist latest test results without header information.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=disabled-assertions,indent=0]
+----
+<1> Simply disable the assertion
+<2> Disable the assertion and provide an informative reason why it is disabled
+<3> Execute another assertion which will correctly get the number `3` assigned
+
+
+=== Parameterized Tests
+Snapshot tests work well together with JUnit5's `@ParameterizedTest` but only if you take care of proper snapshot naming 
+yourself like in this snippet:
+
+[source,java]
+.Advise the framework to always persist latest test results without header information.
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ParameterizedTests.java[tags=testWithParams,indent=0]
+----
+
+This will make each parameter's value part of the generated snapshot's file name. 
+
+Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
+parameterized execution.
+
+TIP: The behavior of choosing the same snapshot name for each parameter could actually be desirable if you want to 
+test that your code produces the exact same result for different parameters.
+
+Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
+
+
+=== Soft Assertions
+
+IMPORTANT: Soft assertions are a deprecated feature and will be removed with version `2.0.0`. 
+
+As learned in the previous section, you can easily have multiple snapshot assertions within the same test method. 
+Naturally, if the first assertion fails, all subsequent assertions will not be executed, thus potentially hiding further 
+problems.
+
+However, there is an option to enable _soft assertions_. That will advice the framework to collect all assertion 
+failures and report them in a single stack trace at the end.
+
+[source,java]
+.Enable soft assertions
+----
+include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SoftAssertions.java[tags=softassertions,indent=0]
+----
+
+NOTE: _Soft assertions_ are currently only supported on a per-class basis.
+
+== Advanced topics
+=== Dealing With Random Values in Test Results
+
+A common source of problems are random values within the snapshot data such as dates or generated ids. Generally, you 
+should design your code up front so that such randomness can easily be mocked away. For example:
+
+* Instead of using `LocalDateTime.now()` make your code use a shared `Clock` instance that is replacable in tests and 
+use `LocalDateTime.now(clock)`
+* More generally put: If your code uses random values in any place, consider to use a strategy interface instead which 
+can be replaced with a deterministic mock during testing.
+* As a last resort, you can implement some normalization. Either post-process your actual test result before taking the
+ snapshot or implement a `SnapshotSerializer` which does the normalization. You could also implement 
+ `StructralAssertions` in a way that it ignores such random values during comparison.
+ 
+**New**
+The latest version of this library comes with a very simple (and experimental) abstraction for customizing the 
+structural comparison. You can use json-path resp. xpath expressions to customize the comparison on a per-node basis.
+
+XML example:
+
+[source,java]
+.Define custom comparison rules for XML or HTML snapshots based on xpath expressions.
+----
+snapshot.assertThat(someObjext)
+        .as(XmlSnapshot.xml()
+                .withComparisonRules(rules -> rules
+                        .pathAt("/person/address/city/text()").ignore()
+                        .pathAt("/person/date/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+        .matchesSnapshotStructure()
+----
+
+JSON example:
+
+[source,java]
+.Define custom comparison rules for JSON snapshots based on json-path expressions.
+
+----
+snapshot.assertThat(someObjext)
+        .as(JsonSnapshot.json()
+                .withComparisonRules(rules -> rules
+                        .pathAt("address.city").ignore()
+                        .pathAt("date").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+        .matchesSnapshotStructure();
+----
+
+=== Driving Snapshot Tests From Files
+Using stored files as input for your snapshot tests is a great way to quickly create new test cases. You can find 
+details in this https://simon.taddiken.net/directory-driven-tests/[blog post].

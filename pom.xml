@@ -23,6 +23,7 @@
         <github.name>snapshot-tests</github.name>
         <github.main-branch>main</github.main-branch>
         <github.dev-branch>dev</github.dev-branch>
+        
 
         <automatic-module-name>de.skuzzle.test.snapshots</automatic-module-name>
         <failOnWarning>false</failOnWarning>
@@ -48,6 +49,9 @@
         <version.equals-verifier>3.9</version.equals-verifier>
         <version.archunit>0.22.0</version.archunit>
         <version.api-guardian>1.1.2</version.api-guardian>
+        <version.asciidoctor-maven-plugin>2.2.2</version.asciidoctor-maven-plugin>
+        <version.asciidoctorj>2.5.3</version.asciidoctorj>
+        <version.jruby>9.2.20.1</version.jruby>
     </properties>
 
     <modules>
@@ -65,6 +69,7 @@
         <module>snapshot-tests-xmlunit</module>
         <module>snapshot-tests-directory-params</module>
         <module>snapshot-tests-common</module>
+        <module>snapshot-tests-documentation</module>
         <module>snapshot-tests-release-test</module>
     </modules>
 
@@ -99,6 +104,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
+                        <id>copy-readme</id>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -109,6 +115,21 @@
                                 <resource>
                                     <directory>readme/</directory>
                                     <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-documentation</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/docs/${project.version}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>snapshot-tests-documentation/target/generated-docs/</directory>
                                 </resource>
                             </resources>
                         </configuration>
