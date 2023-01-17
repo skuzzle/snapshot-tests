@@ -586,6 +586,18 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.
 
 The annotation can as well be placed on the test class to change these options globally.
 
+[TIP]
+====
+You should add the extensions of these context files to your `.gitignore` file. Unlike the main snapshot files, 
+the context files are not meant to be checked into the SCM.
+[source]
+.Add context files to .gitignore
+----
+*.snapshot_actual
+*.snapshot_raw
+----
+====
+
 ==== Orphaned Snapshots
 Snapshot files can become _orphans_ if you rename or delete test methods/classes. It is desirable to remove orphaned 
 snapshots as they will otherwise just add clutter to your repository. The framework comes with a sophisticated 
