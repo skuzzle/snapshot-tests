@@ -9,6 +9,12 @@
     <artifactId>snapshot-tests-documentation</artifactId>
     <name>Snapshot Tests Documentation</name>
     <description>Documentation and usage guide</description>
+    <properties>
+        <generated-docs-path>${project.build.directory}/generated-docs/</generated-docs-path>
+        <repository-deploy-path-base>${basedir}/../docs/</repository-deploy-path-base>
+        <repository-deploy-path-latest>${repository-deploy-path-base}/latest</repository-deploy-path-latest>
+        <repository-deploy-path-current>${repository-deploy-path-base}/${project.version}</repository-deploy-path-current>
+    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -131,6 +137,22 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- clean the latest directory so it is always fresh -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${repository-deploy-path-latest}</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -144,10 +166,10 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/../docs/${project.version}</outputDirectory>
+                            <outputDirectory>${repository-deploy-path-current}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>target/generated-docs/</directory>
+                                    <directory>${generated-docs-path}</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
@@ -160,10 +182,10 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <outputDirectory>${basedir}/../docs/latest</outputDirectory>
+                            <outputDirectory>${repository-deploy-path-latest}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>target/generated-docs/</directory>
+                                    <directory>${generated-docs-path}</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

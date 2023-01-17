@@ -40,11 +40,12 @@ pipeline {
     }
     stage('Verify Release') {
       steps {
-        sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} install'
+        sh 'mvn -B -Prelease -Dgpg.passphrase=${GPG_SECRET} clean install'
       }
     }
     stage('Update readme and documentation') {
       steps {
+        sh 'git status'
         sh 'git add README.md RELEASE_NOTES.md'
         sh 'git add --force docs/*'
         sh 'git commit -m "Update README and RELEASE_NOTES"'
