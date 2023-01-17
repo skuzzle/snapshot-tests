@@ -12,6 +12,9 @@ ifndef::sourcedir[:sourcedir: ../../test/java]
 
 This is the user manual for the snapshot-tests extension for JUnit5 and JUnit4.
 
+NOTE: The documentation is still in beta phase and might not be exhaustive. If you are missing any information feel free 
+to open a GitHub ticket and ask for help.
+
 == Introduction
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
@@ -19,6 +22,7 @@ serialized version of the object during the first test execution and during subs
 actual object against the stored snapshot.
 
 Read more about _snapshot testing_ in this accompanying https://simon.taddiken.net/the-case-for-snapshot-testing[blog post].
+
 
 === Versioning, Compatibility and Upgrading
 This project strongly aims to provide a stable public API with little surprises for clients when they upgrade to a new 
