@@ -13,9 +13,11 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+- [x] Requires Java ${version.java}
+
 Supported test frameworks:
-- [x] JUnit4 via [snapshot-tests-junit4](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit4/${project.version}/jar)
-- [x] JUnit5 via [snapshot-tests-junit5](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit5/${project.version}/jar)
+- [x] JUnit5  (tested against `${version.junit}`) via [snapshot-tests-junit5](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit5/${project.version}/jar)
+- [x] JUnit4 (tested against `${version.junit4}`) via [snapshot-tests-junit4](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit4/${project.version}/jar)
 
 Supported snapshot formats:
 - [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-core/${project.version}/jar))
@@ -32,8 +34,8 @@ release [${project.version}](https://github.com/skuzzle/snapshot-tests/releases/
 
 ### Reference Documentation
 Starting with release `1.8.0` we provide a new external reference documentation:
-* [Latest](https://${github.user}.github.io/${github.name}/docs/latest) : Always points to the latest version
-* [${project.version}](https://${github.user}.github.io/${github.name}/docs/${project.version}) : Points to a specific version
+* [Latest](https://${github.user}.github.io/${github.name}/docs/latest): Always points to the latest version
+* [${project.version}](https://${github.user}.github.io/${github.name}/docs/${project.version}): Points to a specific version
 
 Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
 documentation.
@@ -80,12 +82,6 @@ Snapshot testing workflow:
 3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. 
 If your code under test produces deterministic results, tests should now be green
 4. Check in the persisted snapshots into your SCM
-
-
-## Compatibility
-- [x] Requires Java ${version.java}
-- [x] Tested against JUnit5 `${version.junit}`
-- [x] Tested against JUnit4 `${version.junit4}`
 
 
 ## Notes on test framework support
