@@ -115,12 +115,12 @@ In order to use snapshot-tests you have to answer two simple questions:
 * Which test framework are you using?
 * Which format do you want to use for serializing objects into persistable snapshot files?
 
-==== JUnit5
+==== Use With JUnit5
 Historically JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
 configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
 preferred snapshot format (i.e. like `snapshot-tests-jackson`).
 
-==== JUnit5 Legacy
+==== Use With JUnit5 (Legacy)
 The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
 direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which 
 would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being 
@@ -128,7 +128,7 @@ printed to `System.err` stating the required migration steps.
 
 WARNING: Starting from version `2.0.0` this scenario will no longer be supported.
 
-==== JUnit4
+==== Use With JUnit4
 JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
 add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
 
@@ -171,9 +171,20 @@ snapshot format. Instead, it simply uses the `toString()` representation of the 
 snapshot file.
 
 
-.Simple quick start example
+.Simple quick start example using maven and JUnit5
 ====
+[source,xml]
+.Add Maven dependency
+----
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-junit5</artifactId>
+    <version>{revnumber}</version>
+</dependency>
+----
+
 [source,java]
+.Write a simple snapshot test
 ----
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags=quickstart,indent=0]
 ----
@@ -232,13 +243,28 @@ Besides the different way of enabling the snapshot testing capabilities there ar
 usage in JUnit4 and JUnit5. The `Snapshot` class is the main entrypoint for writing snapshot assertions. 
 
 === Snapshot Serialization and Comparison
-The framework needs to create a `String` representation of you test results in order to store it in a _snapshot file_. 
-We distinguish between _just text_ and _structured text_ snapshots. This distinction influences the way in which new 
-test results can be compared to persisted snapshots:
+The framework needs to create a `String` representation of the test results in order to store it in a _snapshot file_. 
+Creating such a String representation is referred to as _serialization_ and this aspect is handled by implementations
+of the `SnapshotSerializer` interface.
+
+To compare persisted snapshot data against actual test results, the framework serializes the actual test result as well 
+and passes both Strings to an instance of `StructuralAssertions`.
+
+Though serialization and comparison are handled by different components the aspects are still related. As 
+`StructuralAssertions` solely work on the String representation it is important that the implementation understands the
+Strings that have been produced by the `SnapshotSerializer` (i.e. you should not mix a serializer that produces XML with 
+an `StructualAssertions` instance that compares JSON).
+
+The Snapshot DSL allows you to configure these aspects separately but also provides a convenient API for configuring
+the Serializer and Assertions at once via the `StructuredData` class.
+
+The DSL distinguishes between _just text_ and _structured text_ snapshots. This distinction influences the way in which 
+new test results can be compared to persisted snapshots:
 
 * If a snapshot uses a _structured format_ such as `XML` or `JSON` the framework can make use of that structure during 
 comparison to offer better error messages or to allow customization of the comparison details. 
 * If a snapshot consists of _just text_ the framework can only make a text comparison.
+
 
 ==== Text-only Comparison
 In order to present a meaningful _assertion failed_ message the framework will always create a unified diff of the
@@ -379,7 +405,7 @@ Full unified diff of actual result and stored snapshot:
 ----
 
 
-=== Updating Snapshots
+=== Updating Snapshot Files
 One aspect that makes _snapshot testing_ so powerful is that you can generate the _expected output_ from your 
 _code under test_ itself. This removes the necessity to manually update test cases when the behavior of your 
 code under test changes. The framework comes with a convenient approach for updating multiple snapshot files at once. 
@@ -461,15 +487,14 @@ framework will create sub directories according to your test class's package and
 be derived from the respective test's method name. 
 
 The snapshot file does not only include the serialized test result but also a small header section containing some 
-meta information. These information are use by the framework to map the snapshot file to the test method and 
+meta information. These information are used by the framework to map the snapshot file to the test method and 
 assertion from which it was created.
 
 
 ==== Changing the Snapshot Location
 If you don not want to use the automatic way of determining the snapshot directory there are multiple options to manually
-specify the directory at which snapshot files will be written.
+specify the directory to which snapshot files will be written.
 
-The DSL offers a method to change the directory:
 [source,java]
 .Change the directory of a snapshot via the DSL
 ----
@@ -504,7 +529,8 @@ class itself.
 ==== Changing the Snapshot File Name
 In order to store persisted snapshots, the framework will determine a proper location and file name from the name of 
 the respective test class and test method. By default, the snapshot will be named after the test method's name. For
-each snapshot assertion within the same method, a consecutive number will be appended to the name.
+each snapshot assertion within the same method, a consecutive number will be appended to the name (see also the section 
+about <<_multiple_assertions_in_the_same_test_case,Multiple Assertions in the Same Test Case>>).
 
 The DSL offers a method to provide a custom name. Either by directly passing in a static string or by providing an
 implementation of `SnapshotNaming`:
@@ -648,6 +674,9 @@ though and thus won't cause a test failure.
 CAUTION: You can not simply comment the assertion or remove the terminal DSL operation. Commenting the assertion 
 would confuse the numbering and removing the terminal operation is not allowed and will lead to an exception.
 
+NOTE: If a test case contains only _disabled_ and _successfully_ executed snapshot assertions, the framework will 
+properly report the test case as _skipped_ to the test framework by throwing the appropriate assumption failure. 
+
 [source,java]
 .Advise the framework to always persist latest test results without header information.
 ----
@@ -673,15 +702,15 @@ This will make each parameter's value part of the generated snapshot's file name
 Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
 parameterized execution.
 
-TIP: This behavior could actually be desirable if you want to test that your code produces the exact same 
-result for different parameters.
+TIP: The behavior of choosing the same snapshot name for each parameter could actually be desirable if you want to 
+test that your code produces the exact same result for different parameters.
 
 Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
 
 
 === Soft Assertions
 
-IMPORTANT: Soft assertions are a deprecated feature and will be removed with version `2.0.0`.
+IMPORTANT: Soft assertions are a deprecated feature and will be removed with version `2.0.0`. 
 
 As learned in the previous section, you can easily have multiple snapshot assertions within the same test method. 
 Naturally, if the first assertion fails, all subsequent assertions will not be executed, thus potentially hiding further 
@@ -719,7 +748,7 @@ structural comparison. You can use json-path resp. xpath expressions to customiz
 XML example:
 
 [source,java]
-.Define custom comparison rules for XML or HTML snapshots based on x-path expressions.
+.Define custom comparison rules for XML or HTML snapshots based on xpath expressions.
 ----
 snapshot.assertThat(someObjext)
         .as(XmlSnapshot.xml()

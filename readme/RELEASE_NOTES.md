@@ -18,7 +18,7 @@
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 * Improve formatting of orphaned snapshot warning
 * Streamline internal implementation
-* Add new reference documentation at 
+* Provide new reference documentation at https://${github.user}.github.io/${github.name}/docs/${project.version}
 
 ## Reference Documentation
 
