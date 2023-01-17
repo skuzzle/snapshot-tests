@@ -15,7 +15,7 @@ class SnapshotTestOptionsTest {
     void testAlwaysPersistActual(Snapshot snapshot) throws Exception {
 
     }
-    // tag::alwaysPersistActualResult[]
+    // end::alwaysPersistActualResult[]
 
     // tag::alwaysPersistActualRawResult[]
     @Test
@@ -23,5 +23,5 @@ class SnapshotTestOptionsTest {
     void testAlwaysPersistActualRaw(Snapshot snapshot) throws Exception {
 
     }
-    // tag::alwaysPersistActualRawResult[]
+    // end::alwaysPersistActualRawResult[]
 }

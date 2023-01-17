@@ -22,9 +22,10 @@
 
 ## Reference Documentation
 
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/docs/${project.version})
+
 Reference documentation for this release: https://${github.user}.github.io/${github.name}/docs/${project.version}
 
-Maven Central coordinates for this release:
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project

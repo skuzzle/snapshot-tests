@@ -122,13 +122,9 @@
                             -->
                             <attributes>
                                 <source-highlighter>coderay</source-highlighter>
-                                <imagesdir>./images</imagesdir>
                                 <toc>left</toc>
                                 <icons>font</icons>
                                 <sectanchors>true</sectanchors>
-                                <!-- set the idprefix to blank -->
-                                <idprefix />
-                                <idseparator>-</idseparator>
                                 <docinfo1>true</docinfo1>
                             </attributes>
                         </configuration>
@@ -171,6 +167,24 @@
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/main/assembly/docs-html.xml</descriptor>
+                            </descriptors>
                         </configuration>
                     </execution>
                 </executions>

@@ -20,6 +20,6 @@ public class ParameterizedTests {
                 .asText()
                 .matchesSnapshotText();
     }
-    // tag::testWithParams[]
+    // end::testWithParams[]
 
 }
