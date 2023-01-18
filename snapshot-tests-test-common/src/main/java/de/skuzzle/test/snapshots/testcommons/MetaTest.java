@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.apiguardian.api.API;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
@@ -14,7 +15,8 @@ import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
 import org.junit.platform.testkit.engine.Execution;
 
-public class MetaTest {
+@API(status = API.Status.INTERNAL, since = "1.8.0")
+public final class MetaTest {
 
     private static final String JUNIT4_ENGINE = "junit-vintage";
     private static final String JUNIT5_ENGINE = "junit-jupiter";

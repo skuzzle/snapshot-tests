@@ -41,7 +41,6 @@
             <artifactId>apiguardian-api</artifactId>
         </dependency>
         
-        <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -60,6 +59,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>snapshot-tests-junit5</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
