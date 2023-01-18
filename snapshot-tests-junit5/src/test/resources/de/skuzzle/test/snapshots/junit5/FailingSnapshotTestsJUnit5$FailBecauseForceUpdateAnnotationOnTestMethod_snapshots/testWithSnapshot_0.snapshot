@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testWithSnapshot_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.junit5.FailingSnapshotTestsJUnit5$FailBecauseForceUpdateAnnotationOnTestMethod
+test-method: testWithSnapshot
+
+test

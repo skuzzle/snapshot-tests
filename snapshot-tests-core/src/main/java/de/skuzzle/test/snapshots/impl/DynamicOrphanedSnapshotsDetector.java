@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.impl.OrphanDetectionResult.OrphanStatus;
@@ -39,7 +40,10 @@ final class DynamicOrphanedSnapshotsDetector {
 
     private Stream<Path> snapshotDirectories(Path globalSnapshotDirectory) {
         return Stream.concat(Stream.of(globalSnapshotDirectory),
-                results.stream().map(SnapshotTestResult::targetFile).map(Path::getParent))
+                results.stream()
+                        .map(SnapshotTestResult::contextFiles)
+                        .map(ContextFiles::snapshotFile)
+                        .map(Path::getParent))
                 .filter(Files::exists);
     }
 
@@ -82,12 +86,13 @@ final class DynamicOrphanedSnapshotsDetector {
     private boolean pertainsToDisabledAssertion(Path snapshotFile) {
         return results.stream()
                 .filter(result -> result.status() == SnapshotStatus.DISABLED)
-                .anyMatch(result -> result.targetFile().equals(snapshotFile));
+                .anyMatch(result -> result.contextFiles().snapshotFile().equals(snapshotFile));
     }
 
     private boolean testResultsContain(Path snapshotFile) {
         return results.stream()
-                .map(SnapshotTestResult::targetFile)
+                .map(SnapshotTestResult::contextFiles)
+                .map(ContextFiles::snapshotFile)
                 .filter(Files::exists)
                 .anyMatch(snapshotFileFromResult -> UncheckedIO.isSameFile(snapshotFileFromResult,
                         snapshotFile));

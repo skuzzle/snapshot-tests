@@ -23,7 +23,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized
  * snapshot. The header is a simple key-value format which is separated from the actual
- * snapshot contents by two line breaks (\n).
+ * snapshot contents by two line breaks (\n). Snapshot files are always encoded in UTF-8.
  * <p>
  * You can use this class to manually read the contents of a persisted snapshot file.
  * <p>

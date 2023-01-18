@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
@@ -25,6 +24,8 @@ public class SnapshotsTest {
 
         assertThat(testResult.rawActualResultFile()).exists();
         assertThat(testResult.actualResultFile()).exists();
+        assertThat(testResult.contextFiles().rawActualResultFile()).exists();
+        assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
 
     @Test
@@ -43,6 +44,8 @@ public class SnapshotsTest {
 
         assertThat(testResult.rawActualResultFile()).exists();
         assertThat(testResult.actualResultFile()).exists();
+        assertThat(testResult.contextFiles().rawActualResultFile()).exists();
+        assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
 
     @Test
@@ -55,15 +58,18 @@ public class SnapshotsTest {
 
         assertThat(testResult.rawActualResultFile()).exists();
         assertThat(testResult.actualResultFile()).exists();
+        assertThat(testResult.contextFiles().rawActualResultFile()).exists();
+        assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
 
     @Test
     void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) throws Exception {
         final Person simon = determinePerson();
-        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
+        final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabledBecause("Reasons");
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
         assertThat(testResultDisabled.targetFile()).doesNotExist();
+        assertThat(testResultDisabled.contextFiles().snapshotFile()).doesNotExist();
 
         final Person phil = determinePerson().setName("Phil");
         final SnapshotTestResult testResultActive = snapshot.assertThat(phil).asText().matchesSnapshotText();
@@ -78,6 +84,7 @@ public class SnapshotsTest {
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
         assertThat(testResultDisabled.targetFile()).exists();
+        assertThat(testResultDisabled.contextFiles().snapshotFile()).exists();
 
         final Person phil = determinePerson().setName("Phil");
         snapshot.assertThat(phil).asText().matchesSnapshotText();
@@ -100,6 +107,14 @@ public class SnapshotsTest {
     }
 
     @Test
+    void testMixExplicitAndAutomaticNaming(Snapshot snapshot) throws Exception {
+        final Person simon = determinePerson();
+        snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
+        final Person phil = determinePerson().setName("Phil");
+        snapshot.assertThat(phil).asText().matchesSnapshotText();
+    }
+
+    @Test
     void testCustomizeTextSnapshot(Snapshot snapshot) throws Exception {
         final Person simon = determinePerson();
 
@@ -111,7 +126,7 @@ public class SnapshotsTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "string1", "string2" })
-    void testParameterized(String param, Snapshot snapshot) {
+    void testParameterized(String param, de.skuzzle.test.snapshots.Snapshot snapshot) {
         snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
                 .assertThat(param).asText().matchesSnapshotText();
     }

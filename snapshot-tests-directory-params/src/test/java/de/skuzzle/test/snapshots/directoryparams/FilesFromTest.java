@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.junit.jupiter.params.ParameterizedTest;
 
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests

@@ -19,6 +19,6 @@ target
 .idea/
 *.iml
 *.flattened-pom.xml
-
+/docs/*
 *.snapshot_raw
 *.snapshot_actual

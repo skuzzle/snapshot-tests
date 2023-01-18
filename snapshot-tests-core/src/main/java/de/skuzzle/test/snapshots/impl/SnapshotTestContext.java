@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -30,19 +29,21 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * create a {@link SnapshotTestContext} instance from that configuration.</li>
  * <li>You need to call the lifecycle methods of the context object.</li>
  * </ol>
- *
+ * Most aspects of snapshot testing will already work if you just call
+ * {@link #finalizeSnapshotTest()} after a test method. However, in order to support full
+ * orphan detection capabilities, you need to register both all ignored tests and all
+ * failed tests of the current test execution.
+ * 
  * @author Simon Taddiken
  * @since 1.1.0
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public final class SnapshotTestContext {
 
-    private static final System.Logger log = System.getLogger(SnapshotTestContext.class.getName());
-
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
 
-    private SnapshotTestImpl currentSnapshotTest;
+    private SnapshotDslImpl currentSnapshotTest;
 
     private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
         this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
@@ -68,7 +69,7 @@ public final class SnapshotTestContext {
      *         {@link #createSnapshotTestFor(Method)} is compatible to the given type.
      */
     public boolean isSnapshotParameter(Class<?> type) {
-        return type == Snapshot.class;
+        return Snapshot.class.isAssignableFrom(type);
     }
 
     /**
@@ -83,11 +84,12 @@ public final class SnapshotTestContext {
      * @return A Snapshot instance.
      * @see #finalizeSnapshotTest()
      */
-    public Snapshot createSnapshotTestFor(Method testMethod) {
+    public de.skuzzle.test.snapshots.Snapshot createSnapshotTestFor(Method testMethod) {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        currentSnapshotTest = new SnapshotTestImpl(this, snapshotConfiguration, testMethod);
+        final ResultRecorder resultRecorder = ResultRecorder.forFreshTestMethod(this);
+        currentSnapshotTest = new SnapshotDslImpl(resultRecorder, snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }
 
@@ -99,7 +101,7 @@ public final class SnapshotTestContext {
      * @see #createSnapshotTestFor(Method)
      */
     public void finalizeSnapshotTest() throws Exception {
-        final SnapshotTestImpl current = this.currentSnapshotTest;
+        final SnapshotDslImpl current = this.currentSnapshotTest;
         this.currentSnapshotTest = null;
         if (current != null) {
             current.executeFinalAssertions();
@@ -122,7 +124,7 @@ public final class SnapshotTestContext {
      *
      * @param result A snapshot test result of a single snapshot assertion.
      */
-    public void recordSnapshotTestResult(SnapshotTestResult result) {
+    void recordSnapshotTestResult(SnapshotTestResult result) {
         this.dynamicOrphanedSnapshotsDetector.addResult(result);
     }
 
@@ -155,18 +157,19 @@ public final class SnapshotTestContext {
                 .map(OrphanDetectionResult::snapshotFile)
                 .distinct()
                 .peek(orphaned -> {
+
+                    final Path relativePath = DirectoryResolver.relativize(orphaned.getParent());
                     if (deleteOrphaned) {
                         UncheckedIO.delete(orphaned);
 
-                        log.log(Level.INFO, "Deleted orphaned snapshot file {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf("Deleted orphaned snapshot file %s in %s%n",
+                                orphaned.getFileName(), relativePath);
                     } else {
-                        log.log(Level.WARNING,
-                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: {0} in {1}",
-                                orphaned.getFileName(), orphaned.getParent());
+                        System.err.printf(
+                                "Found orphaned snapshot file. Run with '@DeleteOrphanedSnapshots' annotation to remove: %s in %s%n",
+                                orphaned.getFileName(), relativePath);
                     }
                 })
                 .collect(Collectors.toList());
     }
-
 }

@@ -12,14 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 
 /**
- * <h1>Enabling snapshot tests</h1>
+ * <h2>Enabling snapshot tests</h2>
  * <p>
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
  * can use snapshot assertions by declaring a parameter of type {@link Snapshot} in your

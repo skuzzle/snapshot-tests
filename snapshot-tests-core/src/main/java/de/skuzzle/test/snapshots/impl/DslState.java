@@ -14,6 +14,8 @@ final class DslState {
     public static final int NAME_CHOSEN = 2;
     public static final int ACTUAL_CHOSEN = 2 << 1;
     public static final int DIRECTORY_CHOSEN = 2 << 2;
+    public static final int SERIALIZER_CHOSEN = 2 << 3;
+    public static final int ASSERTIONS_CHOSEN = 2 << 4;
 
     private int dslState = 0;
 

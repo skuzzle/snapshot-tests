@@ -27,6 +27,7 @@ public class SnapshotsLegacyTest {
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
         assertThat(testResultDisabled.targetFile()).doesNotExist();
+        assertThat(testResultDisabled.contextFiles().snapshotFile()).doesNotExist();
 
         final Person phil = determinePerson().setName("Phil");
         final SnapshotTestResult testResultActive = snapshot.assertThat(phil).asText().matchesSnapshotText();
@@ -41,6 +42,7 @@ public class SnapshotsLegacyTest {
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
         assertThat(testResultDisabled.targetFile()).exists();
+        assertThat(testResultDisabled.contextFiles().snapshotFile()).exists();
 
         final Person phil = determinePerson().setName("Phil");
         snapshot.assertThat(phil).asText().matchesSnapshotText();

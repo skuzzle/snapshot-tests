@@ -1,0 +1,15 @@
+dynamic-directory: false
+snapshot-name: testWithDisabledAssertions_2
+snapshot-number: 2
+test-class: de.skuzzle.test.snapshots.snippets.ComparisonTests
+test-method: testWithDisabledAssertions
+
+Name: Simon
+Surname: Taddiken
+Birthdate: 1777-01-12
+Address: Street: Gibtsnicht-Straße
+Number: 1337
+Zip: 4711
+City: Bielefeld
+Country: Germany
+

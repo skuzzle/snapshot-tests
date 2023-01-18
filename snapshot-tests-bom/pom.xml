@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-parent</artifactId>
-        <version>1.7.1</version>
+        <version>1.8.0</version>
     </parent>
 
     <artifactId>snapshot-tests-bom</artifactId>
@@ -19,6 +19,16 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>snapshot-tests-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-junit4</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>snapshot-tests-junit5</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

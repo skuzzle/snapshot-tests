@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testWithDisabledAndSuccessfulAssertion_1
+snapshot-number: 1
+test-class: de.skuzzle.test.snapshots.junit4.FailingSnapshotTestsJUnit4$ClassWithDisabledTest
+test-method: testWithDisabledAndSuccessfulAssertion
+
+xyz

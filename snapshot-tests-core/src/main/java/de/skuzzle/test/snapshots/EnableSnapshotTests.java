@@ -15,7 +15,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
 
 /**
- * <h1>Enabling snapshot tests</h1>
+ * <h2>Enabling snapshot tests</h2>
  * <p>
  * Enables the snapshot-test capabilities. When you mark a class with this annotation, you
  * can use snapshot assertions by declaring a parameter of type {@link Snapshot} in your

@@ -1,0 +1,6 @@
+snapshot-name: custom_name
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.impl.OrphanedSnapshotDetectionTest$TestCaseThatChangesHeader
+test-method: new_method_name
+
+content

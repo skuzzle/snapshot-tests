@@ -17,7 +17,7 @@ import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.xpath.JAXPXPathEngine;
 import org.xmlunit.xpath.XPathEngine;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.directoryparams.FilesFrom;
 import de.skuzzle.test.snapshots.directoryparams.PathFilter;

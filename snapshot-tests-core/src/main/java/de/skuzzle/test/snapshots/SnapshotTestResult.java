@@ -1,7 +1,6 @@
 package de.skuzzle.test.snapshots;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -9,7 +8,6 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -23,20 +21,16 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 public final class SnapshotTestResult {
 
     private final SnapshotFile snapshot;
-    private final Path targetFile;
-    private final Path actualResultFile;
-    private final Path rawActualResultFile;
     private final SnapshotStatus status;
+    private final ContextFiles contextFiles;
     private final String serializedActual;
     private final Throwable failure;
 
-    private SnapshotTestResult(Path targetFile, Path actualResultFile, Path rawActualResultFile, SnapshotStatus status,
+    private SnapshotTestResult(ContextFiles contextFiles, SnapshotStatus status,
             SnapshotFile snapshotFile,
             String serializedActual,
             Throwable failure) {
-        this.targetFile = Arguments.requireNonNull(targetFile);
-        this.actualResultFile = Arguments.requireNonNull(actualResultFile);
-        this.rawActualResultFile = Arguments.requireNonNull(rawActualResultFile);
+        this.contextFiles = Arguments.requireNonNull(contextFiles);
         this.status = Arguments.requireNonNull(status);
         this.snapshot = Arguments.requireNonNull(snapshotFile);
         this.serializedActual = Arguments.requireNonNull(serializedActual);
@@ -44,19 +38,29 @@ public final class SnapshotTestResult {
     }
 
     @API(status = Status.INTERNAL)
-    public static SnapshotTestResult forFailedTest(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+    public static SnapshotTestResult forFailedTest(ContextFiles contextFiles,
             SnapshotFile snapshotFile, String serializedActual, Throwable failure) {
-        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, SnapshotStatus.ASSERTED,
-                snapshotFile, serializedActual,
+        return new SnapshotTestResult(contextFiles, SnapshotStatus.ASSERTED, snapshotFile, serializedActual,
                 Arguments.requireNonNull(failure));
     }
 
     @API(status = Status.INTERNAL)
-    public static SnapshotTestResult of(Path targetFile, Path actualResultFile, Path rawActualResultFile,
+    public static SnapshotTestResult of(ContextFiles contextFiles,
             SnapshotStatus status, SnapshotFile snapshotFile,
             String serializedActual) {
-        return new SnapshotTestResult(targetFile, actualResultFile, rawActualResultFile, status, snapshotFile,
-                serializedActual, null);
+        return new SnapshotTestResult(contextFiles, status, snapshotFile, serializedActual, null);
+    }
+
+    /**
+     * Returns a class that holds the paths to all generated files.
+     * 
+     * @return The context files.
+     * @see SnapshotTestOptions#alwaysPersistActualResult()
+     * @see SnapshotTestOptions#alwaysPersistRawResult()
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.8.0")
+    public ContextFiles contextFiles() {
+        return contextFiles;
     }
 
     /**
@@ -66,10 +70,13 @@ public final class SnapshotTestResult {
      * @return The snapshot file.
      * @see #actualResultFile()
      * @see #rawActualResultFile()
-     *
+     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
+     *             {@link ContextFiles#snapshotFile()} instead.
      */
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.8.0")
     public Path targetFile() {
-        return this.targetFile;
+        return this.contextFiles.snapshotFile();
     }
 
     /**
@@ -82,10 +89,13 @@ public final class SnapshotTestResult {
      * @see #targetFile()
      * @see #rawActualResultFile()
      * @see SnapshotTestOptions#alwaysPersistActualResult()
+     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
+     *             {@link ContextFiles#actualResultFile()} instead.
      */
-    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.8.0")
     public Path actualResultFile() {
-        return this.actualResultFile;
+        return this.contextFiles.actualResultFile();
     }
 
     /**
@@ -98,10 +108,13 @@ public final class SnapshotTestResult {
      * @see #targetFile()
      * @see #actualResultFile()
      * @see SnapshotTestOptions#alwaysPersistRawResult()
+     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
+     *             {@link ContextFiles#snapshotFile()} instead.
      */
-    @API(status = Status.EXPERIMENTAL, since = "1.7.0")
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.8.0")
     public Path rawActualResultFile() {
-        return this.rawActualResultFile;
+        return this.contextFiles.rawActualResultFile();
     }
 
     /**
@@ -119,7 +132,7 @@ public final class SnapshotTestResult {
      * @return The serialized snapshot.
      * @deprecated Since 1.7.0 - Use {@link #snapshotFile()} instead.
      */
-    @Deprecated(since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     @API(status = Status.DEPRECATED, since = "1.7.0")
     public SnapshotFile serializedSnapshot() {
         return this.snapshot;
@@ -166,19 +179,23 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * Deletes the snapshot file.
+     * Deletes the snapshot file and all accompanying context files.
      *
      * @throws IOException if an I/O error occurs
+     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
+     *             {@link ContextFiles#deleteFiles()} instead.
      */
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "1.8.0")
     public void deleteSnapshot() throws IOException {
-        Files.delete(targetFile);
+        this.contextFiles.deleteFiles();
     }
 
     @Override
     public String toString() {
         return new StringBuilder()
                 .append("status=").append(status)
-                .append(", targetFile=").append(targetFile)
+                .append(", targetFile=").append(contextFiles.snapshotFile())
                 .toString();
     }
 

@@ -1,34 +1,66 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.7.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.7.1/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.7.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.7.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.8.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.8.0/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.8.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.8.0)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0&color=orange)](https://skuzzle.github.io/snapshot-tests/docs/1.8.0)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
 # snapshot-tests
-Convenient snapshot testing for JUnit5. 
+Convenient snapshot testing for JUnit5 and JUnit4. 
 
 This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
+- [x] Requires Java 11, supports Java 17
+
+Supported test frameworks:
+- [x] JUnit5  (tested against `5.9.2`) via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0/jar)
+- [x] JUnit4 (tested against `4.13.2`) via [snapshot-tests-junit4](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.8.0/jar)
+
 Supported snapshot formats:
-- [x] generic plain text via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.7.1/jar)
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.7.1/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.7.1/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.7.1/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.7.1/jar)
+- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.8.0/jar))
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.8.0/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.8.0/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.8.0/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.8.0/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [1.7.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.7.1)
+release [1.8.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.8.0)
+
+### Reference Documentation
+Starting with release `1.8.0` we provide a new external reference documentation:
+* [Latest](https://skuzzle.github.io/snapshot-tests/docs/latest): Always points to the latest version
+* [1.8.0](https://skuzzle.github.io/snapshot-tests/docs/1.8.0): Points to a specific version
+
+Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
+documentation.
 
 ## Quick start
-_(assumes using `snapshot-tests-jackson` artifact)_
+_(assumes using `maven`, `JUnit5` and `snapshot-tests-jackson` artifact)_
 
-Annotate your test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
+Add the following dependencies to your build
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-junit5</artifactId>
+    <version>1.8.0</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>1.8.0</version>
+    <scope>test</scope>
+</dependency>
+```
+
+Annotate a test class with `@EnableSnapshotTests` and declare a `Snapshot` parameter in your test case:
 
 ```java
 @EnableSnapshotTests
@@ -52,9 +84,53 @@ If your code under test produces deterministic results, tests should now be gree
 4. Check in the persisted snapshots into your SCM
 
 
-## Compatibility
-- [x] Requires Java 11
-- [x] Tested against JUnit5 `5.9.1`
+## Notes on test framework support
+
+### JUnit5
+Historically, JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
+configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
+preferred snapshot format (i.e. like `snapshot-tests-jackson`).
+
+### JUnit5 legacy
+The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
+direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which 
+would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being 
+printed to `System.err` stating the required migration steps.
+
+> **Warning**
+> Starting from version `2.0.0` this scenario will no longer be supported.
+
+### JUnit4
+JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
+add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
+
+> **Warning**
+> In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
+> transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you 
+> might want to add a respective exclusion to your dependency:
+
+```xml
+<dependency>
+    <groupId>de.skuzzle.test</groupId>
+    <artifactId>snapshot-tests-jackson</artifactId>
+    <version>1.8.0</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+or
+
+```
+testImplementation('de.skuzzle.test:snapshot-tests-jackson:1.8.0') {
+    exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+}
+```
 
 ## Usage
 
@@ -88,9 +164,10 @@ You can also update snapshots for individual assertions by replacing any of the 
     snapshot.assertThat(actual).as(JsonSnapshot.json).justUpdateSnapshot();
 ```
 
-**Warning** While updating snapshots, all test cases containing snapshot assertions will fail (for the 
-same reason that they are failing the first time the snapshot is created: because no assertion has been 
-performed during this run). 
+> **Warning** 
+> While updating snapshots, all test cases containing snapshot assertions will fail (for the 
+> same reason that they are failing the first time the snapshot is created: because no assertion has been 
+> performed during this run). 
 
 It is also possible to pass the system property `forceUpdateSnapshots` (case-_insensitive_) to the JVM. When running 
 the tests from maven it can be achieved like this:
@@ -131,6 +208,17 @@ comparisons specific to your serialization format.
 ### Multiple snapshots in same test case
 You can create multiple snapshots using `snapshot.assertThat(...)` from within a single test case. The framework will
 assign each snapshot a consecutive number.
+Note though that, as with any test, it is generally a good idea to only have a single assertion per test case.
+
+### Disabling assertions
+You can temporarily disable a snapshot assertion by calling the `.disabled()` or `disabledBecause(String)` 
+terminal operation on the assertion DSL.  The latter has the advantage that you can leave an informative message to 
+your team which describes why the assertion has been disabled.
+
+This terminal operation is especially useful if you have multiple snapshot assertions within one test case and you want 
+to disable just a single one. If you rely on the automatic consecutive snapshot numbering, the framework will
+ gracefully count in _disabled_ assertions. Otherwise, if you'd just comment or remove the assertion, the numbering of 
+ all following assertions would be out of order, causing the assertions to pick up the wrong snapshot file.
 
 ### Parameterized tests
 _(since 1.1.0)_
