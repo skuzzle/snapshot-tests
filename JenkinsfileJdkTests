@@ -50,4 +50,14 @@ void testAgainstJdk(version) {
             }
         }
     }
+    
+    stage("Build JavaDoc against JDK $version") {
+        script {
+            try {
+                sh "mvn javadoc:javadoc -Dmaven.compiler.release=$version"
+            } catch (err) {
+                currentBuild.result = 'FAILURE'
+            }
+        }
+    }
 }
