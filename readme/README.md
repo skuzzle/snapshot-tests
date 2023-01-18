@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-bom/${project.version}/jar)
 [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-core/${project.version})
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/docs/${project.version})
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/reference/${project.version})
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/${github.name}/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/${github.name}?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
@@ -34,8 +34,8 @@ release [${project.version}](https://github.com/skuzzle/snapshot-tests/releases/
 
 ### Reference Documentation
 Starting with release `1.8.0` we provide a new external reference documentation:
-* [Latest](https://${github.user}.github.io/${github.name}/docs/latest): Always points to the latest version
-* [${project.version}](https://${github.user}.github.io/${github.name}/docs/${project.version}): Points to a specific version
+* [Latest](https://${github.user}.github.io/${github.name}/reference/latest): Always points to the latest version
+* [${project.version}](https://${github.user}.github.io/${github.name}/reference/${project.version}): Points to a specific version
 
 Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
 documentation.
