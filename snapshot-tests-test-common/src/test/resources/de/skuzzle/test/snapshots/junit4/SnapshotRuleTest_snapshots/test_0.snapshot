@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: test_0
-snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.junit4.SnapshotRuleTest
-test-method: test
-
-xyz

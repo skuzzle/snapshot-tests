@@ -12,9 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 

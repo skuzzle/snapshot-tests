@@ -2,10 +2,10 @@ package de.skuzzle.test.snapshots.snippets;
 
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
 public class ComparisonTests {

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.data.html.HtmlSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;

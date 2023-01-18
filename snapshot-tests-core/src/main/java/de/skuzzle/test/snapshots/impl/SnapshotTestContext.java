@@ -69,7 +69,7 @@ public final class SnapshotTestContext {
      *         {@link #createSnapshotTestFor(Method)} is compatible to the given type.
      */
     public boolean isSnapshotParameter(Class<?> type) {
-        return type == Snapshot.class;
+        return Snapshot.class.isAssignableFrom(type);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class SnapshotTestContext {
      * @return A Snapshot instance.
      * @see #finalizeSnapshotTest()
      */
-    public Snapshot createSnapshotTestFor(Method testMethod) {
+    public de.skuzzle.test.snapshots.Snapshot createSnapshotTestFor(Method testMethod) {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }

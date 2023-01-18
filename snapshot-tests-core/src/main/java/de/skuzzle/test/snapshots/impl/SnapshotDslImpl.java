@@ -3,12 +3,12 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
@@ -25,7 +25,8 @@ import de.skuzzle.test.snapshots.validation.State;
  *
  * @author Simon
  */
-final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat, ChooseStructure, ChooseAssertions {
+final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
+        ChooseStructure, ChooseAssertions {
 
     private final ResultRecorder resultRecorder;
     private final SnapshotConfiguration snapshotConfiguration;

@@ -13,12 +13,12 @@ import org.junit.runners.model.TestClass;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;

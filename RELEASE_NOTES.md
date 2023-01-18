@@ -9,6 +9,7 @@
 
 **All Changes**: 
 
+* [#20](https://github.com/skuzzle/snapshot-tests/issues/20): Make `Snapshot` a top-level type in `de.skuzzle.test.snapshot` and deprecate `de.skuzzle.test.snapshot.SnapshotDsl.Snapshot`.
 * [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and no failed assertions will properly be marked as 'skipped' by the test framework
 * [#54](https://github.com/skuzzle/snapshot-tests/pull/54): Add support for JUnit4
 * Move JUnit5 support into separate module

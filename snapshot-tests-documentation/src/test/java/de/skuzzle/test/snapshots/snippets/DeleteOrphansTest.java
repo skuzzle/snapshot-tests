@@ -1,7 +1,7 @@
 package de.skuzzle.test.snapshots.snippets;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 // tag::delete-orphans[]
 @EnableSnapshotTests

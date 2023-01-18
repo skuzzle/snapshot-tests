@@ -54,8 +54,11 @@ public interface SnapshotDsl {
      *
      * @author Simon Taddiken
      * @see EnableSnapshotTests
+     * @deprecated Since 1.8.0 - Use the new top-level type
+     *             {@link de.skuzzle.test.snapshots.Snapshot Snapshot} instead.
      */
-    @API(status = Status.STABLE)
+    @API(status = Status.DEPRECATED, since = "1.8.0")
+    @Deprecated(since = "1.8.0", forRemoval = true)
     public interface Snapshot extends ChooseActual, ChooseName, ChooseDirectory {
 
     }

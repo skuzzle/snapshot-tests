@@ -4,9 +4,9 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDirectoryStrategy;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 

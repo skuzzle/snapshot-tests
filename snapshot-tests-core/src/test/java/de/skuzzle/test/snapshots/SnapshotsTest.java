@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
@@ -127,7 +126,7 @@ public class SnapshotsTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "string1", "string2" })
-    void testParameterized(String param, Snapshot snapshot) {
+    void testParameterized(String param, de.skuzzle.test.snapshots.Snapshot snapshot) {
         snapshot.namedAccordingTo(SnapshotNaming.withParameters(param))
                 .assertThat(param).asText().matchesSnapshotText();
     }
