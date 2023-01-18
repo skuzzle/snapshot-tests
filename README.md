@@ -13,7 +13,7 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
-- [x] Requires Java 11
+- [x] Requires Java 11, supports Java 17
 
 Supported test frameworks:
 - [x] JUnit5  (tested against `5.9.2`) via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.8.0-SNAPSHOT/jar)
