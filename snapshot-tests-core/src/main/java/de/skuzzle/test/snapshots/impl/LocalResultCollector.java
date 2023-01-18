@@ -1,9 +1,12 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -44,8 +47,15 @@ final class LocalResultCollector {
 
     private Throwable failIfCreatedInitially() {
         if (wasAnyCreatedInitially()) {
+            final String createdSnapshotFilePaths = results.stream()
+                    .filter(result -> result.status() == SnapshotStatus.CREATED_INITIALLY)
+                    .map(SnapshotTestResult::contextFiles)
+                    .map(ContextFiles::snapshotFile)
+                    .map(Path::toString)
+                    .collect(Collectors.joining(System.lineSeparator()));
             return new AssertionError(String.format(
-                    "Snapshots have been created the first time.%nRun the test again and you should see it succeed."));
+                    "Snapshots have been created the first time.%nRun the test again and you should see it succeed.%n%nCreated snapshot files:%n%s",
+                    createdSnapshotFilePaths));
         }
         return null;
     }

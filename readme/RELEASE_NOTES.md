@@ -9,13 +9,15 @@
 
 **All Changes**: 
 
-* [#20](https://github.com/skuzzle/snapshot-tests/issues/20): Make `Snapshot` a top-level type in `de.skuzzle.test.snapshot` and deprecate `de.skuzzle.test.snapshot.SnapshotDsl.Snapshot`.
+* [#20](https://github.com/skuzzle/snapshot-tests/issues/20): Make `Snapshot` a top-level type in `de.skuzzle.test.snapshot` and **deprecate** `de.skuzzle.test.snapshot.SnapshotDsl.Snapshot`
 * [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and no failed assertions will properly be marked as 'skipped' by the test framework
 * [#54](https://github.com/skuzzle/snapshot-tests/pull/54): Add support for JUnit4
+* [#58](https://github.com/skuzzle/snapshot-tests/pull/58): Include paths to initially created snapshot files in assertion-failed message
+* Officially support Java 17
 * Move JUnit5 support into separate module
 * Build against JUnit `5.9.2` (coming from `5.9.1`)
 * Add `ContextFiles` class which groups the paths to all generated files
-* Deprecate `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
+* **Deprecate** `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
 * Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
 * Improve formatting of orphaned snapshot warning
 * Streamline internal implementation
