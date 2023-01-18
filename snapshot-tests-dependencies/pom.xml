@@ -39,7 +39,11 @@
                 <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
-            
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${version.byte-buddy}</version>
+            </dependency>
             <dependency>
                 <groupId>io.github.java-diff-utils</groupId>
                 <artifactId>java-diff-utils</artifactId>

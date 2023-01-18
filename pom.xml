@@ -41,6 +41,7 @@
         <version.asciidoctor-maven-plugin>2.2.2</version.asciidoctor-maven-plugin>
         <version.asciidoctorj>2.5.3</version.asciidoctorj>
         <version.jruby>9.2.20.1</version.jruby>
+        <version.byte-buddy>1.12.22</version.byte-buddy>
     </properties>
     <modules>
         <module>snapshot-tests-dependencies</module>
