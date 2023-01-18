@@ -25,9 +25,9 @@
 
 ## Reference Documentation
 
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0&color=orange)](https://skuzzle.github.io/snapshot-tests/docs/1.8.0)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.8.0&color=orange)](https://skuzzle.github.io/snapshot-tests/reference/1.8.0)
 
-Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/docs/1.8.0
+Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/reference/1.8.0
 
 
 ## BOM Artifact
