@@ -18,7 +18,8 @@ public interface ComparisonRuleBuilder {
     /**
      * Specify the path for which to apply the custom comparison rule.
      *
-     * @param path The dot separated path.
+     * @param path The path for which to apply the special rule. Semantics and syntax of
+     *            the path differ depending on the actual.
      * @return A DSL Object for specifying how to compare values rooted at that path.
      */
     ChooseMatcher pathAt(String path);
