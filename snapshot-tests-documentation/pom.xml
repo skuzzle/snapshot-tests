@@ -11,7 +11,7 @@
     <description>Documentation and usage guide</description>
     <properties>
         <generated-docs-path>${project.build.directory}/generated-docs/</generated-docs-path>
-        <repository-deploy-path-base>${basedir}/../docs/</repository-deploy-path-base>
+        <repository-deploy-path-base>${basedir}/../docs/reference/</repository-deploy-path-base>
         <repository-deploy-path-latest>${repository-deploy-path-base}/latest</repository-deploy-path-latest>
         <repository-deploy-path-current>${repository-deploy-path-base}/${project.version}</repository-deploy-path-current>
     </properties>
