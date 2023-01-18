@@ -48,6 +48,73 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <profiles>
+        <!-- Copy generated documentation into root folder -->
+        <profile>
+            <id>copy-docs</id>
+            <build>
+                <plugins>
+                    <!-- clean the latest directory so it is always fresh -->
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${repository-deploy-path-latest}</directory>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>copy-documentation-current</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <outputDirectory>${repository-deploy-path-current}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${generated-docs-path}</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-documentation-latest</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <outputDirectory>${repository-deploy-path-latest}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${generated-docs-path}</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -133,62 +200,6 @@
                                 <sectanchors>true</sectanchors>
                                 <docinfo1>true</docinfo1>
                             </attributes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- clean the latest directory so it is always fresh -->
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${repository-deploy-path-latest}</directory>
-                            <includes>
-                                <include>**</include>
-                            </includes>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>copy-documentation-current</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <outputDirectory>${repository-deploy-path-current}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${generated-docs-path}</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-documentation-latest</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <outputDirectory>${repository-deploy-path-latest}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${generated-docs-path}</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
                         </configuration>
                     </execution>
                 </executions>
