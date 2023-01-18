@@ -8,7 +8,6 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
