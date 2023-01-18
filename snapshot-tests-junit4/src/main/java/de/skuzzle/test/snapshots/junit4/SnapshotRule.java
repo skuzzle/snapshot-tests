@@ -26,7 +26,7 @@ import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 import de.skuzzle.test.snapshots.validation.State;
 
 /**
- * <h1>Enabling snapshot tests</h1>
+ * <h2>Enabling snapshot tests</h2>
  * <p>
  * To get started with snapshot assertions you need to add this rule implementation as
  * both a &#64;Rule and &#64;ClassRule like this:

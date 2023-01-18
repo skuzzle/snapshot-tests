@@ -1,5 +1,5 @@
 /**
- * <h1>The main public snapshot-testing API.</h1>
+ * <h2>The main public snapshot-testing API.</h2>
  * <p>
  * Snapshot tests are enabled for a test class via
  * {@link de.skuzzle.test.snapshots.EnableSnapshotTests}. This will allow you to inject an
