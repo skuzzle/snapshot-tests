@@ -5,10 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +17,7 @@ import org.xmlunit.xpath.XPathEngine;
 
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XPaths;
 import de.skuzzle.test.snapshots.directoryparams.FilesFrom;
 import de.skuzzle.test.snapshots.directoryparams.PathFilter;
 import de.skuzzle.test.snapshots.directoryparams.TestFile;
@@ -40,9 +39,7 @@ public class FilesAreProperlyProcessedTest {
     }
 
     private static String xpath(String... path) {
-        return "/" + Arrays.stream(path)
-                .map(segment -> String.format("*[local-name()='%s']", segment))
-                .collect(Collectors.joining("/"));
+        return XPaths.localNamePath(path);
     }
 
     private static final String XPATH_DESCRIPTION = xpath("project", "description") + "/text()";

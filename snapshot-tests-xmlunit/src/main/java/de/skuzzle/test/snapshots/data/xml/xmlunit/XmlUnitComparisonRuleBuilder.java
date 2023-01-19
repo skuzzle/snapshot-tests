@@ -1,7 +1,8 @@
-package de.skuzzle.test.snapshots.data.xmlunit;
+package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -26,12 +27,21 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.INTERNAL, since = "1.5.0")
 public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder {
 
-    private final boolean enableXPathDebugging;
+    private final XPathDebug xPathDebug;
     private final JAXPXPathEngine xpathEngine = new JAXPXPathEngine();
     private final List<DifferenceEvaluator> customizations = new ArrayList<>();
 
-    public XmlUnitComparisonRuleBuilder(boolean enableXPathDebugging) {
-        this.enableXPathDebugging = enableXPathDebugging;
+    /**
+     * Creates a new rule builder.
+     * 
+     * @param enableXPathDebugging Whether to print debug messages about matched nodes
+     * @param namespaceContext Nullable namespace context
+     */
+    public XmlUnitComparisonRuleBuilder(Map<String, String> namespaceContext, XPathDebug xPathDebug) {
+        this.xPathDebug = Arguments.requireNonNull(xPathDebug);
+        if (namespaceContext != null) {
+            this.xpathEngine.setNamespaceContext(namespaceContext);
+        }
     }
 
     @Override
@@ -42,19 +52,25 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
             @Override
             public ComparisonRuleBuilder mustMatch(Pattern regex) {
                 Arguments.requireNonNull(regex, "regex must not be null");
-                return mustMatch(actualDetails -> regex.matcher(((Node) actualDetails).getTextContent())
-                        .matches());
+                return mustMatchWithInfo(actualDetails -> regex.matcher(((Node) actualDetails).getTextContent())
+                        .matches(), "must match pattern: " + regex);
             }
 
             @Override
             public ComparisonRuleBuilder ignore() {
-                return mustMatch(actualDetails -> true);
+                return mustMatchWithInfo(actualDetails -> true, "will be ignored");
             }
 
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                customizations.add(new XPathDifferenceEvaluator(enableXPathDebugging, xpathEngine, path,
+                return mustMatchWithInfo(predicate, "must match custom predicate: " + predicate);
+            }
+
+            private ComparisonRuleBuilder mustMatchWithInfo(Predicate<? super Object> predicate, String info) {
+                Arguments.requireNonNull(predicate, "predicate must not be null");
+                customizations.add(new XPathDifferenceEvaluator(info,
+                        xPathDebug, xpathEngine, path,
                         new DifferenceEvaluator() {
 
                             @Override

@@ -1,57 +1,47 @@
 package de.skuzzle.test.snapshots.xml;
 
 import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
+import static de.skuzzle.test.snapshots.data.xml.xmlunit.XPaths.localNamePath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.junit.jupiter.api.Test;
-import org.xmlunit.assertj.CompareAssert;
-import org.xmlunit.assertj.XmlAssert;
-import org.xmlunit.diff.DifferenceEvaluators;
 
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 @EnableSnapshotTests
-public class SnapshotsTest {
+public class XmlNamespaceSnapshotsTest {
 
     @Test
-    void testXmlAlreadyAStringWithPrettyPrint(Snapshot snapshot) throws Exception {
-        final SnapshotTestResult snapshotResult = snapshot
-                .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>").as(xml)
+    void testCompareAsLocalNames(Snapshot snapshot) throws Exception {
+        snapshot
+                .assertThat(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns1:root xmlns:ns1=\"foo:ns1\" xmlns:ns2=\"foo:ns2\"><ns2:node>text</ns2:node></ns1:root>")
+                .as(xml)
                 .matchesSnapshotStructure();
-
-        assertThat(snapshotResult.serializedActual()).isEqualTo(String.format(""
-                + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>%n"
-                + "<root>%n"
-                + "  <node>text</node>%n"
-                + "</root>%n"));
     }
 
     @Test
-    void testXmlAlreadyAStringWithoutPrettyPrint(Snapshot snapshot) throws Exception {
-        final SnapshotTestResult snapshotResult = snapshot
-                .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>")
+    void testXMLExampleFromJavaDoc(Snapshot snapshot) throws Exception {
+        snapshot.assertThat(""
+                + "<whatever:root xmlns:whatever=\"foo:1\" xmlns:doesntmatter=\"foo:2\">"
+                + "    <doesntmatter:child>some text</doesntmatter:child>\n"
+                + "</whatever:root>")
                 .as(XmlSnapshot.xml()
-                        .withPrettyPrintStringXml(false))
+                        .withXPathNamespaceContext(Map.of("ns1", "foo:1", "ns2", "foo:2"))
+                        .withComparisonRules(rules -> rules
+                                .pathAt("/ns1:root/ns2:child/text()").ignore()))
                 .matchesSnapshotStructure();
-
-        assertThat(snapshotResult.serializedActual())
-                .isEqualTo("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>");
-    }
-
-    @Test
-    void testAsXmlNoRootObject(Snapshot snapshot) throws Exception {
-        final PersonWithoutRootElement myself = determinePersonWithoutRootElement();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself).as(xml).matchesSnapshotText();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     @Test
@@ -69,37 +59,31 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testAsXmlStructureCompareBuilder(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(XmlSnapshot
-                        .xml()
-                        .compareUsing(xmls -> xmls.withDifferenceEvaluator(DifferenceEvaluators.Default).areSimilar()))
-                .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
-    }
-
-    @Test
-    void testAsXmlStructureCustomStructuralAssertions(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(XmlSnapshot.xml().compareUsing(CompareAssert::areSimilar))
-                .matchesAccordingTo((expected, actual) -> XmlAssert.assertThat(actual).and(expected)
-                        .withDifferenceEvaluator(DifferenceEvaluators.ignorePrologDifferences()).areSimilar());
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
-    }
-
-    @Test
-    void testAsXmlStructureCompareCustomNew(Snapshot snapshot) throws Exception {
+    void testXPathCustomRuleWithNamespaces(Snapshot snapshot) throws Exception {
         final Person myself = determinePerson().setName("0000-02-02");
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
+        snapshot.assertThat(myself)
+                .as(XmlSnapshot.xml()
+                        .withEnableXPathDebugging(true)
+                        .withXPathNamespaceContext(Map.of(
+                                "addr", "https://foo.bar",
+                                "pers", "https://simon.taddiken.net"))
+                        .withComparisonRules(rules -> rules
+                                .pathAt("/pers:person/addr:address/city/text()").ignore()
+                                .pathAt("/pers:person/name/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+                .matchesSnapshotStructure();
+    }
+
+    @Test
+    void testXPathWitLocalNamesOnly(Snapshot snapshot) throws Exception {
+        final Person myself = determinePerson().setName("0000-02-02");
+        snapshot.assertThat(myself)
                 .as(XmlSnapshot.xml()
                         .withEnableXPathDebugging(true)
                         .withComparisonRules(rules -> rules
-                                .pathAt("/person/address/city/text()").ignore()
-                                .pathAt("/person/name/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+                                .pathAt(localNamePath("person", "address", "city") + "/text()").ignore()
+                                .pathAt(localNamePath("person", "name") + "/text()")
+                                .mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
                 .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
     }
 
     private Person determinePerson() {
@@ -115,19 +99,7 @@ public class SnapshotsTest {
                         .setZipCode("4711"));
     }
 
-    private PersonWithoutRootElement determinePersonWithoutRootElement() {
-        return new PersonWithoutRootElement()
-                .setName("Simon")
-                .setSurname("Taddiken")
-                .setBirthdate(LocalDate.of(1777, 1, 12))
-                .setAddress(new Address()
-                        .setCity("Bielefeld")
-                        .setCountry("Germany")
-                        .setStreet("Gibtsnicht-Straße")
-                        .setNumber("1337")
-                        .setZipCode("4711"));
-    }
-
+    @XmlType(namespace = "https://foo.bar")
     public static class Address {
         private String street;
         private String number;
@@ -192,7 +164,7 @@ public class SnapshotsTest {
         }
     }
 
-    @XmlRootElement
+    @XmlRootElement(namespace = "https://simon.taddiken.net")
     public static class Person {
         private String name;
         private String surname;
@@ -226,65 +198,12 @@ public class SnapshotsTest {
             return this;
         }
 
+        @XmlElement(namespace = "https://foo.bar")
         public Address getAddress() {
             return this.address;
         }
 
         public Person setAddress(Address address) {
-            this.address = address;
-            return this;
-        }
-
-        @Override
-        public String toString() {
-            return new StringBuilder()
-                    .append("Name: ").append(name).append("\n")
-                    .append("Surname: ").append(surname).append("\n")
-                    .append("Birthdate: ").append(birthdate).append("\n")
-                    .append("Address: ").append(address).append("\n")
-                    .toString();
-        }
-
-    }
-
-    public static class PersonWithoutRootElement {
-        private String name;
-        private String surname;
-        private LocalDate birthdate;
-        private Address address;
-
-        public String getName() {
-            return this.name;
-        }
-
-        public PersonWithoutRootElement setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public String getSurname() {
-            return this.surname;
-        }
-
-        public PersonWithoutRootElement setSurname(String surname) {
-            this.surname = surname;
-            return this;
-        }
-
-        public LocalDate getBirthdate() {
-            return this.birthdate;
-        }
-
-        public PersonWithoutRootElement setBirthdate(LocalDate birthdate) {
-            this.birthdate = birthdate;
-            return this;
-        }
-
-        public Address getAddress() {
-            return this.address;
-        }
-
-        public PersonWithoutRootElement setAddress(Address address) {
             this.address = address;
             return this;
         }

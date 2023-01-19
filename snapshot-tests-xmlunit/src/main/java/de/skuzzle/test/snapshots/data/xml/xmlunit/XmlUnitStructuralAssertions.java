@@ -1,5 +1,6 @@
-package de.skuzzle.test.snapshots.data.xmlunit;
+package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.apiguardian.api.API;
@@ -22,12 +23,20 @@ public final class XmlUnitStructuralAssertions implements StructuralAssertions {
 
     private final DifferenceEvaluator differenceEvaluator;
     private final Consumer<CompareAssert> compareAssertConsumer;
+    private final Map<String, String> namespaceContext;
+    private final XPathDebug xPathDebug;
 
-    public XmlUnitStructuralAssertions(Consumer<CompareAssert> compareAssertConsumer,
-            DifferenceEvaluator differenceEvaluator) {
+    public XmlUnitStructuralAssertions(
+            Consumer<CompareAssert> compareAssertConsumer,
+            DifferenceEvaluator differenceEvaluator,
+            Map<String, String> namespaceContext,
+            XPathDebug xPathDebug) {
+
         this.differenceEvaluator = differenceEvaluator;
         this.compareAssertConsumer = Arguments.requireNonNull(compareAssertConsumer,
                 "compareAssertConsumer must not be null");
+        this.xPathDebug = Arguments.requireNonNull(xPathDebug, "xPathDebug must not be null");
+        this.namespaceContext = namespaceContext;
     }
 
     @Override
@@ -38,7 +47,16 @@ public final class XmlUnitStructuralAssertions implements StructuralAssertions {
         if (differenceEvaluator != null) {
             compareAssert = compareAssert.withDifferenceEvaluator(differenceEvaluator);
         }
-        compareAssertConsumer.accept(compareAssert);
+        if (namespaceContext != null) {
+            compareAssert.withNamespaceContext(namespaceContext);
+        }
+        try {
+            compareAssertConsumer.accept(compareAssert);
+        } finally {
+            xPathDebug.log(
+                    "%nPrevious lines were printed because XPath debugging is enabled. It has been enabled at%n%s%n%n",
+                    xPathDebug.enabledAt);
+        }
     }
 
 }
