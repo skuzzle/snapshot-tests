@@ -36,6 +36,14 @@ public final class UncheckedIO {
         }
     }
 
+    public static void deleteIfExists(Path path) {
+        try {
+            Files.deleteIfExists(path);
+        } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     public static Stream<Path> list(Path directory) {
         try {
             return Files.list(directory);
