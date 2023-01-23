@@ -11,6 +11,7 @@
 
 * [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
 * Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
+* Improve removal of internal stack frames from stacktraces of assertion errors
 
 ## Reference Documentation
 

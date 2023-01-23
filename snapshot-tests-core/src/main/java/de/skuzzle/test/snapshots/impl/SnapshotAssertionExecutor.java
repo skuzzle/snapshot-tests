@@ -104,8 +104,7 @@ final class SnapshotAssertionExecutor {
         }
         final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(),
                 storedSnapshot, serializedActual, original.getCause());
-        final String internalPackage = SnapshotDslResult.class.getPackageName();
-        Throwables.filterStackTrace(error, element -> element.getClassName().startsWith(internalPackage));
+
         return error;
     }
 

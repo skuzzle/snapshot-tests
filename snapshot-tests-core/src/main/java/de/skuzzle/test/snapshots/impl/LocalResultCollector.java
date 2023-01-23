@@ -32,9 +32,13 @@ final class LocalResultCollector {
         Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
+
         failures = Throwables.combine(failures, failIfCreatedInitially());
         failures = Throwables.combine(failures, failIfUpdatedForcefully());
         failures = Throwables.combine(failures, abortIfNoneFailedAndAtLeastOneWasDisabled());
+
+        final String internalPackage = SnapshotDslResult.class.getPackageName();
+        Throwables.filterStackTrace(failures, element -> element.getClassName().startsWith(internalPackage));
         Throwables.throwIfNotNull(failures);
     }
 

@@ -45,10 +45,18 @@ final class Throwables {
     }
 
     public static void filterStackTrace(Throwable throwable, Predicate<StackTraceElement> elementsToRemove) {
+        if (throwable == null) {
+            return;
+        }
         final StackTraceElement[] original = throwable.getStackTrace();
         final StackTraceElement[] filtered = Arrays.stream(original)
                 .filter(elementsToRemove.negate())
                 .toArray(StackTraceElement[]::new);
         throwable.setStackTrace(filtered);
+
+        filterStackTrace(throwable.getCause(), elementsToRemove);
+        for (final Throwable suppressed : throwable.getSuppressed()) {
+            filterStackTrace(suppressed, elementsToRemove);
+        }
     }
 }
