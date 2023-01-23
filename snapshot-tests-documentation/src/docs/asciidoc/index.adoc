@@ -713,8 +713,9 @@ yourself like in this snippet:
 include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ParameterizedTests.java[tags=testWithParams,indent=0]
 ----
 
-This will make each parameter's value part of the generated snapshot's file name. 
 
+This will make each parameter's value part of the generated snapshot's file name. 
+  
 Otherwise, when using the default naming strategy, the framework would choose the same snapshot name for every 
 parameterized execution.
 
@@ -723,6 +724,10 @@ test that your code produces the exact same result for different parameters.
 
 Check out the `SnapshotNaming` interface for more options regarding snapshot naming.
 
+
+NOTE: `Snapshot` instances are injected via a JUnit5 `ParameterResolver`. As such, if you want to mix them with 
+arguments provided by an `ArgumentResolver`, the `Snapshot` parameter of the test method must be declared after the
+_argument_ parameters. 
 
 === Soft Assertions
 
