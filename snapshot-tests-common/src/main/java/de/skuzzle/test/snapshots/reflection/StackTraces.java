@@ -1,5 +1,8 @@
 package de.skuzzle.test.snapshots.reflection;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -13,6 +16,37 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 @API(status = Status.INTERNAL, since = "1.9.0")
 public final class StackTraces {
+
+    /**
+     * Deeply cleans the stack trace by removing all {@link StackTraceElement elements}
+     * which are matched by the provided predicate.
+     * <p>
+     * This method recurses into both all causes and all suppressed exceptions of the
+     * provided root exception.
+     * <p>
+     * It is allowed to pass null as throwable. In this case, nothing happens.
+     * 
+     * @param throwable The throwable for which to clean the stack trace. Can be null.
+     * @param elementsToRemove A predicate matching the elements to remove.
+     * @since 1.9.0
+     */
+    public static void filterStackTrace(Throwable throwable, Predicate<StackTraceElement> elementsToRemove) {
+        if (throwable == null) {
+            return;
+        }
+        final StackTraceElement[] original = throwable.getStackTrace();
+        if (original != null) {
+            final StackTraceElement[] filtered = Arrays.stream(original)
+                    .filter(elementsToRemove.negate())
+                    .toArray(StackTraceElement[]::new);
+            throwable.setStackTrace(filtered);
+        }
+
+        filterStackTrace(throwable.getCause(), elementsToRemove);
+        for (final Throwable suppressed : throwable.getSuppressed()) {
+            filterStackTrace(suppressed, elementsToRemove);
+        }
+    }
 
     /**
      * Finds the immediate caller of the method which calls this method. Useful for
@@ -37,6 +71,13 @@ public final class StackTraces {
         return Caller.of(stackTrace[3]);
     }
 
+    /**
+     * Represents the call site of a method in which
+     * {@link StackTraces#findImmediateCaller()} has been invoked.
+     * 
+     * @author Simon Taddiken
+     */
+    @API(status = Status.INTERNAL, since = "1.9.0")
     public static final class Caller {
         private static final Caller UNKNOWN = new Caller(null);
 

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
@@ -38,7 +39,7 @@ final class LocalResultCollector {
         failures = Throwables.combine(failures, abortIfNoneFailedAndAtLeastOneWasDisabled());
 
         final String internalPackage = SnapshotDslResult.class.getPackageName();
-        Throwables.filterStackTrace(failures, element -> element.getClassName().startsWith(internalPackage));
+        StackTraces.filterStackTrace(failures, element -> element.getClassName().startsWith(internalPackage));
         Throwables.throwIfNotNull(failures);
     }
 

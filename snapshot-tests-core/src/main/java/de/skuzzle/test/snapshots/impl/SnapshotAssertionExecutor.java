@@ -78,6 +78,8 @@ final class SnapshotAssertionExecutor {
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
+        } catch (final Exception e) {
+            return Optional.of(new SnapshotException(e));
         }
     }
 
