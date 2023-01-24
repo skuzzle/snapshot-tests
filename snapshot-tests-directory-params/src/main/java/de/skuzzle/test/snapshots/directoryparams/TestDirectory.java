@@ -31,12 +31,34 @@ public final class TestDirectory {
         this.directory = directory;
     }
 
+    /**
+     * Returns the underlying Path object.
+     * 
+     * @return The path
+     */
     public Path path() {
         return directory;
     }
 
     public String name() {
         return directory.getFileName().toString();
+    }
+
+    /**
+     * Determines whether this is a leave directory or not.
+     * 
+     * @return Whether this directory has any sub directories.
+     * @since 1.9.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
+    public boolean hasSubDirectories() {
+        return UncheckedIO.list(directory).anyMatch(Files::isDirectory);
+    }
+
+    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
+    public boolean hasFile(String fileName) {
+        Arguments.requireNonNull(fileName, "fileName must not be null");
+        return Files.exists(directory.resolve(fileName));
     }
 
     public TestFile resolve(String fileName) {

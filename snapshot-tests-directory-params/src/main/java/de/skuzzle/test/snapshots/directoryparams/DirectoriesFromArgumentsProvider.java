@@ -18,23 +18,44 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
+        return directoryContents.recursive()
+                ? provideArgumentsRecursive(context)
+                : provideArgumentsFlat(context);
+    }
+
+    private Stream<? extends Arguments> provideArgumentsFlat(ExtensionContext context) throws Exception {
         final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
         final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
                 .and(additionalFilter());
 
-        return streamFiles(inputFileDirectory)
+        return Files.list(inputFileDirectory)
                 .filter(filter.toPredicate())
                 .map(TestDirectory::new)
                 .sorted(Comparator.comparing(TestDirectory::name))
                 .map(Arguments::of);
     }
 
-    private Stream<Path> streamFiles(Path root) throws IOException {
-        return Files.list(root);
+    private Stream<? extends Arguments> provideArgumentsRecursive(ExtensionContext context) throws Exception {
+        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
+        final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
+                .and(additionalFilter());
+
+        final IsTestCaseDirectoryStrategy testCaseDirectoryStrategy = isTestCaseDirectoryStrategy();
+
+        return Files.walk(inputFileDirectory)
+                .filter(filter.toPredicate())
+                .map(TestDirectory::new)
+                .filter(testCaseDirectoryStrategy::determineIsTestCaseDirectory)
+                .sorted(Comparator.comparing(TestDirectory::name))
+                .map(Arguments::of);
     }
 
     private PathFilter additionalFilter() {
         return ReflectionSupport.newInstance(directoryContents.filter());
+    }
+
+    private IsTestCaseDirectoryStrategy isTestCaseDirectoryStrategy() {
+        return ReflectionSupport.newInstance(directoryContents.isTestcaseDeterminedBy());
     }
 
     private Path determineDirectory() throws IOException {

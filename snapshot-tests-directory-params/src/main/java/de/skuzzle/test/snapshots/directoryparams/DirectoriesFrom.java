@@ -47,7 +47,7 @@ public @interface DirectoriesFrom {
      * The directory, relative to src/test/resources, from which to list the directories.
      *
      * @deprecated Since 1.6.0 - Use {@link #testResourcesDirectory()} instead for a 1:1
-     *             replacement or {@link #projectDirectory()} to specify a directoy
+     *             replacement or {@link #projectDirectory()} to specify a directory
      *             relative to the current project.
      */
     @Deprecated(since = "1.6.0", forRemoval = true)
@@ -83,4 +83,21 @@ public @interface DirectoriesFrom {
      * @return The path filter to use.
      */
     Class<? extends PathFilter> filter() default PathFilterAll.class;
+
+    /**
+     * Whether to recursively list all directories of the given root directory. Whether a
+     * directory is actually suitable to be used as test case directory is determined by
+     * an instance of {@link IsTestCaseDirectoryStrategy} that can be configured via
+     * {@link #isTestcaseDeterminedBy()}.
+     * <p>
+     * By default, when recursive listing is enabled, all <em>leave-directories</em> are
+     * considered test directories. That is, directories without any direct sub
+     * directories.
+     * 
+     * @return Whether to recursively list directories.
+     * @since 1.9.0
+     */
+    boolean recursive() default false;
+
+    Class<? extends IsTestCaseDirectoryStrategy> isTestcaseDeterminedBy() default DefaultIsTestCaseDirectoryStrategy.class;
 }
