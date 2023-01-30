@@ -27,7 +27,7 @@ public interface IsTestCaseDirectoryStrategy {
      * {@link DirectoriesFrom}.
      * 
      * @param directory The directory to test.
-     * @return true if the given direcotry represents a test case directory.
+     * @return true if the given directory represents a test case directory.
      */
     boolean determineIsTestCaseDirectory(TestDirectory directory);
 }

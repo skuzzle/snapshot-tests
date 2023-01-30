@@ -29,7 +29,12 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
  * to the current project root (<code>Path.of(projectDirectory)</code>) or you can use
  * {@link #testResourcesDirectory()} which will take a path that is relative to the
  * current project's test resources directory.
- *
+ * <p>
+ * Directories can be listed recursively when {@link #recursive()} ist set to true. In
+ * that case, you should specify a {@link IsTestCaseDirectoryStrategy} that determines
+ * which of the encountered directories will actually lead to a parameterized test
+ * execution.
+ * 
  * @see TestDirectory
  * @see TestFile
  * @see FilesFrom
@@ -95,9 +100,27 @@ public @interface DirectoriesFrom {
      * directories.
      * 
      * @return Whether to recursively list directories.
+     * @see #isTestcaseDeterminedBy()
      * @since 1.9.0
      */
+    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
     boolean recursive() default false;
 
+    /**
+     * Strategy that defines which directories actually represent a test case when
+     * {@link #recursive()} is set to true. By default, all directories that do not
+     * container any other directories (=<em>leave-directories</em>) are considered test
+     * case directories.
+     * <p>
+     * When iterating the directories, this strategy is applied <em>after</em> the
+     * {@link #filter() path filter}. Thus, the path filter takes precedence over this
+     * strategy and only directories that were accepted by the path filter will be
+     * subjected to the {@link IsTestCaseDirectoryStrategy}.
+     * 
+     * @return The strategy.
+     * @see #recursive()
+     * @since 1.9.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
     Class<? extends IsTestCaseDirectoryStrategy> isTestcaseDeterminedBy() default DefaultIsTestCaseDirectoryStrategy.class;
 }

@@ -18,24 +18,26 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        return directoryContents.recursive()
+        final Stream<TestDirectory> directories = directoryContents.recursive()
                 ? provideArgumentsRecursive(context)
                 : provideArgumentsFlat(context);
+
+        return directories
+                .sorted(Comparator.comparing(TestDirectory::name))
+                .map(Arguments::of);
     }
 
-    private Stream<? extends Arguments> provideArgumentsFlat(ExtensionContext context) throws Exception {
+    private Stream<TestDirectory> provideArgumentsFlat(ExtensionContext context) throws Exception {
         final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
         final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
                 .and(additionalFilter());
 
         return Files.list(inputFileDirectory)
                 .filter(filter.toPredicate())
-                .map(TestDirectory::new)
-                .sorted(Comparator.comparing(TestDirectory::name))
-                .map(Arguments::of);
+                .map(TestDirectory::new);
     }
 
-    private Stream<? extends Arguments> provideArgumentsRecursive(ExtensionContext context) throws Exception {
+    private Stream<TestDirectory> provideArgumentsRecursive(ExtensionContext context) throws Exception {
         final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
         final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
                 .and(additionalFilter());
@@ -45,9 +47,7 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
         return Files.walk(inputFileDirectory)
                 .filter(filter.toPredicate())
                 .map(TestDirectory::new)
-                .filter(testCaseDirectoryStrategy::determineIsTestCaseDirectory)
-                .sorted(Comparator.comparing(TestDirectory::name))
-                .map(Arguments::of);
+                .filter(testCaseDirectoryStrategy::determineIsTestCaseDirectory);
     }
 
     private PathFilter additionalFilter() {
