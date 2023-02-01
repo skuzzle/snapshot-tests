@@ -27,7 +27,7 @@ Read more about _snapshot testing_ in this accompanying https://simon.taddiken.n
 === Versioning, Compatibility and Upgrading
 This project strongly aims to provide a stable public API with little surprises for clients when they upgrade to a new 
 version. We rely on the principles of _semantic versioning_ and use 
-https://github.com/apiguardian-team/apiguardian[@API Guardian] to communicate the intention of all of public 
+https://github.com/apiguardian-team/apiguardian[@API Guardian] to communicate the intention of all public 
 classes/methods. Consequently you should not use any public types that are marked as `INTERNAL`.
 
 The following principles apply:
