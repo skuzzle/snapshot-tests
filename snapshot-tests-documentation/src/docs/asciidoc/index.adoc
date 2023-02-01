@@ -57,7 +57,7 @@ for your convenience:
     <dependency>
         <groupId>de.skuzzle.test</groupId>
         <artifactId>snapshot-tests-bom</artifactId>
-        <version>{revnumber}</version>
+        <version>{project-version}</version>
         <type>pom</type>
         <scope>import</scope>
     </dependency>
@@ -67,7 +67,7 @@ for your convenience:
 [source,groovy,subs="attributes+"]
 .Gradle BOM include
 ----
-testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{revnumber}"))
+testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{project-version}"))
 ----
 
 [source,groovy,subs="attributes+"]
@@ -75,7 +75,7 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:{revnumber}"))
 ----
 dependencyManagement {
     imports {
-        mavenBom 'de.skuzzle.test:snapshot-tests-bom:{revnumber}'
+        mavenBom 'de.skuzzle.test:snapshot-tests-bom:{project-version}'
     }
 }
 ----
@@ -87,29 +87,29 @@ learn how to properly combine them to employ _snapshot testing_ in your own proj
 |===
 |Module name|Description
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/{revnumber}/jar[`snapshot-tests-junit5`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/{project-version}/jar[`snapshot-tests-junit5`]
 | JUnit5 extension. 
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/{revnumber}/jar[`snapshot-tests-junit4`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/{project-version}/jar[`snapshot-tests-junit4`]
 | JUnit4 support via `@Rule` and `@ClassRule`. 
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/{revnumber}/jar[`snapshot-tests-core`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/{project-version}/jar[`snapshot-tests-core`]
 | Core API and unstructured text comparison. 
 
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/{revnumber}/jar[`snapshot-tests-jackson`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/{project-version}/jar[`snapshot-tests-jackson`]
 | JSON snapshot serialization using `jackson` and structured comparison using `jsonassert`.
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/{revnumber}/jar[`snapshot-tests-jaxb-jakarta`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/{project-version}/jar[`snapshot-tests-jaxb-jakarta`]
 | XML snapshot serialization using `jaxb` with new jakarta dependencies and structured comparison using `xmlunit`.
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/{revnumber}/jar[`snapshot-tests-jaxb`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/{project-version}/jar[`snapshot-tests-jaxb`]
 | XML snapshot serialization using `jaxb` and structured comparison using `xmlunit`.
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/{revnumber}/jar[`snapshot-tests-html`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/{project-version}/jar[`snapshot-tests-html`]
 | HTML snapshots using `jsoup` and structured comparison using `xmlunit`.
 
-|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/{revnumber}/jar[`snapshot-tests-directory-params`]
+|https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/{project-version}/jar[`snapshot-tests-directory-params`]
 | JUnit5 `ArgumentProvider` implementations that allow to iterate over files/directories. 
 |===
 
@@ -141,13 +141,13 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
  transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major version.
 
-[source,xml]
+[source,xml,subs="attributes+"]
 .Exclude JUnit5 dependencies from snapshot format artifacts (maven)
 ----
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>{revnumber}</version>
+    <version>{project-version}</version>
     <scope>test</scope>
     <exclusions>
         <exclusion>
@@ -159,10 +159,10 @@ In order to seamlessly support the JUnit5 legacy scenario described above, all s
 ----
 or
 
-[source,groovy]
+[source,groovy,subs="attributes+"]
 .Exclude JUnit5 dependencies from snapshot format artifacts (gradle, groovy syntax)
 ----
-testImplementation('de.skuzzle.test:snapshot-tests-jackson:{revnumber}') {
+testImplementation('de.skuzzle.test:snapshot-tests-jackson:{project-version}') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ----
@@ -177,13 +177,13 @@ snapshot file.
 
 .Simple quick start example using maven and JUnit5
 ====
-[source,xml]
+[source,xml,subs="attributes+"]
 .Add Maven dependency
 ----
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-junit5</artifactId>
-    <version>{revnumber}</version>
+    <version>{project-version}</version>
 </dependency>
 ----
 
