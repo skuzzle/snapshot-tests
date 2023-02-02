@@ -18,44 +18,35 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-        final Stream<TestDirectory> directories = directoryContents.recursive()
-                ? provideArgumentsRecursive(context)
-                : provideArgumentsFlat(context);
+        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
+        final boolean isRecursive = directoryContents.recursive();
+
+        final Stream<TestDirectory> directories = isRecursive
+                ? provideArgumentsRecursive(inputFileDirectory)
+                : provideArgumentsFlat(inputFileDirectory);
+
+        final TestDirectoryFilter additionalFilter = testDirectoryFilter();
 
         return directories
+                .filter(Filters.toPredicate(additionalFilter, isRecursive))
                 .sorted(Comparator.comparing(TestDirectory::name))
                 .map(Arguments::of);
     }
 
-    private Stream<TestDirectory> provideArgumentsFlat(ExtensionContext context) throws Exception {
-        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
-        final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
-                .and(additionalFilter());
-
+    private Stream<TestDirectory> provideArgumentsFlat(Path inputFileDirectory) throws Exception {
         return Files.list(inputFileDirectory)
-                .filter(filter.toPredicate())
+                .filter(Files::isDirectory)
                 .map(TestDirectory::new);
     }
 
-    private Stream<TestDirectory> provideArgumentsRecursive(ExtensionContext context) throws Exception {
-        final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
-        final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
-                .and(additionalFilter());
-
-        final IsTestCaseDirectoryStrategy testCaseDirectoryStrategy = isTestCaseDirectoryStrategy();
-
+    private Stream<TestDirectory> provideArgumentsRecursive(Path inputFileDirectory) throws Exception {
         return Files.walk(inputFileDirectory)
-                .filter(filter.toPredicate())
-                .map(TestDirectory::new)
-                .filter(testCaseDirectoryStrategy::determineIsTestCaseDirectory);
+                .filter(Files::isDirectory)
+                .map(TestDirectory::new);
     }
 
-    private PathFilter additionalFilter() {
+    private TestDirectoryFilter testDirectoryFilter() {
         return ReflectionSupport.newInstance(directoryContents.filter());
-    }
-
-    private IsTestCaseDirectoryStrategy isTestCaseDirectoryStrategy() {
-        return ReflectionSupport.newInstance(directoryContents.isTestcaseDeterminedBy());
     }
 
     private Path determineDirectory() throws IOException {

@@ -31,7 +31,7 @@ public class DirectoriesFromTest {
 
     @ParameterizedTest
     @DirectoriesFrom(testResourcesDirectory = "test-directories-recursive", recursive = true,
-            isTestcaseDeterminedBy = TestIsTestCaseDirectoryStrategy.class)
+            filter = SampleTestDirectoryFilter.class)
     void testDirectoriesRecursively(TestDirectory directory, Snapshot snapshot) throws IOException {
         // Given
         final String input1 = directory.resolve("input1.txt").asText(StandardCharsets.UTF_8);
@@ -48,11 +48,12 @@ public class DirectoriesFromTest {
                 .matchesSnapshotText();
     }
 
-    static class TestIsTestCaseDirectoryStrategy implements IsTestCaseDirectoryStrategy {
+    static class SampleTestDirectoryFilter implements TestDirectoryFilter {
 
         @Override
-        public boolean determineIsTestCaseDirectory(TestDirectory directory) {
-            return directory.hasFile("input1.txt");
+        public boolean include(TestDirectory testDirectory, boolean recursive) throws IOException {
+            return testDirectory.hasFile("input1.txt");
+
         }
 
     }

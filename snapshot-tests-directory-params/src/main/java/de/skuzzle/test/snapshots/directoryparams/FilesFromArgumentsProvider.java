@@ -19,24 +19,35 @@ class FilesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsume
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
-        final PathFilter filter = PathFilter.fromPredicate(Files::isRegularFile)
-                .and(PathFilterExtensions.extensions(filesFrom.extensions()))
-                .and(additionalFilter());
+        final boolean isRecursive = filesFrom.recursive();
 
-        return streamFiles(inputFileDirectory)
-                .filter(filter.toPredicate())
-                .map(TestFile::new)
+        final TestFileFilter filter = Filters.and(
+                PathFilterExtensions.extensions(filesFrom.extensions()),
+                testFileFilter());
+
+        final Stream<TestFile> files = isRecursive
+                ? provideArgumentsRecursive(inputFileDirectory)
+                : provideArgumentsFlat(inputFileDirectory);
+
+        return files
+                .filter(Filters.toPredicate(filter, isRecursive))
                 .sorted(Comparator.comparing(TestFile::name))
                 .map(Arguments::of);
     }
 
-    private Stream<Path> streamFiles(Path root) throws IOException {
-        return filesFrom.recursive()
-                ? Files.walk(root)
-                : Files.list(root);
+    private Stream<TestFile> provideArgumentsFlat(Path inputFileDirectory) throws Exception {
+        return Files.list(inputFileDirectory)
+                .filter(Files::isRegularFile)
+                .map(TestFile::new);
     }
 
-    private PathFilter additionalFilter() {
+    private Stream<TestFile> provideArgumentsRecursive(Path inputFileDirectory) throws Exception {
+        return Files.walk(inputFileDirectory)
+                .filter(Files::isRegularFile)
+                .map(TestFile::new);
+    }
+
+    private TestFileFilter testFileFilter() {
         return ReflectionSupport.newInstance(filesFrom.filter());
     }
 

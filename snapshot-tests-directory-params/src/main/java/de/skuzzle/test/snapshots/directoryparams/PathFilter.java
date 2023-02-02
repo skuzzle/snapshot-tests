@@ -21,9 +21,12 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * @since 1.2.0
  * @see FilesFrom#filter()
  * @see DirectoriesFrom#filter()
+ * @deprecated Since 1.9.0 - Use either {@link TestFileFilter} or
+ *             {@link TestDirectoryFilter}
  */
-@API(status = Status.EXPERIMENTAL, since = "1.2.0")
-public interface PathFilter {
+@API(status = Status.DEPRECATED, since = "1.9.0")
+@Deprecated
+public interface PathFilter extends TestFileFilter, TestDirectoryFilter {
 
     public static PathFilter fromPredicate(Predicate<Path> predicate) {
         return predicate::test;
@@ -38,6 +41,16 @@ public interface PathFilter {
      * @throws IOException If testing the file fails.
      */
     boolean include(Path path) throws IOException;
+
+    @Override
+    default boolean include(TestDirectory testDirectory, boolean recursive) throws IOException {
+        return include(testDirectory.path());
+    }
+
+    @Override
+    default boolean include(TestFile testFile, boolean recursive) throws IOException {
+        return include(testFile.file());
+    }
 
     /**
      * Creates a default predicate, converting potential {@link IOException}s to

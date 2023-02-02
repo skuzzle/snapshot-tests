@@ -11,6 +11,8 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import de.skuzzle.test.snapshots.directoryparams.Filters.TestDirectoryFilterAll;
+
 /**
  * ArgumentsProvider that lists directories and injects them as {@link TestDirectory}
  * instance into a test method. Usage:
@@ -79,48 +81,31 @@ public @interface DirectoriesFrom {
     String projectDirectory() default "";
 
     /**
-     * Name a class that implements {@link PathFilter} for more control over which
-     * directories are to be included. The class is expected to have an accessible,
+     * Name a class that implements {@link TestDirectoryFilter} for more control over
+     * which directories are to be included. The class is expected to have an accessible,
      * 0-arguments constructor.
      * <p>
-     * Per default, all direct sub directories of {@link #directory()} are included.
+     * The default behaves differently, depending on whether {@link #recursive()} is
+     * enabled or not. In non-recursive mode, all encountered directories will be
+     * accepted. In recursive mode, only leave directories (=directories without child
+     * directories) are accepted.
      *
-     * @return The path filter to use.
+     * @return The directory filter to use.
+     * @see #recursive()
      */
-    Class<? extends PathFilter> filter() default PathFilterAll.class;
+    Class<? extends TestDirectoryFilter> filter() default TestDirectoryFilterAll.class;
 
     /**
-     * Whether to recursively list all directories of the given root directory. Whether a
-     * directory is actually suitable to be used as test case directory is determined by
-     * an instance of {@link IsTestCaseDirectoryStrategy} that can be configured via
-     * {@link #isTestcaseDeterminedBy()}.
-     * <p>
-     * By default, when recursive listing is enabled, all <em>leave-directories</em> are
+     * Whether to recursively list all directories of the given root directory. By
+     * default, when recursive listing is enabled, all <em>leave-directories</em> are
      * considered test directories. That is, directories without any direct sub
-     * directories.
+     * directories. This behavior can be adjusted by providing a custom
+     * {@link TestDirectoryFilter} via {@link #filter()}.
      * 
      * @return Whether to recursively list directories.
-     * @see #isTestcaseDeterminedBy()
      * @since 1.9.0
+     * @see #filter()
      */
     @API(status = Status.EXPERIMENTAL, since = "1.9.0")
     boolean recursive() default false;
-
-    /**
-     * Strategy that defines which directories actually represent a test case when
-     * {@link #recursive()} is set to true. By default, all directories that do not
-     * container any other directories (=<em>leave-directories</em>) are considered test
-     * case directories.
-     * <p>
-     * When iterating the directories, this strategy is applied <em>after</em> the
-     * {@link #filter() path filter}. Thus, the path filter takes precedence over this
-     * strategy and only directories that were accepted by the path filter will be
-     * subjected to the {@link IsTestCaseDirectoryStrategy}.
-     * 
-     * @return The strategy.
-     * @see #recursive()
-     * @since 1.9.0
-     */
-    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
-    Class<? extends IsTestCaseDirectoryStrategy> isTestcaseDeterminedBy() default DefaultIsTestCaseDirectoryStrategy.class;
 }
