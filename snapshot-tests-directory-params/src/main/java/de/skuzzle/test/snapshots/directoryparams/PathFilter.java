@@ -22,10 +22,10 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * @see FilesFrom#filter()
  * @see DirectoriesFrom#filter()
  * @deprecated Since 1.9.0 - Use either {@link TestFileFilter} or
- *             {@link TestDirectoryFilter}
+ *             {@link TestDirectoryFilter} instead.
  */
 @API(status = Status.DEPRECATED, since = "1.9.0")
-@Deprecated
+@Deprecated(since = "1.9.0", forRemoval = true)
 public interface PathFilter extends TestFileFilter, TestDirectoryFilter {
 
     public static PathFilter fromPredicate(Predicate<Path> predicate) {

@@ -6,6 +6,10 @@ import java.util.function.Predicate;
 
 final class Filters {
 
+    private Filters() {
+        // hidden
+    }
+
     static TestFileFilter and(TestFileFilter filter1, TestFileFilter filter2) {
         return (testFile, recursive) -> filter1.include(testFile, recursive) && filter2.include(testFile, recursive);
     }
