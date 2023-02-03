@@ -45,7 +45,7 @@ final class Filters {
     /**
      * Default {@link TestDirectoryFilter} implementation used by {@link DirectoriesFrom}
      * which either accepts all directories (in non-recursive mode) or only leave
-     * directories which contain no childrin (in recursive mode).
+     * director.
      */
     static final class TestDirectoryFilterAll implements TestDirectoryFilter {
 
