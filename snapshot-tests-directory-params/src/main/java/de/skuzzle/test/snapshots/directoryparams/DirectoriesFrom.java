@@ -101,6 +101,8 @@ public @interface DirectoriesFrom {
      * considered test directories. That is, directories without any direct sub
      * directories. This behavior can be adjusted by providing a custom
      * {@link TestDirectoryFilter} via {@link #filter()}.
+     * <p>
+     * Defaults to false.
      * 
      * @return Whether to recursively list directories.
      * @since 1.9.0
