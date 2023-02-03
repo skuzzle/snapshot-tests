@@ -33,9 +33,9 @@ import de.skuzzle.test.snapshots.directoryparams.Filters.TestDirectoryFilterAll;
  * current project's test resources directory.
  * <p>
  * Directories can be listed recursively when {@link #recursive()} ist set to true. In
- * that case, you should specify a {@link IsTestCaseDirectoryStrategy} that determines
- * which of the encountered directories will actually lead to a parameterized test
- * execution.
+ * that case, you might want to specify a custom {@link TestDirectoryFilter} that
+ * determines which of the encountered directories will actually lead to a parameterized
+ * test execution.
  * 
  * @see TestDirectory
  * @see TestFile
