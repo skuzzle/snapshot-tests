@@ -1,9 +1,8 @@
 plugins {
-    id 'snapshot-tests.base-conventions'
-    id 'maven-publish'
-    id 'signing'
+    id("snapshot-tests.base-conventions")
+    id("maven-publish")
+    id("signing")
 }
-
 
 tasks.withType(Sign).configureEach {
     onlyIf { !(isSnapshot || isContinuousIntegrationEnvironment) }

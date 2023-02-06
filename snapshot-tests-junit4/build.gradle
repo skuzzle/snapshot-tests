@@ -1,15 +1,15 @@
 plugins {
-	id 'snapshot-tests.java-conventions'
+	id ("snapshot-tests.java-conventions")
 }
 
 dependencies {
     // HACK: hacky way to exclude transitive dependency from project 
     // dependency
-    api(project.dependencies.project(path: ':snapshot-tests-core')) {
-        exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
+    api(project.dependencies.project(path: ":snapshot-tests-core")) {
+        exclude group: "org.junit.jupiter", module: "junit-jupiter-api"
     }
-    implementation project(':snapshot-tests-common')
-    testImplementation project(':snapshot-tests-test-common')
+    implementation project(":snapshot-tests-common")
+    testImplementation project(":snapshot-tests-test-common")
     api(libs.junit4)
     implementation(libs.apiguardian)
 }

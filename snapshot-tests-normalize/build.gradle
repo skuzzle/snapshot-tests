@@ -1,10 +1,8 @@
 plugins {
-	id 'snapshot-tests.java-conventions'
+	id ("snapshot-tests.java-conventions")
 }
 
 dependencies {
-    implementation project(':snapshot-tests-common')
-    testImplementation project(':snapshot-tests-junit5')
-
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation project(":snapshot-tests-common")
+    testImplementation project(":snapshot-tests-junit5")
 }

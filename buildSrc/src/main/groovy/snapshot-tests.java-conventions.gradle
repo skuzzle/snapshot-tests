@@ -1,7 +1,7 @@
 plugins {
-    id 'snapshot-tests.base-conventions'
-    id 'java-library'
-    id 'jacoco'
+    id("snapshot-tests.base-conventions")
+    id("java-library")
+    id("jacoco")
 }
 
 java {
@@ -11,14 +11,14 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    options.encoding = "UTF-8"
 }
 
 javadoc {
     options.tags = [
-            'apiNote:a:API Note:',
-            'implSpec:a:Implementation Requirements:',
-            'implNote:a:Implementation Note:']
+            "apiNote:a:API Note:",
+            "implSpec:a:Implementation Requirements:",
+            "implNote:a:Implementation Note:"]
 }
 
 repositories {
@@ -30,11 +30,11 @@ dependencies {
 
     implementation platform(libs.junit.bom)
     testImplementation platform(libs.junit.bom)
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

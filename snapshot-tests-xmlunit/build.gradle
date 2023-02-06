@@ -1,10 +1,10 @@
 plugins {
-	id 'snapshot-tests.java-conventions'
+	id ("snapshot-tests.java-conventions")
 }
 
 dependencies {
-    api project(':snapshot-tests-core')
-    implementation project(':snapshot-tests-common')
+    api project(":snapshot-tests-core")
+    implementation project(":snapshot-tests-common")
     implementation(libs.apiguardian)
     implementation(libs.xmlunit.core)
     implementation(libs.xmlunit.assertj)

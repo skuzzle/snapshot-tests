@@ -1,34 +1,34 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    id 'snapshot-tests.java-conventions'
+    id ("org.asciidoctor.jvm.convert") version "3.3.2"
+    id ("snapshot-tests.java-conventions")
 }
 
 dependencies {
-    testImplementation project(':snapshot-tests-junit5')
-    testImplementation project(':snapshot-tests-jackson')
-    testImplementation project(':snapshot-tests-jaxb')
+    testImplementation project(":snapshot-tests-junit5")
+    testImplementation project(":snapshot-tests-jackson")
+    testImplementation project(":snapshot-tests-jaxb")
 }
 
 asciidoctor {
-    sourceDir file('src/docs/asciidoc')
+    sourceDir file("src/docs/asciidoc")
     attributes([
-            'source-highlighter': 'coderay',
-            'toc'               : 'left',
-            'icons'             : 'font',
-            'setanchors'        : 'true',
-            'docinfo1'          : 'true'
+            "source-highlighter": "coderay",
+            "toc"               : "left",
+            "icons"             : "font",
+            "setanchors"        : "true",
+            "docinfo1"          : "true"
     ])
 }
-def repositoryDeployBasePath = '../docs/reference/'
+def repositoryDeployBasePath = "../docs/reference/"
 
 tasks.register("deployDocsToRepositoryRoot") {
     dependsOn "deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent"
 }
 
 tasks.register("deployDocsToRepositoryRootLatest", Copy) {
-    def repositoryDeployPathLatest = repositoryDeployBasePath + 'latest'
+    def repositoryDeployPathLatest = repositoryDeployBasePath + "latest"
     from(asciidoctor.outputs.files)
     into(repositoryDeployPathLatest)
 }

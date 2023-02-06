@@ -1,11 +1,11 @@
 plugins {
-	id 'snapshot-tests.java-conventions'
+	id ("snapshot-tests.java-conventions")
 }
 
 dependencies {
-    api project(':snapshot-tests-core')
-    api project(':snapshot-tests-xmlunit')
-    implementation project(':snapshot-tests-common')
+    api project(":snapshot-tests-core")
+    api project(":snapshot-tests-xmlunit")
+    implementation project(":snapshot-tests-common")
     
     api(libs.jaxb.api.jakarta)
     implementation(libs.jaxb.runtime.jakarta)

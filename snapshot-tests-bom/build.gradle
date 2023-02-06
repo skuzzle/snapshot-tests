@@ -1,6 +1,6 @@
 plugins {
-    id 'java-platform'
-    id 'snapshot-tests.publishing-conventions'
+    id "java-platform"
+    id "snapshot-tests.publishing-conventions"
 }
 
 javaPlatform {
@@ -9,22 +9,22 @@ javaPlatform {
 
 dependencies {
     constraints {
-        api project(':snapshot-tests-core')
-        api project(':snapshot-tests-junit4')
-        api project(':snapshot-tests-junit5')
-        api project(':snapshot-tests-html')
-        api project(':snapshot-tests-jackson')
-        api project(':snapshot-tests-jaxb')
-        api project(':snapshot-tests-jaxb-jakarta')
-        api project(':snapshot-tests-directory-params')
-        api project(':snapshot-tests-normalize')
+        api project(":snapshot-tests-core")
+        api project(":snapshot-tests-junit4")
+        api project(":snapshot-tests-junit5")
+        api project(":snapshot-tests-html")
+        api project(":snapshot-tests-jackson")
+        api project(":snapshot-tests-jaxb")
+        api project(":snapshot-tests-jaxb-jakarta")
+        api project(":snapshot-tests-directory-params")
+        api project(":snapshot-tests-normalize")
     }
 }
 
 publishing {
     publications {
         snapshotTestsBOM(MavenPublication) {
-            from components.javaPlatform
+            from(components.javaPlatform)
         }
     }
 }
