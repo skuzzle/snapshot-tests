@@ -12,17 +12,17 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'gradlew build'
+        sh './gradlew build'
       }
     }
     stage('Coverage') {
       steps {
-        sh 'gradlew jacocoRootReport coveralls'
+        sh './gradlew jacocoRootReport coveralls'
       }
     }
     stage('javadoc') {
       steps {
-        sh 'gradlew javadoc'
+        sh './gradlew javadoc'
       }
     }
     stage('Deploy SNAPSHOT') {
