@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'snapshot-tests.java-conventions'
@@ -18,4 +20,21 @@ asciidoctor {
             'setanchors'        : 'true',
             'docinfo1'          : 'true'
     ])
+}
+def repositoryDeployBasePath = '../docs/reference/'
+
+tasks.register("deployDocsToRepositoryRoot") {
+    dependsOn "deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent"
+}
+
+tasks.register("deployDocsToRepositoryRootLatest", Copy) {
+    def repositoryDeployPathLatest = repositoryDeployBasePath + 'latest'
+    from(asciidoctor.outputs.files)
+    into(repositoryDeployPathLatest)
+}
+
+tasks.register("deployDocsToRepositoryRootCurrent", Copy) {
+    def repositoryDeployPathLatest = repositoryDeployBasePath + project.version
+    from(asciidoctor.outputs.files)
+    into(repositoryDeployPathLatest)
 }
