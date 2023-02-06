@@ -6,9 +6,5 @@ dependencies {
     implementation project(':snapshot-tests-common')
     testImplementation project(':snapshot-tests-junit5')
 
-    implementation(libs.apiguardian)
-
-    testImplementation platform(libs.junit.bom)
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation(libs.assertj.core)
 }

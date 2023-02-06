@@ -9,7 +9,6 @@ dependencies {
     
     implementation(libs.jaxb.api.legacy)
     implementation(libs.jaxb.runtime.legacy)
-    implementation(libs.apiguardian)
     implementation(libs.xmlunit.core)
     implementation(libs.xmlunit.assertj)
 }
