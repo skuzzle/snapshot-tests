@@ -1,10 +1,14 @@
-def isSnapshot = project.version.toString().contains("SNAPSHOT")
-def isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
+
+ext {
+    isSnapshot = project.version.toString().contains("SNAPSHOT")
+    isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
+
+    allJavaModules = {
+        project.rootProject.subprojects.findAll { it.pluginManager.hasPlugin('java-library') }
+    }
+}
+
 
 repositories {
     mavenCentral()
-}
-
-def allJavaModules() {
-    project.rootProject.subprojects.findAll { it.pluginManager.hasPlugin('java-library') }
 }

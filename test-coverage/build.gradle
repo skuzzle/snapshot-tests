@@ -4,9 +4,7 @@ plugins {
     id 'jacoco-report-aggregation'
 }
 
-def allJavaModules() {
-    project.rootProject.subprojects.findAll { it.pluginManager.hasPlugin('java-library') }
-}
+
 
 dependencies {
     jacocoAggregation project(':snapshot-tests-core')
