@@ -6,10 +6,14 @@ plugins {
 
 dependencies {
     jacocoAggregation project(':snapshot-tests-core')
+    jacocoAggregation project(':snapshot-tests-junit5')
+    jacocoAggregation project(':snapshot-tests-junit4')
     jacocoAggregation project(':snapshot-tests-html')
     jacocoAggregation project(':snapshot-tests-jaxb-jakarta')
     jacocoAggregation project(':snapshot-tests-jackson')
     jacocoAggregation project(':snapshot-tests-xmlunit')
+    jacocoAggregation project(':snapshot-tests-normalize')
+    jacocoAggregation project(':snapshot-tests-common')
 }
 
 reporting {
