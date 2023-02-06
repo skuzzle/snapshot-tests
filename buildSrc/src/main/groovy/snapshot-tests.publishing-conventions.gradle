@@ -1,0 +1,19 @@
+plugins {
+    id 'maven-publish'
+    id 'signing'
+}
+
+def isSnapshot = project.version.toString().contains("SNAPSHOT")
+def isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
+    //isRequired = !(isSnapshot || isContinuousIntegrationEnvironment)
+}
+
+publishing {
+    publications {
+
+    }
+}

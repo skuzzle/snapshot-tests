@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'mvn -B clean install'
+        sh 'gradlew clean install'
       }
     }
     stage('Coverage') {
@@ -22,7 +22,7 @@ pipeline {
     }
     stage('javadoc') {
       steps {
-        sh 'mvn -B javadoc:javadoc'
+        sh 'gradlew javadoc'
       }
     }
     stage('Deploy SNAPSHOT') {

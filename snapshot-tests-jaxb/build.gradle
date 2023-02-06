@@ -7,7 +7,7 @@ dependencies {
     api project(':snapshot-tests-xmlunit')
     implementation project(':snapshot-tests-common')
     
-    implementation(libs.jaxb.api.legacy)
+    api(libs.jaxb.api.legacy)
     implementation(libs.jaxb.runtime.legacy)
     implementation(libs.xmlunit.core)
     implementation(libs.xmlunit.assertj)

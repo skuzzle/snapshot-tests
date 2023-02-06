@@ -1,17 +1,20 @@
 rootProject.name = 'snapshot-tests'
-include 'snapshot-tests-common', 
-    'snapshot-tests-core', 
-    'snapshot-tests-junit5', 
-    'snapshot-tests-junit4', 
-    'snapshot-tests-xmlunit', 
-    'snapshot-tests-html', 
-    'snapshot-tests-jaxb', 
-    'snapshot-tests-jaxb-jakarta', 
-    'snapshot-tests-jackson', 
-    'snapshot-tests-directory-params', 
-    'snapshot-tests-test-common',
-    'snapshot-tests-test-normalize'
-    
+include 'snapshot-tests-common',
+        'snapshot-tests-test-common',
+        'snapshot-tests-core',
+        'snapshot-tests-junit5',
+        'snapshot-tests-junit4',
+        'snapshot-tests-xmlunit',
+        'snapshot-tests-html',
+        'snapshot-tests-jaxb',
+        'snapshot-tests-jaxb-jakarta',
+        'snapshot-tests-jackson',
+        'snapshot-tests-directory-params',
+        'snapshot-tests-normalize',
+        'snapshot-tests-documentation',
+        'snapshot-tests-bom',
+        "readme"
+
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -20,13 +23,13 @@ dependencyResolutionManagement {
             library('xmlunit-core', 'org.xmlunit', 'xmlunit-core').versionRef('xmlunit')
             library('xmlunit-assertj', 'org.xmlunit', 'xmlunit-assertj').versionRef('xmlunit')
             library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'jakarta-jaxb-impl-core').versionRef('xmlunit')
-            
+
             library('jaxb-api-legacy', 'javax.xml.bind:jaxb-api:2.3.1')
             library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.3')
-   
+
             library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0')
             library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
-   
+
             library('junit-bom', 'org.junit:junit-bom:5.9.2')
             library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.10.5.20201202')
             library('assertj-core', 'org.assertj:assertj-core:3.24.2')

@@ -1,0 +1,21 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'snapshot-tests.java-conventions'
+}
+
+dependencies {
+    testImplementation project(':snapshot-tests-junit5')
+    testImplementation project(':snapshot-tests-jackson')
+    testImplementation project(':snapshot-tests-jaxb')
+}
+
+asciidoctor {
+    sourceDir file('src/docs/asciidoc')
+    attributes([
+            'source-highlighter': 'coderay',
+            'toc'               : 'left',
+            'icons'             : 'font',
+            'setanchors'        : 'true',
+            'docinfo1'          : 'true'
+    ])
+}

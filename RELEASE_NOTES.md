@@ -48,7 +48,7 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.9.0-SNAPSHOT")
 
 ### Choose a test framework
 
-ℹ️ All options include support for plain text snapshots.
+ℹ�? All options include support for plain text snapshots.
 
 If you are using **JUnit5**:
 
@@ -186,7 +186,7 @@ testImplementation 'de.skuzzle.test:snapshot-tests-directory-params:1.9.0-SNAPSH
 testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.9.0-SNAPSHOT")
 ```
 
-Object normalization (⚠️ Experimental⚠)
+Object normalization (⚠�? Experimental⚠)
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-normalize/1.9.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-normalize/1.9.0-SNAPSHOT)
 
