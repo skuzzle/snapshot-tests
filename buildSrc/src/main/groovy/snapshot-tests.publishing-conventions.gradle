@@ -6,14 +6,10 @@ plugins {
 def isSnapshot = project.version.toString().contains("SNAPSHOT")
 def isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
 
+tasks.withType(Sign).configureEach {
+    onlyIf { !(isSnapshot || isContinuousIntegrationEnvironment) }
+}
 signing {
     useGpgCmd()
     sign(publishing.publications)
-    //isRequired = !(isSnapshot || isContinuousIntegrationEnvironment)
-}
-
-publishing {
-    publications {
-
-    }
 }

@@ -23,7 +23,7 @@ dependencies {
 
 publishing {
     publications {
-        myPlatform(MavenPublication) {
+        snapshotTestsBOM(MavenPublication) {
             from components.javaPlatform
         }
     }
