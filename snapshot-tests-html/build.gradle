@@ -1,0 +1,13 @@
+plugins {
+	id 'snapshot-tests.java-conventions'
+}
+
+dependencies {
+    api project(':snapshot-tests-core')
+    api project(':snapshot-tests-xmlunit')
+    api(libs.xmlunit.assertj)
+    implementation project(':snapshot-tests-common')
+    implementation(libs.apiguardian)
+    implementation(libs.jsoup)
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}

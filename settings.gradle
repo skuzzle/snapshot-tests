@@ -1,0 +1,44 @@
+rootProject.name = 'snapshot-tests'
+include 'snapshot-tests-common', 
+    'snapshot-tests-core', 
+    'snapshot-tests-junit5', 
+    'snapshot-tests-junit4', 
+    'snapshot-tests-xmlunit', 
+    'snapshot-tests-html', 
+    'snapshot-tests-jaxb', 
+    'snapshot-tests-jaxb-jakarta', 
+    'snapshot-tests-jackson', 
+    'snapshot-tests-directory-params', 
+    'snapshot-tests-test-common',
+    'snapshot-tests-test-normalize'
+    
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            version('xmlunit', '2.9.1')
+            library('xmlunit-core', 'org.xmlunit', 'xmlunit-core').versionRef('xmlunit')
+            library('xmlunit-assertj', 'org.xmlunit', 'xmlunit-assertj').versionRef('xmlunit')
+            library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'jakarta-jaxb-impl-core').versionRef('xmlunit')
+            
+            library('jaxb-api-legacy', 'javax.xml.bind:jaxb-api:2.3.1')
+            library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.3')
+   
+            library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0')
+            library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
+   
+            library('junit-bom', 'org.junit:junit-bom:5.9.2')
+            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.10.5.20201202')
+            library('assertj-core', 'org.assertj:assertj-core:3.24.2')
+            library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.9')
+            library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
+            library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
+            library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
+            library('opentest4j', 'org.opentest4j:opentest4j:1.2.0')
+            library('jsoup', 'org.jsoup:jsoup:1.15.3')
+            library('junit4', 'junit:junit:4.13.2')
+        }
+    }
+}
+

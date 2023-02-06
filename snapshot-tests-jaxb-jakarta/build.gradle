@@ -1,0 +1,15 @@
+plugins {
+	id 'snapshot-tests.java-conventions'
+}
+
+dependencies {
+    api project(':snapshot-tests-core')
+    api project(':snapshot-tests-xmlunit')
+    implementation project(':snapshot-tests-common')
+    
+    implementation(libs.jaxb.api.jakarta)
+    implementation(libs.jaxb.runtime.jakarta)
+    implementation(libs.apiguardian)
+    implementation(libs.xmlunit.core)
+    implementation(libs.xmlunit.assertj)
+}

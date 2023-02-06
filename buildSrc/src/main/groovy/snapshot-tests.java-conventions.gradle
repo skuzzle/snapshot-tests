@@ -1,0 +1,34 @@
+plugins {
+    id 'java-library'
+}
+
+version = '1.9.0-SNAPSHOT'
+group = 'de.skuzzle.test'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(libs.apiguardian)
+    
+    implementation platform(libs.junit.bom)
+    testImplementation platform(libs.junit.bom)
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

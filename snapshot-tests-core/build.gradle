@@ -1,0 +1,21 @@
+plugins {
+	id 'snapshot-tests.java-conventions'
+}
+
+dependencies {
+    implementation project(':snapshot-tests-common')
+    testImplementation project(':snapshot-tests-test-common')
+    
+    implementation platform(libs.junit.bom)
+    implementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.platform:junit-platform-engine'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.platform:junit-platform-testkit'
+    
+    implementation(libs.javadiffutils)
+    implementation(libs.opentest4j)
+    
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
+    
+}
