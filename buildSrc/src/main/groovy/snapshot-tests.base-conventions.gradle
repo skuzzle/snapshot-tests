@@ -1,0 +1,2 @@
+def isSnapshot = project.version.toString().contains("SNAPSHOT")
+def isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false

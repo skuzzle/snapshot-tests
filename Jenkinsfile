@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3.6-jdk-11'
+      image 'eclipse-temurin:11'
       args '-v /home/jenkins/.m2:/var/maven/.m2 -v /home/jenkins/.gnupg:/.gnupg -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS=-Duser.home=/var/maven'
     }
   }
@@ -12,12 +12,12 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'gradlew clean install'
+        sh 'gradlew build'
       }
     }
     stage('Coverage') {
       steps {
-        sh 'mvn -B jacoco:report jacoco:report-integration coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN'
+        sh 'gradlew jacocoRootReport coveralls'
       }
     }
     stage('javadoc') {

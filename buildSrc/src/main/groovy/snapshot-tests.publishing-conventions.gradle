@@ -1,14 +1,14 @@
 plugins {
+    id 'snapshot-tests.base-conventions'
     id 'maven-publish'
     id 'signing'
 }
 
-def isSnapshot = project.version.toString().contains("SNAPSHOT")
-def isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
 
 tasks.withType(Sign).configureEach {
     onlyIf { !(isSnapshot || isContinuousIntegrationEnvironment) }
 }
+
 signing {
     useGpgCmd()
     sign(publishing.publications)

@@ -1,7 +1,8 @@
 plugins {
+    id 'snapshot-tests.base-conventions'
     id 'java-library'
+    id 'jacoco'
 }
-
 
 java {
     toolchain {

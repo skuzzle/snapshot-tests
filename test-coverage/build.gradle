@@ -1,0 +1,31 @@
+plugins {
+    id 'snapshot-tests.java-conventions'
+    id 'com.github.kt3k.coveralls' version '2.12.0'
+    id 'jacoco-report-aggregation'
+}
+
+dependencies {
+    jacocoAggregation project(':snapshot-tests-core')
+    jacocoAggregation project(':snapshot-tests-html')
+    jacocoAggregation project(':snapshot-tests-jaxb-jakarta')
+    jacocoAggregation project(':snapshot-tests-jackson')
+    jacocoAggregation project(':snapshot-tests-xmlunit')
+}
+
+reporting {
+    reports {
+        jacocoRootReport(JacocoCoverageReport) {
+            testType = TestSuiteType.UNIT_TEST
+
+        }
+    }
+}
+
+coveralls {
+    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('jacocoRootReport', JacocoReport)
+}

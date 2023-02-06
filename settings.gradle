@@ -13,7 +13,8 @@ include 'snapshot-tests-common',
         'snapshot-tests-normalize',
         'snapshot-tests-documentation',
         'snapshot-tests-bom',
-        "readme"
+        "readme",
+        "test-coverage"
 
 
 dependencyResolutionManagement {
