@@ -1,7 +1,11 @@
 plugins {
-    id 'snapshot-tests.java-conventions'
+    id 'snapshot-tests.base-conventions'
     id 'com.github.kt3k.coveralls' version '2.12.0'
     id 'jacoco-report-aggregation'
+}
+
+def allJavaModules() {
+    project.rootProject.subprojects.findAll { it.pluginManager.hasPlugin('java-library') }
 }
 
 dependencies {
@@ -25,11 +29,11 @@ reporting {
     }
 }
 
+
 coveralls {
-    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    sourceDirs = allJavaModules().sourceSets.main.allSource.srcDirs.flatten()
     jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
-
-tasks.named('check') {
-    dependsOn tasks.named('jacocoRootReport', JacocoReport)
+tasks.named("coveralls") {
+    dependsOn('jacocoRootReport')
 }
