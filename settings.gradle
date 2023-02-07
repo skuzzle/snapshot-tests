@@ -17,13 +17,16 @@ include 'snapshot-tests-common',
         "test-coverage"
 
 
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
             version('xmlunit', '2.9.1')
             library('xmlunit-core', 'org.xmlunit', 'xmlunit-core').versionRef('xmlunit')
             library('xmlunit-assertj', 'org.xmlunit', 'xmlunit-assertj').versionRef('xmlunit')
-            library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'jakarta-jaxb-impl-core').versionRef('xmlunit')
+            library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'xmlunit-jakarta-jaxb-impl').versionRef('xmlunit')
 
             library('jaxb-api-legacy', 'javax.xml.bind:jaxb-api:2.3.1')
             library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.3')

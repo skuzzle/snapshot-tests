@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api project(":snapshot-tests-core")
-    implementation project(":snapshot-tests-common")
-    testImplementation project(":snapshot-tests-test-common")
+    api(projects.snapshotTestsCore)
+    implementation(projects.snapshotTestsCommon)
+    testImplementation(projects.snapshotTestsTestCommon)
     implementation("org.junit.platform:junit-platform-commons")
     implementation("org.junit.jupiter:junit-jupiter-params")
     implementation("org.junit.jupiter:junit-jupiter")

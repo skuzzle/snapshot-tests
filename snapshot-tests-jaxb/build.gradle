@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api project(":snapshot-tests-core")
-    api project(":snapshot-tests-xmlunit")
-    implementation project(":snapshot-tests-common")
+    api(projects.snapshotTestsCore)
+    api(projects.snapshotTestsXmlunit)
+    implementation(projects.snapshotTestsCommon)
     
     api(libs.jaxb.api.legacy)
     implementation(libs.jaxb.runtime.legacy)

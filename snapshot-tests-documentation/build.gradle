@@ -1,14 +1,14 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id ("org.asciidoctor.jvm.convert") version "3.3.2"
-    id ("snapshot-tests.java-conventions")
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("snapshot-tests.java-conventions")
 }
 
 dependencies {
-    testImplementation project(":snapshot-tests-junit5")
-    testImplementation project(":snapshot-tests-jackson")
-    testImplementation project(":snapshot-tests-jaxb")
+    testImplementation(projects.snapshotTestsJunit5)
+    testImplementation(projects.snapshotTestsJackson)
+    testImplementation(projects.snapshotTestsJaxb)
 }
 
 asciidoctor {

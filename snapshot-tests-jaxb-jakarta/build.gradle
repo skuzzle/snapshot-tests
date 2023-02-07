@@ -3,12 +3,13 @@ plugins {
 }
 
 dependencies {
-    api project(":snapshot-tests-core")
-    api project(":snapshot-tests-xmlunit")
-    implementation project(":snapshot-tests-common")
+    api(projects.snapshotTestsCore)
+    api(projects.snapshotTestsXmlunit)
+    implementation(projects.snapshotTestsCommon)
     
     api(libs.jaxb.api.jakarta)
     implementation(libs.jaxb.runtime.jakarta)
+    implementation(libs.xmlunit.jakarta.jaxb.impl)
     implementation(libs.xmlunit.core)
     implementation(libs.xmlunit.assertj)
 }

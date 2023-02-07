@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(":snapshot-tests-common")
-    testImplementation project(":snapshot-tests-junit5")
+    implementation(projects.snapshotTestsCommon)
+    testImplementation(projects.snapshotTestsJunit5)
 }
