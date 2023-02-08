@@ -13,14 +13,16 @@ tasks.withType(PublishToMavenLocal).configureEach {
 }
 
 signing {
+    // The gpg key is injected by jenkins as a base64 encoded string. That is because jenkins doesn't support
+    // storing secret text credentials with newlines. Thus we need to decode the base64 string before we can sign
     def signingKey = base64Decode(findProperty("base64EncodedAsciiArmoredSigningKey"))
     def signingPassword = findProperty("signingPassword")
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications)
 }
 
-def base64Decode(encodedString){
-    if(encodedString != null) {
+def base64Decode(encodedString) {
+    if (encodedString != null) {
         byte[] decoded = encodedString.decodeBase64()
         String decode = new String(decoded)
         return decode
