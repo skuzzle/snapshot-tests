@@ -35,7 +35,7 @@ pipeline {
     }
     stage('Create release branch') {
       steps {
-        sh 'mvn -B -Prelease gitflow:release-start'
+        sh './gradlew -B -Prelease gitflow:release-start'
       }
     }
     stage('Verify Release') {

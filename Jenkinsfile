@@ -25,6 +25,11 @@ pipeline {
         sh './gradlew javadoc'
       }
     }
+    stage('Try Sign') {
+      steps {
+        sh './gradlew sign -Psigning.password=${GPG_SECRET} -Psigning.keyId=simon.taddiken@gmail.com'
+      }
+    }
     stage('Deploy SNAPSHOT') {
       when {
         branch 'dev'

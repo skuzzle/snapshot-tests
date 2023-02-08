@@ -8,7 +8,7 @@ tasks.register("generateReadmeAndReleaseNotes", Copy) {
     from(".") {
         include("*.md")
     }
-    into("..")
+    into(project.rootProject.rootDir)
     def libs = project.rootProject.extensions.getByType (VersionCatalogsExtension.class).named("libs")
 
     filter(ReplaceTokens, tokens: [

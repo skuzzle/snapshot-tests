@@ -16,3 +16,4 @@ ext {
             projects.snapshotTestsDocumentation,
     )
 }
+
