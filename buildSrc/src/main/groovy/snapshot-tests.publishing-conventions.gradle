@@ -5,7 +5,7 @@ plugins {
 }
 
 tasks.withType(Sign).configureEach {
-    onlyIf { !isContinuousIntegrationEnvironment }
+    onlyIf { isContinuousIntegrationEnvironment }
 }
 
 tasks.withType(PublishToMavenLocal).configureEach {
