@@ -12,6 +12,8 @@ dependencies {
 asciidoctor {
     sourceDir file("src/docs/asciidoc")
     attributes([
+            "revnumber"         : { project.version.toString() },
+            "groupId"           : project.group,
             "source-highlighter": "coderay",
             "toc"               : "left",
             "icons"             : "font",
@@ -19,7 +21,7 @@ asciidoctor {
             "docinfo1"          : "true"
     ])
 }
-def repositoryDeployPathLatest =  project.rootProject.file("docs/reference/latest")
+def repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest")
 def repositoryDeployPathCurrent = project.rootProject.file("docs/reference/" + project.version)
 
 tasks.register("deployDocsToRepositoryRoot") {
