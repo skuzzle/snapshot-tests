@@ -1,11 +1,12 @@
 plugins {
-	id "snapshot-tests.java-conventions"
+    id("snapshot-tests.java-conventions")
+    id("snapshot-tests.publishing-conventions")
 }
 
 dependencies {
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsTestCommon)
-    api ("org.junit.jupiter:junit-jupiter")
+    api("org.junit.jupiter:junit-jupiter")
 
     implementation(libs.javadiffutils)
     implementation(libs.opentest4j)

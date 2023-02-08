@@ -1,0 +1,18 @@
+ext {
+    bomProjects = Set.of(
+            projects.snapshotTestsCore,
+            projects.snapshotTestsJunit4,
+            projects.snapshotTestsJunit5,
+            projects.snapshotTestsHtml,
+            projects.snapshotTestsJackson,
+            projects.snapshotTestsJaxb,
+            projects.snapshotTestsJaxbJakarta,
+            projects.snapshotTestsNormalize,
+            projects.snapshotTestsDirectoryParams
+    );
+
+    allCodeProjects = Set.of(
+            projects.snapshotTestsCommon,
+            projects.snapshotTestsDocumentation,
+    )
+}

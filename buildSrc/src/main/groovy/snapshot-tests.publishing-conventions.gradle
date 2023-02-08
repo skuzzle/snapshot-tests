@@ -8,7 +8,40 @@ tasks.withType(Sign).configureEach {
     onlyIf { !(isSnapshot || isContinuousIntegrationEnvironment) }
 }
 
+tasks.withType(PublishToMavenLocal).configureEach {
+    dependsOn(tasks.build)
+}
+
 signing {
     useGpgCmd()
     sign(publishing.publications)
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                url = 'https://github.com/skuzzle/snapshot-tests'
+                scm {
+                    connection = "scm:git:git://github.com/skuzzle/snapshot-tests"
+                    developerConnection = "scm:git:git://github.com/skuzzle/snapshot-tests"
+                    url = "https://github.com/skuzzle/snapshot-tests"
+                }
+                licenses {
+                    license {
+                        name = "The MIT License (MIT)"
+                        url = "http://opensource.org/licenses/MIT"
+                        distribution = "repo"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "simont"
+                        name = "Simon Taddiken"
+                        email = "simon@taddiken.net"
+                    }
+                }
+            }
+        }
+    }
 }
