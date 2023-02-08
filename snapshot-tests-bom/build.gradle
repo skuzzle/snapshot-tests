@@ -9,15 +9,10 @@ javaPlatform {
 
 dependencies {
     constraints {
-        api(projects.snapshotTestsCore)
-        api(projects.snapshotTestsJunit4)
-        api(projects.snapshotTestsJunit5)
-        api(projects.snapshotTestsHtml)
-        api(projects.snapshotTestsJackson)
-        api(projects.snapshotTestsJaxb)
-        api(projects.snapshotTestsJaxbJakarta)
-        api(projects.snapshotTestsDirectoryParams)
-        api(projects.snapshotTestsNormalize)
+        bomProjects
+                .collect({ it.dependencyProject })
+                .collect({ "${it.group}:${it.name}:${it.version}" })
+                .each { api(it) }
     }
 }
 
