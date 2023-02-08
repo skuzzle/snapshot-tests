@@ -13,7 +13,7 @@ tasks.withType(PublishToMavenLocal).configureEach {
 }
 
 signing {
-    def signingKey = findProperty("signingKey")
+    def signingKey = base64Decode(findProperty("base64EncodedAsciiArmoredSigningKey"))
     def signingPassword = findProperty("signingPassword")
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications)
