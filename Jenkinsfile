@@ -7,7 +7,8 @@ pipeline {
   }
   environment {
     COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
-    GPG_SECRET = credentials('gpg_password')
+    ORG_GRADLE_PROJECT_signingPassword = credentials('gpg_password')
+    ORG_GRADLE_PROJECT_signingKey  = credentials('gpg_private_key')
   }
   stages {
     stage('Build') {
