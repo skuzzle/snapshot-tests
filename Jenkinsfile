@@ -28,7 +28,7 @@ pipeline {
     }
     stage('Try Sign') {
       steps {
-        sh './gradlew sign -Psigning.password=${GPG_SECRET} -Psigning.keyId=4FFA3ADBDAD7245C -s --info'
+        sh './gradlew sign -s --info'
       }
     }
     stage('Deploy SNAPSHOT') {
