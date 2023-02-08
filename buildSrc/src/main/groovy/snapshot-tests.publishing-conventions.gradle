@@ -19,6 +19,15 @@ signing {
     sign(publishing.publications)
 }
 
+def base64Decode(encodedString){
+    if(encodedString != null) {
+        byte[] decoded = encodedString.decodeBase64()
+        String decode = new String(decoded)
+        return decode
+    }
+    return null;
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
