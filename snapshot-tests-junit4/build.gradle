@@ -10,4 +10,6 @@ dependencies {
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsTestCommon)
     api(libs.junit4)
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 }
