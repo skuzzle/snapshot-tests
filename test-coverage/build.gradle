@@ -22,7 +22,7 @@ reporting {
 
 coveralls {
     sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
-    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/testCodeCoverageReport.xml"
+    jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
 }
 
 tasks.named('check') {
