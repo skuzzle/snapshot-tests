@@ -20,15 +20,14 @@ reporting {
     }
 }
 
-tasks.named('check') {
-    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
-}
-
 coveralls {
     sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
     jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
 
+tasks.named('check') {
+    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+}
 tasks.named("coveralls") {
     dependsOn("testCodeCoverageReport")
 }

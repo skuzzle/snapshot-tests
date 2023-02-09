@@ -16,9 +16,9 @@ pipeline {
         sh './gradlew build'
       }
     }
-    stage('Coverage') {
+    stage('Report Coverage') {
       steps {
-        sh './gradlew jacocoRootReport coveralls'
+        sh './gradlew coveralls'
       }
     }
     stage('javadoc') {
