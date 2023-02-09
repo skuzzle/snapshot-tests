@@ -3,6 +3,4 @@ plugins {
     id("snapshot-tests.publishing-conventions")
 }
 
-dependencies {
-
-}
+ext.automaticModuleName = "de.skuzzle.test.snapshots.common"

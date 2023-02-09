@@ -2,6 +2,7 @@ plugins {
     id("snapshot-tests.java-conventions")
     id("snapshot-tests.publishing-conventions")
 }
+ext.automaticModuleName = "de.skuzzle.test.snapshots.xml.jaxb"
 
 dependencies {
     api(projects.snapshotTestsCore)

@@ -35,6 +35,12 @@ dependencies {
     testImplementation(libs.assertj.core)
 }
 
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': provider { project.findProperty("automaticModuleName") })
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
