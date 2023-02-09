@@ -7,7 +7,4 @@ dependencies {
     api(projects.snapshotTestsCore)
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsTestCommon)
-    implementation("org.junit.platform:junit-platform-commons")
-    implementation("org.junit.jupiter:junit-jupiter-params")
-    implementation("org.junit.jupiter:junit-jupiter")
 }
