@@ -25,20 +25,24 @@ def repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest
 def repositoryDeployPathCurrent = project.rootProject.file("docs/reference/" + project.version)
 
 tasks.register("deployDocsToRepositoryRoot") {
+    group = "release-relevant"
     dependsOn("deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent")
 }
 
 tasks.register("wipeLatestDocsFolder", Delete) {
+    group = "release-relevant"
     delete(repositoryDeployPathLatest)
 }
 
 tasks.register("deployDocsToRepositoryRootLatest", Copy) {
+    group = "release-relevant"
     dependsOn("asciidoctor", "wipeLatestDocsFolder")
     from(asciidoctor.outputs.files)
     into(repositoryDeployPathLatest)
 }
 
 tasks.register("deployDocsToRepositoryRootCurrent", Copy) {
+    group = "release-relevant"
     dependsOn("asciidoctor")
     from(asciidoctor.outputs.files)
     into(repositoryDeployPathCurrent)

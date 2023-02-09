@@ -12,6 +12,7 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
+    options.compilerArgs << '-parameters'
 }
 
 javadoc {
@@ -29,7 +30,6 @@ dependencies {
     implementation(libs.apiguardian)
 
     implementation platform(libs.junit.bom)
-    testImplementation platform(libs.junit.bom)
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)

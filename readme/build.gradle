@@ -5,6 +5,8 @@ plugins {
 }
 
 tasks.register("generateReadmeAndReleaseNotes", Copy) {
+    group = "release-relevant"
+    description = "Copies the readme and release notes file into the root directory, replacing all placeholders"
     from(".") {
         include("*.md")
     }
