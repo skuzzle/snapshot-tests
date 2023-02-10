@@ -39,7 +39,14 @@ dependencies {
 
 jar {
     manifest {
-        attributes('Automatic-Module-Name': provider { project.findProperty("automaticModuleName") })
+        attributes(
+                'Automatic-Module-Name': provider { project.findProperty("automaticModuleName") },
+                "Created-By": "${System.getProperty("java.version")} (${System.getProperty("java.vendor")} ${System.getProperty("java.vm.version")})",
+                "Specification-Title": project.name,
+                "Specification-Version": project.version - "-SNAPSHOT",
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version
+        )
     }
 }
 
