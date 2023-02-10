@@ -27,24 +27,19 @@ pipeline {
         sh './gradlew javadoc'
       }
     }
-    stage('Try Sign') {
-      steps {
-        sh './gradlew sign -s --info'
-      }
-    }
     stage('Deploy SNAPSHOT') {
-      /*when {
+      when {
         branch 'dev'
-      }*/
+      }
       steps {
-          sh './gradlew publishToSonatype'
+          sh './gradlew sign publishToSonatype'
       }
     }
   }
   post {
     always {
         archiveArtifacts(artifacts: '*.md')
-        junit (testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true)
+        junit (testResults: '**/build/test-results/*.xml', allowEmptyResults: true)
     }
   }
 }
