@@ -64,7 +64,6 @@ If you are using **JUnit5**:
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-junit5:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-junit5:@project.version@")
 ```
 
@@ -82,7 +81,6 @@ If you are using **JUnit4**:
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-junit4:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-junit4:@project.version@")
 ```
 
@@ -104,7 +102,6 @@ If you want **JSON** based snapshots:
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-jackson:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-jackson:@project.version@")
 ```
 
@@ -122,7 +119,6 @@ If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-jaxb:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-jaxb:@project.version@")
 ```
 
@@ -140,7 +136,6 @@ If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-jaxb-jakarta:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-jaxb-jakarta:@project.version@")
 ```
 
@@ -158,7 +153,6 @@ If you want **HTML** based snapshots:
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-html:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-html:@project.version@")
 ```
 </details>
@@ -182,7 +176,6 @@ Directory Params
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-directory-params:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-directory-params:@project.version@")
 ```
 
@@ -200,7 +193,6 @@ Object normalization (⚠️ Experimental⚠)
 ```
 
 ```
-testImplementation '@project.groupId@:snapshot-tests-normalize:@project.version@'
 testImplementation("@project.groupId@:snapshot-tests-normalize:@project.version@")
 ```
 </details>
