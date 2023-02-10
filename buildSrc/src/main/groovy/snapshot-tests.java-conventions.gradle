@@ -5,6 +5,8 @@ plugins {
 }
 
 java {
+    withJavadocJar()
+    withSourcesJar()
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
@@ -38,6 +40,17 @@ dependencies {
 jar {
     manifest {
         attributes('Automatic-Module-Name': provider { project.findProperty("automaticModuleName") })
+    }
+}
+
+if (project.getPluginManager().hasPlugin("maven-publish")) {
+    publishing {
+        publications.named("maven") {
+            from(components.java)
+            pom {
+                description("Module \"${project.name}\" of snapshot-tests")
+            }
+        }
     }
 }
 
