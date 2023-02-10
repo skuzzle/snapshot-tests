@@ -7,6 +7,7 @@ pipeline {
   }
   environment {
     COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
+    ORG_GRADLE_PROJECT_sonatype = credentials('SONATYPE_NEXUS')
     ORG_GRADLE_PROJECT_signingPassword = credentials('gpg_password')
     ORG_GRADLE_PROJECT_base64EncodedAsciiArmoredSigningKey  = credentials('gpg_private_key')
   }
@@ -32,11 +33,11 @@ pipeline {
       }
     }
     stage('Deploy SNAPSHOT') {
-      when {
+      /*when {
         branch 'dev'
-      }
+      }*/
       steps {
-        sh 'mvn -B -Prelease -DskipTests -Dgpg.passphrase=${GPG_SECRET} deploy'
+          sh './gradlew publishToSonatype'
       }
     }
   }

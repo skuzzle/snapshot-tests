@@ -20,6 +20,7 @@ publishing {
     publications.named("maven") {
         from(components.javaPlatform)
         pom {
+            packaging("pom")
             description("Manages all child artifact versions in case you need to reference multiple in a client project")
         }
     }
