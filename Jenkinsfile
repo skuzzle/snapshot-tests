@@ -39,7 +39,7 @@ pipeline {
   post {
     always {
         archiveArtifacts(artifacts: '*.md')
-        junit (testResults: '**/build/test-results/*.xml', allowEmptyResults: true)
+        junit (testResults: '**/build/test-results/test/**.xml', allowEmptyResults: true)
     }
   }
 }
