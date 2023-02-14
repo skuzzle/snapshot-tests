@@ -202,8 +202,8 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * 
      * <p>
      * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
-     * can not use this method in combination with {@link #withComparisonRules(Consumer)}
-     * if you intend to use an own {@link DifferenceEvaluator}.
+     * can not use this method in combination with {@link #compareUsing(Consumer)} if you
+     * intend to use an own {@link DifferenceEvaluator}.
      *
      * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
      * @return This instance.
