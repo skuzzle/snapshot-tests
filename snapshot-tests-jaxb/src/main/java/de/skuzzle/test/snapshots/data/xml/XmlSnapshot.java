@@ -212,7 +212,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * <pre>
      * XmlSnapshot.xml()
      *         .withNamespaceContext(Map.of("ns1", "foo:1", "ns2", "foo:2"))
-     *         .withComparisonRules(rules -> rules
+     *         .withComparisonRules(rules -&gt; rules
      *                 .pathAt("/ns1:root/ns2:child/text()").ignore())
      * </pre>
      * 

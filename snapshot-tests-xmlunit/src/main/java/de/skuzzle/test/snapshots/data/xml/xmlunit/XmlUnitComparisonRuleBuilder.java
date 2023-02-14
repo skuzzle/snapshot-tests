@@ -34,8 +34,8 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
     /**
      * Creates a new rule builder.
      * 
-     * @param enableXPathDebugging Whether to print debug messages about matched nodes
      * @param namespaceContext Nullable namespace context
+     * @param xPathDebug Whether to print debug messages about matched nodes
      */
     public XmlUnitComparisonRuleBuilder(Map<String, String> namespaceContext, XPathDebug xPathDebug) {
         this.xPathDebug = Arguments.requireNonNull(xPathDebug);

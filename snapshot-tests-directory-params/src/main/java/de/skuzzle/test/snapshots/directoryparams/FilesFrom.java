@@ -14,6 +14,8 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import de.skuzzle.test.snapshots.directoryparams.Filters.TestFileFilterAll;
+
 /**
  * ArgumentsProvider that lists files from a directory and injects them as
  * {@link TestFile} instance into a test method. Usage:
@@ -98,8 +100,8 @@ public @interface FilesFrom {
     String[] extensions() default {};
 
     /**
-     * Name a class that implements {@link PathFilter} for more control over which files
-     * are to be included. The class is expected to have an accessible, 0-arguments
+     * Name a class that implements {@link TestFileFilter} for more control over which
+     * files are to be included. The class is expected to have an accessible, 0-arguments
      * constructor.
      * <p>
      * Note that this filter will be used in addition to the extension filter if
@@ -110,6 +112,6 @@ public @interface FilesFrom {
      * @see #extensions()
      */
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
-    Class<? extends PathFilter> filter() default PathFilterAll.class;
+    Class<? extends TestFileFilter> filter() default TestFileFilterAll.class;
 
 }
