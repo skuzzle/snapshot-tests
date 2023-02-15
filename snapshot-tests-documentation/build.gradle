@@ -3,6 +3,8 @@ plugins {
     id("snapshot-tests.java-conventions")
 }
 
+description = "Snapshot Tests Documentation"
+
 dependencies {
     testImplementation(projects.snapshotTestsJunit5)
     testImplementation(projects.snapshotTestsJackson)

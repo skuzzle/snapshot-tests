@@ -1,6 +1,7 @@
 plugins {
     id("snapshot-tests.published-java-component")
 }
+description = "Snapshot HTML Serialization"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.html"
 
 dependencies {

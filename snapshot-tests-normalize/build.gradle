@@ -1,6 +1,7 @@
 plugins {
     id("snapshot-tests.published-java-component")
 }
+description = "Snapshot Object Normalization"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.normalize"
 
 dependencies {

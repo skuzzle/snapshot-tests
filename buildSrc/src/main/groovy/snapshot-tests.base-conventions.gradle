@@ -6,10 +6,17 @@ ext {
     isSnapshot = project.version.toString().contains("SNAPSHOT")
     isContinuousIntegrationEnvironment = System.getenv("CI")?.toBoolean() ?: false
 
-    allJavaModules = {
+    allJavaModules = { ->
         project.rootProject.subprojects.findAll { it.pluginManager.hasPlugin("java-library") }
     }
+
+    checkThat = { condition, description ->
+        if (!condition) {
+            throw new IllegalArgumentException("Condition failed: " + description)
+        }
+    }
 }
+
 
 repositories {
     mavenCentral()

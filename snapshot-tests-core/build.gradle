@@ -1,8 +1,9 @@
 plugins {
     id("snapshot-tests.published-java-component")
 }
-
+description = "Snapshot Tests Core"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.core"
+
 dependencies {
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsTestCommon)

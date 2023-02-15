@@ -18,7 +18,7 @@ tasks.register("generateReadmeAndReleaseNotes", Copy) {
             "project.groupId": project.group,
             "version.junit": libs.findLibrary("junit-bom").get().get().getVersion(),
             "version.junit4": libs.findLibrary("junit4").get().get().getVersion(),
-            "github.user": "skuzzle",
-            "github.name": "snapshot-tests",
+            "github.user": githubUser,
+            "github.name": githubRepo
     ])
 }

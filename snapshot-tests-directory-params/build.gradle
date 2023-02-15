@@ -1,6 +1,7 @@
 plugins {
     id("snapshot-tests.published-java-component")
 }
+description = "Directory Contents Parameters"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.directoryparams"
 dependencies {
     implementation(projects.snapshotTestsCommon)

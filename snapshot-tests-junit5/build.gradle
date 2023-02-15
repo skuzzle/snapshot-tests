@@ -1,6 +1,7 @@
 plugins {
     id("snapshot-tests.published-java-component")
 }
+description = "Snapshot Tests JUnit5 support"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.junit5"
 
 dependencies {

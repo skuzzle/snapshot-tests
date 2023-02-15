@@ -35,6 +35,7 @@ publishing {
         maven(MavenPublication) {
             pom {
                 name = provider { project.description ?: "${project.group}:${project.name}" }
+                description = provider { project.name }
                 url = 'https://github.com/skuzzle/snapshot-tests'
                 scm {
                     connection = "scm:git:git://github.com/skuzzle/snapshot-tests"
@@ -57,5 +58,16 @@ publishing {
                 }
             }
         }
+    }
+}
+
+tasks.withType(GenerateMavenPom).configureEach {
+    doLast {
+        def pomXml = destination.getText();
+        checkThat(pomXml.indexOf("<name>") >= 0, "POM must have a name element: " + destination)
+        checkThat(pomXml.indexOf("<url>") >= 0, "POM must have a url element: " + destination)
+        checkThat(pomXml.indexOf("<description>") >= 0, "POM must have a description element" + destination)
+        checkThat(pomXml.indexOf("<license>") >= 0, "POM must have a license element" + destination)
+        checkThat(pomXml.indexOf("<scm>") >= 0, "POM must have a scm element" + destination)
     }
 }
