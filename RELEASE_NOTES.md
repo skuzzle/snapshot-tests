@@ -11,6 +11,7 @@
 
 * [#49](https://github.com/skuzzle/snapshot-tests/issues/49): Delete context files as well when deleting orphaned snapshots
 * [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
+* [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
 * Add recursive directory scanning via `DirectoriesFrom.recursive()`
 * Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
 * Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
