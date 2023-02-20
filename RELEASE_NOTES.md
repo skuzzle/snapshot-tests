@@ -11,6 +11,7 @@
 
 * [#49](https://github.com/skuzzle/snapshot-tests/issues/49): Delete context files as well when deleting orphaned snapshots
 * [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
+* [#64](https://github.com/skuzzle/snapshot-tests/issues/64): Migrate build to gradle
 * [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
 * Add recursive directory scanning via `DirectoriesFrom.recursive()`
 * Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
@@ -49,7 +50,7 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.9.0-SNAPSHOT")
 
 ### Choose a test framework
 
-ℹ️ All options include support for plain text snapshots.
+ℹ�? All options include support for plain text snapshots.
 
 If you are using **JUnit5**:
 
@@ -65,7 +66,6 @@ If you are using **JUnit5**:
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-junit5:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-junit5:1.9.0-SNAPSHOT")
 ```
 
@@ -83,7 +83,6 @@ If you are using **JUnit4**:
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-junit4:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-junit4:1.9.0-SNAPSHOT")
 ```
 
@@ -105,7 +104,6 @@ If you want **JSON** based snapshots:
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jackson:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.9.0-SNAPSHOT")
 ```
 
@@ -123,7 +121,6 @@ If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jaxb:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.9.0-SNAPSHOT")
 ```
 
@@ -141,7 +138,6 @@ If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.9.0-SNAPSHOT")
 ```
 
@@ -159,7 +155,6 @@ If you want **HTML** based snapshots:
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-html:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-html:1.9.0-SNAPSHOT")
 ```
 </details>
@@ -183,11 +178,10 @@ Directory Params
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-directory-params:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.9.0-SNAPSHOT")
 ```
 
-Object normalization (⚠️ Experimental⚠)
+Object normalization (⚠�? Experimental⚠)
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.0-SNAPSHOT&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-normalize/1.9.0-SNAPSHOT/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.0-SNAPSHOT&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-normalize/1.9.0-SNAPSHOT)
 
@@ -201,7 +195,6 @@ Object normalization (⚠️ Experimental⚠)
 ```
 
 ```
-testImplementation 'de.skuzzle.test:snapshot-tests-normalize:1.9.0-SNAPSHOT'
 testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.9.0-SNAPSHOT")
 ```
 </details>

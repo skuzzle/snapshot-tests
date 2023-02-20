@@ -1,9 +1,9 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-bom/${project.version}/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-core/${project.version})
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/reference/${project.version})
-[![Coverage Status](https://coveralls.io/repos/github/skuzzle/${github.name}/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/${github.name}?branch=main)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-bom/@project.version@/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-core/@project.version@)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=@project.version@&color=orange)](https://@github.user@.github.io/@github.name@/reference/@project.version@)
+[![Coverage Status](https://coveralls.io/repos/github/skuzzle/@github.name@/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/@github.name@?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
 
 # snapshot-tests
@@ -13,29 +13,29 @@ This library allows to conveniently assert on the structure and contents of comp
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
-- [x] Requires Java ${version.java}, supports Java 17
+- [x] Requires Java 11, supports Java 17
 
 Supported test frameworks:
-- [x] JUnit5  (tested against `${version.junit}`) via [snapshot-tests-junit5](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit5/${project.version}/jar)
-- [x] JUnit4 (tested against `${version.junit4}`) via [snapshot-tests-junit4](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit4/${project.version}/jar)
+- [x] JUnit5  (tested against `@version.junit@`) via [snapshot-tests-junit5](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-junit5/@project.version@/jar)
+- [x] JUnit4 (tested against `@version.junit4@`) via [snapshot-tests-junit4](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-junit4/@project.version@/jar)
 
 Supported snapshot formats:
-- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-core/${project.version}/jar))
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jackson/${project.version}/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb/${project.version}/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb-jakarta/${project.version}/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-html/${project.version}/jar)
+- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-core/@project.version@/jar))
+- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar)
+- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-html/@project.version@/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
-release [${project.version}](https://github.com/skuzzle/snapshot-tests/releases/tag/v${project.version})
+release [@project.version@](https://github.com/skuzzle/snapshot-tests/releases/tag/v@project.version@)
 
 ### Reference Documentation
 Starting with release `1.8.0` we provide a new external reference documentation:
-* [Latest](https://${github.user}.github.io/${github.name}/reference/latest): Always points to the latest version
-* [${project.version}](https://${github.user}.github.io/${github.name}/reference/${project.version}): Points to a specific version
+* [Latest](https://@github.user@.github.io/@github.name@/reference/latest): Always points to the latest version
+* [@project.version@](https://@github.user@.github.io/@github.name@/reference/@project.version@): Points to a specific version
 
 Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
 documentation.
@@ -47,15 +47,15 @@ Add the following dependencies to your build
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-junit5</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -111,9 +111,9 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
     <exclusions>
         <exclusion>
@@ -127,7 +127,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 or
 
 ```
-testImplementation('${project.groupId}:snapshot-tests-jackson:${project.version}') {
+testImplementation('@project.groupId@:snapshot-tests-jackson:@project.version@') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ```

@@ -1,0 +1,50 @@
+plugins {
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("snapshot-tests.java-conventions")
+}
+
+description = "Snapshot Tests Documentation"
+
+dependencies {
+    testImplementation(projects.snapshotTestsJunit5)
+    testImplementation(projects.snapshotTestsJackson)
+    testImplementation(projects.snapshotTestsJaxb)
+}
+
+asciidoctor {
+    sourceDir file("src/docs/asciidoc")
+    attributes([
+            "revnumber"         : { project.version.toString() },
+            "groupId"           : project.group,
+            "source-highlighter": "coderay",
+            "toc"               : "left",
+            "icons"             : "font",
+            "setanchors"        : "true",
+            "docinfo1"          : "true"
+    ])
+}
+def repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest")
+def repositoryDeployPathCurrent = project.rootProject.file("docs/reference/" + project.version)
+
+tasks.register("deployDocsToRepositoryRoot") {
+    group = "release"
+    description "Generates AsciiDoc documentation and copies it to the respective folders in the project root"
+    dependsOn("deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent")
+}
+
+tasks.register("wipeLatestDocsFolder", Delete) {
+    description "Wipes out the 'latest' documentation folder. To be used before copying the updated contents"
+    delete(repositoryDeployPathLatest)
+}
+
+tasks.register("deployDocsToRepositoryRootLatest", Copy) {
+    dependsOn("asciidoctor", "wipeLatestDocsFolder")
+    from(asciidoctor.outputs.files)
+    into(repositoryDeployPathLatest)
+}
+
+tasks.register("deployDocsToRepositoryRootCurrent", Copy) {
+    dependsOn("asciidoctor")
+    from(asciidoctor.outputs.files)
+    into(repositoryDeployPathCurrent)
+}

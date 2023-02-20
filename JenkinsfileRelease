@@ -1,15 +1,19 @@
 pipeline {
   agent {
     docker {
+      // Need an image with git installed that is why we stick with maven image for now though we're using gradle
       image 'maven:3.6-jdk-11'
-      args '-v /home/jenkins/.m2:/var/maven/.m2 -v /home/jenkins/.gnupg:/.gnupg -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS=-Duser.home=/var/maven'
+      args '-v /home/jenkins/.gradle:/var/gradle/.gradle -v /home/jenkins/.gnupg:/.gnupg -e GRADLE_OPTS=-Duser.home=/var/gradle'
     }
   }
   environment {
-    GPG_SECRET = credentials('gpg_password')
     GITHUB = credentials('Github-Username-Pw')
     GITHUB_RELEASE_TOKEN = credentials('github_registry_release')
     GIT_ASKPASS='./.git-askpass'
+    COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
+    ORG_GRADLE_PROJECT_sonatype = credentials('SONATYPE_NEXUS')
+    ORG_GRADLE_PROJECT_signingPassword = credentials('gpg_password')
+    ORG_GRADLE_PROJECT_base64EncodedAsciiArmoredSigningKey  = credentials('gpg_private_key')
   }
   stages {
     stage ('Ensure dev branch') {
@@ -33,33 +37,20 @@ pipeline {
         sh 'git config user.name "Jenkins"'
       }
     }
-    stage('Create release branch') {
+    stage('Build Release') {
       steps {
-        sh 'mvn -B -Prelease gitflow:release-start'
-      }
-    }
-    stage('Verify Release') {
-      steps {
-        sh 'mvn -B -Prelease,copy-docs -Dgpg.passphrase=${GPG_SECRET} clean install'
-      }
-    }
-    stage('Update readme and documentation') {
-      steps {
-        sh 'git status'
-        sh 'git add README.md RELEASE_NOTES.md'
-        sh 'git add --force docs/*'
-        sh 'git commit -m "Update README and RELEASE_NOTES"'
+        sh './gradlew build sign'
       }
     }
     stage('Perform release') {
       steps {
-        sh "mvn -B gitflow:release-finish -DargLine=\"-Prelease -B -Dgpg.passphrase=${GPG_SECRET} -DskipTests\""
+        sh './gradlew release'
       }
     }
     stage('Create GitHub release') {
       steps {
         sh 'git checkout main'
-        sh "mvn -B github-release:github-release -Dgithub.release-token=${GITHUB_RELEASE_TOKEN} -N"
+        sh './gradlew githubRelease -Pgh_token=${GITHUB_RELEASE_TOKEN}'
       }
     }
   }

@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>Snapshot-Tests User Guide</h1>
 <div class="details">
 <span id="author" class="author">Simon Taddiken</span><br>
-<span id="revnumber">version 1.9.0-SNAPSHOT</span>
+<span id="revnumber">version 1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -599,7 +599,7 @@ for your convenience:</p>
     <span class="tag">&lt;dependency&gt;</span>
         <span class="tag">&lt;groupId&gt;</span>de.skuzzle.test<span class="tag">&lt;/groupId&gt;</span>
         <span class="tag">&lt;artifactId&gt;</span>snapshot-tests-bom<span class="tag">&lt;/artifactId&gt;</span>
-        <span class="tag">&lt;version&gt;</span>1.9.0-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;version&gt;</span>1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e<span class="tag">&lt;/version&gt;</span>
         <span class="tag">&lt;type&gt;</span>pom<span class="tag">&lt;/type&gt;</span>
         <span class="tag">&lt;scope&gt;</span>import<span class="tag">&lt;/scope&gt;</span>
     <span class="tag">&lt;/dependency&gt;</span>
@@ -609,7 +609,7 @@ for your convenience:</p>
 <div class="listingblock">
 <div class="title">Gradle BOM include</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">testImplementation(platform(<span class="string"><span class="delimiter">&quot;</span><span class="content">de.skuzzle.test:snapshot-tests-bom:1.9.0-SNAPSHOT</span><span class="delimiter">&quot;</span></span>))</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">testImplementation(platform(<span class="string"><span class="delimiter">&quot;</span><span class="content">de.skuzzle.test:snapshot-tests-bom:1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e</span><span class="delimiter">&quot;</span></span>))</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -617,7 +617,7 @@ for your convenience:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencyManagement {
     imports {
-        mavenBom <span class="string"><span class="delimiter">'</span><span class="content">de.skuzzle.test:snapshot-tests-bom:1.9.0-SNAPSHOT</span><span class="delimiter">'</span></span>
+        mavenBom <span class="string"><span class="delimiter">'</span><span class="content">de.skuzzle.test:snapshot-tests-bom:1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e</span><span class="delimiter">'</span></span>
     }
 }</code></pre>
 </div>
@@ -640,35 +640,35 @@ learn how to properly combine them to employ <em>snapshot testing</em> in your o
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-junit5</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-junit5</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">JUnit5 extension.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-junit4</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-junit4</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">JUnit4 support via <code>@Rule</code> and <code>@ClassRule</code>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-core</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Core API and unstructured text comparison.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-jackson</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-jackson</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">JSON snapshot serialization using <code>jackson</code> and structured comparison using <code>jsonassert</code>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-jaxb-jakarta</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-jaxb-jakarta</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">XML snapshot serialization using <code>jaxb</code> with new jakarta dependencies and structured comparison using <code>xmlunit</code>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-jaxb</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-jaxb</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">XML snapshot serialization using <code>jaxb</code> and structured comparison using <code>xmlunit</code>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-html</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-html</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">HTML snapshots using <code>jsoup</code> and structured comparison using <code>xmlunit</code>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/1.9.0-SNAPSHOT/jar"><code>snapshot-tests-directory-params</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e/jar"><code>snapshot-tests-directory-params</code></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">JUnit5 <code>ArgumentProvider</code> implementations that allow to iterate over files/directories.</p></td>
 </tr>
 </tbody>
@@ -741,7 +741,7 @@ add a dependency for your preferred snapshot format like <code>snapshot-tests-ja
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>de.skuzzle.test<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>snapshot-tests-jackson<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>1.9.0-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e<span class="tag">&lt;/version&gt;</span>
     <span class="tag">&lt;scope&gt;</span>test<span class="tag">&lt;/scope&gt;</span>
     <span class="tag">&lt;exclusions&gt;</span>
         <span class="tag">&lt;exclusion&gt;</span>
@@ -758,7 +758,7 @@ add a dependency for your preferred snapshot format like <code>snapshot-tests-ja
 <div class="listingblock">
 <div class="title">Exclude JUnit5 dependencies from snapshot format artifacts (gradle, groovy syntax)</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">testImplementation(<span class="string"><span class="delimiter">'</span><span class="content">de.skuzzle.test:snapshot-tests-jackson:1.9.0-SNAPSHOT</span><span class="delimiter">'</span></span>) {
+<pre class="CodeRay highlight"><code data-lang="groovy">testImplementation(<span class="string"><span class="delimiter">'</span><span class="content">de.skuzzle.test:snapshot-tests-jackson:1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e</span><span class="delimiter">'</span></span>) {
     exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.junit.jupiter</span><span class="delimiter">'</span></span>, <span class="key">module</span>: <span class="string"><span class="delimiter">'</span><span class="content">junit-jupiter-api</span><span class="delimiter">'</span></span>
 }</code></pre>
 </div>
@@ -785,7 +785,7 @@ snapshot file.</p>
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
     <span class="tag">&lt;groupId&gt;</span>de.skuzzle.test<span class="tag">&lt;/groupId&gt;</span>
     <span class="tag">&lt;artifactId&gt;</span>snapshot-tests-junit5<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>1.9.0-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e<span class="tag">&lt;/version&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
@@ -1895,7 +1895,7 @@ details in this <a href="https://simon.taddiken.net/directory-driven-tests/">blo
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.9.0-SNAPSHOT<br>
+Version 1.9.0-dev.47.uncommitted+migrate.to.gradle.de7990e<br>
 Last updated 2023-02-08 16:28:39 +0100
 </div>
 </div>
