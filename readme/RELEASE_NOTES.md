@@ -19,6 +19,7 @@
 * Improve removal of internal stack frames from stacktraces of assertion errors
 * `SnapshotException` is now an unchecked exception
 * DSL no longer throws checked exceptions
+* Update to jackson `2.14.2` (coming from `2.10.5`)
 
 ## Reference Documentation
 

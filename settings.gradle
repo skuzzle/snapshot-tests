@@ -47,7 +47,7 @@ dependencyResolutionManagement {
             library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
 
             library('junit-bom', 'org.junit:junit-bom:5.9.2')
-            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.10.5.20201202')
+            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.14.2')
             library('assertj-core', 'org.assertj:assertj-core:3.24.2')
             library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.9')
             library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
