@@ -24,3 +24,4 @@ build
 /docs/*
 *.snapshot_raw
 *.snapshot_actual
+bin
