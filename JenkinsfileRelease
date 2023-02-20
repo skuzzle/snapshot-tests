@@ -36,7 +36,7 @@ pipeline {
         sh 'git config user.name "Jenkins"'
       }
     }
-    stage('Create release branch') {
+    stage('Build Release') {
       steps {
         sh './gradlew build sign'
       }

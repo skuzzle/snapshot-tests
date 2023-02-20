@@ -27,6 +27,17 @@ pipeline {
         sh './gradlew javadoc'
       }
     }
+    stage('asciidoc') {
+      steps {
+        // Note: 'deploy' here doesn't actually deploy anything
+        sh './gradlew deployDocsToRepositoryRoot'
+      }
+    }
+    stage('readme') {
+      steps {
+        sh './gradlew generateReadmeAndReleaseNotes'
+      }
+    }
     stage('Deploy SNAPSHOT') {
       when {
         branch 'dev'
