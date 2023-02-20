@@ -193,7 +193,9 @@ public final class XmlSnapshot implements StructuredDataProvider {
     public XmlSnapshot withEnableXPathDebugging(boolean enableXPathDebugging) {
         State.check(this.differenceEvaluator == null,
                 "xpath debugging must be enabled before specifying custom comparison rules");
-        this.xPathDebug = XPathDebug.enabledAt(StackTraces.findImmediateCaller());
+        this.xPathDebug = enableXPathDebugging
+                ? XPathDebug.enabledAt(StackTraces.findImmediateCaller())
+                : XPathDebug.disabled();
         return this;
     }
 
