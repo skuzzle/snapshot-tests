@@ -7,5 +7,7 @@ ext.automaticModuleName = "de.skuzzle.test.snapshots.junit5"
 dependencies {
     api(projects.snapshotTestsCore)
     implementation(projects.snapshotTestsCommon)
+    testImplementation platform(libs.junit.bom)
+
     testImplementation(projects.snapshotTestsTestCommon)
 }
