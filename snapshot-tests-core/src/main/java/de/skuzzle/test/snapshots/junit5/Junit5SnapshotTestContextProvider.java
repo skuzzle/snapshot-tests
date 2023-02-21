@@ -1,14 +1,15 @@
 package de.skuzzle.test.snapshots.junit5;
 
-import java.util.Optional;
-
+import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
-import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
-import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Manages the lifecycle of a {@link SnapshotTestContext} instance by attaching it to the
@@ -31,7 +32,7 @@ final class Junit5SnapshotTestContextProvider {
      *
      * @param extensionContext The extension context.
      * @return The {@link SnapshotTestContext} that has prior been attached by
-     *         {@link #create(ExtensionContext)}.
+     * {@link #create(ExtensionContext)}.
      */
     public static SnapshotTestContext fromExtensionContext(ExtensionContext extensionContext) {
         return searchParents(extensionContext)
@@ -49,7 +50,7 @@ final class Junit5SnapshotTestContextProvider {
      */
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
         final var testClass = extensionContext.getRequiredTestClass();
-        final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
+        final var snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
         final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;

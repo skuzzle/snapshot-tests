@@ -725,7 +725,22 @@ Check out the `SnapshotNaming` interface for more options regarding snapshot nam
 
 NOTE: `Snapshot` instances are injected via a JUnit5 `ParameterResolver`. As such, if you want to mix them with 
 arguments provided by an `ArgumentResolver`, the `Snapshot` parameter of the test method must be declared after the
-_argument_ parameters. 
+_argument_ parameters.
+
+=== Nested Tests
+`@Nested` test classes are a nice JUnit5 feature to structure tests in a hierarchical fashion. When you put
+`@EnableSnapshotTests` on the top level test class, snapshot tests will be enabled automatically for each `@Nested`
+class. All options that are normally resolved from annotations on the test class are resolved by first
+querying the nested class itself and then all of its enclosing parents. The first encountered annotation in that chain
+wins.
+Also, each nested test class will by default be assigned an own snapshot directory. You could change this by configuring
+the directory on a common ancestor.
+
+[source,java]
+.Use `@Nested` to hierarchically structure JUnit5 tests
+----
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/NestedTests.java[tags=nested-tests,indent=0]
+----
 
 === Soft Assertions
 

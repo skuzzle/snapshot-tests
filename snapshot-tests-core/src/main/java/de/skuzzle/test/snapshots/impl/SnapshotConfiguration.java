@@ -1,17 +1,18 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Supplies configuration options to the snapshot test execution.
  *
  * @author Simon Taddiken
- * @since 1.1.0
  * @see DefaultSnapshotConfiguration
+ * @since 1.1.0
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public interface SnapshotConfiguration {
@@ -19,7 +20,7 @@ public interface SnapshotConfiguration {
     /**
      * Creates a SnapshotConfiguration for the given test class.
      *
-     * @param testClass The test class.
+     * @param testClass     The test class.
      * @return The configuration.
      * @since 1.7.0
      */
@@ -29,7 +30,6 @@ public interface SnapshotConfiguration {
     }
 
     /**
-     *
      * @deprecated Since 1.7.0 - Only introduced for backward compatibility.
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
@@ -118,7 +118,7 @@ public interface SnapshotConfiguration {
      *
      * @return Whether to use soft assertions.
      * @deprecated Since 1.7.0 - Soft assertion will no longer be supported with version
-     *             2.0
+     * 2.0
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
     @API(status = Status.DEPRECATED, since = "1.7.0")

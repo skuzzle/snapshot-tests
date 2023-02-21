@@ -1,16 +1,17 @@
 package de.skuzzle.test.snapshots.impl;
 
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.validation.Arguments;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
 
 /**
  * Relevant configuration for executing snapshot tests in a test class that is annotated
@@ -29,10 +30,11 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     // diffs
     private static final int DEFAULT_CONTEXT_LINES = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
 
-    private final Class<?> testClass;
+    private final TestClass testClass;
 
     private DefaultSnapshotConfiguration(Class<?> testClass) {
-        this.testClass = Arguments.requireNonNull(testClass, "testClass must not be null");
+        Arguments.requireNonNull(testClass, "testClass must not be null");
+        this.testClass = TestClass.wrap(testClass);
     }
 
     public static SnapshotConfiguration forTestClass(Class<?> testClass) {
@@ -46,15 +48,15 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
     @Override
     public Class<?> testClass() {
-        return testClass;
+        return testClass.testClass();
     }
 
     @Override
     public boolean isDeleteOrphanedSnapshots() {
         return testClass().isAnnotationPresent(DeleteOrphanedSnapshots.class)
                 || System.getProperties().keySet().stream()
-                        .map(Object::toString)
-                        .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);
+                .map(Object::toString)
+                .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);
     }
 
     private boolean isForceUpdateSnapshotsGlobal() {
@@ -118,4 +120,10 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     public boolean isSoftAssertions() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "DefaultSnapshotConfiguration[" + testClass.getName() + "]";
+    }
+
 }

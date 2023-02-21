@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.junit5;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -37,7 +38,8 @@ class JUnit5SnapshotExtension implements
 
         final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
         final var parameterType = parameterContext.getParameter().getType();
-        return snapshotTestContext.isSnapshotParameter(parameterType);
+        return snapshotTestContext.isSnapshotParameter(parameterType)
+                || SnapshotTestContext.class.isAssignableFrom(parameterType);
     }
 
     @Override
@@ -45,6 +47,9 @@ class JUnit5SnapshotExtension implements
             throws ParameterResolutionException {
 
         final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
+        if (parameterContext.getParameter().getType().isAssignableFrom(SnapshotTestContext.class)) {
+            return snapshotTestContext;
+        }
 
         final Method testMethod = extensionContext.getRequiredTestMethod();
         return snapshotTestContext.createSnapshotTestFor(testMethod);

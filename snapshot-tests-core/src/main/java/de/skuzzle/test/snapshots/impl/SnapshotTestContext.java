@@ -3,9 +3,11 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.reflection.StackTraces;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -33,7 +35,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * {@link #finalizeSnapshotTest()} after a test method. However, in order to support full
  * orphan detection capabilities, you need to register both all ignored tests and all
  * failed tests of the current test execution.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.1.0
  */
@@ -61,12 +63,23 @@ public final class SnapshotTestContext {
     }
 
     /**
+     * Returns the {@link SnapshotConfiguration}.
+     *
+     * @return The configuration.
+     * @since 1.9.0
+     */
+    @API(status = Status.INTERNAL, since = "1.9.0")
+    public SnapshotConfiguration snapshotConfiguration() {
+        return snapshotConfiguration;
+    }
+
+    /**
      * Determines whether the parameters with the given type are eligible for injecting
      * the object that is created by {@link #createSnapshotTestFor(Method)}.
      *
      * @param type A type.
      * @return Whether the type of the object returned by
-     *         {@link #createSnapshotTestFor(Method)} is compatible to the given type.
+     * {@link #createSnapshotTestFor(Method)} is compatible to the given type.
      */
     public boolean isSnapshotParameter(Class<?> type) {
         return Snapshot.class.isAssignableFrom(type);
@@ -172,5 +185,10 @@ public final class SnapshotTestContext {
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "SnapshotTestContext[" + snapshotConfiguration + "]";
     }
 }
