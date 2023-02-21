@@ -20,7 +20,8 @@ asciidoctor {
             "toc"               : "left",
             "icons"             : "font",
             "setanchors"        : "true",
-            "docinfo1"          : "true"
+            "docinfo1"          : "true",
+            "testIncludes"      : sourceSets.test.java.srcDirs[0]
     ])
 }
 def repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest")

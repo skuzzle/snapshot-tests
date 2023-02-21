@@ -15,8 +15,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 /**
  * Drop in replacement for {@link EnableSnapshotTests#snapshotDirectory()}. Allows to
- * customize the snapshot directory either globally for a test class or locally for a
- * single test method.
+ * customize the snapshot directory globally for a test class.
  * <p>
  * If you don't customize the snapshot directory at all, then snapshots will by default be
  * stored in a directory structure according to the package name of the test class. If you
@@ -31,12 +30,12 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * relative to src/test/resources.
  *
  * @author Simon Taddiken
- * @since 1.7.0
  * @see SnapshotDirectoryStrategy
  * @see ChooseDirectory
+ * @since 1.7.0
  */
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD })
+@Target({TYPE})
 @API(status = Status.EXPERIMENTAL, since = "1.7.0")
 public @interface SnapshotDirectory {
     /**

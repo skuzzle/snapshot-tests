@@ -7,7 +7,6 @@ Simon Taddiken
 :sectlinks: 
 :example-caption!:
 :imagesdir: ./images
-ifndef::sourcedir[:sourcedir: ../../test/java]
 
 This is the user manual for the snapshot-tests extension for JUnit5 and JUnit4.
 
@@ -189,7 +188,7 @@ snapshot file.
 [source,java]
 .Write a simple snapshot test
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags=quickstart,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/QuickstartTest.java[tags=quickstart,indent=0]
 ----
 <1> Enable the _JUnit5_  extension for your test class.
 <2> Declare a parameter of type `Snapshot`. It will be injected by the framework.
@@ -277,7 +276,7 @@ persisted snapshot and the serialized `actual` result.
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=text-compare,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=text-compare,indent=0]
 ----
 <1> `.matchesSnapshotText()` is _the only_ available option when you choose no structured format using `asText()`.
 ====
@@ -327,7 +326,7 @@ format.
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
 ----
 <1> Choose to serialize test results as JSON (Requires the `snapshot-tests-jackson` module).
 <2> Choose `.matchesSnapshotStructure()` to trigger structural comparison.
@@ -372,7 +371,7 @@ Likewise for `XML` serialization:
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-xml,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-xml,indent=0]
 ----
 ====
 
@@ -442,7 +441,7 @@ the framework to update the snapshots of all affected assertions.
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-method,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-method,indent=0]
 ----
 ====
 
@@ -450,7 +449,7 @@ include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[t
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-class,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=force-update-on-class,indent=0]
 ----
 ====
 
@@ -479,7 +478,7 @@ assertion with the passed in `actual` result.
 [source,java]
 .Change the assertion to update the snapshot file
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=justupdate,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/UpdatingSnapshots.java[tags=justupdate,indent=0]
 ----
 <1> Temporarily remove the actual assertion and replace it with `justUpdateSnapshot()`.
 
@@ -501,7 +500,7 @@ specify the directory to which snapshot files will be written.
 [source,java]
 .Change the directory of a snapshot via the DSL
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaDSL,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaDSL,indent=0]
 ----
 <1> Before calling `assertThat(...)` you can use `in(...)` to specify the snapshot directory for this assertion.
 
@@ -512,7 +511,7 @@ Another way is to use the `@SnapshotDirectory` annotation to provide a static sn
 [source,java]
 .Change the directory of a snapshot via annotation.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaAnnotation,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaAnnotation,indent=0]
 ----
 <1> Statically provide a snapshot directory relative to `src/test/resources` via `@SnapshotDirectory.`
 
@@ -520,7 +519,7 @@ Finally, you can provide an implementation of `SnapshotDirectoryStrategy` like t
 [source,java]
 .Change the directory of a snapshot via strategy.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaStrategy,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ChangeDirectory.java[tags=changeDirViaStrategy,indent=0]
 ----
 <1> Point the framework to an implementation of `SnapshotDirectoryStrategy`.
 <2> Implement the strategy.
@@ -541,14 +540,14 @@ implementation of `SnapshotNaming`:
 [source,java]
 .Provide a static snapshot file name as string.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticString,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticString,indent=0]
 ----
 <1> Provide a static name. The resulting snapshot file will be named `person.snapshot`.
 
 [source,java]
 .Provide a static snapshot file name via `NamingStrategy`.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticStrategy,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ChangeNames.java[tags=changeNameStaticStrategy,indent=0]
 ----
 <1> Provide an instance of `SnapshotNaming`. In this case the strategy will again just return the static string
 
@@ -572,7 +571,7 @@ having to execute the test suite again. You can enable this feature via `@Snapsh
 [source,java]
 .Advise the framework to always persist latest test results.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualResult,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualResult,indent=0]
 ----
 
 In the same way you can advise the framework to also persist the most recent test results as a raw file which does not
@@ -580,7 +579,7 @@ contain the snapshot header information. This wil lresult in another sibling fil
 [source,java]
 .Advise the framework to always persist latest test results without header information.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualRawResult,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=alwaysPersistActualRawResult,indent=0]
 ----
 
 The annotation can as well be placed on the test class to change these options globally.
@@ -644,7 +643,7 @@ to updating snapshot files by either adding an annotation or by passing a flag t
 ====
 [source,java]
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/DeleteOrphansTest.java[tags=delete-orphans,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/DeleteOrphansTest.java[tags=delete-orphans,indent=0]
 ----
 <1> Temporarily add the `@DeleteOrphanedSnapshots` annotations during test execution.
 ====
@@ -671,7 +670,7 @@ consecutive number.
 [source,java]
 .Use multiple assertions in the same Test Case
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=multiple-assertions,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=multiple-assertions,indent=0]
 ----
 
 CAUTION: As the snapshot files are numbered in order of their assertion's execution, you can not easily reorder the
@@ -695,7 +694,7 @@ properly report the test case as _skipped_ to the test framework by throwing the
 [source,java]
 .Advise the framework to always persist latest test results without header information.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=disabled-assertions,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=disabled-assertions,indent=0]
 ----
 <1> Simply disable the assertion
 <2> Disable the assertion and provide an informative reason why it is disabled
@@ -709,7 +708,7 @@ yourself like in this snippet:
 [source,java]
 .Advise the framework to always persist latest test results without header information.
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/ParameterizedTests.java[tags=testWithParams,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ParameterizedTests.java[tags=testWithParams,indent=0]
 ----
 
 
@@ -742,7 +741,7 @@ failures and report them in a single stack trace at the end.
 [source,java]
 .Enable soft assertions
 ----
-include::{sourcedir}/de/skuzzle/test/snapshots/snippets/SoftAssertions.java[tags=softassertions,indent=0]
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SoftAssertions.java[tags=softassertions,indent=0]
 ----
 
 NOTE: _Soft assertions_ are currently only supported on a per-class basis.
