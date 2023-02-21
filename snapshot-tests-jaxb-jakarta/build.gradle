@@ -13,5 +13,5 @@ dependencies {
     implementation(libs.jaxb.runtime.jakarta)
     implementation(libs.xmlunit.jakarta.jaxb.impl)
     implementation(libs.xmlunit.core)
-    implementation(libs.xmlunit.assertj)
+    api(libs.xmlunit.assertj)
 }
