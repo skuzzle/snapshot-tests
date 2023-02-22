@@ -7,7 +7,7 @@ plugins {
 afterReleaseBuild.dependsOn "publishToSonatype", "commitFilesToGit"
 
 release {
-    pushReleaseVersionBranch = 'master'
+    pushReleaseVersionBranch = 'main'
     tagTemplate = 'v$version'
     git {
         requireBranch.set("dev")
