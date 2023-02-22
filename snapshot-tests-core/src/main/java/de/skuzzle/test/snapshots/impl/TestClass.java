@@ -6,9 +6,9 @@ import org.apiguardian.api.API;
 import java.lang.annotation.Annotation;
 
 /**
- * Internal wrapper around the test class. Allows to query it for annotations by also traversing all enclosing classes.
- * This allows to source configuration options not only from the direct test class but also from any of its enclosing
- * parents.
+ * Internal wrapper around the test class. Allows to query it for annotations by also
+ * traversing all enclosing classes. This allows to source configuration options not only
+ * from the direct test class but also from any of its enclosing parents.
  *
  * @since 1.9.0
  */

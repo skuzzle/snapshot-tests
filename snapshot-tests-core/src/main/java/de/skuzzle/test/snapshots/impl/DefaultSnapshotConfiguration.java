@@ -55,8 +55,8 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     public boolean isDeleteOrphanedSnapshots() {
         return testClass().isAnnotationPresent(DeleteOrphanedSnapshots.class)
                 || System.getProperties().keySet().stream()
-                .map(Object::toString)
-                .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);
+                        .map(Object::toString)
+                        .anyMatch(DELETE_ORPHANS_SYSTEM_PROPERTY::equalsIgnoreCase);
     }
 
     private boolean isForceUpdateSnapshotsGlobal() {

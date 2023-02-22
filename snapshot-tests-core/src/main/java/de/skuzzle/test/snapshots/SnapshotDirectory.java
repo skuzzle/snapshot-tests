@@ -35,7 +35,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
  * @since 1.7.0
  */
 @Retention(RUNTIME)
-@Target({TYPE})
+@Target({ TYPE })
 @API(status = Status.EXPERIMENTAL, since = "1.7.0")
 public @interface SnapshotDirectory {
     /**

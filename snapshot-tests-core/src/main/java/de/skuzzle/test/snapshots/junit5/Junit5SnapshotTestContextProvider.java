@@ -32,7 +32,7 @@ final class Junit5SnapshotTestContextProvider {
      *
      * @param extensionContext The extension context.
      * @return The {@link SnapshotTestContext} that has prior been attached by
-     * {@link #create(ExtensionContext)}.
+     *         {@link #create(ExtensionContext)}.
      */
     public static SnapshotTestContext fromExtensionContext(ExtensionContext extensionContext) {
         return searchParents(extensionContext)

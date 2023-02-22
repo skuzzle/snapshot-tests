@@ -12,7 +12,7 @@ import java.util.List;
  * @author Simon Taddiken
  * @since 1.7.0
  * @deprecated Since 1.7.0 - Only introduced for compatibility reasons. Will be removed
- * with 2.0.0
+ *             with 2.0.0
  */
 @Deprecated(since = "1.7.0", forRemoval = true)
 @API(status = Status.DEPRECATED, since = "1.7.0")

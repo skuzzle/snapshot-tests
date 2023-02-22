@@ -79,7 +79,7 @@ public final class SnapshotTestContext {
      *
      * @param type A type.
      * @return Whether the type of the object returned by
-     * {@link #createSnapshotTestFor(Method)} is compatible to the given type.
+     *         {@link #createSnapshotTestFor(Method)} is compatible to the given type.
      */
     public boolean isSnapshotParameter(Class<?> type) {
         return Snapshot.class.isAssignableFrom(type);
@@ -173,7 +173,8 @@ public final class SnapshotTestContext {
 
                     final Path relativePath = DirectoryResolver.relativize(orphanedSnapshotFile.getParent());
                     if (deleteOrphaned) {
-                        final ContextFiles contextFiles = InternalSnapshotNaming.contextFilesForSnapshotFile(orphanedSnapshotFile);
+                        final ContextFiles contextFiles = InternalSnapshotNaming
+                                .contextFilesForSnapshotFile(orphanedSnapshotFile);
                         contextFiles.deleteFiles();
 
                         System.err.printf("Deleted orphaned snapshot file %s in %s%n",
