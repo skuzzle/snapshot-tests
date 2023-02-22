@@ -3,11 +3,9 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import de.skuzzle.test.snapshots.reflection.StackTraces;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 

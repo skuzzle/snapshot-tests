@@ -1,9 +1,10 @@
 package de.skuzzle.test.snapshots.impl;
 
-import de.skuzzle.test.snapshots.validation.Arguments;
+import java.lang.annotation.Annotation;
+
 import org.apiguardian.api.API;
 
-import java.lang.annotation.Annotation;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Internal wrapper around the test class. Allows to query it for annotations by also

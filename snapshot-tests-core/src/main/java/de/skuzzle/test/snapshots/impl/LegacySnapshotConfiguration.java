@@ -1,12 +1,12 @@
 package de.skuzzle.test.snapshots.impl;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.util.List;
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
 
 /**
  * @author Simon Taddiken

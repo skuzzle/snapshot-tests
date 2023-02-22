@@ -1,11 +1,10 @@
 package de.skuzzle.test.snapshots.impl;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.util.List;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Supplies configuration options to the snapshot test execution.

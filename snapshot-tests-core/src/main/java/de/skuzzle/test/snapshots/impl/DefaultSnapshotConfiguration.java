@@ -1,17 +1,16 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.validation.Arguments;
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
-import java.nio.file.Path;
 
 /**
  * Relevant configuration for executing snapshot tests in a test class that is annotated
