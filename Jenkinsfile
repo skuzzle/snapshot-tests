@@ -22,6 +22,11 @@ pipeline {
         sh './gradlew coveralls'
       }
     }
+    stage('Test against JDK 17') {
+      steps {
+        sh './gradlew testAgainstJava17'
+      }
+    }
     stage('javadoc') {
       steps {
         sh './gradlew javadoc'
