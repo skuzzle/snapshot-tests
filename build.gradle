@@ -1,6 +1,6 @@
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
     id("net.researchgate.release") version "3.0.2"
+    id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
     id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 
@@ -19,12 +19,19 @@ tasks.register("commitFilesToGit") {
     group "release"
     description "Commit changed/generated files during release"
     doLast {
-        "git add README.md RELEASE_NOTES.md".execute()
-        "git add --force docs/*".execute()
-        "git commit -m \"Update README and RELEASE_NOTES\"".execute()
+        runCmd("git add README.md RELEASE_NOTES.md")
+        runCmd("git add --force docs/*")
+        runCmd("git commit -m \"Update README and RELEASE_NOTES\"")
     }
 }
 
+def runCmd(command) {
+    def sout = new StringBuilder(), serr = new StringBuilder()
+    def proc = command.execute()
+    proc.consumeProcessOutput(sout, serr)
+    proc.waitForOrKill(2000)
+    println "out> $sout\nerr> $serr"
+}
 
 githubRelease {
     token provider({ project.findProperty("gh_token") })
