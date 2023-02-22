@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testJSONSnapshotWithCustomOptions_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.snippets.JsonSnapshots
+test-method: testJSONSnapshotWithCustomOptions
+
+{"name":"Simon","surname":"Taddiken","birthdate":[1777,1,12],"address":{"street":"Gibtsnicht-Straße","number":"1337","zipCode":"4711","city":"Bielefeld","country":"Germany"}}

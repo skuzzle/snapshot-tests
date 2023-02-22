@@ -290,7 +290,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
     }
 
     @FunctionalInterface
-    static interface MarshallerSupplier {
+    public static interface MarshallerSupplier {
 
         Marshaller createMarshaller(JAXBContext jaxbContext) throws JAXBException;
     }

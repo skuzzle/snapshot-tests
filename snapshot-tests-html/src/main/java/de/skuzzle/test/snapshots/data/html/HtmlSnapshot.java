@@ -159,7 +159,7 @@ public final class HtmlSnapshot implements StructuredDataProvider {
      * <p>
      * It is also notable that pretty printing might modify/sanitize the input HTML string
      * during parsing. So the output might not be exactly equal to your input. This is a
-     * side effect of parsing the HTML into a valid DOM object.
+     * side effect of trying to parse the HTML into a valid DOM object.
      * </p>
      *
      * @param prettyPrintSnapshot Whether to pretty print the snapshots. Defaults to

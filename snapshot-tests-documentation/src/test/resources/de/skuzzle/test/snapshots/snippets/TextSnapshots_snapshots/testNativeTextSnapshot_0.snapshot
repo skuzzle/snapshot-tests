@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testNativeTextSnapshot_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.snippets.TextSnapshots
+test-method: testNativeTextSnapshot
+
+text
