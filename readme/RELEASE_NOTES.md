@@ -16,7 +16,7 @@
 * [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
 * [#71](https://github.com/skuzzle/snapshot-tests/issues/71): Gracefully support JUnit5 nested tests
 * [#73](https://github.com/skuzzle/snapshot-tests/issues/73): `MarshallerSupplier` functional interface is not public
-* Add recursive directory scanning via `DirectoriesFrom.recursive()`
+* [#74](https://github.com/skuzzle/snapshot-tests/issues/74): Add recursive directory scanning via `DirectoriesFrom.recursive()`
 * Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
 * Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
 * Improve removal of internal stack frames from stacktraces of assertion errors
