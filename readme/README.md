@@ -4,7 +4,7 @@
 [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-core/@project.version@)
 [![Reference](https://img.shields.io/static/v1?label=Reference&message=@project.version@&color=orange)](https://@github.user@.github.io/@github.name@/reference/@project.version@)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/@github.name@/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/@github.name@?branch=main)
-[![Twitter Follow](https://img.shields.io/twitter/follow/skuzzleOSS.svg?style=social)](https://twitter.com/skuzzleOSS)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ProjectPolly.svg?style=social)](https://twitter.com/ProjectPolly)
 
 # snapshot-tests
 Convenient snapshot testing for JUnit5 and JUnit4. 
