@@ -1,7 +1,7 @@
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     id("net.researchgate.release") version "3.0.2"
-    id ("com.github.breadmoirai.github-release") version "2.4.1"
+    id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 
 afterReleaseBuild.dependsOn "publishToSonatype", "commitFilesToGit"
@@ -18,9 +18,11 @@ tasks.register("commitFilesToGit") {
     dependsOn(":snapshot-tests-documentation:deployDocsToRepositoryRoot", ":readme:generateReadmeAndReleaseNotes")
     group "release"
     description "Commit changed/generated files during release"
-    "git add README.md RELEASE_NOTES.md".execute()
-    "git add --force docs/*".execute()
-    "git commit -m \"Update README and RELEASE_NOTES\"".execute()
+    doLast {
+        "git add README.md RELEASE_NOTES.md".execute()
+        "git add --force docs/*".execute()
+        "git commit -m \"Update README and RELEASE_NOTES\"".execute()
+    }
 }
 
 
