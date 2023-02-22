@@ -26,3 +26,4 @@ out
 *.snapshot_raw
 *.snapshot_actual
 bin
+.git-askpass
