@@ -49,7 +49,7 @@ final class Junit5SnapshotTestContextProvider {
      */
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
         final var testClass = extensionContext.getRequiredTestClass();
-        final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
+        final var snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
         final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;

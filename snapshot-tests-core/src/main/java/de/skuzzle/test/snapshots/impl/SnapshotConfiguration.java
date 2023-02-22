@@ -10,8 +10,8 @@ import org.apiguardian.api.API.Status;
  * Supplies configuration options to the snapshot test execution.
  *
  * @author Simon Taddiken
- * @since 1.1.0
  * @see DefaultSnapshotConfiguration
+ * @since 1.1.0
  */
 @API(status = Status.INTERNAL, since = "1.1.0")
 public interface SnapshotConfiguration {
@@ -29,7 +29,6 @@ public interface SnapshotConfiguration {
     }
 
     /**
-     *
      * @deprecated Since 1.7.0 - Only introduced for backward compatibility.
      */
     @Deprecated(since = "1.7.0", forRemoval = true)

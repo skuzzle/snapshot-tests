@@ -33,7 +33,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * {@link #finalizeSnapshotTest()} after a test method. However, in order to support full
  * orphan detection capabilities, you need to register both all ignored tests and all
  * failed tests of the current test execution.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.1.0
  */
@@ -58,6 +58,17 @@ public final class SnapshotTestContext {
 
     public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
         return new SnapshotTestContext(snapshotConfiguration);
+    }
+
+    /**
+     * Returns the {@link SnapshotConfiguration}.
+     *
+     * @return The configuration.
+     * @since 1.9.0
+     */
+    @API(status = Status.INTERNAL, since = "1.9.0")
+    public SnapshotConfiguration snapshotConfiguration() {
+        return snapshotConfiguration;
     }
 
     /**
@@ -160,7 +171,8 @@ public final class SnapshotTestContext {
 
                     final Path relativePath = DirectoryResolver.relativize(orphanedSnapshotFile.getParent());
                     if (deleteOrphaned) {
-                        final ContextFiles contextFiles = InternalSnapshotNaming.contextFilesForSnapshotFile(orphanedSnapshotFile);
+                        final ContextFiles contextFiles = InternalSnapshotNaming
+                                .contextFilesForSnapshotFile(orphanedSnapshotFile);
                         contextFiles.deleteFiles();
 
                         System.err.printf("Deleted orphaned snapshot file %s in %s%n",
@@ -172,5 +184,10 @@ public final class SnapshotTestContext {
                     }
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "SnapshotTestContext[" + snapshotConfiguration + "]";
     }
 }

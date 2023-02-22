@@ -9,7 +9,6 @@ import org.apiguardian.api.API.Status;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 
 /**
- *
  * @author Simon Taddiken
  * @since 1.7.0
  * @deprecated Since 1.7.0 - Only introduced for compatibility reasons. Will be removed

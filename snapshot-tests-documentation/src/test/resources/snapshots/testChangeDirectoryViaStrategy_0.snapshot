@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: testChangeDirectoryViaAnnotation_0
+snapshot-name: testChangeDirectoryViaStrategy_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.snippets.ChangeDirectory
-test-method: testChangeDirectoryViaAnnotation
+test-class: de.skuzzle.test.snapshots.snippets.ChangeDirectory$ChangeDirectoryViaStrategyTest
+test-method: testChangeDirectoryViaStrategy
 
 Name: Simon
 Surname: Taddiken

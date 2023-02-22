@@ -11,14 +11,17 @@
 
 * [#49](https://github.com/skuzzle/snapshot-tests/issues/49): Delete context files as well when deleting orphaned snapshots
 * [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
+* [#61](https://github.com/skuzzle/snapshot-tests/issues/61): `@SnapshotDirectory` is not allowed anymore on test methods, only on test class
 * [#64](https://github.com/skuzzle/snapshot-tests/issues/64): Migrate build to gradle
 * [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
+* [#71](https://github.com/skuzzle/snapshot-tests/issues/71): Gracefully support JUnit5 nested tests
 * Add recursive directory scanning via `DirectoriesFrom.recursive()`
 * Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
 * Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
 * Improve removal of internal stack frames from stacktraces of assertion errors
 * `SnapshotException` is now an unchecked exception
 * DSL no longer throws checked exceptions
+* Update to jackson `2.14.2` (coming from `2.10.5`)
 
 ## Reference Documentation
 
