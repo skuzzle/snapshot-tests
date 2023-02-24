@@ -8,5 +8,4 @@ def runCmd(command) {
     proc.consumeProcessOutput(sout, serr)
     proc.waitForOrKill(2000)
     println "out> $sout\nerr> $serr"
-    return proc.exitValue == 0
 }
