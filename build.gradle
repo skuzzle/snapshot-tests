@@ -1,10 +1,13 @@
 plugins {
+    id("snapshot-tests.git")
     id("net.researchgate.release") version "3.0.2"
     id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
     id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 
-afterReleaseBuild.dependsOn "publishToSonatype", "commitFilesToGit"
+project.tasks.afterReleaseBuild.dependsOn("commitFilesToGit", subprojects
+        .findAll { it.getPluginManager().hasPlugin("snapshot-tests.published-java-component") }
+        .collect { it.getTasks().named("publishToSonatype") })
 
 release {
     pushReleaseVersionBranch = 'main'
@@ -18,19 +21,12 @@ tasks.register("commitFilesToGit") {
     dependsOn(":snapshot-tests-documentation:deployDocsToRepositoryRoot", ":readme:generateReadmeAndReleaseNotes")
     group "release"
     description "Commit changed/generated files during release"
+    onlyIf { !version.endsWith("-SNAPSHOT") }
     doLast {
-        runCmd("git add README.md RELEASE_NOTES.md")
-        runCmd("git add --force docs/*")
-        runCmd("git commit -m \"Update README and RELEASE_NOTES\"")
+        git("add README.md RELEASE_NOTES.md")
+        git("add --force docs/*")
+        git("commit -m \"Update README and RELEASE_NOTES\"")
     }
-}
-
-def runCmd(command) {
-    def sout = new StringBuilder(), serr = new StringBuilder()
-    def proc = command.execute()
-    proc.consumeProcessOutput(sout, serr)
-    proc.waitForOrKill(2000)
-    println "out> $sout\nerr> $serr"
 }
 
 githubRelease {
@@ -41,7 +37,6 @@ githubRelease {
         file("RELEASE_NOTES.md").getText()
     })
 }
-
 
 nexusPublishing {
     repositories {

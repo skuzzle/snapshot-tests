@@ -61,11 +61,12 @@ if (project.getPluginManager().hasPlugin("maven-publish")) {
     }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }
 
 tasks.register("testAgainstJava17", Test) {
+    description = "Runs all tests using a Java 17 toolchain"
     javaLauncher = javaToolchains.launcherFor {
         languageVersion = JavaLanguageVersion.of(17)
     }

@@ -1,0 +1,12 @@
+ext {
+    git = { command -> runCmd("git $command") }
+}
+
+def runCmd(command) {
+    def sout = new StringBuilder(), serr = new StringBuilder()
+    def proc = command.execute()
+    proc.consumeProcessOutput(sout, serr)
+    proc.waitForOrKill(2000)
+    println "out> $sout\nerr> $serr"
+    return proc.exitValue == 0
+}
