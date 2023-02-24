@@ -1,0 +1,24 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id("snapshot-tests.base-conventions")
+}
+
+tasks.register("generateReadmeAndReleaseNotes", Copy) {
+    group = "documentation"
+    description = "Copies the readme and release notes file into the root directory, replacing all placeholders"
+
+    from(project.projectDir) {
+        include("*.md")
+    }
+    into(project.rootDir)
+    def libs = project.rootProject.extensions.getByType(VersionCatalogsExtension.class).named("libs")
+    filter(ReplaceTokens, tokens: [
+            "project.version": project.version,
+            "project.groupId": project.group,
+            "version.junit"  : libs.findLibrary("junit-bom").get().get().getVersion(),
+            "version.junit4" : libs.findLibrary("junit4").get().get().getVersion(),
+            "github.user"    : githubUser,
+            "github.name"    : githubRepo
+    ])
+}

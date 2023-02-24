@@ -12,7 +12,9 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
-import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XPathDebug;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XmlUnitComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
 
@@ -58,7 +60,8 @@ public final class HtmlSnapshot implements StructuredDataProvider {
 
     private boolean prettyPrintSnapshot = false;
 
-    private boolean enableXPathDebugging;
+    // Allows to print debug information for custom rule xpaths
+    private XPathDebug xPathDebug = XPathDebug.disabled();
 
     /**
      * Creates a new builder instance on which custom comparison behavior can be
@@ -116,7 +119,7 @@ public final class HtmlSnapshot implements StructuredDataProvider {
     public HtmlSnapshot withEnableXPathDebugging(boolean enableXPathDebugging) {
         State.check(this.differenceEvaluator == null,
                 "xpath debugging must be enabled before specifying custom comparison rules");
-        this.enableXPathDebugging = enableXPathDebugging;
+        this.xPathDebug = XPathDebug.enabledAt(StackTraces.findImmediateCaller());
         return this;
     }
 
@@ -138,8 +141,8 @@ public final class HtmlSnapshot implements StructuredDataProvider {
      */
     public HtmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
-        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder(
-                this.enableXPathDebugging);
+        final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder(null,
+                this.xPathDebug);
         rules.accept(comparatorCustomizerImpl);
         this.differenceEvaluator = comparatorCustomizerImpl.build();
         return this;
@@ -156,7 +159,7 @@ public final class HtmlSnapshot implements StructuredDataProvider {
      * <p>
      * It is also notable that pretty printing might modify/sanitize the input HTML string
      * during parsing. So the output might not be exactly equal to your input. This is a
-     * side effect of parsing the HTML into a valid DOM object.
+     * side effect of trying to parse the HTML into a valid DOM object.
      * </p>
      *
      * @param prettyPrintSnapshot Whether to pretty print the snapshots. Defaults to

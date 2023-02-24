@@ -10,7 +10,7 @@ import org.apiguardian.api.API.Status;
  * @author Simon Taddiken
  */
 @API(status = Status.MAINTAINED)
-public class SnapshotException extends Exception {
+public class SnapshotException extends RuntimeException {
 
     private static final long serialVersionUID = -5942910480826497997L;
 

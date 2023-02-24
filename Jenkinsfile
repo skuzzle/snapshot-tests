@@ -1,28 +1,46 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3.6-jdk-11'
-      args '-v /home/jenkins/.m2:/var/maven/.m2 -v /home/jenkins/.gnupg:/.gnupg -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS=-Duser.home=/var/maven'
+      image 'eclipse-temurin:11'
+      args '-v /home/jenkins/.gradle:/var/gradle/.gradle -v /home/jenkins/.gnupg:/.gnupg -e GRADLE_OPTS=-Duser.home=/var/gradle'
     }
   }
   environment {
     COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
-    GPG_SECRET = credentials('gpg_password')
+    ORG_GRADLE_PROJECT_sonatype = credentials('SONATYPE_NEXUS')
+    ORG_GRADLE_PROJECT_signingPassword = credentials('gpg_password')
+    ORG_GRADLE_PROJECT_base64EncodedAsciiArmoredSigningKey  = credentials('gpg_private_key')
   }
   stages {
     stage('Build') {
       steps {
-        sh 'mvn -B clean install'
+        sh './gradlew build'
       }
     }
-    stage('Coverage') {
+    stage('Report Coverage') {
       steps {
-        sh 'mvn -B jacoco:report jacoco:report-integration coveralls:report -DrepoToken=$COVERALLS_REPO_TOKEN'
+        sh './gradlew coveralls'
+      }
+    }
+    stage('Test against JDK 17') {
+      steps {
+        sh './gradlew testAgainstJava17'
       }
     }
     stage('javadoc') {
       steps {
-        sh 'mvn -B javadoc:javadoc'
+        sh './gradlew javadoc'
+      }
+    }
+    stage('asciidoc') {
+      steps {
+        // Note: 'deploy' here doesn't actually deploy anything
+        sh './gradlew deployDocsToRepositoryRoot'
+      }
+    }
+    stage('readme') {
+      steps {
+        sh './gradlew generateReadmeAndReleaseNotes'
       }
     }
     stage('Deploy SNAPSHOT') {
@@ -30,14 +48,14 @@ pipeline {
         branch 'dev'
       }
       steps {
-        sh 'mvn -B -Prelease -DskipTests -Dgpg.passphrase=${GPG_SECRET} deploy'
+          sh './gradlew sign publishToSonatype'
       }
     }
   }
   post {
     always {
         archiveArtifacts(artifacts: '*.md')
-        junit (testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true)
+        junit (testResults: '**/build/test-results/test/**.xml', allowEmptyResults: true)
     }
   }
 }

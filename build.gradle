@@ -1,0 +1,73 @@
+plugins {
+    id("snapshot-tests.git")
+    id("net.researchgate.release") version "3.0.2"
+    id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
+    id("com.github.breadmoirai.github-release") version "2.4.1"
+}
+
+tasks.named("afterReleaseBuild").configure {
+    dependsOn(provider {
+        subprojects
+                .findAll { it.getPluginManager().hasPlugin("snapshot-tests.publishing-conventions") }
+                .collect { it.getTasks().named("publishToSonatype") }
+    })
+    dependsOn("commitFilesToGit")
+}
+
+tasks.register("commitFilesToGit") {
+    onlyIf { !version.endsWith("-SNAPSHOT") }
+    dependsOn(":snapshot-tests-documentation:deployDocsToRepositoryRoot", ":readme:generateReadmeAndReleaseNotes")
+    group "release"
+    description "Commit changed/generated files during release"
+    doLast {
+        git("add README.md RELEASE_NOTES.md")
+        git("add --force docs/*")
+        git("commit -m \"Update README and RELEASE_NOTES\"")
+    }
+}
+
+release {
+    pushReleaseVersionBranch = 'main'
+    tagTemplate = 'v$version'
+    git {
+        requireBranch.set("dev")
+    }
+}
+
+githubRelease {
+    token provider({ project.findProperty("gh_token") })
+    owner githubUser
+    repo githubRepo
+    body provider({
+        file("RELEASE_NOTES.md").getText()
+    })
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = findProperty("sonatype_USR")
+            password = findProperty("sonatype_PSW")
+        }
+    }
+}
+
+ext {
+    bomProjects = Set.of(
+            projects.snapshotTestsCore,
+            projects.snapshotTestsJunit4,
+            projects.snapshotTestsJunit5,
+            projects.snapshotTestsHtml,
+            projects.snapshotTestsJackson,
+            projects.snapshotTestsJaxb,
+            projects.snapshotTestsJaxbJakarta,
+            projects.snapshotTestsNormalize,
+            projects.snapshotTestsDirectoryParams
+    );
+
+    allCodeProjects = Set.of(
+            projects.snapshotTestsCommon,
+            projects.snapshotTestsDocumentation,
+    )
+}
+

@@ -357,7 +357,7 @@ public class FailingSnapshotTestsJUnit4 {
                 .expectTestcase(FailBecauseInitial.class)
                 .toAllFailWithExceptionWhich(matches -> matches
                         .isInstanceOf(AssertionError.class)
-                        .hasMessage(String.format("Snapshots have been created the first time.%n"
+                        .hasMessageContaining(String.format("Snapshots have been created the first time.%n"
                                 + "Run the test again and you should see it succeed.")));
     }
 

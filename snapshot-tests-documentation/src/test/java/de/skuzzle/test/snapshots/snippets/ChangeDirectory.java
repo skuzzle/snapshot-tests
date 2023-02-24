@@ -2,6 +2,7 @@ package de.skuzzle.test.snapshots.snippets;
 
 import java.nio.file.Path;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import de.skuzzle.test.snapshots.Snapshot;
@@ -25,27 +26,36 @@ class ChangeDirectory {
     }
     // end::changeDirViaDSL[]
 
+    @Nested
     // tag::changeDirViaAnnotation[]
-    @Test
+    @EnableSnapshotTests
     @SnapshotDirectory("snapshots") // <1>
-    void testChangeDirectoryViaAnnotation(Snapshot snapshot) {
-        final Person person = Person.determinePerson();
-        snapshot
-                .assertThat(person)
-                .asText()
-                .matchesSnapshotText();
+    class ChangeDirectoryViaAnnotationTest {
+        @Test
+        void testChangeDirectoryViaAnnotation(Snapshot snapshot) {
+            final Person person = Person.determinePerson();
+            snapshot
+                    .assertThat(person)
+                    .asText()
+                    .matchesSnapshotText();
+        }
     }
+
     // end::changeDirViaAnnotation[]
 
+    @Nested
     // tag::changeDirViaStrategy[]
-    @Test
+    @EnableSnapshotTests
     @SnapshotDirectory(determinedBy = ResolveSnapshotDirectory.class) // <1>
-    void testChangeDirectoryViaStrategy(Snapshot snapshot) {
-        final Person person = Person.determinePerson();
-        snapshot
-                .assertThat(person)
-                .asText()
-                .matchesSnapshotText();
+    class ChangeDirectoryViaStrategyTest {
+        @Test
+        void testChangeDirectoryViaStrategy(Snapshot snapshot) {
+            final Person person = Person.determinePerson();
+            snapshot
+                    .assertThat(person)
+                    .asText()
+                    .matchesSnapshotText();
+        }
     }
 
     public static class ResolveSnapshotDirectory implements SnapshotDirectoryStrategy { // <2>

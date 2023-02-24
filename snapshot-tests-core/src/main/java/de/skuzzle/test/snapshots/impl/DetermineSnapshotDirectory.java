@@ -11,8 +11,8 @@ import de.skuzzle.test.snapshots.validation.State;
 
 final class DetermineSnapshotDirectory {
 
-    static Path forTestclass(Class<?> testClass) {
-        final Path testDirectoryLegacy = snapshotDirectoryLegacy(testClass);
+    static Path forTestclass(TestClass testClass) {
+        final Path testDirectoryLegacy = snapshotDirectoryLegacy(testClass.testClass());
         final SnapshotDirectory annotation = testClass.getAnnotation(SnapshotDirectory.class);
         if (testDirectoryLegacy != null) {
             State.check(annotation == null,
@@ -41,10 +41,10 @@ final class DetermineSnapshotDirectory {
         return "de.skuzzle.test.snapshots.DefaultSnapshotDirectoryStrategy".equals(type.getName());
     }
 
-    private static Path pathFromStrategy(Class<?> testClass, SnapshotDirectory directory) {
+    private static Path pathFromStrategy(TestClass testClass, SnapshotDirectory directory) {
         try {
             final Path snapshotDirectory = newInstanceOf(directory.determinedBy())
-                    .determineSnapshotDirectory(testClass, directory);
+                    .determineSnapshotDirectory(testClass.testClass(), directory);
             State.check(snapshotDirectory != null, "Custom SnapshotDirectoryStrategy %s returned null for %s",
                     directory.determinedBy().getName(), directory);
             return snapshotDirectory;

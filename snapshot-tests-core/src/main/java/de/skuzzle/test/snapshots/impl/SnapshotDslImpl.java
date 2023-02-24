@@ -9,6 +9,7 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
+import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
@@ -167,7 +168,7 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
 
             return lifecycle.executeLifecycleWith(structuralAssertions, assertionInput);
         } catch (final Exception e) {
-            throw new IllegalStateException("Technical problem while performing snapshot test terminal operation", e);
+            throw new SnapshotException("Technical problem while performing snapshot test terminal operation", e);
         } finally {
             resetDSL();
         }

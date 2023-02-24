@@ -19,21 +19,33 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         final Path inputFileDirectory = determineDirectory().toAbsolutePath().toRealPath();
-        final PathFilter filter = PathFilter.fromPredicate(Files::isDirectory)
-                .and(additionalFilter());
+        final boolean isRecursive = directoryContents.recursive();
 
-        return streamFiles(inputFileDirectory)
-                .filter(filter.toPredicate())
-                .map(TestDirectory::new)
+        final Stream<TestDirectory> directories = isRecursive
+                ? provideArgumentsRecursive(inputFileDirectory)
+                : provideArgumentsFlat(inputFileDirectory);
+
+        final TestDirectoryFilter additionalFilter = testDirectoryFilter();
+
+        return directories
+                .filter(Filters.toPredicate(additionalFilter, isRecursive))
                 .sorted(Comparator.comparing(TestDirectory::name))
                 .map(Arguments::of);
     }
 
-    private Stream<Path> streamFiles(Path root) throws IOException {
-        return Files.list(root);
+    private Stream<TestDirectory> provideArgumentsFlat(Path inputFileDirectory) throws Exception {
+        return Files.list(inputFileDirectory)
+                .filter(Files::isDirectory)
+                .map(TestDirectory::new);
     }
 
-    private PathFilter additionalFilter() {
+    private Stream<TestDirectory> provideArgumentsRecursive(Path inputFileDirectory) throws Exception {
+        return Files.walk(inputFileDirectory)
+                .filter(Files::isDirectory)
+                .map(TestDirectory::new);
+    }
+
+    private TestDirectoryFilter testDirectoryFilter() {
         return ReflectionSupport.newInstance(directoryContents.filter());
     }
 

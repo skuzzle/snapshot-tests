@@ -78,6 +78,8 @@ final class SnapshotAssertionExecutor {
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
+        } catch (final Exception e) {
+            return Optional.of(new SnapshotException(e));
         }
     }
 
@@ -104,8 +106,7 @@ final class SnapshotAssertionExecutor {
         }
         final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(),
                 storedSnapshot, serializedActual, original.getCause());
-        final String internalPackage = SnapshotDslResult.class.getPackageName();
-        Throwables.filterStackTrace(error, element -> element.getClassName().startsWith(internalPackage));
+
         return error;
     }
 

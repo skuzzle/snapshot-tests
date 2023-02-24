@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: testWithSnapshot2_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.junit5.NestedSnapshotTests$NestedClassWithSnapshotTests$CommonAncestor$SecondLevelNest2
+test-method: testWithSnapshot2
+
+123
