@@ -7,15 +7,12 @@ plugins {
 tasks.register("generateReadmeAndReleaseNotes", Copy) {
     group = "documentation"
     description = "Copies the readme and release notes file into the root directory, replacing all placeholders"
-    doFirst {
-        println "$project.projectDir"
-    }
+
     from(project.projectDir) {
         include("*.md")
     }
     into(project.rootDir)
     def libs = project.rootProject.extensions.getByType(VersionCatalogsExtension.class).named("libs")
-
     filter(ReplaceTokens, tokens: [
             "project.version": project.version,
             "project.groupId": project.group,
