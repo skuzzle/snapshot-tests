@@ -1,7 +1,6 @@
 package de.skuzzle.test.snapshots.directoryparams;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Arrays;
 
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -13,11 +12,11 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * @author Simon Taddiken
  * @since 1.2.0
  */
-final class PathFilterExtensions implements PathFilter {
+final class PathFilterExtensions implements TestFileFilter {
 
     private final String[] extensions;
 
-    static PathFilter extensions(String[] extensionsArrays) {
+    static TestFileFilter extensions(String[] extensionsArrays) {
         return new PathFilterExtensions(extensionsArrays);
     }
 
@@ -26,18 +25,19 @@ final class PathFilterExtensions implements PathFilter {
     }
 
     @Override
-    public boolean include(Path path) throws IOException {
+    public boolean include(TestFile testFile, boolean recursive) throws IOException {
         return extensions.length == 0 ||
                 Arrays.stream(extensions)
-                        .anyMatch(configuredExtension -> matchesExtension(configuredExtension, path));
+                        .anyMatch(configuredExtension -> matchesExtension(configuredExtension, testFile));
     }
 
-    private boolean matchesExtension(String configuredExtension, Path file) {
-        final String normalizedExtension = configuredExtension.startsWith(".")
-                ? configuredExtension
-                : "." + configuredExtension;
-        final String filesExtension = FileExtension.includingLeadingDot(file);
-        return filesExtension.equalsIgnoreCase(normalizedExtension);
+    private boolean matchesExtension(String configuredExtension, TestFile testFile) {
+        final String normalizedExtensionWithoutDot = configuredExtension.startsWith(".")
+                ? configuredExtension.substring(1)
+                : configuredExtension;
+
+        final String filesExtensionWithoutDot = testFile.extension();
+        return filesExtensionWithoutDot.equalsIgnoreCase(normalizedExtensionWithoutDot);
     }
 
 }

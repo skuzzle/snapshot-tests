@@ -355,10 +355,8 @@ public interface SnapshotDsl {
          * @throws AssertionError If the serialized objects do not match according to
          *             {@link StructuralAssertions#assertEquals(String, String)} or if
          *             snapshots have been updated.
-         * @throws Exception If any kind of technical exception (except assertion failure)
-         *             occurred.
          */
-        SnapshotTestResult matchesSnapshotStructure() throws Exception;
+        SnapshotTestResult matchesSnapshotStructure();
 
     }
 }

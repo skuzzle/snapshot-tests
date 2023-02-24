@@ -94,6 +94,7 @@ public class SnapshotsTest {
         final Person myself = determinePerson().setName("0000-02-02");
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(XmlSnapshot.xml()
+                        .withEnableXPathDebugging(true)
                         .withComparisonRules(rules -> rules
                                 .pathAt("/person/address/city/text()").ignore()
                                 .pathAt("/person/name/text()").mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))

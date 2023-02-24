@@ -1,0 +1,16 @@
+plugins {
+    id("snapshot-tests.published-java-component")
+}
+description = "Snapshot Tests JUnit4 support"
+ext.automaticModuleName = "de.skuzzle.test.snapshots.junit4"
+
+dependencies {
+    api(projects.snapshotTestsCore) {
+        exclude group: "org.junit.jupiter", module: "junit-jupiter-api"
+    }
+    implementation(projects.snapshotTestsCommon)
+    testImplementation(projects.snapshotTestsTestCommon)
+    api(libs.junit4)
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+}

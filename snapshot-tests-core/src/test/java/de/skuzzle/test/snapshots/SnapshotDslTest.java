@@ -77,7 +77,7 @@ public class SnapshotDslTest {
         }
 
         @Override
-        public SnapshotTestResult matchesSnapshotStructure() throws Exception {
+        public SnapshotTestResult matchesSnapshotStructure() {
             return null;
         }
 

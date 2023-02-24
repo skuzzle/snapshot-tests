@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.data.xml;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.xml.bind.JAXBContext;
@@ -16,8 +17,10 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
-import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitComparisonRuleBuilder;
-import de.skuzzle.test.snapshots.data.xmlunit.XmlUnitStructuralAssertions;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XPathDebug;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XmlUnitComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.data.xml.xmlunit.XmlUnitStructuralAssertions;
+import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
 
@@ -55,8 +58,10 @@ public final class XmlSnapshot implements StructuredDataProvider {
     private DifferenceEvaluator differenceEvaluator;
     // used only when actual test result is already a string
     private boolean prettyPrintStringXml = true;
-
-    private boolean enableXPathDebugging = false;
+    // Allows to print debug information for custom rule xpaths
+    private XPathDebug xPathDebug = XPathDebug.disabled();
+    // namespaces to be used in XPath expressions when using custom rules
+    private Map<String, String> namespaceContext = null;
 
     private XmlSnapshot() {
         this.marshallerSupplier = ctx -> {
@@ -188,7 +193,9 @@ public final class XmlSnapshot implements StructuredDataProvider {
     public XmlSnapshot withEnableXPathDebugging(boolean enableXPathDebugging) {
         State.check(this.differenceEvaluator == null,
                 "xpath debugging must be enabled before specifying custom comparison rules");
-        this.enableXPathDebugging = enableXPathDebugging;
+        this.xPathDebug = enableXPathDebugging
+                ? XPathDebug.enabledAt(StackTraces.findImmediateCaller())
+                : XPathDebug.disabled();
         return this;
     }
 
@@ -201,9 +208,32 @@ public final class XmlSnapshot implements StructuredDataProvider {
      * {@link #withEnableXPathDebugging(boolean)}. Note that debug output must be enabled
      * before calling this method.
      * <p>
+     * If you intend to use custom rules for XMLs containing namespaces, you need to
+     * configure a namespace context via {@link #withXPathNamespaceContext(Map)}.
+     * 
+     * <pre>
+     * XmlSnapshot.xml()
+     *         .withNamespaceContext(Map.of("ns1", "foo:1", "ns2", "foo:2"))
+     *         .withComparisonRules(rules -&gt; rules
+     *                 .pathAt("/ns1:root/ns2:child/text()").ignore())
+     * </pre>
+     * 
+     * The above XPath custom rule would match <code>"some text"</code> in the given XML:
+     * 
+     * <pre>
+     * &lt;whatever:root xmlns:whatever="foo:1" xmlns:doesntmatter="foo:2"&gt;
+     *     &lt;doesntmatter:child&gt;some text&lt;/doesntmatter:child&gt;
+     * &lt;/whatever:root&gt;
+     * </pre>
+     * 
+     * As demonstrated here, you only need to make sure that you are providing the correct
+     * namespace URIs. The prefix names that you use in the XPath do not need to match the
+     * prefix names within the matched documents.
+     * 
+     * <p>
      * Note: This will customize the {@link DifferenceEvaluator} that is used. Thus you
-     * can not use this method in combination with {@link #withComparisonRules(Consumer)}
-     * if you intend to use an own {@link DifferenceEvaluator}.
+     * can not use this method in combination with {@link #compareUsing(Consumer)} if you
+     * intend to use an own {@link DifferenceEvaluator}.
      *
      * @param rules A consumer to which a {@link ComparisonRuleBuilder} will be passed.
      * @return This instance.
@@ -213,9 +243,36 @@ public final class XmlSnapshot implements StructuredDataProvider {
     public XmlSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
         final XmlUnitComparisonRuleBuilder comparatorCustomizerImpl = new XmlUnitComparisonRuleBuilder(
-                this.enableXPathDebugging);
+                this.namespaceContext, this.xPathDebug);
         rules.accept(comparatorCustomizerImpl);
         this.differenceEvaluator = comparatorCustomizerImpl.build();
+        return this;
+    }
+
+    /**
+     * Allows to set a namespace context by providing a mapping from prefixes to xml
+     * namespace URIs.
+     * <p>
+     * If you intend to use {@link #withComparisonRules(Consumer) custom comparison rules}
+     * on XMLs with namespaces it is mandatory to define a namespace context. XPath
+     * comparison does not automatically fall back to just using local names.
+     * <p>
+     * The prefixes that you can configure here are only relevant to the XPath expression
+     * itself and do not need to match the prefixes of the compared XMLs. However, the
+     * URIs must be identical.
+     * <p>
+     * Note: You must set the namespace context before configuring the custom rules.
+     * 
+     * @param namespaceContext A mapping of prefixes to xml namespace URIs.
+     * @return This instance.
+     * @since 1.9.0
+     * @see #withComparisonRules(Consumer)
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.9.0")
+    public XmlSnapshot withXPathNamespaceContext(Map<String, String> namespaceContext) {
+        State.check(this.differenceEvaluator == null,
+                "namespaceContext must be enabled before specifying custom comparison rules");
+        this.namespaceContext = Arguments.requireNonNull(namespaceContext, "namespaceContext must not be null");
         return this;
     }
 
@@ -223,13 +280,17 @@ public final class XmlSnapshot implements StructuredDataProvider {
     public StructuredData build() {
         final SnapshotSerializer snapshotSerializer = JaxbXmlSnapshotSerializer.withExplicitJaxbContext(
                 jaxbContext, marshallerSupplier, prettyPrintStringXml);
-        final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(compareAssertConsumer,
-                differenceEvaluator);
+
+        final StructuralAssertions structuralAssertions = new XmlUnitStructuralAssertions(
+                compareAssertConsumer,
+                differenceEvaluator,
+                namespaceContext,
+                xPathDebug);
         return StructuredData.with(snapshotSerializer, structuralAssertions);
     }
 
     @FunctionalInterface
-    static interface MarshallerSupplier {
+    public static interface MarshallerSupplier {
 
         Marshaller createMarshaller(JAXBContext jaxbContext) throws JAXBException;
     }

@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestWatcher;
 
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+
 @API(status = Status.INTERNAL)
 class JUnit5SnapshotExtension implements
         ParameterResolver,
@@ -37,7 +39,8 @@ class JUnit5SnapshotExtension implements
 
         final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
         final var parameterType = parameterContext.getParameter().getType();
-        return snapshotTestContext.isSnapshotParameter(parameterType);
+        return snapshotTestContext.isSnapshotParameter(parameterType)
+                || SnapshotTestContext.class.isAssignableFrom(parameterType);
     }
 
     @Override
@@ -45,6 +48,9 @@ class JUnit5SnapshotExtension implements
             throws ParameterResolutionException {
 
         final var snapshotTestContext = Junit5SnapshotTestContextProvider.fromExtensionContext(extensionContext);
+        if (parameterContext.getParameter().getType().isAssignableFrom(SnapshotTestContext.class)) {
+            return snapshotTestContext;
+        }
 
         final Method testMethod = extensionContext.getRequiredTestMethod();
         return snapshotTestContext.createSnapshotTestFor(testMethod);

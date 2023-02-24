@@ -1,0 +1,16 @@
+plugins {
+    id("snapshot-tests.published-java-component")
+}
+description = "Snapshot XML Serialization"
+ext.automaticModuleName = "de.skuzzle.test.snapshots.xml.jaxb"
+
+dependencies {
+    api(projects.snapshotTestsCore)
+    api(projects.snapshotTestsXmlunit)
+    implementation(projects.snapshotTestsCommon)
+
+    api(libs.jaxb.api.legacy)
+    implementation(libs.jaxb.runtime.legacy)
+    implementation(libs.xmlunit.core)
+    api(libs.xmlunit.assertj)
+}

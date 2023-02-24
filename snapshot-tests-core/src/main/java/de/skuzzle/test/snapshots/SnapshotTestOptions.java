@@ -14,7 +14,7 @@ import de.skuzzle.test.snapshots.data.text.TextSnapshot;
  * Allows to configure some behavior details of the snapshot testing engine. This
  * annotation can either be placed on the test class itself or on single test methods.
  * Annotations on test methods take precedence over the one on the test class. If the
- * annotation is not specified at all, the the documented defaults apply.
+ * annotation is not specified at all, the documented defaults apply.
  * <p>
  * If you want to globally modify the snapshot directory, see the
  * {@link SnapshotDirectory} annotation.

@@ -9,44 +9,45 @@
 
 **All Changes**: 
 
-* [#20](https://github.com/skuzzle/snapshot-tests/issues/20): Make `Snapshot` a top-level type in `de.skuzzle.test.snapshot` and **deprecate** `de.skuzzle.test.snapshot.SnapshotDsl.Snapshot`
-* [#52](https://github.com/skuzzle/snapshot-tests/issues/52): Test methods that contain at least on `disabled` assertion and no failed assertions will properly be marked as 'skipped' by the test framework
-* [#54](https://github.com/skuzzle/snapshot-tests/pull/54): Add support for JUnit4
-* [#58](https://github.com/skuzzle/snapshot-tests/pull/58): Include paths to initially created snapshot files in assertion-failed message
-* Officially support Java 17
-* Move JUnit5 support into separate module
-* Build against JUnit `5.9.2` (coming from `5.9.1`)
-* Add `ContextFiles` class which groups the paths to all generated files
-* **Deprecate** `SnapshotTestResult.targetFile()`, `SnapshotTestResult.actualResultFile()` and  `SnapshotTestResult.rawActualResultFile()` in favor of `SnapshotTestResult.contextFiles()`
-* Add `disabledBecause(String)` terminal DSL operation. The string can be used to leave an informative message to readers so they know why the assertion is disabled
-* Improve formatting of orphaned snapshot warning
-* Streamline internal implementation
-* Provide new reference documentation at https://${github.user}.github.io/${github.name}/docs/${project.version}
+* [#49](https://github.com/skuzzle/snapshot-tests/issues/49): Delete context files as well when deleting orphaned snapshots
+* [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
+* [#61](https://github.com/skuzzle/snapshot-tests/issues/61): `@SnapshotDirectory` is not allowed anymore on test methods, only on test class
+* [#64](https://github.com/skuzzle/snapshot-tests/issues/64): Migrate build to gradle
+* [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
+* [#71](https://github.com/skuzzle/snapshot-tests/issues/71): Gracefully support JUnit5 nested tests
+* [#73](https://github.com/skuzzle/snapshot-tests/issues/73): `MarshallerSupplier` functional interface is not public
+* [#74](https://github.com/skuzzle/snapshot-tests/issues/74): Add recursive directory scanning via `DirectoriesFrom.recursive()`
+* Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
+* Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
+* Improve removal of internal stack frames from stacktraces of assertion errors
+* `SnapshotException` is now an unchecked exception
+* DSL no longer throws checked exceptions
+* Update to jackson `2.14.2` (coming from `2.10.5`)
 
 ## Reference Documentation
 
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=${project.version}&color=orange)](https://${github.user}.github.io/${github.name}/reference/${project.version})
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=@project.version@&color=orange)](https://@github.user@.github.io/@github.name@/reference/@project.version@)
 
-Reference documentation for this release: https://${github.user}.github.io/${github.name}/reference/${project.version}
+Reference documentation for this release: https://@github.user@.github.io/@github.name@/reference/@project.version@
 
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-bom/${project.version}/jar)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-bom/@project.version@/jar)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-bom</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <type>pom</type>
     <scope>import</scope>
 </dependency>
 ```
 
 ```
-testImplementation(platform("${project.groupId}:snapshot-tests-bom:${project.version}"))
+testImplementation(platform("@project.groupId@:snapshot-tests-bom:@project.version@"))
 ```
 
 ## Artifacts
@@ -57,38 +58,36 @@ testImplementation(platform("${project.groupId}:snapshot-tests-bom:${project.ver
 
 If you are using **JUnit5**:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit5/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-junit5/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-junit5/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-junit5/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-junit5</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-junit5:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-junit5:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-junit5:@project.version@")
 ```
 
 If you are using **JUnit4**:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-junit4/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-junit4/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-junit4/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-junit4/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-junit4</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-junit4:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-junit4:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-junit4:@project.version@")
 ```
 
 ### Choose a snapshot format (optional)
@@ -97,74 +96,70 @@ testImplementation("${project.groupId}:snapshot-tests-junit4:${project.version}"
     
 If you want **JSON** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jackson/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-jackson/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jackson/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-jackson:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-jackson:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-jackson:@project.version@")
 ```
 
 If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-jaxb/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-jaxb</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-jaxb:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-jaxb:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-jaxb:@project.version@")
 ```
 
 If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-jaxb-jakarta/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-jaxb-jakarta/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-jaxb-jakarta:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-jaxb-jakarta:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-jaxb-jakarta:@project.version@")
 ```
 
 If you want **HTML** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-html/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-html/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-html/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-html/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-html</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-html:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-html:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-html:@project.version@")
 ```
 </details>
 
@@ -175,37 +170,35 @@ testImplementation("${project.groupId}:snapshot-tests-html:${project.version}")
 
 Directory Params
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-directory-params/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-directory-params/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-directory-params/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-directory-params/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-directory-params</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-directory-params:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-directory-params:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-directory-params:@project.version@")
 ```
 
 Object normalization (⚠️ Experimental⚠)
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=${project.version}&color=blue)](https://search.maven.org/artifact/${project.groupId}/snapshot-tests-normalize/${project.version}/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=${project.version}&color=orange)](http://www.javadoc.io/doc/${project.groupId}/snapshot-tests-normalize/${project.version})
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-normalize/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-normalize/@project.version@)
 
 ```xml
 <dependency>
-    <groupId>${project.groupId}</groupId>
+    <groupId>@project.groupId@</groupId>
     <artifactId>snapshot-tests-normalize</artifactId>
-    <version>${project.version}</version>
+    <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation '${project.groupId}:snapshot-tests-normalize:${project.version}'
-testImplementation("${project.groupId}:snapshot-tests-normalize:${project.version}")
+testImplementation("@project.groupId@:snapshot-tests-normalize:@project.version@")
 ```
 </details>

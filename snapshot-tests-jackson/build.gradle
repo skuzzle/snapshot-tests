@@ -1,0 +1,17 @@
+plugins {
+    id("snapshot-tests.published-java-component")
+}
+description = "Snapshot JSON Serialization"
+ext.automaticModuleName = "de.skuzzle.test.snapshots.json.jackson"
+
+dependencies {
+    api(projects.snapshotTestsCore)
+    implementation(projects.snapshotTestsCommon)
+
+    api platform(libs.jackson.bom)
+    api("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api(libs.jsonassert)
+}

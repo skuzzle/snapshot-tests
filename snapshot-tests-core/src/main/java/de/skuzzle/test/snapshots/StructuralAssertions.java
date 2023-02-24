@@ -33,5 +33,5 @@ public interface StructuralAssertions {
      *          plain {@link AssertionError}. This allows the user to see an IDE generated
      *          diff of the actual and expected values in most IDEs.
      */
-    void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError, SnapshotException;
+    void assertEquals(String storedSnapshot, String serializedActual) throws AssertionError;
 }

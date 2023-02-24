@@ -1,0 +1,73 @@
+plugins {
+    id("snapshot-tests.base-conventions")
+    id("maven-publish")
+    id("signing")
+}
+
+tasks.withType(Sign).configureEach {
+    onlyIf { isContinuousIntegrationEnvironment }
+}
+
+tasks.withType(PublishToMavenLocal).configureEach {
+    dependsOn(tasks.build)
+}
+
+signing {
+    // The gpg key is injected by jenkins as a base64 encoded string. That is because jenkins doesn't support
+    // storing secret text credentials with newlines. Thus we need to decode the base64 string before we can sign
+    def signingKey = base64Decode(findProperty("base64EncodedAsciiArmoredSigningKey"))
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+}
+
+def base64Decode(encodedString) {
+    if (encodedString != null) {
+        byte[] decoded = encodedString.decodeBase64()
+        String decode = new String(decoded)
+        return decode
+    }
+    return null;
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            pom {
+                name = provider { project.description ?: "${project.group}:${project.name}" }
+                description = provider { project.name }
+                url = 'https://github.com/skuzzle/snapshot-tests'
+                scm {
+                    connection = "scm:git:git://github.com/skuzzle/snapshot-tests"
+                    developerConnection = "scm:git:git://github.com/skuzzle/snapshot-tests"
+                    url = "https://github.com/skuzzle/snapshot-tests"
+                }
+                licenses {
+                    license {
+                        name = "The MIT License (MIT)"
+                        url = "http://opensource.org/licenses/MIT"
+                        distribution = "repo"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "simont"
+                        name = "Simon Taddiken"
+                        email = "simon@taddiken.net"
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(GenerateMavenPom).configureEach {
+    doLast {
+        def pomXml = destination.getText();
+        checkThat(pomXml.indexOf("<name>") >= 0, "POM must have a name element: " + destination)
+        checkThat(pomXml.indexOf("<url>") >= 0, "POM must have a url element: " + destination)
+        checkThat(pomXml.indexOf("<description>") >= 0, "POM must have a description element" + destination)
+        checkThat(pomXml.indexOf("<license>") >= 0, "POM must have a license element" + destination)
+        checkThat(pomXml.indexOf("<scm>") >= 0, "POM must have a scm element" + destination)
+    }
+}

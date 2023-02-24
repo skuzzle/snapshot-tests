@@ -2,10 +2,17 @@ package de.skuzzle.test.snapshots.impl;
 
 import static java.util.stream.Collectors.reducing;
 
-import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.reflection.StackTraces;
+
+/**
+ * Internal utility to work with exceptions. Kind of related to {@link StackTraces} in the
+ * common package.
+ * 
+ * @author Simon Taddiken
+ * @see StackTraces
+ */
 final class Throwables {
 
     private Throwables() {
@@ -42,13 +49,5 @@ final class Throwables {
             t.addSuppressed(other);
         }
         return t;
-    }
-
-    public static void filterStackTrace(Throwable throwable, Predicate<StackTraceElement> elementsToRemove) {
-        final StackTraceElement[] original = throwable.getStackTrace();
-        final StackTraceElement[] filtered = Arrays.stream(original)
-                .filter(elementsToRemove.negate())
-                .toArray(StackTraceElement[]::new);
-        throwable.setStackTrace(filtered);
     }
 }
