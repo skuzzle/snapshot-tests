@@ -39,7 +39,7 @@ pipeline {
     }
     stage('Build Release') {
       steps {
-        sh './gradlew build testAgainstJava17 sign'
+        sh './gradlew build testAgainstJava17'
       }
     }
     stage('Perform release') {
