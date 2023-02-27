@@ -45,7 +45,7 @@ public final class XmlUnitStructuralAssertions implements StructuralAssertions {
                 .assertThat(serializedActual)
                 .and(storedSnapshot);
         if (rules != null) {
-            XmlUnitComparisonRuleBuilder comparisonRuleBuilder = new XmlUnitComparisonRuleBuilder(
+            final XmlUnitComparisonRuleBuilder comparisonRuleBuilder = new XmlUnitComparisonRuleBuilder(
                     namespaceContext, xPathDebug);
             rules.accept(comparisonRuleBuilder);
             compareAssert = compareAssert.withDifferenceEvaluator(comparisonRuleBuilder.build());

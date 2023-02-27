@@ -1,23 +1,21 @@
 package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-
+import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.validation.Arguments;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.w3c.dom.Node;
-import org.xmlunit.diff.Comparison;
 import org.xmlunit.diff.Comparison.Detail;
 import org.xmlunit.diff.ComparisonResult;
 import org.xmlunit.diff.DifferenceEvaluator;
 import org.xmlunit.diff.DifferenceEvaluators;
 import org.xmlunit.xpath.JAXPXPathEngine;
 
-import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
-import de.skuzzle.test.snapshots.validation.Arguments;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 /**
  * Builds x-path based comparison rules for xml/html comparison.
@@ -33,7 +31,7 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
 
     /**
      * Creates a new rule builder.
-     * 
+     *
      * @param namespaceContext Nullable namespace context
      * @param xPathDebug Whether to print debug messages about matched nodes
      */
@@ -53,50 +51,42 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
             public ComparisonRuleBuilder mustMatch(Pattern regex) {
                 Arguments.requireNonNull(regex, "regex must not be null");
                 return mustMatchWithInfo(actualDetails -> regex.matcher(((Node) actualDetails).getTextContent())
-                        .matches(), "must match pattern: " + regex);
+                        .matches(), "must match pattern: " + regex, CustomRuleType.CUSTOM_MATCH);
             }
 
             @Override
             public ComparisonRuleBuilder ignore() {
-                return mustMatchWithInfo(actualDetails -> true, "will be ignored");
+                return mustMatchWithInfo(actualDetails -> true, "will be ignored", CustomRuleType.IGNORE);
             }
 
             @Override
             public ComparisonRuleBuilder mustMatch(Predicate<? super Object> predicate) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                return mustMatchWithInfo(predicate, "must match custom predicate: " + predicate);
+                return mustMatchWithInfo(predicate, "must match custom predicate: " + predicate,
+                        CustomRuleType.CUSTOM_MATCH);
             }
 
-            private ComparisonRuleBuilder mustMatchWithInfo(Predicate<? super Object> predicate, String info) {
+            private ComparisonRuleBuilder mustMatchWithInfo(Predicate<? super Object> predicate, String info,
+                    CustomRuleType ruleType) {
                 Arguments.requireNonNull(predicate, "predicate must not be null");
-                customizations.add(new XPathDifferenceEvaluator(info,
-                        xPathDebug, xpathEngine, path,
-                        new DifferenceEvaluator() {
-
-                            @Override
-                            public ComparisonResult evaluate(Comparison comparison, ComparisonResult outcome) {
-                                final Detail actualDetails = comparison.getTestDetails();
-                                final Node targetNode = actualDetails.getTarget();
-
-                                return predicate.test(targetNode)
-                                        ? ComparisonResult.EQUAL
-                                        : ComparisonResult.DIFFERENT;
-                            }
-                        }));
+                customizations.add(new XPathDifferenceEvaluator(ruleType, info,
+                        xPathDebug, xpathEngine, path, predicate));
                 return XmlUnitComparisonRuleBuilder.this;
             }
         };
     }
 
     /**
-     * Builds a xml-unit {@link DifferenceEvaluator} which obeys the configured rules. the
-     * returned instance can be used for constructing a
-     * {@link XmlUnitStructuralAssertions} instance.
+     * Builds a xml-unit {@link DifferenceEvaluator} which obeys the configured rules. the returned instance can be used
+     * for constructing a {@link XmlUnitStructuralAssertions} instance.
      *
      * @return A new {@link DifferenceEvaluator}.
      */
     public DifferenceEvaluator build() {
-        return DifferenceEvaluators.chain(customizations.toArray(DifferenceEvaluator[]::new));
+        final List<DifferenceEvaluator> differenceEvaluators = new ArrayList<>();
+        differenceEvaluators.add(DifferenceEvaluators.Default);
+        differenceEvaluators.addAll(customizations);
+        return DifferenceEvaluators.chain(differenceEvaluators.toArray(DifferenceEvaluator[]::new));
     }
 
 }

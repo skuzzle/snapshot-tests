@@ -1,19 +1,19 @@
 dynamic-directory: false
-snapshot-name: testAsXmlStructureCompareCustomNew_0
+snapshot-name: testAsXmlStructureCompareCustomRuleRegexMismatch_0
 snapshot-number: 0
 test-class: de.skuzzle.test.snapshots.xml.SnapshotsTest
-test-method: testAsXmlStructureCompareCustomNew
+test-method: testAsXmlStructureCompareCustomRuleRegexMismatch
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <person>
     <address>
-        <city>not Bielefeld</city>
+        <city>Bielefeld</city>
         <country>Germany</country>
         <number>1337</number>
         <street>Gibtsnicht-Straße</street>
         <zipCode>4711</zipCode>
     </address>
     <birthdate/>
-    <name>0000-01-01</name>
+    <name>Simon</name>
     <surname>Taddiken</surname>
 </person>
