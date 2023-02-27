@@ -1,21 +1,20 @@
 package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
-import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
-import de.skuzzle.test.snapshots.validation.Arguments;
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.w3c.dom.Node;
-import org.xmlunit.diff.Comparison.Detail;
-import org.xmlunit.diff.ComparisonResult;
-import org.xmlunit.diff.DifferenceEvaluator;
-import org.xmlunit.diff.DifferenceEvaluators;
-import org.xmlunit.xpath.JAXPXPathEngine;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.w3c.dom.Node;
+import org.xmlunit.diff.DifferenceEvaluator;
+import org.xmlunit.diff.DifferenceEvaluators;
+import org.xmlunit.xpath.JAXPXPathEngine;
+
+import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Builds x-path based comparison rules for xml/html comparison.
@@ -77,8 +76,9 @@ public final class XmlUnitComparisonRuleBuilder implements ComparisonRuleBuilder
     }
 
     /**
-     * Builds a xml-unit {@link DifferenceEvaluator} which obeys the configured rules. the returned instance can be used
-     * for constructing a {@link XmlUnitStructuralAssertions} instance.
+     * Builds a xml-unit {@link DifferenceEvaluator} which obeys the configured rules. the
+     * returned instance can be used for constructing a
+     * {@link XmlUnitStructuralAssertions} instance.
      *
      * @return A new {@link DifferenceEvaluator}.
      */

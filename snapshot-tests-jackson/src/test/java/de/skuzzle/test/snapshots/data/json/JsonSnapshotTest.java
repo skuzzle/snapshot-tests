@@ -1,9 +1,8 @@
 package de.skuzzle.test.snapshots.data.json;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 @Deprecated
 class JsonSnapshotTest {

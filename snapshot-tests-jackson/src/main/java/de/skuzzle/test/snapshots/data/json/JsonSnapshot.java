@@ -2,7 +2,6 @@ package de.skuzzle.test.snapshots.data.json;
 
 import java.util.function.Consumer;
 
-import de.skuzzle.test.snapshots.reflection.Classes;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -19,6 +18,7 @@ import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.reflection.Classes;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
