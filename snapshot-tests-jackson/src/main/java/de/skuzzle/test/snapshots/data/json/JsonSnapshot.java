@@ -2,6 +2,7 @@ package de.skuzzle.test.snapshots.data.json;
 
 import java.util.function.Consumer;
 
+import de.skuzzle.test.snapshots.reflection.Classes;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -39,6 +40,25 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 @API(status = Status.STABLE)
 public final class JsonSnapshot implements StructuredDataProvider {
+
+    @Deprecated(forRemoval = true)
+    static final boolean LEGACY_WARNING_PRINTED;
+    static {
+        final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.jsonx.PlaceHolder");
+        if (!placeHolderAvailable) {
+            System.err.println(
+                    "WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-json' module.");
+            System.err.println();
+            System.err.println("To remove this warning, follow these migration steps:");
+            System.err.println();
+            System.err.println("- Remove direct dependency to 'snapshot-tests-jackson'");
+            System.err.println("- Add direct dependency to 'snapshot-tests-json' instead");
+            LEGACY_WARNING_PRINTED = true;
+        } else {
+            LEGACY_WARNING_PRINTED = false;
+        }
+
+    }
 
     /**
      * Takes Snapshots using jackson {@link ObjectMapper} and compare the results using

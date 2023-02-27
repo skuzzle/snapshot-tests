@@ -7,7 +7,7 @@ description = "Snapshot Tests Documentation"
 
 dependencies {
     testImplementation(projects.snapshotTestsJunit5)
-    testImplementation(projects.snapshotTestsJackson)
+    testImplementation(projects.snapshotTestsJson)
     testImplementation(projects.snapshotTestsJaxb)
     testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }

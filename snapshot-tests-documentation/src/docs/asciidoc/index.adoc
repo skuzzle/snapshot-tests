@@ -39,6 +39,13 @@ NOTE: It is possible that snapshot header information change even during a patch
 snapshot files to occur as _modified_ files in your local SCM copy after upgrading to a newer framework version. This 
 doesn't pose a problem and you can safely update the files in your SCM.
 
+=== Noteable Changes in this Release
+This documentation pertains to version {revnumber} of snapshot-tests. The following notable changes have been made
+since the previous _minor_ version:
+
+* The module `snapshot-tests-jackson` has been deprecated in favor of drop-in replacement `snapshot-tests-jackson`. The
+deprecated module will be removed with version `2.0.0`.
+
 
 == Getting Started
 
@@ -95,7 +102,7 @@ learn how to properly combine them to employ _snapshot testing_ in your own proj
 | Core API and unstructured text comparison. 
 
 
-|https://search.maven.org/artifact/{groupId}/snapshot-tests-jackson/{revnumber}/jar[`snapshot-tests-jackson`]
+|https://search.maven.org/artifact/{groupId}/snapshot-tests-json/{revnumber}/jar[`snapshot-tests-json`]
 | JSON snapshot serialization using `jackson` and structured comparison using `jsonassert`.
 
 |https://search.maven.org/artifact/{groupId}/snapshot-tests-jaxb-jakarta/{revnumber}/jar[`snapshot-tests-jaxb-jakarta`]
@@ -120,7 +127,7 @@ In order to use snapshot-tests you have to answer two simple questions:
 ==== Use With JUnit5
 Historically JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
 configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
-preferred snapshot format (i.e. like `snapshot-tests-jackson`).
+preferred snapshot format (i.e. like `snapshot-tests-json`).
 
 ==== Use With JUnit5 (Legacy)
 The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
@@ -132,7 +139,7 @@ WARNING: Starting from version `2.0.0` this scenario will no longer be supported
 
 ==== Use With JUnit4
 JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
-add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
+add a dependency for your preferred snapshot format like `snapshot-tests-json`.
 
 [WARNING]
 ====
@@ -144,7 +151,7 @@ In order to seamlessly support the JUnit5 legacy scenario described above, all s
 ----
 <dependency>
     <groupId>{groupId}</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>{revnumber}</version>
     <scope>test</scope>
     <exclusions>
@@ -160,7 +167,7 @@ or
 [source,groovy,subs="attributes+"]
 .Exclude JUnit5 dependencies from snapshot format artifacts (gradle, groovy syntax)
 ----
-testImplementation('{groupId}:snapshot-tests-jackson:{revnumber}') {
+testImplementation('{groupId}:snapshot-tests-json:{revnumber}') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ----
@@ -330,7 +337,7 @@ format.
 ----
 include::{testIncludes}/de/skuzzle/test/snapshots/snippets/ComparisonTests.java[tags=structure-compare-json,indent=0]
 ----
-<1> Choose to serialize test results as JSON (Requires the `snapshot-tests-jackson` module).
+<1> Choose to serialize test results as JSON (Requires the `snapshot-tests-json` module).
 <2> Choose `.matchesSnapshotStructure()` to trigger structural comparison.
 ====
 

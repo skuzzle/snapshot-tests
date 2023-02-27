@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: testAsJsonStructureCompareCustom_0
+snapshot-name: testAsJsonStructureCompare_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.json.SnapshotsTest
-test-method: testAsJsonStructureCompareCustom
+test-class: de.skuzzle.test.snapshots.data.json.SnapshotsTest
+test-method: testAsJsonStructureCompare
 
 {
   "name" : "Simon",
@@ -12,7 +12,7 @@ test-method: testAsJsonStructureCompareCustom
     "street" : "Gibtsnicht-Straße",
     "number" : "1337",
     "zipCode" : "4711",
-    "city" : "NOT Bielefeld",
+    "city" : "Bielefeld",
     "country" : "Germany"
   }
 }

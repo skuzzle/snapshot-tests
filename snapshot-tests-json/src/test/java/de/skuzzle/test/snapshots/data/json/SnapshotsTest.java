@@ -1,4 +1,4 @@
-package de.skuzzle.test.snapshots.json;
+package de.skuzzle.test.snapshots.data.json;
 
 import static de.skuzzle.test.snapshots.data.json.JsonSnapshot.json;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +19,12 @@ import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 @EnableSnapshotTests
 public class SnapshotsTest {
+
+    @Test
+    void testLegacyWarning() {
+        JsonSnapshot.json();
+        assertThat(JsonSnapshot.LEGACY_WARNING_PRINTED).isFalse();
+    }
 
     @Test
     void testAsJsonTextCompare(Snapshot snapshot) throws Exception {

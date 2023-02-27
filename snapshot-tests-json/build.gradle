@@ -1,0 +1,9 @@
+plugins {
+    id("snapshot-tests.published-java-component")
+}
+description = "Snapshot JSON Serialization"
+ext.automaticModuleName = "de.skuzzle.test.snapshots.json.jackson"
+
+dependencies {
+    api(projects.snapshotTestsJackson)
+}

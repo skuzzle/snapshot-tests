@@ -1,7 +1,7 @@
 dynamic-directory: false
 snapshot-name: testAsJsonTextCompare_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.json.SnapshotsTest
+test-class: de.skuzzle.test.snapshots.data.json.SnapshotsTest
 test-method: testAsJsonTextCompare
 
 {
