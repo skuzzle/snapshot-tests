@@ -89,53 +89,53 @@ testImplementation("@project.groupId@:snapshot-tests-junit4:@project.version@")
     
 If you want **JSON** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jackson/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-json/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jackson:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-json:@project.version@")
 ```
 
-If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces:
+If you want **XML** based snapshots using jaxb and legacy `javax.xml` legacy namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-xml-legacy/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jaxb</artifactId>
+    <artifactId>snapshot-tests-xml-egacy</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jaxb:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-xml-legacy:@project.version@")
 ```
 
 If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-xml/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
+    <artifactId>snapshot-tests-xml</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jaxb-jakarta:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-xml:@project.version@")
 ```
 
 If you want **HTML** based snapshots:

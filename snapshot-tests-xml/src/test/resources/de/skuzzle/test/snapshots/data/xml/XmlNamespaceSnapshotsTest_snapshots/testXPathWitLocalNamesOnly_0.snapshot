@@ -1,0 +1,19 @@
+dynamic-directory: false
+snapshot-name: testXPathWitLocalNamesOnly_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.data.xml.XmlNamespaceSnapshotsTest
+test-method: testXPathWitLocalNamesOnly
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:person xmlns:ns2="https://foo.bar" xmlns:ns3="https://simon.taddiken.net">
+    <ns2:address>
+        <city>Bielefeld</city>
+        <country>Germany</country>
+        <number>1337</number>
+        <street>Gibtsnicht-Straße</street>
+        <zipCode>4711</zipCode>
+    </ns2:address>
+    <birthdate/>
+    <name>Simon</name>
+    <surname>Taddiken</surname>
+</ns3:person>

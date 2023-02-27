@@ -44,7 +44,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
     @Deprecated(forRemoval = true)
     static final boolean LEGACY_WARNING_PRINTED;
     static {
-        final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.jsonx.PlaceHolder");
+        final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.data.jsonx.PlaceHolder");
         if (!placeHolderAvailable) {
             System.err.println(
                     "WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-json' module.");
@@ -57,7 +57,6 @@ public final class JsonSnapshot implements StructuredDataProvider {
         } else {
             LEGACY_WARNING_PRINTED = false;
         }
-
     }
 
     /**

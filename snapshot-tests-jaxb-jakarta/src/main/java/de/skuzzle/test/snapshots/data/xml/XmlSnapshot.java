@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.data.xml;
 import de.skuzzle.test.snapshots.*;
 import de.skuzzle.test.snapshots.data.xml.xmlunit.XPathDebug;
 import de.skuzzle.test.snapshots.data.xml.xmlunit.XmlUnitStructuralAssertions;
+import de.skuzzle.test.snapshots.reflection.Classes;
 import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
@@ -29,6 +30,24 @@ import java.util.function.Consumer;
  */
 @API(status = Status.STABLE, since = "1.7.0")
 public final class XmlSnapshot implements StructuredDataProvider {
+
+    @Deprecated(forRemoval = true)
+    static final boolean LEGACY_WARNING_PRINTED;
+    static {
+        final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.data.xmlx.PlaceHolder");
+        if (!placeHolderAvailable) {
+            System.err.println(
+                    "WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-xml-legacy' module.");
+            System.err.println();
+            System.err.println("To remove this warning, follow these migration steps:");
+            System.err.println();
+            System.err.println("- Remove direct dependency to 'snapshot-tests-jaxb'");
+            System.err.println("- Add direct dependency to 'snapshot-tests-xml-legacy' instead");
+            LEGACY_WARNING_PRINTED = true;
+        } else {
+            LEGACY_WARNING_PRINTED = false;
+        }
+    }
 
     /**
      * Simple default {@link StructuredData} instance which infers the JAXB context from a test's actual result object.

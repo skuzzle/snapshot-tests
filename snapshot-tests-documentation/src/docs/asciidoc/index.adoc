@@ -39,13 +39,16 @@ NOTE: It is possible that snapshot header information change even during a patch
 snapshot files to occur as _modified_ files in your local SCM copy after upgrading to a newer framework version. This 
 doesn't pose a problem and you can safely update the files in your SCM.
 
-=== Noteable Changes in this Release
+=== Notable Changes in this Release
 This documentation pertains to version {revnumber} of snapshot-tests. The following notable changes have been made
 since the previous _minor_ version:
 
 * The module `snapshot-tests-jackson` has been deprecated in favor of drop-in replacement `snapshot-tests-jackson`. The
 deprecated module will be removed with version `2.0.0`.
-
+* The module `snapshot-tests-jaxb` has been deprecated in favor of drop-in replacement `snapshot-tests-xml-legacy`. The
+deprecated module will be removed with version `2.0.0`.
+* The module `snapshot-tests-jaxb-jakarta` has been deprecated in favor of drop-in replacement `snapshot-tests-xml`. The
+deprecated module will be removed with version `2.0.0`.
 
 == Getting Started
 
@@ -105,10 +108,10 @@ learn how to properly combine them to employ _snapshot testing_ in your own proj
 |https://search.maven.org/artifact/{groupId}/snapshot-tests-json/{revnumber}/jar[`snapshot-tests-json`]
 | JSON snapshot serialization using `jackson` and structured comparison using `jsonassert`.
 
-|https://search.maven.org/artifact/{groupId}/snapshot-tests-jaxb-jakarta/{revnumber}/jar[`snapshot-tests-jaxb-jakarta`]
+|https://search.maven.org/artifact/{groupId}/snapshot-tests-xml/{revnumber}/jar[`snapshot-tests-xml`]
 | XML snapshot serialization using `jaxb` with new jakarta dependencies and structured comparison using `xmlunit`.
 
-|https://search.maven.org/artifact/{groupId}/snapshot-tests-jaxb/{revnumber}/jar[`snapshot-tests-jaxb`]
+|https://search.maven.org/artifact/{groupId}/snapshot-tests-xml-legacy/{revnumber}/jar[`snapshot-tests-xml-legacy`]
 | XML snapshot serialization using `jaxb` and structured comparison using `xmlunit`.
 
 |https://search.maven.org/artifact/{groupId}/snapshot-tests-html/{revnumber}/jar[`snapshot-tests-html`]

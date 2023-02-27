@@ -5,10 +5,12 @@ plugins {
 }
 
 def modulesWithoutJaxb = allJavaModules()
-        .findAll({ "project ':snapshot-tests-jaxb'" != it.toString() })
+        .findAll({ "project ':snapshot-tests-jaxb'" != it.toString() && "project ':snapshot-tests-xml-legacy'" != it.toString() })
+
 
 dependencies {
     modulesWithoutJaxb
+            .each {println it }
             .each({ jacocoAggregation it })
 }
 
