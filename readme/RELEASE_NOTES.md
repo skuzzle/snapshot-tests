@@ -7,13 +7,15 @@
 > 
 > Check the resp. section in the README!
 
-**All Changes**: 
+### Fixes
 
 * [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
 * [#77](https://github.com/skuzzle/snapshot-tests/issues/77): Small XPath performance optimization
 * [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
 * [#79](https://github.com/skuzzle/snapshot-tests/issues/79): Filter out internal stack frames from all AssertionErrors
 
+### Build
+[#75](https://github.com/skuzzle/snapshot-tests/issues/75): Use `Project.copy` instead of `Copy` task
 
 ## Reference Documentation
 

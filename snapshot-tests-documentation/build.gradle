@@ -34,19 +34,32 @@ tasks.register("deployDocsToRepositoryRoot") {
     dependsOn("deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent")
 }
 
-tasks.register("wipeLatestDocsFolder", Delete) {
+// Don't use 'Delete' Task here, see https://github.com/skuzzle/snapshot-tests/issues/75
+tasks.register("wipeLatestDocsFolder") {
     description "Wipes out the 'latest' documentation folder. To be used before copying the updated contents"
-    delete(repositoryDeployPathLatest)
+    doLast {
+        delete(repositoryDeployPathLatest)
+    }
 }
 
-tasks.register("deployDocsToRepositoryRootLatest", Copy) {
+// Don't use 'Copy' Task here, see https://github.com/skuzzle/snapshot-tests/issues/75
+tasks.register("deployDocsToRepositoryRootLatest") {
     dependsOn("asciidoctor", "wipeLatestDocsFolder")
-    from(asciidoctor.outputs.files)
-    into(repositoryDeployPathLatest)
+    doLast {
+        copy {
+            from(asciidoctor.outputs.files)
+            into(repositoryDeployPathLatest)
+        }
+    }
 }
 
-tasks.register("deployDocsToRepositoryRootCurrent", Copy) {
+// Don't use 'Copy' Task here, see https://github.com/skuzzle/snapshot-tests/issues/75
+tasks.register("deployDocsToRepositoryRootCurrent") {
     dependsOn("asciidoctor")
-    from(asciidoctor.outputs.files)
-    into(repositoryDeployPathCurrent)
+    doLast {
+        copy {
+            from(asciidoctor.outputs.files)
+            into(repositoryDeployPathCurrent)
+        }
+    }
 }
