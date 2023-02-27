@@ -50,6 +50,9 @@ final class LocalResultCollector {
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
+
+        final String internalPackage = SnapshotDslResult.class.getPackageName();
+        StackTraces.filterStackTrace(failures, element -> element.getClassName().startsWith(internalPackage));
         Throwables.throwIfNotNull(failures);
     }
 

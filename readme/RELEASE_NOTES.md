@@ -11,6 +11,7 @@
 
 * [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
 * [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
+* [#79](https://github.com/skuzzle/snapshot-tests/issues/79): Filter out internal stack frames from all AssertionErrors
 
 
 ## Reference Documentation
