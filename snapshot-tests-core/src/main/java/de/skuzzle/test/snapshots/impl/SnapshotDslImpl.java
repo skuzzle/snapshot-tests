@@ -178,6 +178,7 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
         State.check(state.isInitial(),
                 "Detected incomplete DSL usage. Please always call a terminal operation (see JavaDoc of the Snapshot class for details). "
                         + "If you want to temporarily disable a snapshot assertion, use the disabled() terminal operation.");
-        resultRecorder.throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully();
+
+        resultRecorder.throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully(snapshotConfiguration.isSoftAssertions());
     }
 }

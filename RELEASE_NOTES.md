@@ -7,47 +7,40 @@
 > 
 > Check the resp. section in the README!
 
-**All Changes**: 
+### Fixes
 
-* [#49](https://github.com/skuzzle/snapshot-tests/issues/49): Delete context files as well when deleting orphaned snapshots
-* [#57](https://github.com/skuzzle/snapshot-tests/issues/57): Support XML namespaces in XPaths when using custom comparison rules
-* [#61](https://github.com/skuzzle/snapshot-tests/issues/61): `@SnapshotDirectory` is not allowed anymore on test methods, only on test class
-* [#64](https://github.com/skuzzle/snapshot-tests/issues/64): Migrate build to gradle
-* [#66](https://github.com/skuzzle/snapshot-tests/issues/66): XmlSnapshot.withEnableXPathDebugging: Boolean parameter 'enabled' not taken into account
-* [#71](https://github.com/skuzzle/snapshot-tests/issues/71): Gracefully support JUnit5 nested tests
-* [#73](https://github.com/skuzzle/snapshot-tests/issues/73): `MarshallerSupplier` functional interface is not public
-* [#74](https://github.com/skuzzle/snapshot-tests/issues/74): Add recursive directory scanning via `DirectoriesFrom.recursive()`
-* Deprecate `PathFilter` in favor of `TestFileFilter` and `TestDirectoryFilter`
-* Improve format and information density of XPath debugging (can be enabled with `XmlSnapshot.withEnableXPathDebugging(true)`)
-* Improve removal of internal stack frames from stacktraces of assertion errors
-* `SnapshotException` is now an unchecked exception
-* DSL no longer throws checked exceptions
-* Update to jackson `2.14.2` (coming from `2.10.5`)
+* [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
+* [#77](https://github.com/skuzzle/snapshot-tests/issues/77): Small XPath performance optimization
+* [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
+* [#79](https://github.com/skuzzle/snapshot-tests/issues/79): Filter out internal stack frames from all AssertionErrors
+
+### Build
+[#75](https://github.com/skuzzle/snapshot-tests/issues/75): Use `Project.copy` instead of `Copy` task
 
 ## Reference Documentation
 
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.9.1&color=orange)](https://skuzzle.github.io/snapshot-tests/reference/1.9.1)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.9.2&color=orange)](https://skuzzle.github.io/snapshot-tests/reference/1.9.2)
 
-Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/reference/1.9.1
+Reference documentation for this release: https://skuzzle.github.io/snapshot-tests/reference/1.9.2
 
 
 ## BOM Artifact
 Manages the versions of all modules in case you are using multiple in your project
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.9.1/jar)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.9.2/jar)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-bom</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <type>pom</type>
     <scope>import</scope>
 </dependency>
 ```
 
 ```
-testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.9.1"))
+testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.9.2"))
 ```
 
 ## Artifacts
@@ -58,36 +51,36 @@ testImplementation(platform("de.skuzzle.test:snapshot-tests-bom:1.9.1"))
 
 If you are using **JUnit5**:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit5/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit5/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-junit5</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-junit5:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-junit5:1.9.2")
 ```
 
 If you are using **JUnit4**:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit4/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-junit4/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-junit4</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-junit4:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-junit4:1.9.2")
 ```
 
 ### Choose a snapshot format (optional)
@@ -96,70 +89,70 @@ testImplementation("de.skuzzle.test:snapshot-tests-junit4:1.9.1")
     
 If you want **JSON** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jackson/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jackson/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jackson/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jackson</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-jackson:1.9.2")
 ```
 
 If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jaxb</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-jaxb:1.9.2")
 ```
 
 If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-jaxb-jakarta/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-jaxb-jakarta:1.9.2")
 ```
 
 If you want **HTML** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-html/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-html/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-html</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-html:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-html:1.9.2")
 ```
 </details>
 
@@ -170,35 +163,35 @@ testImplementation("de.skuzzle.test:snapshot-tests-html:1.9.1")
 
 Directory Params
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-directory-params/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-directory-params/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-directory-params/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-directory-params</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-directory-params:1.9.2")
 ```
 
 Object normalization (⚠️ Experimental⚠)
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-normalize/1.9.1/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-normalize/1.9.1)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.9.2&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-normalize/1.9.2/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.9.2&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-normalize/1.9.2)
 
 ```xml
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-normalize</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.9.1")
+testImplementation("de.skuzzle.test:snapshot-tests-normalize:1.9.2")
 ```
 </details>
