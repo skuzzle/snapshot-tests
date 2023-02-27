@@ -10,6 +10,7 @@
 **All Changes**: 
 
 * [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
+* [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
 
 
 ## Reference Documentation
