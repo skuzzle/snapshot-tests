@@ -2,16 +2,16 @@ package de.skuzzle.test.snapshots.data.html;
 
 import java.util.function.Consumer;
 
+import de.skuzzle.test.snapshots.SnapshotException;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Document;
 import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
-
-import de.skuzzle.test.snapshots.SnapshotException;
-import de.skuzzle.test.snapshots.StructuralAssertions;
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 final class HtmlStructuralAssertions implements StructuralAssertions {
 

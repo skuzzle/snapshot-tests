@@ -8,7 +8,7 @@ import org.apiguardian.api.API.Status;
 /**
  * Filter strategy that determines whether an encountered directory is suitable to be
  * injected as a test case parameter.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.9.0
  * @see DirectoriesFrom#filter()

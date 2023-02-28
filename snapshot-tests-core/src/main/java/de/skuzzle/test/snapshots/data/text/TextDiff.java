@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRow.Tag;
 import com.github.difflib.text.DiffRowGenerator;
 
-import de.skuzzle.test.snapshots.SnapshotTestOptions;
-import de.skuzzle.test.snapshots.validation.Arguments;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Creates a diff of 2 Strings. For internal use only. Public API is provided by

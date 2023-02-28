@@ -4,15 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
+
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class SnapshotsTest {
 

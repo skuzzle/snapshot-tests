@@ -2,13 +2,13 @@ package de.skuzzle.test.snapshots.junit5;
 
 import java.util.Optional;
 
+import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-
-import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
-import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 /**
  * Manages the lifecycle of a {@link SnapshotTestContext} instance by attaching it to the

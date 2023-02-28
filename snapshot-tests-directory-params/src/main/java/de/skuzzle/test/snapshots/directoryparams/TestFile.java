@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Pointer to a file that has been listed in a directory by {@link FilesFrom}. Provides a

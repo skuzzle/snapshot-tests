@@ -1,0 +1,34 @@
+plugins {
+    id("com.diffplug.spotless")
+}
+
+spotless {
+
+    format("misc") {
+        target("*.gradle", "buildSrc/**/*.gradle", "*.gitignore")
+        targetExclude("buildSrc/build/**")
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
+    format("documentation") {
+        target("*.adoc", "*.md", "src/**/*.adoc", "src/**/*.md")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    pluginManager.withPlugin("java") {
+        def configDir = rootProject.layout.projectDirectory.dir("gradle/config/eclipse")
+        def importOrderConfigFile = configDir.file("eclipse.importorder")
+        def javaFormatterConfigFile = configDir.file("formatter-settings.xml")
+
+        java {
+            toggleOffOn()
+            importOrderFile(importOrderConfigFile)
+            eclipse().configFile(javaFormatterConfigFile)
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+}

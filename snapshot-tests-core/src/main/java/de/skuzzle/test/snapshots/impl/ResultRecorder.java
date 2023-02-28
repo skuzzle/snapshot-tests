@@ -7,7 +7,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * delegates the outcome of snapshot assertions to both the current
  * {@link SnapshotTestContext} and the {@link LocalResultCollector} so that
  * {@link SnapshotDslImpl} only needs a single dependency.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */

@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots.data.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 final class JacksonJsonSnapshotSerializer implements SnapshotSerializer {
 

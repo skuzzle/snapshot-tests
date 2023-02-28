@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.w3c.dom.Node;
 import org.xmlunit.diff.DifferenceEvaluator;
 import org.xmlunit.diff.DifferenceEvaluators;
 import org.xmlunit.xpath.JAXPXPathEngine;
-
-import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Builds x-path based comparison rules for xml/html comparison.

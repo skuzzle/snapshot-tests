@@ -3,10 +3,10 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 
 /**
  * @author Simon Taddiken

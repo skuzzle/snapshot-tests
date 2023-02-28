@@ -1,13 +1,13 @@
 package de.skuzzle.test.snapshots.data.text;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
 import de.skuzzle.test.snapshots.StructuredDataProvider;
 import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Take snapshots using {@link Object#toString()}. By default, whitespace changes of any

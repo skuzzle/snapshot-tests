@@ -1,19 +1,19 @@
-**Migration Info**: 
+**Migration Info**:
 
 > **Note**
 > The following modules have been deprecated: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
 > `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
-> `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also: 
+> `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also:
 > [#67](https://github.com/skuzzle/snapshot-tests/issues/67))
-> 
-> Important: These new modules come with slightly different Automatic-Module-Name. If you are using JPMS you need to 
+>
+> Important: These new modules come with slightly different Automatic-Module-Name. If you are using JPMS you need to
 > adjust your `module-info.java` when upgrading.
 >
 > The deprecated modules will be removed with the next major version!
 
 > **Note**
-> When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now 
-> either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`. 
+> When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now
+> either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`.
 > This will become mandatory with the next major version!
 
 
@@ -21,6 +21,9 @@
 
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
 
+### Build
+
+* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
 
 ### Documentation
 
@@ -96,7 +99,7 @@ testImplementation("@project.groupId@:snapshot-tests-junit4:@project.version@")
 ### Choose a snapshot format (optional)
 <details>
     <summary>Show supported snapshot format artifacts</summary>
-    
+
 If you want **JSON** based snapshots:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jackson/@project.version@)

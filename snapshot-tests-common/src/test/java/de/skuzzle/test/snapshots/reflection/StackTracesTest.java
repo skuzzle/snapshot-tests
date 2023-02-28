@@ -2,9 +2,9 @@ package de.skuzzle.test.snapshots.reflection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.reflection.StackTraces.Caller;
+
+import org.junit.jupiter.api.Test;
 
 class StackTracesTest {
 

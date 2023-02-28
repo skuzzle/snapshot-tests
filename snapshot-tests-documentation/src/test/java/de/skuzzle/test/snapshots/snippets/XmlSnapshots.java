@@ -7,11 +7,11 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 public class XmlSnapshots {

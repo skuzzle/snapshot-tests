@@ -6,14 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 public class ChangeSnapshotHeaderTest {

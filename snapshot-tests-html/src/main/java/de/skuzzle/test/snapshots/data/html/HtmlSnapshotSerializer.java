@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots.data.html;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 final class HtmlSnapshotSerializer implements SnapshotSerializer {
 

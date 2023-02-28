@@ -11,10 +11,10 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * An action that can be applied to a {@link ObjectMember} which is matched by a

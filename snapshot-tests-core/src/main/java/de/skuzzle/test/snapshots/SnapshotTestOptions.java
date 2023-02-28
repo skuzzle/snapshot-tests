@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 /**
  * Allows to configure some behavior details of the snapshot testing engine. This

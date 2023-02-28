@@ -1,5 +1,6 @@
 plugins {
     id("base")
+    id("snapshot-tests.spotless-conventions")
 }
 
 ext {

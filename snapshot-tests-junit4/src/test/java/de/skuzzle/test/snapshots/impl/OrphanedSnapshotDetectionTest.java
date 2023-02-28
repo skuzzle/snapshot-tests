@@ -7,18 +7,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
+import de.skuzzle.test.snapshots.io.DirectoryResolver;
+import de.skuzzle.test.snapshots.junit4.SnapshotRule;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
+
 import org.assertj.core.api.Condition;
 import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import de.skuzzle.test.snapshots.SnapshotFile;
-import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
-import de.skuzzle.test.snapshots.io.DirectoryResolver;
-import de.skuzzle.test.snapshots.junit4.SnapshotRule;
-import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 public class OrphanedSnapshotDetectionTest {
 

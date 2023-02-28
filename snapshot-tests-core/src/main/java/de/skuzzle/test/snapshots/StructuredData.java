@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Combines a {@link SnapshotSerializer} and a {@link StructuralAssertions} instance.

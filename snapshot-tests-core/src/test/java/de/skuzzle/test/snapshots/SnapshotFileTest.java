@@ -9,11 +9,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
 
+import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class SnapshotFileTest {

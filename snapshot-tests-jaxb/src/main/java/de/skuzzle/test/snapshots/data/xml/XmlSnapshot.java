@@ -7,11 +7,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.xmlunit.assertj.CompareAssert;
-import org.xmlunit.diff.DifferenceEvaluator;
-
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -23,6 +18,11 @@ import de.skuzzle.test.snapshots.reflection.Classes;
 import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.diff.DifferenceEvaluator;
 
 /**
  * {@link StructuredData} builder for serializing test results to XML, relying on JAXB and

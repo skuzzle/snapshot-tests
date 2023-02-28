@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Tries to detect which type of assumption failed exception is supported on the current
  * classpath.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -36,7 +36,7 @@ final class AssumptionExceptionDetector {
     /**
      * Creates a throwable that will cause a testcase to be marked as 'skipped' by the
      * test framework that is in use.
-     * 
+     *
      * @param message The message for the exception.
      * @return An empty optional if no supported assumption exception was found or we
      *         failed to create an instance. Otherwise returns the created exception.

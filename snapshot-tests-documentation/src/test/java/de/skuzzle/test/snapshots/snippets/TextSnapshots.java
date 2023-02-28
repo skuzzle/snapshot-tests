@@ -1,11 +1,11 @@
 package de.skuzzle.test.snapshots.snippets;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 public class TextSnapshots {

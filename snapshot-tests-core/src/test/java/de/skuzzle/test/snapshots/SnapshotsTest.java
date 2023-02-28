@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @EnableSnapshotTests
 public class SnapshotsTest {

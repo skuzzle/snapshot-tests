@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots.snippets;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 class SnapshotTestOptionsTest {

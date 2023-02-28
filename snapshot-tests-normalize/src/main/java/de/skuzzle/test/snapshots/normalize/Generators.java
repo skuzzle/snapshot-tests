@@ -8,10 +8,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 @API(status = Status.EXPERIMENTAL)
 public final class Generators {

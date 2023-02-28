@@ -2,11 +2,6 @@ package de.skuzzle.test.snapshots.data.html;
 
 import java.util.function.Consumer;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.xmlunit.assertj.CompareAssert;
-import org.xmlunit.diff.DifferenceEvaluator;
-
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -17,6 +12,11 @@ import de.skuzzle.test.snapshots.data.xml.xmlunit.XmlUnitComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.diff.DifferenceEvaluator;
 
 /**
  * Allows to create and compare snapshots from HTML strings. Please note that HTML

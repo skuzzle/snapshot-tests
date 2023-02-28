@@ -6,13 +6,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 import de.skuzzle.test.snapshots.junit5.LegacyJUnit5SnapshotExtension;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * <h2>Enabling snapshot tests</h2>

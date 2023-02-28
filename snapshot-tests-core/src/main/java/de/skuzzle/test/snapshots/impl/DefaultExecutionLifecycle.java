@@ -10,7 +10,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */

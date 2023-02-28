@@ -1,21 +1,23 @@
 package de.skuzzle.test.snapshots.data.xml;
 
-import de.skuzzle.test.snapshots.Snapshot;
-import de.skuzzle.test.snapshots.SnapshotTestResult;
-import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
-import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
-import org.junit.jupiter.api.Test;
+import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
+import static de.skuzzle.test.snapshots.data.xml.xmlunit.XPaths.localNamePath;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
-import static de.skuzzle.test.snapshots.data.xml.xmlunit.XPaths.localNamePath;
-import static org.assertj.core.api.Assertions.assertThat;
+import de.skuzzle.test.snapshots.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
+import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
+import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
+
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 @EnableSnapshotTests
 public class XmlNamespaceSnapshotsTest {
@@ -32,9 +34,9 @@ public class XmlNamespaceSnapshotsTest {
     @Test
     void testXMLExampleFromJavaDoc(Snapshot snapshot) throws Exception {
         snapshot.assertThat(""
-                        + "<whatever:root xmlns:whatever=\"foo:1\" xmlns:doesntmatter=\"foo:2\">"
-                        + "    <doesntmatter:child>some text</doesntmatter:child>\n"
-                        + "</whatever:root>")
+                + "<whatever:root xmlns:whatever=\"foo:1\" xmlns:doesntmatter=\"foo:2\">"
+                + "    <doesntmatter:child>some text</doesntmatter:child>\n"
+                + "</whatever:root>")
                 .as(XmlSnapshot.xml()
                         .withXPathNamespaceContext(Map.of("ns1", "foo:1", "ns2", "foo:2"))
                         .withComparisonRules(rules -> rules

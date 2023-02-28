@@ -7,10 +7,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 
 /**
  * Can be <em>temporarily</em> placed on a test class or test method to forcefully update

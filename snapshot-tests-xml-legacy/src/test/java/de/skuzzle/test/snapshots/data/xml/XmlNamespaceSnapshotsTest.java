@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.xml.XmlSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 public class XmlNamespaceSnapshotsTest {

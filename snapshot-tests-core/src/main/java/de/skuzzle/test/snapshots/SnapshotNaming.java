@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Strategy interface for dynamically determining snapshot names. Snapshot name will be

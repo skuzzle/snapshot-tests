@@ -7,11 +7,11 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import de.skuzzle.test.snapshots.directoryparams.Filters.TestDirectoryFilterAll;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-
-import de.skuzzle.test.snapshots.directoryparams.Filters.TestDirectoryFilterAll;
 
 /**
  * ArgumentsProvider that lists directories and injects them as {@link TestDirectory}
@@ -36,7 +36,7 @@ import de.skuzzle.test.snapshots.directoryparams.Filters.TestDirectoryFilterAll;
  * that case, you might want to specify a custom {@link TestDirectoryFilter} that
  * determines which of the encountered directories will actually lead to a parameterized
  * test execution.
- * 
+ *
  * @see TestDirectory
  * @see TestFile
  * @see FilesFrom
@@ -103,7 +103,7 @@ public @interface DirectoriesFrom {
      * {@link TestDirectoryFilter} via {@link #filter()}.
      * <p>
      * Defaults to false.
-     * 
+     *
      * @return Whether to recursively list directories.
      * @since 1.9.0
      * @see #filter()
