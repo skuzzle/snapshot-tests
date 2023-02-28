@@ -5,11 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.AssumptionViolatedException;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
@@ -17,6 +12,11 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.testcommons.MetaTest;
+
+import org.junit.AssumptionViolatedException;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class FailingSnapshotTestsJUnit4 {
 

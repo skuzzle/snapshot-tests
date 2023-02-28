@@ -10,11 +10,11 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import de.skuzzle.test.snapshots.directoryparams.Filters.TestFileFilterAll;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-
-import de.skuzzle.test.snapshots.directoryparams.Filters.TestFileFilterAll;
 
 /**
  * ArgumentsProvider that lists files from a directory and injects them as

@@ -3,14 +3,6 @@ package de.skuzzle.test.snapshots.junit4;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.junit.AssumptionViolatedException;
-import org.junit.Ignore;
-import org.junit.runner.Description;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.TestClass;
-
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.Snapshot;
@@ -25,18 +17,26 @@ import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
 import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 import de.skuzzle.test.snapshots.validation.State;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.junit.AssumptionViolatedException;
+import org.junit.Ignore;
+import org.junit.runner.Description;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
+
 /**
  * <h2>Enabling snapshot tests</h2>
  * <p>
  * To get started with snapshot assertions you need to add this rule implementation as
  * both a &#64;Rule and &#64;ClassRule like this:
- * 
+ *
  * <pre>
  * &#64;Rule
  * &#64;ClassRule
  * public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
  * </pre>
- * 
+ *
  * This allows you to write snapshot assertions in your tests like this
  *
  * <pre>
@@ -44,7 +44,7 @@ import de.skuzzle.test.snapshots.validation.State;
  *     &#64;Rule
  *     &#64;ClassRule
  *     public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
- *     
+ *
  *     &#64;Test
  *     public void testSomething() throws Exception {
  *         Object actual = ...
@@ -115,13 +115,13 @@ public final class SnapshotRule implements CombinedRule, Snapshot {
     /**
      * Creates a new rule instance. Note that you need to add both &#64;Rule and
      * &#64;ClassRule annotation like this:
-     * 
+     *
      * <pre>
      * &#64;Rule
      * &#64;ClassRule
      * public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
      * </pre>
-     * 
+     *
      * @return The new rule instance.
      */
     public static SnapshotRule enableSnapshotTests() {

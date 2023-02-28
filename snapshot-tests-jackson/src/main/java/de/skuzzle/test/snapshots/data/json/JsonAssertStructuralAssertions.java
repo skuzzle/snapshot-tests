@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots.data.json;
 
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
-
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.StructuralAssertions;
+
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 final class JsonAssertStructuralAssertions implements StructuralAssertions {
 

@@ -2,14 +2,14 @@ package de.skuzzle.test.snapshots.junit5;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 @EnableSnapshotTests
 @SnapshotTestOptions(alwaysPersistActualResult = true)

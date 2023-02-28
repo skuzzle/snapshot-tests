@@ -3,11 +3,6 @@ package de.skuzzle.test.snapshots.data.xml;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.xmlunit.assertj.CompareAssert;
-import org.xmlunit.diff.DifferenceEvaluator;
-
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -19,6 +14,12 @@ import de.skuzzle.test.snapshots.reflection.Classes;
 import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
 import de.skuzzle.test.snapshots.validation.State;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.xmlunit.assertj.CompareAssert;
+import org.xmlunit.diff.DifferenceEvaluator;
+
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;

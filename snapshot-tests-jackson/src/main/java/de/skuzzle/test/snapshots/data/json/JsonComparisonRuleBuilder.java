@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -12,8 +14,6 @@ import org.skyscreamer.jsonassert.LocationAwareValueMatcher;
 import org.skyscreamer.jsonassert.ValueMatcherException;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 final class JsonComparisonRuleBuilder implements ComparisonRuleBuilder {
 

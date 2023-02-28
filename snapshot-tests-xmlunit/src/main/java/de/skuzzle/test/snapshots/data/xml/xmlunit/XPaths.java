@@ -16,7 +16,7 @@ public final class XPaths {
     /**
      * Creates an absolute XPath starting at the root that only uses local names and thus
      * disregards any namespace prefixes.
-     * 
+     *
      * @param path The path segments.
      * @return The XPath String.
      */

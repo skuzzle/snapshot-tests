@@ -4,10 +4,10 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import de.skuzzle.test.snapshots.normalize.MethodObjectMembers.PropertyConventions;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.normalize.MethodObjectMembers.PropertyConventions;
 
 /**
  * Defines how direct members of an actual object instance are discovered. Use any of the

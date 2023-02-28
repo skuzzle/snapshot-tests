@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
@@ -16,6 +13,9 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Context object that pertains to the execution of a whole test class which is annotated

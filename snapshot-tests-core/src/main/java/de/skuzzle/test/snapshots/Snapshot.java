@@ -1,10 +1,10 @@
 package de.skuzzle.test.snapshots;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Allows to do snapshot assertions. An instance of this class can be injected into your

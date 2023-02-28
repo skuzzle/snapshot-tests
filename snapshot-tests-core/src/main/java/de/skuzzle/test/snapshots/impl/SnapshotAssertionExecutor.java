@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import org.opentest4j.AssertionFailedError;
-
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
@@ -15,6 +13,8 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.data.text.TextDiff;
 import de.skuzzle.test.snapshots.data.text.TextDiff.Settings;
 import de.skuzzle.test.snapshots.data.text.TextDiffAssertionError;
+
+import org.opentest4j.AssertionFailedError;
 
 final class SnapshotAssertionExecutor {
 

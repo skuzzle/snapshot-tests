@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * A snapshot file is a plain text file containing a header and the actual serialized

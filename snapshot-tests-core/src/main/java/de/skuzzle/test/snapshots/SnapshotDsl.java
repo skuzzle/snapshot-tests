@@ -2,10 +2,10 @@ package de.skuzzle.test.snapshots;
 
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 
 /**
  * DSL for defining snapshot tests. The main entry point is {@link Snapshot}.
@@ -308,7 +308,7 @@ public interface SnapshotDsl {
          * Note: We can not make the same guarantees about orphan detection when using
          * JUnit5's native mechanism for disabling tests. In such cases, we try to make a
          * best effort guess based on statically available information.
-         * 
+         *
          * @param message Just an informative message describing why this assertion is
          *            disabled.
          * @return Details about the snapshot. Note that the referenced snapshot file

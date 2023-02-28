@@ -2,10 +2,10 @@ package de.skuzzle.test.snapshots.io;
 
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Resolves directories relative to src/test/resources.

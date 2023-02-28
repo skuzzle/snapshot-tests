@@ -5,7 +5,7 @@ import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
  * Separates the execution of a snapshot assertion into multiple stages.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -13,7 +13,7 @@ interface ExecutionLifecycle {
 
     /**
      * Instruments the lifecycle methods to perform a full assertion.
-     * 
+     *
      * @param structuralAssertions The {@link StructuralAssertions} instance to use for
      *            asserting equivalence.
      * @param assertionInput The assertion input.

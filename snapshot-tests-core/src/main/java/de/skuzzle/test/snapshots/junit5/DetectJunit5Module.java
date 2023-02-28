@@ -4,7 +4,7 @@ import de.skuzzle.test.snapshots.reflection.Classes;
 
 /**
  * Detects whether the new -junit5 module is on the class path and logs a warning if not.
- * 
+ *
  * @author Simon Taddiken
  */
 @Deprecated(since = "1.8.0", forRemoval = true)

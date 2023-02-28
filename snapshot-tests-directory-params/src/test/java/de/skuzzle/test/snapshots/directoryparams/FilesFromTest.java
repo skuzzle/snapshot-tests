@@ -5,11 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Map;
 
-import org.junit.jupiter.params.ParameterizedTest;
-
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
+import org.junit.jupiter.params.ParameterizedTest;
 
 @EnableSnapshotTests
 @SnapshotDirectory("test-input")

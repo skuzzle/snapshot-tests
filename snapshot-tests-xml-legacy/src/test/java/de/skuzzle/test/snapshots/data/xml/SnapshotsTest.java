@@ -1,21 +1,23 @@
 package de.skuzzle.test.snapshots.data.xml;
 
+import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.regex.Pattern;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluators;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import java.time.LocalDate;
-import java.util.regex.Pattern;
-
-import static de.skuzzle.test.snapshots.data.xml.XmlSnapshot.xml;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableSnapshotTests
 public class SnapshotsTest {
@@ -28,7 +30,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testXmlAlreadyAStringWithPrettyPrint(Snapshot snapshot)  {
+    void testXmlAlreadyAStringWithPrettyPrint(Snapshot snapshot) {
         final SnapshotTestResult snapshotResult = snapshot
                 .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>").as(xml)
                 .matchesSnapshotStructure();
@@ -98,14 +100,13 @@ public class SnapshotsTest {
     @Test
     void testAsXmlStructureCompareCustomRuleRegexMismatch(Snapshot snapshot) {
         final Person myself = determinePerson();
-        Assertions.assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
-                        snapshot.assertThat(myself)
-                                .as(XmlSnapshot.xml()
-                                        .withEnableXPathDebugging(true)
-                                        .withComparisonRules(rules -> rules
-                                                .pathAt("/person/name/text()")
-                                                .mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
-                                .matchesSnapshotStructure())
+        Assertions.assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> snapshot.assertThat(myself)
+                .as(XmlSnapshot.xml()
+                        .withEnableXPathDebugging(true)
+                        .withComparisonRules(rules -> rules
+                                .pathAt("/person/name/text()")
+                                .mustMatch(Pattern.compile("\\d{4}-\\d{2}-\\d{2}"))))
+                .matchesSnapshotStructure())
                 .withMessageContaining("Snapshot location");
     }
 

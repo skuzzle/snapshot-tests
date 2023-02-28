@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Result details of a single snapshot assertion. An instance of this class is returned by
@@ -53,7 +53,7 @@ public final class SnapshotTestResult {
 
     /**
      * Returns a class that holds the paths to all generated files.
-     * 
+     *
      * @return The context files.
      * @see SnapshotTestOptions#alwaysPersistActualResult()
      * @see SnapshotTestOptions#alwaysPersistRawResult()
