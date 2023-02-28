@@ -5,6 +5,9 @@
 > `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
 > `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also: 
 > [#67](https://github.com/skuzzle/snapshot-tests/issues/67))
+> 
+> Important: These new modules come with slightly different Automatic-Module-Name. If you are using JPMS you need to 
+> adjust your `module-info.java` when upgrading.
 >
 > The deprecated modules will be removed with the next major version!
 

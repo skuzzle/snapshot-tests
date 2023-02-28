@@ -43,12 +43,12 @@ doesn't pose a problem and you can safely update the files in your SCM.
 This documentation pertains to version {revnumber} of snapshot-tests. The following notable changes have been made
 since the previous _minor_ version:
 
-* The module `snapshot-tests-jackson` has been deprecated in favor of drop-in replacement `snapshot-tests-jackson`. The
-deprecated module will be removed with version `2.0.0`.
-* The module `snapshot-tests-jaxb` has been deprecated in favor of drop-in replacement `snapshot-tests-xml-legacy`. The
-deprecated module will be removed with version `2.0.0`.
-* The module `snapshot-tests-jaxb-jakarta` has been deprecated in favor of drop-in replacement `snapshot-tests-xml`. The
-deprecated module will be removed with version `2.0.0`.
+* The modules `snapshot-tests-jackson`, `snapshot-tests-jaxb` and `snapshot-tests-jaxb-jakarta` have been deprecated in 
+favor of their respective drop-in replacement `snapshot-tests-json`, `snapshot-tests-xml-legacy` and 
+`snapshot-tests-xml`.
+
+CAUTION: The drop-ins come with a slightly different `Automatic-Module-Name`. If you are using JPMS you need to adjust
+the respective `requires` clause in your `module-info.java`. 
 
 == Getting Started
 
