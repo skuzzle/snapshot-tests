@@ -1,21 +1,28 @@
 **Migration Info**: 
 
 > **Note**
+> The following modules have been deprecated: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
+> `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
+> `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also: 
+> [#67](https://github.com/skuzzle/snapshot-tests/issues/67))
+>
+> The deprecated modules will be removed with the next major version!
+
+> **Note**
 > When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now 
 > either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`. 
 > This will become mandatory with the next major version!
-> 
-> Check the resp. section in the README!
 
-### Fixes
 
-* [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
-* [#77](https://github.com/skuzzle/snapshot-tests/issues/77): Small XPath performance optimization
-* [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
-* [#79](https://github.com/skuzzle/snapshot-tests/issues/79): Filter out internal stack frames from all AssertionErrors
+### Changes
 
-### Build
-[#75](https://github.com/skuzzle/snapshot-tests/issues/75): Use `Project.copy` instead of `Copy` task
+* [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
+
+
+### Documentation
+
+* List notable changes since last release in reference documentation
+
 
 ## Reference Documentation
 

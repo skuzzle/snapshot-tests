@@ -42,7 +42,7 @@ public final class XmlSnapshot implements StructuredDataProvider {
         final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.data.xmlx.PlaceHolder");
         if (!placeHolderAvailable) {
             System.err.println(
-                    "WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-xml-legacy' module.");
+                    "DEPRECATION WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-xml-legacy' module.");
             System.err.println();
             System.err.println("To remove this warning, follow these migration steps:");
             System.err.println();
