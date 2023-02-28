@@ -21,6 +21,9 @@
 
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
 
+### Build
+
+* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
 
 ### Documentation
 
