@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.impl;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -33,6 +32,12 @@ import de.skuzzle.test.snapshots.io.UncheckedIO;
  */
 final class StaticOrphanedSnapshotDetector {
 
+    private final TestFrameworkSupport testFrameworkSupport;
+
+    StaticOrphanedSnapshotDetector(TestFrameworkSupport testFrameworkSupport) {
+        this.testFrameworkSupport = testFrameworkSupport;
+    }
+
     /**
      * Statically (=without executing the tests) detects all orphaned files within the
      * given root and its child directories.
@@ -44,7 +49,7 @@ final class StaticOrphanedSnapshotDetector {
         try (var files = UncheckedIO.walk(root)) {
             return files
                     .filter(InternalSnapshotNaming::isSnapshotFile)
-                    .map(SnapshotFileAndPath::readFrom)
+                    .map(path -> SnapshotFileAndPath.readFrom(path, testFrameworkSupport))
                     .map(SnapshotFileAndPath::toOrphanDetectionResult)
                     .collect(Collectors.toList())
                     .stream();
@@ -54,16 +59,18 @@ final class StaticOrphanedSnapshotDetector {
     private static final class SnapshotFileAndPath {
         private final Path path;
         private final SnapshotFile snapshotFile;
+        private final TestFrameworkSupport testFrameworkSupport;
 
-        public SnapshotFileAndPath(Path path, SnapshotFile snapshotFile) {
+        private SnapshotFileAndPath(Path path, SnapshotFile snapshotFile, TestFrameworkSupport testFrameworkSupport) {
             this.path = path;
             this.snapshotFile = snapshotFile;
+            this.testFrameworkSupport = testFrameworkSupport;
         }
 
-        static SnapshotFileAndPath readFrom(Path path) {
+        static SnapshotFileAndPath readFrom(Path path, TestFrameworkSupport testFrameworkSupport) {
             try {
                 final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(path);
-                return new SnapshotFileAndPath(path, snapshotFile);
+                return new SnapshotFileAndPath(path, snapshotFile, testFrameworkSupport);
             } catch (final IOException e) {
                 throw new UncheckedIOException(e);
             }
@@ -120,7 +127,7 @@ final class StaticOrphanedSnapshotDetector {
             final var methodName = snapshotFile.header().get(SnapshotHeader.TEST_METHOD);
             return Arrays.stream(testClass.getDeclaredMethods())
                     .filter(method -> method.getName().equals(methodName))
-                    .filter(this::isSnapshotTest)
+                    .filter(method -> isSnapshotTest(testClass, method))
                     .findAny();
         }
 
@@ -131,14 +138,8 @@ final class StaticOrphanedSnapshotDetector {
             return snapshotFile.header().getBoolean(SnapshotHeader.DYNAMIC_DIRECTORY, true);
         }
 
-        private boolean isSnapshotTest(Method method) {
-            return !Modifier.isStatic(method.getModifiers())
-                    && !Modifier.isPrivate(method.getModifiers());
-
-            // This condition breaks static orphan detection for JUnit4 because we do not
-            // have parameters there
-            // && Arrays.stream(method.getParameterTypes())
-            // .anyMatch(parameterType -> Snapshot.class.isAssignableFrom(parameterType));
+        private boolean isSnapshotTest(Class<?> testClass, Method method) {
+            return testFrameworkSupport.isSnapshotTest(testClass, method);
         }
 
     }

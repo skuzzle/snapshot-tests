@@ -21,6 +21,12 @@
 
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
 
+
+### Internal
+
+* [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
+
+
 ### Build
 
 * [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base

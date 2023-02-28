@@ -157,10 +157,10 @@ public final class SnapshotRule implements CombinedRule, Snapshot {
     @Override
     @Deprecated
     @API(status = Status.INTERNAL)
-    public void beforeClass(Description description) throws Exception {
+    public void beforeClass(Description description) {
         final Class<?> testClass = description.getTestClass();
         final SnapshotConfiguration configuration = SnapshotConfiguration.defaultConfigurationFor(testClass);
-        context = SnapshotTestContext.forConfiguration(configuration);
+        context = SnapshotTestContext.forConfiguration(configuration, JUnit4TestFrameworkSupport.INSTANCE);
         new TestClass(testClass)
                 .getAnnotatedMethods(Ignore.class).stream()
                 .map(FrameworkMethod::getMethod)
