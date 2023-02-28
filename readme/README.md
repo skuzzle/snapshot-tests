@@ -22,7 +22,7 @@ Supported test frameworks:
 Supported snapshot formats:
 - [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-core/@project.version@/jar))
 - [x] Json via [snapshot-tests-json](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar)
+- [x] XML via [snapshot-tests-xml](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar)
 - [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-html/@project.version@/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
