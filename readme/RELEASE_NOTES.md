@@ -111,7 +111,7 @@ If you want **JSON** based snapshots:
 testImplementation("@project.groupId@:snapshot-tests-json:@project.version@")
 ```
 
-If you want **XML** based snapshots using jaxb and legacy `javax.xml` legacy namespaces:
+If you want **XML** based snapshots using jaxb and legacy `javax.xml` namespaces:
 
 [![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-xml-legacy/@project.version@)
 
