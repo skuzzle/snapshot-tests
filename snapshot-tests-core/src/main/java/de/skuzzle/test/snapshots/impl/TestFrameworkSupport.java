@@ -1,8 +1,8 @@
 package de.skuzzle.test.snapshots.impl;
 
-import org.apiguardian.api.API;
-
 import java.lang.reflect.Method;
+
+import org.apiguardian.api.API;
 
 /**
  * Abstraction to provide test framework specific behavior to the snapshot-test core
@@ -13,12 +13,14 @@ import java.lang.reflect.Method;
 public interface TestFrameworkSupport {
 
     /**
-     * Tries to determine whether the given method is (still) a snapshot test. This is used during static orphan
-     * detection in order to determine whether the method mentioned in an existing snapshot's header pertains to an
-     * existing snapshot test method.
+     * Tries to determine whether the given method is (still) a snapshot test. This is
+     * used during static orphan detection in order to determine whether the method
+     * mentioned in an existing snapshot's header pertains to an existing snapshot test
+     * method.
      * <p>
-     * It might not always be possible to statically determine whether a test method uses snapshot assertions. In this
-     * case the method should return true in order to prevent false positives during orphan detection.
+     * It might not always be possible to statically determine whether a test method uses
+     * snapshot assertions. In this case the method should return true in order to prevent
+     * false positives during orphan detection.
      * </p>
      *
      * @param testClass The test class.
