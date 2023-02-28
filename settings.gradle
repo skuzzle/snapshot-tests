@@ -11,22 +11,40 @@ gradleEnterprise {
 }
 
 rootProject.name = 'snapshot-tests'
-include 'snapshot-tests-common',
-        'snapshot-tests-test-common',
+
+include (
         'snapshot-tests-core',
+        'snapshot-tests-bom',
+
+        // Internal utilities
+        'snapshot-tests-xmlunit',
+        'snapshot-tests-common',
+        'snapshot-tests-test-common',
+
+        // Test Framework support
         'snapshot-tests-junit5',
         'snapshot-tests-junit4',
-        'snapshot-tests-xmlunit',
+
+        // Supported data formats
         'snapshot-tests-html',
+        'snapshot-tests-xml-legacy',
+        'snapshot-tests-xml',
+        'snapshot-tests-json',
+
+        // deprecated data module
         'snapshot-tests-jaxb',
         'snapshot-tests-jaxb-jakarta',
         'snapshot-tests-jackson',
+
+        // External utilities
         'snapshot-tests-directory-params',
         'snapshot-tests-normalize',
+
+        // Docs and build support
         'snapshot-tests-documentation',
-        'snapshot-tests-bom',
         "readme",
         "test-coverage"
+)
 
 
 

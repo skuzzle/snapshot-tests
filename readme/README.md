@@ -21,8 +21,8 @@ Supported test frameworks:
 
 Supported snapshot formats:
 - [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-core/@project.version@/jar))
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar)
+- [x] Json via [snapshot-tests-json](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar)
+- [x] XML via [snapshot-tests-xml](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar)
 - [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-html/@project.version@/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
@@ -41,7 +41,7 @@ Over the course of the next releases most of the contents of this README will be
 documentation.
 
 ## Quick start
-_(assumes using `maven`, `JUnit5` and `snapshot-tests-jackson` artifact)_
+_(assumes using `maven`, `JUnit5` and `snapshot-tests-json` artifact)_
 
 Add the following dependencies to your build
 
@@ -54,7 +54,7 @@ Add the following dependencies to your build
 </dependency>
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
@@ -112,7 +112,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
     <exclusions>
@@ -127,7 +127,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 or
 
 ```
-testImplementation('@project.groupId@:snapshot-tests-jackson:@project.version@') {
+testImplementation('@project.groupId@:snapshot-tests-json:@project.version@') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ```

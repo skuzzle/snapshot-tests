@@ -1,7 +1,7 @@
 dynamic-directory: false
 snapshot-name: testAsXmlStructureCompareCustomRule_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.xml.SnapshotsTest
+test-class: de.skuzzle.test.snapshots.data.xml.SnapshotsTest
 test-method: testAsXmlStructureCompareCustomRule
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
