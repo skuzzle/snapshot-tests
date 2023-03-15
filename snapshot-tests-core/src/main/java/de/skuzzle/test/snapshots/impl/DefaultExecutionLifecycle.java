@@ -53,7 +53,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
             updatePersistedSnapshotHeader(assertionInput, result);
         }
 
-        if (decideUpdatePersistedSnapshot(result)) {
+        if (decideUpdatePersistedSnapshot(assertionInput, result)) {
             updatePersistedSnapshot(assertionInput);
         }
 
@@ -100,7 +100,10 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
         }
     }
 
-    private boolean decideUpdatePersistedSnapshot(SnapshotTestResult result) {
+    private boolean decideUpdatePersistedSnapshot(SnapshotAssertionInput assertionInput, SnapshotTestResult result) {
+        if (assertionInput.interactive() && result.failure().isPresent()) {
+            return new InteractiveSnapshotUpdater().updateInteractively();
+        }
         switch (result.status()) {
         case CREATED_INITIALLY:
         case UPDATED_FORCEFULLY:

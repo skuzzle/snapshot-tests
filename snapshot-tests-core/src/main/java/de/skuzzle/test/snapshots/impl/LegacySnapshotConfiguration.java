@@ -65,6 +65,11 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
+    public boolean isInteractive(Method testMethod) {
+        return delegate.isInteractive(testMethod);
+    }
+    
+    @Override
     public boolean alwaysPersistActualResult(Method testMethod) {
         return delegate.alwaysPersistActualResult(testMethod);
     }

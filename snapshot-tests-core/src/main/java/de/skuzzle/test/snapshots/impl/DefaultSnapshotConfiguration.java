@@ -5,6 +5,7 @@ import java.nio.file.Path;
 
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.Interactive;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -118,6 +119,11 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     @Override
     public boolean isSoftAssertions() {
         return false;
+    }
+
+    @Override
+    public boolean isInteractive(Method testMethod) {
+        return testMethod.isAnnotationPresent(Interactive.class) || testClass.isAnnotationPresent(Interactive.class);
     }
 
     @Override

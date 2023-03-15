@@ -17,6 +17,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class SnapshotsTest {
 
     @Test
+    @Interactive
+    void testinteractive(Snapshot snapshot) {
+        snapshot.assertThat("test").asText().matchesSnapshotText();
+    }
+
+    @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
     void testWriteContextFiles(Snapshot snapshot) throws Exception {
         final Person simon = determinePerson();

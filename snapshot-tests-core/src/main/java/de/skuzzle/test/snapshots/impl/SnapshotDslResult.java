@@ -81,8 +81,7 @@ final class SnapshotDslResult {
         return snapshotDirectory;
     }
 
-    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName)
-            throws IOException {
+    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName) {
         final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
         final String actualFileName = InternalSnapshotNaming.getSnapshotFileNameActual(snapshotName);
         final String rawFileName = InternalSnapshotNaming.getSnapshotFileNameRaw(snapshotName);
@@ -137,6 +136,7 @@ final class SnapshotDslResult {
                 alwaysPersistActualResult,
                 alwaysPersistRawResult,
                 lineNumberOffset,
-                contextLines);
+                contextLines,
+                configuration.isInteractive(testMethod));
     }
 }

@@ -123,4 +123,6 @@ public interface SnapshotConfiguration {
     @API(status = Status.DEPRECATED, since = "1.7.0")
     boolean isSoftAssertions();
 
+    boolean isInteractive(Method testMethod);
+
 }

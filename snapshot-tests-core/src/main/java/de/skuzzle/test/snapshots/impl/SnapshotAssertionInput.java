@@ -28,6 +28,8 @@ final class SnapshotAssertionInput {
     private final int lineNumberOffset;
     private final int contextLines;
 
+    private final boolean interactive;
+
     SnapshotAssertionInput(String snapshotName,
             ContextFiles contextFiles,
             SnapshotFile actualSnapshotFile,
@@ -39,7 +41,8 @@ final class SnapshotAssertionInput {
             boolean alwaysPersistActualResult,
             boolean alwaysPersistRawResult,
             int lineNumberOffset,
-            int contextLines) {
+            int contextLines,
+            boolean interactive) {
         this.snapshotName = snapshotName;
         this.contextFiles = contextFiles;
         this.softAssertions = softAssertions;
@@ -52,6 +55,7 @@ final class SnapshotAssertionInput {
         this.actualSnapshotFile = actualSnapshotFile;
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
+        this.interactive = interactive;
     }
 
     @Deprecated
@@ -101,6 +105,10 @@ final class SnapshotAssertionInput {
 
     public int contextLines() {
         return contextLines;
+    }
+
+    public boolean interactive() {
+        return interactive;
     }
 
     enum TerminalOperation {
