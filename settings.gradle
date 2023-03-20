@@ -71,7 +71,7 @@ dependencyResolutionManagement {
             library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
             library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
             library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')
-            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
             library('opentest4j', 'org.opentest4j:opentest4j:1.2.0')
             library('jsoup', 'org.jsoup:jsoup:1.15.3')
             library('junit4', 'junit:junit:4.13.2')

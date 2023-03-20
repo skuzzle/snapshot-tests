@@ -21,6 +21,10 @@
 
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
 
+### Dependencies
+
+* Update to jsonassert `1.5.1` (coming from `1.5.0`)
+
 
 ### Internal
 
