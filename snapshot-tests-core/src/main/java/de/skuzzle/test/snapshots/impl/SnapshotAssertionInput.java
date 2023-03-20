@@ -21,7 +21,7 @@ final class SnapshotAssertionInput {
     private final boolean softAssertions;
     private final boolean actualWasNull;
     private final boolean forceUpdateSnapshots;
-    private final boolean snapshotFileAreadyExists;
+    private final boolean snapshotFileAlreadyExists;
     private final boolean disableAssertion;
     private final boolean alwaysPersistActualResult;
     private final boolean alwaysPersistRawResult;
@@ -35,7 +35,7 @@ final class SnapshotAssertionInput {
             boolean actualWasNull,
             boolean disableAssertion,
             boolean forceUpdateSnapshots,
-            boolean snapshotFileAreadyExists,
+            boolean snapshotFileAlreadyExists,
             boolean alwaysPersistActualResult,
             boolean alwaysPersistRawResult,
             int lineNumberOffset,
@@ -45,7 +45,7 @@ final class SnapshotAssertionInput {
         this.softAssertions = softAssertions;
         this.actualWasNull = actualWasNull;
         this.forceUpdateSnapshots = forceUpdateSnapshots;
-        this.snapshotFileAreadyExists = snapshotFileAreadyExists;
+        this.snapshotFileAlreadyExists = snapshotFileAlreadyExists;
         this.disableAssertion = disableAssertion;
         this.alwaysPersistActualResult = alwaysPersistActualResult;
         this.alwaysPersistRawResult = alwaysPersistRawResult;
@@ -79,8 +79,8 @@ final class SnapshotAssertionInput {
         return forceUpdateSnapshots;
     }
 
-    public boolean isSnapshotFileAreadyExists() {
-        return snapshotFileAreadyExists;
+    public boolean isSnapshotFileAlreadyExists() {
+        return snapshotFileAlreadyExists;
     }
 
     public boolean isDisableAssertion() {

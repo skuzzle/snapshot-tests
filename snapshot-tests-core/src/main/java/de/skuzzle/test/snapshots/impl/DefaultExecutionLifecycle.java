@@ -71,7 +71,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
     }
 
     private boolean decideUpdateHeader(SnapshotAssertionInput assertionInput, SnapshotTestResult result) {
-        return assertionInput.isSnapshotFileAreadyExists()
+        return assertionInput.isSnapshotFileAlreadyExists()
                 && !assertionInput.actualSnapshotFile().header().equals(result.snapshotFile().header());
     }
 

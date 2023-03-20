@@ -58,7 +58,7 @@ final class SnapshotAssertionExecutor {
     private SnapshotStatus determineStatus(SnapshotAssertionInput assertionInput) {
         if (assertionInput.isDisableAssertion()) {
             return SnapshotStatus.DISABLED;
-        } else if (!assertionInput.isSnapshotFileAreadyExists()) {
+        } else if (!assertionInput.isSnapshotFileAlreadyExists()) {
             return SnapshotStatus.CREATED_INITIALLY;
         } else if (assertionInput.isForceUpdateSnapshots()) {
             return SnapshotStatus.UPDATED_FORCEFULLY;
