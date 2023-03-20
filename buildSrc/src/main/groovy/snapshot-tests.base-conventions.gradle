@@ -1,5 +1,7 @@
 plugins {
     id("base")
+    id("eclipse")
+    id("idea")
     id("snapshot-tests.spotless-conventions")
 }
 
