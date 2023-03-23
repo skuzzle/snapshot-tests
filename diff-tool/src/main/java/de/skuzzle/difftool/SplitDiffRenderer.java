@@ -63,7 +63,7 @@ public final class SplitDiffRenderer implements DiffRenderer {
                             symbols.equalLine(), diffRow.newLine());
 
                 } else if (distanceToNextDifference == contextLines || distanceToPrevDifference == contextLines) {
-                    b.append("[...]");
+                    b.append(symbols.continuation());
                 } else {
                     expectedLine++;
                     actualLine++;

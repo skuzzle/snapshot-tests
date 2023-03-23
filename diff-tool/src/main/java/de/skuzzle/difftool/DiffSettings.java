@@ -36,21 +36,23 @@ public final class DiffSettings {
 
     public static final class DiffSymbols {
 
-        public static DiffSymbols DEFAULT = new DiffSymbols("!", "+", "-", " ", LineSeparator.SYSTEM);
+        public static DiffSymbols DEFAULT = new DiffSymbols("!", "+", "-", " ", LineSeparator.SYSTEM, "[...]");
 
         private final String changedLine;
         private final String addedLine;
         private final String deletedLine;
         private final String equalLine;
         private final LineSeparator newLineCharacter;
+        private final String continuation;
 
         public DiffSymbols(String changedLine, String addedLine, String deletedLine, String equalLine,
-                LineSeparator newLineCharacter) {
+                LineSeparator newLineCharacter, String continuation) {
             this.changedLine = changedLine;
             this.addedLine = addedLine;
             this.deletedLine = deletedLine;
             this.equalLine = equalLine;
             this.newLineCharacter = newLineCharacter;
+            this.continuation = continuation;
         }
 
         public String changedLine() {
@@ -71,6 +73,10 @@ public final class DiffSettings {
 
         public LineSeparator newLineCharacter() {
             return newLineCharacter;
+        }
+
+        public String continuation() {
+            return continuation;
         }
     }
 }

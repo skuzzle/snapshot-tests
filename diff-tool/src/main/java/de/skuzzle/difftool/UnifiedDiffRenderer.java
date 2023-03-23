@@ -48,7 +48,7 @@ public final class UnifiedDiffRenderer implements DiffRenderer {
                             .append(equalLine).append(diffRow.oldLine());
 
                 } else if (distanceToNextDifference == contextLines || distanceToPrevDifference == contextLines) {
-                    b.append("[...]");
+                    b.append(symbols.continuation());
                 } else {
                     expectedLine++;
                     actualLine++;
