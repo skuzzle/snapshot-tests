@@ -77,7 +77,7 @@ Split Diff
  12   Some unchanged lines10                                                                                                             | 12   Some unchanged lines10
  13   Some unchanged lines11                                                                                                             | 13   Some unchanged lines11
  14   Some unchanged lines12                                                                                                             | 14   Some unchanged lines12
- 15 - And here is the finish with way more than 80 characters and I'm very curious how this is going to be displayed in split view diff. |      
+ 15 - And here is the finish with way more than 80 characters and I'm very curious how this is going to be displayed in split view diff. |
  16   This line is unchanged                                                                                                             | 15   This line is unchanged
                                                                                                                                          | 16 + This line has been added
  17   Some unchanged lines13                                                                                                             | 17   Some unchanged lines13
