@@ -50,6 +50,9 @@ favor of their respective drop-in replacement `snapshot-tests-json`, `snapshot-t
 CAUTION: The drop-ins come with a slightly different `Automatic-Module-Name`. If you are using JPMS you need to adjust
 the respective `requires` clause in your `module-info.java`.
 
+* The logic of creating and rendering diffs has been moved into its own separate module so that it can be reused on its
+own: https://search.maven.org/artifact/{groupId}/diff-tool/{revnumber}/jar[`diff-tool`].
+
 == Getting Started
 
 === Artifacts

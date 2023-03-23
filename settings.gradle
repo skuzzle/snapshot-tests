@@ -39,13 +39,13 @@ include (
         // External utilities
         'snapshot-tests-directory-params',
         'snapshot-tests-normalize',
+        'diff-tool',
 
         // Docs and build support
         'snapshot-tests-documentation',
         "readme",
         "test-coverage"
 )
-
 
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -78,4 +78,5 @@ dependencyResolutionManagement {
         }
     }
 }
+include 'diff-tool'
 

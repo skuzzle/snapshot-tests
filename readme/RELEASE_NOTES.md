@@ -20,22 +20,12 @@
 ### Changes
 
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
-
-### Dependencies
+* [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
+* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
+* [#88](https://github.com/skuzzle/snapshot-tests/issues/88): Extract diff creation into own module
 
 * Update to jsonassert `1.5.1` (coming from `1.5.0`)
 
-
-### Internal
-
-* [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
-
-
-### Build
-
-* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
-
-### Documentation
 
 * List notable changes since last release in reference documentation
 
@@ -199,6 +189,23 @@ Directory Params
 
 ```
 testImplementation("@project.groupId@:snapshot-tests-directory-params:@project.version@")
+```
+
+Diff-Tool
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/diff-tool/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/diff-tool/@project.version@)
+
+```xml
+<dependency>
+    <groupId>@project.groupId@</groupId>
+    <artifactId>diff-tool</artifactId>
+    <version>@project.version@</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation("@project.groupId@:diff-tool:@project.version@")
 ```
 
 Object normalization (⚠️ Experimental⚠)

@@ -1,5 +1,8 @@
 package de.skuzzle.test.snapshots.data.text;
 
+import de.skuzzle.difftool.DiffRenderer;
+import de.skuzzle.difftool.SplitDiffRenderer;
+import de.skuzzle.difftool.UnifiedDiffRenderer;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.StructuredData;
@@ -118,12 +121,12 @@ public final class TextSnapshot implements StructuredDataProvider {
          * Render diffs in unified format, where changes are displayed line by line and
          * lines from expected and actual results are printed interleaved.
          */
-        UNIFIED(new UnifiedDiffRenderer()),
+        UNIFIED(UnifiedDiffRenderer.INSTANCE),
         /**
          * Render diff in split view format, where the lines from the expected and actual
          * result will be printed side by side.
          */
-        SPLIT(new SplitDiffRenderer());
+        SPLIT(SplitDiffRenderer.INSTANCE);
 
         private final DiffRenderer renderer;
 

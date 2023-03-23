@@ -1,52 +1,57 @@
-package de.skuzzle.test.snapshots.data.text;
+package de.skuzzle.difftool;
 
 import java.util.stream.Collectors;
 
 /**
- * Used to represent and detect a file's line separator character(s).
+ * Used to represent and detect a file's line separator character(s). The
+ * {@link #toString()} method will return the plain line break characters.
  *
- * @since 1.5.0
  * @author Simon Taddiken
+ * @since 1.5.0
  */
-enum LineSeparator {
+public enum LineSeparator {
     // note: don't reorder!
     CRLF("\r\n", "\\r\\n"),
     LF("\n", "\\n"),
     CR("\r", "\\r"),
-    DEFAULT("\n", "\\n"),
-    SYSTEM(System.lineSeparator(), System.lineSeparator().replace("\r", "\\r").replace("\n", "\\n"));
+    SYSTEM(System.lineSeparator(), System.lineSeparator()
+            .replace("\r", "\\r")
+            .replace("\n", "\\n"));
 
     private final String characters;
     private final String displayName;
 
-    private LineSeparator(String characters, String displayName) {
+    LineSeparator(String characters, String displayName) {
         this.characters = characters;
         this.displayName = displayName;
     }
 
+    /**
+     * Determines the line separator used in the given String. Will return the type of the
+     * first line separator found in the String.
+     * <p>
+     * If the String does not contain any line separators, will return
+     * {@link LineSeparator#SYSTEM}.
+     * </p>
+     *
+     * @param s The String to check.
+     * @return The type of line endings.
+     */
     public static LineSeparator determineFrom(String s) {
         for (final LineSeparator lineSeparator : LineSeparator.values()) {
             if (lineSeparator.existsIn(s)) {
                 return lineSeparator;
             }
         }
-        return DEFAULT;
+        return SYSTEM;
     }
 
     private boolean existsIn(String s) {
-        return s.indexOf(characters) >= 0;
+        return s.contains(characters);
     }
 
     public String displayName() {
         return name() + "(" + displayName + ")";
-    }
-
-    public boolean endsWith(String s) {
-        return s.endsWith(this.characters);
-    }
-
-    public boolean startsWith(String s) {
-        return s.startsWith(this.characters);
     }
 
     /**

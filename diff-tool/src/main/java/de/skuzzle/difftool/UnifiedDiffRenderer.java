@@ -1,20 +1,26 @@
-package de.skuzzle.test.snapshots.data.text;
+package de.skuzzle.difftool;
 
 import java.util.List;
 
-import com.github.difflib.text.DiffRow;
+public final class UnifiedDiffRenderer implements DiffRenderer {
 
-final class UnifiedDiffRenderer implements DiffRenderer {
+    public static final DiffRenderer INSTANCE = new UnifiedDiffRenderer();
 
-    private String padLeft(String text, int targetWidth) {
-        final int missingSpaces = targetWidth - text.length();
-        return " ".repeat(missingSpaces) + text;
+    private UnifiedDiffRenderer() {
+        // hidden
     }
 
     @Override
-    public String renderDiff(List<DiffRow> rows, int contextLines, int lineNumberOffset) {
+    public String renderDiff(List<DiffLine> rows, DiffSettings diffSettings) {
         final int rowCountEstimate = rows.size();
         final int rowNumberWidth = Math.max(2, (int) Math.log10(rowCountEstimate) + 1) + 1;
+        final int lineNumberOffset = diffSettings.lineNumberOffset();
+        final int contextLines = diffSettings.contextLines();
+        final DiffSettings.DiffSymbols symbols = diffSettings.symbols();
+
+        final String equalLine = " " + symbols.equalLine() + " ";
+        final String deletedLine = " " + symbols.deletedLine() + " ";
+        final String addedLine = " " + symbols.addedLine() + " ";
 
         int expectedLine = 1 + lineNumberOffset;
         int actualLine = 1 + lineNumberOffset;
@@ -22,11 +28,11 @@ final class UnifiedDiffRenderer implements DiffRenderer {
 
         int indexOfLastDifference = -1;
         for (int i = 0; i < rows.size(); i++) {
-            final DiffRow diffRow = rows.get(i);
+            final DiffLine diffRow = rows.get(i);
 
-            switch (diffRow.getTag()) {
+            switch (diffRow.type()) {
             case EQUAL:
-                final int indexOfNextDifference = DiffListLookahead.indexOfNextNonEqual(rows, i);
+                final int indexOfNextDifference = Util.indexOfNextNonEqual(rows, i);
 
                 final int distanceToNextDifference = indexOfNextDifference == rows.size()
                         ? Integer.MAX_VALUE
@@ -37,9 +43,9 @@ final class UnifiedDiffRenderer implements DiffRenderer {
 
                 if (distanceToNextDifference < contextLines || distanceToPrevDifference < contextLines) {
                     b
-                            .append(padLeft("" + expectedLine, rowNumberWidth))
-                            .append(padLeft("" + actualLine, rowNumberWidth))
-                            .append("   ").append(diffRow.getOldLine());
+                            .append(Util.padLeft("" + expectedLine, rowNumberWidth))
+                            .append(Util.padLeft("" + actualLine, rowNumberWidth))
+                            .append(equalLine).append(diffRow.oldLine());
 
                 } else if (distanceToNextDifference == contextLines || distanceToPrevDifference == contextLines) {
                     b.append("[...]");
@@ -56,13 +62,13 @@ final class UnifiedDiffRenderer implements DiffRenderer {
             case CHANGE:
                 indexOfLastDifference = i;
                 b
-                        .append(padLeft("" + expectedLine, rowNumberWidth))
+                        .append(Util.padLeft("" + expectedLine, rowNumberWidth))
                         .append(" ".repeat(rowNumberWidth))
-                        .append(" - ").append(diffRow.getOldLine()).append(LineSeparator.SYSTEM)
+                        .append(deletedLine).append(diffRow.oldLine()).append(symbols.newLineCharacter())
                         .append(" ".repeat(rowNumberWidth))
-                        .append(padLeft("" + actualLine, rowNumberWidth))
-                        .append(" + ")
-                        .append(diffRow.getNewLine());
+                        .append(Util.padLeft("" + actualLine, rowNumberWidth))
+                        .append(addedLine)
+                        .append(diffRow.newLine());
 
                 expectedLine++;
                 actualLine++;
@@ -71,9 +77,9 @@ final class UnifiedDiffRenderer implements DiffRenderer {
             case DELETE:
                 indexOfLastDifference = i;
                 b
-                        .append(padLeft("" + expectedLine, rowNumberWidth))
+                        .append(Util.padLeft("" + expectedLine, rowNumberWidth))
                         .append(" ".repeat(rowNumberWidth))
-                        .append(" - ").append(diffRow.getOldLine());
+                        .append(deletedLine).append(diffRow.oldLine());
 
                 expectedLine++;
                 break;
@@ -81,8 +87,8 @@ final class UnifiedDiffRenderer implements DiffRenderer {
                 indexOfLastDifference = i;
                 b
                         .append(" ".repeat(rowNumberWidth))
-                        .append(padLeft("" + actualLine, rowNumberWidth))
-                        .append(" + ").append(diffRow.getNewLine());
+                        .append(Util.padLeft("" + actualLine, rowNumberWidth))
+                        .append(addedLine).append(diffRow.newLine());
                 actualLine++;
 
                 break;
@@ -91,10 +97,11 @@ final class UnifiedDiffRenderer implements DiffRenderer {
             }
 
             if (i < rows.size() - 1) {
-                b.append(LineSeparator.SYSTEM);
+                b.append(symbols.newLineCharacter());
             }
         }
 
         return b.toString();
     }
+
 }

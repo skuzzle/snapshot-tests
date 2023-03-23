@@ -1,15 +1,18 @@
 package de.skuzzle.test.snapshots.data.text;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
+import de.skuzzle.difftool.DiffRenderer;
+import de.skuzzle.difftool.DiffSettings;
+import de.skuzzle.difftool.LineSeparator;
+import de.skuzzle.difftool.StringDiff;
+import de.skuzzle.difftool.UnifiedDiffRenderer;
+import de.skuzzle.difftool.thirdparty.DiffUtilsDiffAlgorithm;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
-import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRow.Tag;
 import com.github.difflib.text.DiffRowGenerator;
 
@@ -26,16 +29,11 @@ import org.apiguardian.api.API.Status;
 public final class TextDiff {
 
     private final Settings settings;
-    private final List<DiffRow> diffRows;
-    private final LineSeparator expectedLineSeparator;
-    private final LineSeparator actualLineSeparator;
+    private final StringDiff diff;
 
-    private TextDiff(Settings settings, List<DiffRow> diffRows, LineSeparator expectedLineSeparator,
-            LineSeparator actualLineSeparator) {
+    private TextDiff(Settings settings, StringDiff diff) {
         this.settings = settings;
-        this.diffRows = diffRows;
-        this.expectedLineSeparator = expectedLineSeparator;
-        this.actualLineSeparator = actualLineSeparator;
+        this.diff = diff;
     }
 
     public static TextDiff compare(Settings settings, String expected, String actual) {
@@ -43,13 +41,10 @@ public final class TextDiff {
         Arguments.requireNonNull(expected, "expected String must not be null");
         Arguments.requireNonNull(actual, "actual String must not be null");
 
-        final LineSeparator expectedLineSeparator = LineSeparator.determineFrom(expected);
-        final LineSeparator actualLineSeparator = LineSeparator.determineFrom(actual);
-
-        final List<DiffRow> diffRows = settings.buildDiffRowGenerator().generateDiffRows(
-                expected.lines().collect(toList()),
-                actual.lines().collect(toList()));
-        return new TextDiff(settings, diffRows, expectedLineSeparator, actualLineSeparator);
+        final StringDiff diff = StringDiff.using(DiffUtilsDiffAlgorithm.create(settings.buildDiffRowGenerator()),
+                expected,
+                actual);
+        return new TextDiff(settings, diff);
     }
 
     @API(status = Status.INTERNAL, since = "1.7.0")
@@ -58,7 +53,7 @@ public final class TextDiff {
         private int contextLines = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
         private String inlineOpeningChangeMarker = "<<";
         private String inlineClosingChangeMarker = ">>";
-        private DiffRenderer diffRenderer = new UnifiedDiffRenderer();
+        private DiffRenderer diffRenderer = UnifiedDiffRenderer.INSTANCE;
 
         private Settings() {
             // hidden
@@ -106,24 +101,23 @@ public final class TextDiff {
             };
         }
 
-        private DiffRowGenerator buildDiffRowGenerator() {
-            return DiffRowGenerator.create()
+        Consumer<DiffRowGenerator.Builder> buildDiffRowGenerator() {
+            return builder -> builder
                     .showInlineDiffs(true)
                     .lineNormalizer(Function.identity())
                     .inlineDiffByWord(true)
                     .ignoreWhiteSpaces(ignoreWhitespaces)
                     .newTag(inlineMarker())
-                    .oldTag(inlineMarker())
-                    .build();
+                    .oldTag(inlineMarker());
         }
     }
 
     private boolean hasLinebreakDifference() {
-        return expectedLineSeparator != actualLineSeparator && !settings.ignoreWhitespaces;
+        return diff.hasLineSeparatorDifference() && !settings.ignoreWhitespaces;
     }
 
     private boolean hasTextDifference() {
-        return diffRows.stream().map(DiffRow::getTag).anyMatch(tag -> tag != Tag.EQUAL);
+        return diff.hasTextDifference();
     }
 
     public boolean differencesDetected() {
@@ -133,9 +127,12 @@ public final class TextDiff {
     public String renderDiffWithOffsetAndContextLines(int lineNumberOffset, int contextLines) {
         final StringBuilder result = new StringBuilder();
         final boolean hasTextDifference = hasTextDifference();
-        final boolean hasLinebreakDifference = hasLinebreakDifference();
+        final boolean hasSignificantLinebreakDifference = hasLinebreakDifference();
 
-        if (hasLinebreakDifference) {
+        if (hasSignificantLinebreakDifference) {
+            final LineSeparator expectedLineSeparator = diff.leftLineSeparator();
+            final LineSeparator actualLineSeparator = diff.rightLineSeparator();
+
             result.append("Strings differ in linebreaks. Expected: '")
                     .append(expectedLineSeparator.displayName())
                     .append("', Actual encountered: '").append(actualLineSeparator.displayName()).append("'");
@@ -147,7 +144,8 @@ public final class TextDiff {
         }
 
         if (hasTextDifference) {
-            result.append(settings.diffRenderer.renderDiff(diffRows, contextLines, lineNumberOffset));
+            result.append(diff.toString(settings.diffRenderer,
+                    DiffSettings.withDefaultSymbols(contextLines, lineNumberOffset)));
         }
         return result.toString();
     }
