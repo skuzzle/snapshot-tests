@@ -1,17 +1,15 @@
 package de.skuzzle.difftool.thirdparty;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
+import com.github.difflib.text.DiffRow;
+import com.github.difflib.text.DiffRowGenerator;
 import de.skuzzle.difftool.DiffAlgorithm;
 import de.skuzzle.difftool.DiffLine;
 
-import com.github.difflib.text.DiffRow;
-import com.github.difflib.text.DiffRowGenerator;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Based on <em>java-diff-utils</em>.
@@ -26,16 +24,14 @@ public final class DiffUtilsDiffAlgorithm implements DiffAlgorithm {
             .lineNormalizer(Function.identity())
             .inlineDiffByWord(true)
             .ignoreWhiteSpaces(true)
-            .newTag(inlineMarker())
-            .oldTag(inlineMarker()));
+            .newTag(DiffUtilsDiffAlgorithm::inlineMarker)
+            .oldTag(DiffUtilsDiffAlgorithm::inlineMarker));
 
-    private static BiFunction<DiffRow.Tag, Boolean, String> inlineMarker() {
-        return (tag, isOpening) -> {
-            if (tag != DiffRow.Tag.CHANGE) {
-                return "";
-            }
-            return isOpening ? "<<" : ">>";
-        };
+    private static String inlineMarker(DiffRow.Tag tag, boolean isOpening) {
+        if (tag != DiffRow.Tag.CHANGE) {
+            return "";
+        }
+        return isOpening ? "<<" : ">>";
     }
 
     private final DiffRowGenerator generator;
