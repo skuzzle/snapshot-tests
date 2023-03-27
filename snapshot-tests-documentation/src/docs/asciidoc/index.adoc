@@ -53,6 +53,9 @@ the respective `requires` clause in your `module-info.java`.
 * The logic of creating and rendering diffs has been moved into its own separate module so that it can be reused on its
 own: https://search.maven.org/artifact/{groupId}/diff-tool/{revnumber}/jar[`diff-tool`].
 
+* The framework can be advised to normalize line endings used in snapshot files. This is especially useful when using
+git and you do not care about which actual line ending is used in your snapshots. See <<_dealing_with_line_breaks, Dealing With Line Breaks>>.
+
 == Getting Started
 
 === Artifacts
@@ -421,6 +424,31 @@ Full unified diff of actual result and stored snapshot:
     [...]
 ----
 
+==== Dealing With Line Breaks
+Most users probably don't care about line endings during snapshot comparison. However, different line ending formats
+are likely to get in your way anyways when employing snapshot testing. That is because _git_ has its very own idea of
+how to handle and convert different line endings. You might run into the following problems:
+
+* You checked out a project on windows with `core.autocrlf=true` but the `SnapshotSerializer` in place produces Unix
+line endings. Snapshot tests might fail if the `StructuralAssertions` instance in place puts significance to line breaks.
+* You force-updated some snapshots and all of them are marked as modified in git, even if there are no visible changes.
+
+In case you don't care about line endings you should advise the framework to normalize line endings before writing
+snapshot files. You can do that with the following annotation on either the test method or test class:
+
+.Normalize line endings according to local git config
+====
+[source,java]
+----
+include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=normalizeLineEndingsGit,indent=0]
+----
+====
+
+In case you _do_ care about line endings and you are using git, you can use a `.gitattributes` file to signify the
+intended line ending to gitConfig during checkout.
+
+IMPORTANT: Line endings are only normalized when producing the _actual_ snapshot. Line endings are _not_ normalized when
+reading the _expected_ snapshot result from disc.
 
 === Updating Snapshots
 One aspect that makes _snapshot testing_ so powerful is that you can generate the _expected output_ from your

@@ -30,7 +30,12 @@ public @interface SnapshotTestOptions {
     /**
      * Default number of context lines that are displayed in diffs.
      */
-    public static final int DEFAULT_CONTEXT_LINES = 5;
+    int DEFAULT_CONTEXT_LINES = 5;
+
+    /**
+     * Default setting for {@link #normalizeLineEndings()}.
+     */
+    NormalizeLineEndings DEFAULT_NORMALIZE_LINE_ENDINGS = NormalizeLineEndings.NEVER;
 
     /**
      * Defines the number of context lines that are printed around a comparison failure.
@@ -99,12 +104,26 @@ public @interface SnapshotTestOptions {
     boolean alwaysPersistRawResult() default false;
 
     /**
+     * Advises the framework to convert the line endings after snapshot serialization to
+     * the given value.
+     * <p>
+     * By default, line endings are not normalized but when using GIT it is advisable to
+     * set this to {@link NormalizeLineEndings#GIT}
+     * </p>
+     *
+     * @return How to normalize line endings.
+     * @since 1.10.0
+     */
+    @API(since = "1.10.0", status = Status.EXPERIMENTAL)
+    NormalizeLineEndings normalizeLineEndings() default NormalizeLineEndings.NEVER;
+
+    /**
      * Defines whether an offset is added to the line numbers when rendering diffs in
      * assertion failure messages.
      *
      * @author Simon
-     * @since 1.7.1
      * @see SnapshotTestOptions#renderLineNumbers()
+     * @since 1.7.1
      */
     @API(status = Status.EXPERIMENTAL, since = "1.7.1")
     enum DiffLineNumbers {
@@ -126,6 +145,32 @@ public @interface SnapshotTestOptions {
          * within the persisted snapshot file.
          */
         ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
+    }
+
+    /**
+     * Defines how and if line endings will be normalized after snapshot serialization.
+     * Normalization happens before invoking the {@link StructuralAssertions}.
+     */
+    @API(since = "1.1.0", status = Status.EXPERIMENTAL)
+    enum NormalizeLineEndings {
+        /**
+         * Line endings will not be normalized. Use this settings if line endings are
+         * significant for the test outcome.
+         */
+        NEVER,
+        /** All line endings will be converted to LF (\n). */
+        LF,
+        /** All line endings will be converted to CRLF (\r\n). */
+        CRLF,
+        /** All line endings will be converted to the system's default line separator. */
+        SYSTEM,
+        /**
+         * Line endings will be converted according to the local git's
+         * <code>core.autocrlf</code> and <code>core.eol</code> settings. Will fall back
+         * to the system's default line separator if git config values can not be
+         * determined.
+         */
+        GIT
     }
 
 }

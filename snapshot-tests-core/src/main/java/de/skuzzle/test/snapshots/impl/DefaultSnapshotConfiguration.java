@@ -116,6 +116,14 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
+    public SnapshotTestOptions.NormalizeLineEndings normalizeLineEndings(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions == null
+                ? SnapshotTestOptions.DEFAULT_NORMALIZE_LINE_ENDINGS
+                : snapshotTestOptions.normalizeLineEndings();
+    }
+
+    @Override
     public boolean isSoftAssertions() {
         return false;
     }

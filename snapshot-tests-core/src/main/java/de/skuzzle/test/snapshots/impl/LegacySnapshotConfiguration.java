@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -67,6 +68,11 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     @Override
     public boolean alwaysPersistActualResult(Method testMethod) {
         return delegate.alwaysPersistActualResult(testMethod);
+    }
+
+    @Override
+    public SnapshotTestOptions.NormalizeLineEndings normalizeLineEndings(Method testMethod) {
+        return delegate.normalizeLineEndings(testMethod);
     }
 
     @Override

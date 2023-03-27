@@ -1,0 +1,8 @@
+dynamic-directory: false
+snapshot-name: testNormalizeToWindows_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-method: testNormalizeToWindows
+
+line1
+line2

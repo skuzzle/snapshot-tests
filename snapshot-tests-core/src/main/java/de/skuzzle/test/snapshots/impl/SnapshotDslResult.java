@@ -11,6 +11,7 @@ import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.SnapshotTestOptions.NormalizeLineEndings;
 import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.TerminalOperation;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
@@ -114,7 +115,12 @@ final class SnapshotDslResult {
         if (actualWasNull) {
             serializedActual = UNAVAILABLE_BECAUSE_ACTUAL_WAS_NULL;
         } else {
-            serializedActual = snapshotSerializer.serialize(actual);
+            final NormalizeLineEndings normalizeLineEndings = configuration.normalizeLineEndings(
+                    testMethod);
+            final SnapshotSerializer normalizingSerializer = NormalizeLineEndingsSnapshotSerializer.wrap(
+                    snapshotSerializer,
+                    normalizeLineEndings);
+            serializedActual = normalizingSerializer.serialize(actual);
         }
         final SnapshotFile actualSnapshotFile = SnapshotFile.of(snapshotHeader, serializedActual);
 

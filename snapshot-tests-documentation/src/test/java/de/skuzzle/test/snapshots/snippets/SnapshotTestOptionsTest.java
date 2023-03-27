@@ -9,6 +9,14 @@ import org.junit.jupiter.api.Test;
 @EnableSnapshotTests
 class SnapshotTestOptionsTest {
 
+    @Test
+    // tag::normalizeLineEndingsGit[]
+    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.GIT)
+    // end::normalizeLineEndingsGit[]
+    void normalizeLineEndingsGit(Snapshot snapshot) throws Exception {
+
+    }
+
     // tag::alwaysPersistActualResult[]
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true)

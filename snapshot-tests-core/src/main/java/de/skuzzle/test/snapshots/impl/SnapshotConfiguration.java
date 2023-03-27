@@ -3,6 +3,9 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.SnapshotTestOptions.NormalizeLineEndings;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -109,6 +112,16 @@ public interface SnapshotConfiguration {
      * @return Whether to forcefully update snapshots.
      */
     boolean isForceUpdateSnapshots(Method testMethod);
+
+    /**
+     * How to normalize line endings after default snapshot serialization.
+     *
+     * @param testMethod The test method.
+     * @return Whether to normalize line endings.
+     * @since 1.10.0
+     */
+    @API(since = "1.10.0", status = Status.INTERNAL)
+    NormalizeLineEndings normalizeLineEndings(Method testMethod);
 
     /**
      * Whether soft assertions shall be used. When set to true, a failing snapshot
