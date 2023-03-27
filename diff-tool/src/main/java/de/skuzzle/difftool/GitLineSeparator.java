@@ -49,8 +49,12 @@ final class GitLineSeparator {
         static String execute(String command) {
             try {
                 final Process exec = Runtime.getRuntime().exec(command);
-                exec.getErrorStream().readAllBytes();
-                return new String(exec.getInputStream().readAllBytes());
+                try (var err = exec.getErrorStream()) {
+                    err.readAllBytes();
+                }
+                try (var in = exec.getInputStream()) {
+                    return new String(in.readAllBytes());
+                }
             } catch (Exception e) {
                 return null;
             }
