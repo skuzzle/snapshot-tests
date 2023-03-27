@@ -1,15 +1,16 @@
 package de.skuzzle.difftool.thirdparty;
 
-import com.github.difflib.text.DiffRow;
-import com.github.difflib.text.DiffRowGenerator;
-import de.skuzzle.difftool.DiffAlgorithm;
-import de.skuzzle.difftool.DiffLine;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import de.skuzzle.difftool.DiffAlgorithm;
+import de.skuzzle.difftool.DiffLine;
+
+import com.github.difflib.text.DiffRow;
+import com.github.difflib.text.DiffRowGenerator;
 
 /**
  * Based on <em>java-diff-utils</em>.
