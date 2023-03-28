@@ -52,12 +52,6 @@ public final class SnapshotTestContext {
                 "testFrameworkSupport must not be null");
     }
 
-    @Deprecated(since = "1.7.0")
-    public static SnapshotTestContext forTestClass(Class<?> testClass, TestFrameworkSupport testFrameworkSupport) {
-        final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
-        return new SnapshotTestContext(configuration, testFrameworkSupport);
-    }
-
     public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration,
             TestFrameworkSupport testFrameworkSupport) {
         return new SnapshotTestContext(snapshotConfiguration, testFrameworkSupport);

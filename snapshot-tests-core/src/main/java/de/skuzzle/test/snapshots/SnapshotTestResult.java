@@ -64,78 +64,12 @@ public final class SnapshotTestResult {
     }
 
     /**
-     * The snapshot file. Note that it is possible that the file does not exist in case
-     * that {@link #status()} is {@link SnapshotStatus#DISABLED}.
-     *
-     * @return The snapshot file.
-     * @see #actualResultFile()
-     * @see #rawActualResultFile()
-     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
-     *             {@link ContextFiles#snapshotFile()} instead.
-     */
-    @Deprecated(since = "1.8.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.8.0")
-    public Path targetFile() {
-        return this.contextFiles.snapshotFile();
-    }
-
-    /**
-     * Path to the file in which the latest actual result will be stored. The file will
-     * only exist if the recent snapshot assertion was executed with
-     * {@link SnapshotTestOptions#alwaysPersistActualResult()} being true.
-     *
-     * @return The path to the file with the latest actual result file.
-     * @since 1.7.0
-     * @see #targetFile()
-     * @see #rawActualResultFile()
-     * @see SnapshotTestOptions#alwaysPersistActualResult()
-     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
-     *             {@link ContextFiles#actualResultFile()} instead.
-     */
-    @Deprecated(since = "1.8.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.8.0")
-    public Path actualResultFile() {
-        return this.contextFiles.actualResultFile();
-    }
-
-    /**
-     * Path to the file in which the latest raw actual result will be stored (without the
-     * snapshot header). The file will only exist if the recent snapshot assertion was
-     * executed with {@link SnapshotTestOptions#alwaysPersistRawResult()} being true.
-     *
-     * @return The path to the file with the latest raw actual result file.
-     * @since 1.7.0
-     * @see #targetFile()
-     * @see #actualResultFile()
-     * @see SnapshotTestOptions#alwaysPersistRawResult()
-     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
-     *             {@link ContextFiles#snapshotFile()} instead.
-     */
-    @Deprecated(since = "1.8.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.8.0")
-    public Path rawActualResultFile() {
-        return this.contextFiles.rawActualResultFile();
-    }
-
-    /**
      * Whether snapshot has been created/updated or asserted.
      *
      * @return Whether snapshot has been created/updated or asserted.
      */
     public SnapshotStatus status() {
         return this.status;
-    }
-
-    /**
-     * The contents of the persisted snapshot file.
-     *
-     * @return The serialized snapshot.
-     * @deprecated Since 1.7.0 - Use {@link #snapshotFile()} instead.
-     */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.7.0")
-    public SnapshotFile serializedSnapshot() {
-        return this.snapshot;
     }
 
     /**
@@ -176,19 +110,6 @@ public final class SnapshotTestResult {
      */
     public Optional<Throwable> failure() {
         return Optional.ofNullable(this.failure);
-    }
-
-    /**
-     * Deletes the snapshot file and all accompanying context files.
-     *
-     * @throws IOException if an I/O error occurs
-     * @deprecated Since 1.8.0 - Use {@link #contextFiles()} with
-     *             {@link ContextFiles#deleteFiles()} instead.
-     */
-    @Deprecated(since = "1.8.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.8.0")
-    public void deleteSnapshot() throws IOException {
-        this.contextFiles.deleteFiles();
     }
 
     @Override

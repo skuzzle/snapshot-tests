@@ -72,18 +72,6 @@ public final class XmlSnapshot implements StructuredDataProvider {
     }
 
     /**
-     * Tries to infer the JAXBContext from the passed in actual test result.
-     *
-     * @return A builder for building {@link StructuredData}.
-     * @deprecated Since 1.4.0 - Use {@link #xml()} instead.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.4.0")
-    public static XmlSnapshot inferJaxbContext() {
-        return xml();
-    }
-
-    /**
      * Creates a new XML {@link StructuredDataProvider} which will try to infer the
      * {@link JAXBContext} from the actual test result.
      *
@@ -93,19 +81,6 @@ public final class XmlSnapshot implements StructuredDataProvider {
     @API(status = Status.STABLE, since = "1.4.0")
     public static XmlSnapshot xml() {
         return new XmlSnapshot();
-    }
-
-    /**
-     * Uses the given JAXBContext as entry point for serializing snapshots.
-     *
-     * @param jaxbContext The JAXBContext to use.
-     * @return A builder for building {@link StructuredData}.
-     * @deprecated Since 1.4.0 - Use {@link #withJAXBContext(JAXBContext)} instead.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.4.0")
-    public static XmlSnapshot with(JAXBContext jaxbContext) {
-        return xml().withJAXBContext(jaxbContext);
     }
 
     /**

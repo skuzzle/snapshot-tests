@@ -43,7 +43,7 @@ public class ChangeSnapshotHeaderTest {
                 .matchesSnapshotText();
 
         assertThat(result.status()).isEqualTo(SnapshotStatus.ASSERTED);
-        final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(result.targetFile());
+        final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(result.contextFiles().snapshotFile());
         assertThat(snapshotFile.header()).isEqualTo(expectedHeader);
     }
 }

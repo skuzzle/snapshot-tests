@@ -49,24 +49,8 @@ public final class JsonSnapshot implements StructuredDataProvider {
     private CompareMode compareMode = CompareMode.STRICT;
     private JsonComparisonRuleBuilder comparisonRuleBuilder = new JsonComparisonRuleBuilder();
 
-    // legacy field, only set in deprecated #withComparator
-    private JSONComparator jsonComparator;
-
     private JsonSnapshot(ObjectMapper objectMapper) {
         this.objectMapper = Arguments.requireNonNull(objectMapper, "objectMapper must not be null");
-    }
-
-    /**
-     * Creates an instance using a default {@link ObjectMapper} with sensible defaults.
-     * The object mapper can be configured further using {@link #configure(Consumer)}.
-     *
-     * @return A builder for building {@link StructuredData}.
-     * @deprecated Since 1.4.0 - Use {@link #json()} instead.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.4.0")
-    public static JsonSnapshot withDefaultObjectMapper() {
-        return json();
     }
 
     /**
@@ -91,19 +75,6 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * @return A builder for building {@link StructuredData}.
      */
     public static JsonSnapshot json(ObjectMapper objectMapper) {
-        return new JsonSnapshot(objectMapper);
-    }
-
-    /**
-     * Creates an instance using the explicitly provided ObjectMapper.
-     *
-     * @param objectMapper The ObjectMapper to use for taking snapshots.
-     * @return A builder for building {@link StructuredData}.
-     * @deprecated Since 1.4.0 - Use {@link #json(ObjectMapper)} instead.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.4.0")
-    public static JsonSnapshot withObjectMapper(ObjectMapper objectMapper) {
         return new JsonSnapshot(objectMapper);
     }
 
@@ -155,9 +126,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
     }
 
     private JSONComparator determineComparator() {
-        return this.jsonComparator == null
-                ? this.comparisonRuleBuilder.build(this.compareMode.toJSONCompareMode())
-                : this.jsonComparator;
+        return this.comparisonRuleBuilder.build(this.compareMode.toJSONCompareMode());
     }
 
     @Override
