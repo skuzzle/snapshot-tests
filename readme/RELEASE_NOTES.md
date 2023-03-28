@@ -22,6 +22,7 @@
 * [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
 * [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
 * [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
+* [#87](https://github.com/skuzzle/snapshot-tests/issues/87): Allow to configure diff format
 * [#88](https://github.com/skuzzle/snapshot-tests/issues/88): Extract diff creation into own module
 * [#44](https://github.com/skuzzle/snapshot-tests/issues/44)/[#90](https://github.com/skuzzle/snapshot-tests/issues/90): Add possibility to normalize line endings (according to local git config)
 

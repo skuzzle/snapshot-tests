@@ -1,7 +1,9 @@
 package de.skuzzle.test.snapshots.impl;
 
+import de.skuzzle.difftool.DiffRenderer;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 
 /**
  * Holds all the input that is required to execute a single terminal snapshot operation.
@@ -27,6 +29,7 @@ final class SnapshotAssertionInput {
     private final boolean alwaysPersistRawResult;
     private final int lineNumberOffset;
     private final int contextLines;
+    private final DiffRenderer diffRenderer;
 
     SnapshotAssertionInput(String snapshotName,
             ContextFiles contextFiles,
@@ -39,7 +42,8 @@ final class SnapshotAssertionInput {
             boolean alwaysPersistActualResult,
             boolean alwaysPersistRawResult,
             int lineNumberOffset,
-            int contextLines) {
+            int contextLines,
+            DiffRenderer diffRenderer) {
         this.snapshotName = snapshotName;
         this.contextFiles = contextFiles;
         this.softAssertions = softAssertions;
@@ -52,6 +56,7 @@ final class SnapshotAssertionInput {
         this.actualSnapshotFile = actualSnapshotFile;
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
+        this.diffRenderer = diffRenderer;
     }
 
     @Deprecated
@@ -101,6 +106,10 @@ final class SnapshotAssertionInput {
 
     public int contextLines() {
         return contextLines;
+    }
+
+    public DiffRenderer diffRenderer() {
+        return diffRenderer;
     }
 
     enum TerminalOperation {

@@ -56,6 +56,9 @@ own: https://search.maven.org/artifact/{groupId}/diff-tool/{revnumber}/jar[`diff
 * The framework can be advised to normalize line endings used in snapshot files. This is especially useful when using
 git and you do not care about which actual line ending is used in your snapshots. See <<_dealing_with_line_breaks, Dealing With Line Breaks>>.
 
+* Allow to customize the diff format used when rendering failures during structure compare via
+`@SnapshotTestOptions(diffFormat = DiffFormat.SPLIT)`
+
 == Getting Started
 
 === Artifacts
@@ -436,16 +439,15 @@ line endings. Snapshot tests might fail if the `StructuralAssertions` instance i
 In case you don't care about line endings you should advise the framework to normalize line endings before writing
 snapshot files. You can do that with the following annotation on either the test method or test class:
 
-.Normalize line endings according to local git config
-====
 [source,java]
+.Normalize line endings according to local git config
 ----
 include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=normalizeLineEndingsGit,indent=0]
 ----
-====
+
 
 In case you _do_ care about line endings and you are using git, you can use a `.gitattributes` file to signify the
-intended line ending to gitConfig during checkout.
+intended line ending to git during checkout.
 
 IMPORTANT: Line endings are only normalized when producing the _actual_ snapshot. Line endings are _not_ normalized when
 reading the _expected_ snapshot result from disc.

@@ -28,10 +28,6 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
     private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphanedSnapshots";
 
-    // default number of context lines that will be printed around changes in huge unified
-    // diffs
-    private static final int DEFAULT_CONTEXT_LINES = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
-
     private final TestClass testClass;
 
     private DefaultSnapshotConfiguration(Class<?> testClass) {
@@ -122,6 +118,12 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     public SnapshotTestOptions.NormalizeLineEndings normalizeLineEndings(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
         return snapshotTestOptions.normalizeLineEndings();
+    }
+
+    @Override
+    public SnapshotTestOptions.DiffFormat diffFormat(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.diffFormat();
     }
 
     @Override

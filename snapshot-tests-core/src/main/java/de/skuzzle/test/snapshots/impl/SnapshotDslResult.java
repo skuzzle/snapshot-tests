@@ -6,11 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import de.skuzzle.difftool.DiffRenderer;
+import de.skuzzle.difftool.SplitDiffRenderer;
+import de.skuzzle.difftool.UnifiedDiffRenderer;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotNaming;
 import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.NormalizeLineEndings;
 import de.skuzzle.test.snapshots.impl.SnapshotAssertionInput.TerminalOperation;
 import de.skuzzle.test.snapshots.validation.Arguments;
@@ -94,6 +98,16 @@ final class SnapshotDslResult {
                 snapshotDirectory.resolve(rawFileName));
     }
 
+    private DiffRenderer determineDiffRenderer(SnapshotTestOptions.DiffFormat diffFormat) {
+        switch (diffFormat) {
+        case UNIFIED:
+            return UnifiedDiffRenderer.INSTANCE;
+        case SPLIT:
+            return SplitDiffRenderer.INSTANCE;
+        }
+        throw new IllegalStateException("Unhandled DiffFormat constant: " + diffFormat);
+    }
+
     SnapshotAssertionInput createAssertionInput() throws Exception {
         final int snapshotNumber = resultRecorder.size();
         final Path snapshotDirectory = determineSnapshotDirectory();
@@ -128,6 +142,7 @@ final class SnapshotDslResult {
                 ? snapshotHeader.lineNumberOffset()
                 : 0;
         final int contextLines = configuration.textDiffContextLines(testMethod);
+        final DiffRenderer diffRenderer = determineDiffRenderer(configuration.diffFormat(testMethod));
 
         final boolean softAssertions = configuration.isSoftAssertions();
 
@@ -143,6 +158,7 @@ final class SnapshotDslResult {
                 alwaysPersistActualResult,
                 alwaysPersistRawResult,
                 lineNumberOffset,
-                contextLines);
+                contextLines,
+                diffRenderer);
     }
 }

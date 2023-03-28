@@ -89,4 +89,9 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     public boolean addOffsetToReportedLinenumbers(Method testMethod) {
         return delegate.addOffsetToReportedLinenumbers(testMethod);
     }
+
+    @Override
+    public SnapshotTestOptions.DiffFormat diffFormat(Method testMethod) {
+        return delegate.diffFormat(testMethod);
+    }
 }

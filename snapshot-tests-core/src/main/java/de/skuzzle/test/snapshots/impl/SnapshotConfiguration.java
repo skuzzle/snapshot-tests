@@ -3,7 +3,7 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffFormat;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.NormalizeLineEndings;
 
 import org.apiguardian.api.API;
@@ -122,6 +122,15 @@ public interface SnapshotConfiguration {
      */
     @API(since = "1.10.0", status = Status.INTERNAL)
     NormalizeLineEndings normalizeLineEndings(Method testMethod);
+
+    /**
+     * Defines how diffs are rendered when structural comparison failed.
+     *
+     * @param testMethod The test method.
+     * @return The diff format to use.
+     */
+    @API(status = Status.INTERNAL, since = "1.10.0")
+    DiffFormat diffFormat(Method testMethod);
 
     /**
      * Whether soft assertions shall be used. When set to true, a failing snapshot

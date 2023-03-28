@@ -34,8 +34,19 @@ public @interface SnapshotTestOptions {
 
     /**
      * Default setting for {@link #normalizeLineEndings()}.
+     *
+     * @since 1.10.0
      */
+    @API(status = Status.EXPERIMENTAL, since = "1.10.0")
     NormalizeLineEndings DEFAULT_NORMALIZE_LINE_ENDINGS = NormalizeLineEndings.NEVER;
+
+    /**
+     * Default setting for {@link #diffFormat()}.
+     *
+     * @since 1.10.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.10.0")
+    DiffFormat DEFAULT_DIFF_FORMAT = DiffFormat.UNIFIED;
 
     /**
      * Defines the number of context lines that are printed around a comparison failure.
@@ -47,6 +58,7 @@ public @interface SnapshotTestOptions {
      *
      * @return The number of context lines to print in unified diffs within our structural
      *         assertion failures.
+     * @see TextSnapshot#withContextLines(int)
      */
     int textDiffContextLines() default DEFAULT_CONTEXT_LINES;
 
@@ -118,6 +130,22 @@ public @interface SnapshotTestOptions {
     NormalizeLineEndings normalizeLineEndings() default NormalizeLineEndings.NEVER;
 
     /**
+     * Defines how the diffs within the assertion failure messages are rendered. Note that
+     * this setting only applies to diffs created for structural comparisons. If you use
+     * text comparison, the diff format can be controlled using
+     * {@link TextSnapshot#withDiffFormat(TextSnapshot.DiffFormat)}.
+     * <p>
+     * Defaults to {@link DiffFormat#UNIFIED}.
+     * </p>
+     *
+     * @return The diff format.
+     * @see TextSnapshot#withDiffFormat(TextSnapshot.DiffFormat)
+     * @since 1.10.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.10.0")
+    DiffFormat diffFormat() default DiffFormat.UNIFIED;
+
+    /**
      * Defines whether an offset is added to the line numbers when rendering diffs in
      * assertion failure messages.
      *
@@ -171,6 +199,15 @@ public @interface SnapshotTestOptions {
          * determined.
          */
         GIT
+    }
+
+    /**
+     * Format of the diffs rendered in our assertion failures.
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.10.0")
+    enum DiffFormat {
+        UNIFIED,
+        SPLIT
     }
 
 }

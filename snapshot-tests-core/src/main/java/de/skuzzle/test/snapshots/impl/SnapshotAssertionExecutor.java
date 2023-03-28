@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import de.skuzzle.difftool.DiffRenderer;
+import de.skuzzle.difftool.SplitDiffRenderer;
+import de.skuzzle.difftool.UnifiedDiffRenderer;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotException;
 import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.StructuralAssertions;
@@ -44,7 +48,8 @@ final class SnapshotAssertionExecutor {
             final String serializedExpected = existingSnapshotFile.snapshot();
 
             return compareTestResults(structuralAssertions, serializedExpected, serializedActual,
-                    contextFiles.snapshotFile(), assertionInput.lineNumberOffset(), assertionInput.contextLines())
+                    contextFiles.snapshotFile(), assertionInput.lineNumberOffset(), assertionInput.contextLines(),
+                    assertionInput.diffRenderer())
                             .map(assertionError -> SnapshotTestResult.forFailedTest(
                                     contextFiles, existingSnapshotFile, serializedActual, assertionError))
                             .orElseGet(() -> SnapshotTestResult.of(
@@ -68,13 +73,15 @@ final class SnapshotAssertionExecutor {
     }
 
     private Optional<Throwable> compareTestResults(StructuralAssertions structuralAssertions, String storedSnapshot,
-            String serializedActual, Path snapshotFile, int lineNumberOffset, int contextLines) {
+            String serializedActual, Path snapshotFile, int lineNumberOffset, int contextLines,
+            DiffRenderer diffRenderer) {
         try {
             structuralAssertions.assertEquals(storedSnapshot, serializedActual);
             return Optional.empty();
         } catch (final AssertionError e) {
+
             final AssertionError diffableAssertionError = toDiffableAssertionError(e, serializedActual, storedSnapshot,
-                    snapshotFile, lineNumberOffset, contextLines);
+                    snapshotFile, lineNumberOffset, contextLines, diffRenderer);
             return Optional.of(diffableAssertionError);
         } catch (final SnapshotException e) {
             return Optional.of(e);
@@ -84,7 +91,8 @@ final class SnapshotAssertionExecutor {
     }
 
     private AssertionError toDiffableAssertionError(AssertionError original, String serializedActual,
-            String storedSnapshot, Path snapshotFile, int lineNumberOffset, int contextLines) {
+            String storedSnapshot, Path snapshotFile, int lineNumberOffset, int contextLines,
+            DiffRenderer diffRenderer) {
         final StringBuilder assertionMessage = new StringBuilder();
         if (original.getMessage() != null) {
             assertionMessage.append(original.getMessage());
@@ -96,7 +104,7 @@ final class SnapshotAssertionExecutor {
                 .append(snapshotFile.toString())
                 .append(System.lineSeparator());
 
-        final TextDiff testDiff = determineDiff(original, storedSnapshot, serializedActual);
+        final TextDiff testDiff = determineDiff(diffRenderer, original, storedSnapshot, serializedActual);
         if (testDiff.differencesDetected()) {
             assertionMessage
                     .append(System.lineSeparator())
@@ -104,13 +112,13 @@ final class SnapshotAssertionExecutor {
                     .append(System.lineSeparator())
                     .append(testDiff.renderDiffWithOffsetAndContextLines(lineNumberOffset, contextLines));
         }
-        final AssertionFailedError error = new AssertionFailedError(assertionMessage.toString(),
-                storedSnapshot, serializedActual, original.getCause());
 
-        return error;
+        return new AssertionFailedError(assertionMessage.toString(),
+                storedSnapshot, serializedActual, original.getCause());
     }
 
-    private TextDiff determineDiff(AssertionError original, String storedSnapshot, String serializedActual) {
+    private TextDiff determineDiff(DiffRenderer diffRenderer, AssertionError original, String storedSnapshot,
+            String serializedActual) {
         if (original instanceof TextDiffAssertionError) {
             // this is to reuse the diff that has already been created during text
             // comparison in TextDiffStructuralAssertions
@@ -118,9 +126,11 @@ final class SnapshotAssertionExecutor {
         } else {
             return TextDiff.compare(
                     Settings.defaultSettings()
+                            .withDiffRenderer(diffRenderer)
                             .withInlineOpeningChangeMarker("~~~~")
                             .withInlineClosingChangeMarker("~~~~"),
                     storedSnapshot, serializedActual);
         }
     }
+
 }
