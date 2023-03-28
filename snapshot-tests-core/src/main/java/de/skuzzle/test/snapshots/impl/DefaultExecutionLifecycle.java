@@ -10,7 +10,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -71,7 +71,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
     }
 
     private boolean decideUpdateHeader(SnapshotAssertionInput assertionInput, SnapshotTestResult result) {
-        return assertionInput.isSnapshotFileAreadyExists()
+        return assertionInput.isSnapshotFileAlreadyExists()
                 && !assertionInput.actualSnapshotFile().header().equals(result.snapshotFile().header());
     }
 

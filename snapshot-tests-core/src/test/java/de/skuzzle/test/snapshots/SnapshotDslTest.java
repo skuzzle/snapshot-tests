@@ -2,14 +2,14 @@ package de.skuzzle.test.snapshots;
 
 import java.nio.file.Path;
 
-import org.junit.jupiter.api.Test;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseActual;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+
+import org.junit.jupiter.api.Test;
 
 // Just to try out the dsl
 public class SnapshotDslTest {

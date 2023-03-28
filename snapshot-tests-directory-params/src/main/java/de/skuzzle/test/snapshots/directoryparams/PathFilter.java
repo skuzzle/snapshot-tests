@@ -5,10 +5,10 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.function.Predicate;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * {@link Path} based predicate that can be implemented for more fine grained control over

@@ -11,23 +11,41 @@ gradleEnterprise {
 }
 
 rootProject.name = 'snapshot-tests'
-include 'snapshot-tests-common',
-        'snapshot-tests-test-common',
+
+include (
         'snapshot-tests-core',
+        'snapshot-tests-bom',
+
+        // Internal utilities
+        'snapshot-tests-xmlunit',
+        'snapshot-tests-common',
+        'snapshot-tests-test-common',
+
+        // Test Framework support
         'snapshot-tests-junit5',
         'snapshot-tests-junit4',
-        'snapshot-tests-xmlunit',
+
+        // Supported data formats
         'snapshot-tests-html',
+        'snapshot-tests-xml-legacy',
+        'snapshot-tests-xml',
+        'snapshot-tests-json',
+
+        // deprecated data module
         'snapshot-tests-jaxb',
         'snapshot-tests-jaxb-jakarta',
         'snapshot-tests-jackson',
+
+        // External utilities
         'snapshot-tests-directory-params',
         'snapshot-tests-normalize',
+        'diff-tool',
+
+        // Docs and build support
         'snapshot-tests-documentation',
-        'snapshot-tests-bom',
         "readme",
         "test-coverage"
-
+)
 
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -53,11 +71,12 @@ dependencyResolutionManagement {
             library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
             library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
             library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')
-            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
             library('opentest4j', 'org.opentest4j:opentest4j:1.2.0')
             library('jsoup', 'org.jsoup:jsoup:1.15.3')
             library('junit4', 'junit:junit:4.13.2')
         }
     }
 }
+include 'diff-tool'
 

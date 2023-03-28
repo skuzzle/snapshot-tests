@@ -1,21 +1,36 @@
-**Migration Info**: 
+**Migration Info**:
 
 > **Note**
-> When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now 
-> either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`. 
+> The following modules have been deprecated: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
+> `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
+> `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also:
+> [#67](https://github.com/skuzzle/snapshot-tests/issues/67))
+>
+> Important: These new modules come with slightly different Automatic-Module-Name. If you are using JPMS you need to
+> adjust your `module-info.java` when upgrading.
+>
+> The deprecated modules will be removed with the next major version!
+
+> **Note**
+> When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now
+> either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`.
 > This will become mandatory with the next major version!
-> 
-> Check the resp. section in the README!
 
-### Fixes
 
-* [#76](https://github.com/skuzzle/snapshot-tests/issues/76): Improved lazy XPath rule configuration
-* [#77](https://github.com/skuzzle/snapshot-tests/issues/77): Small XPath performance optimization
-* [#78](https://github.com/skuzzle/snapshot-tests/issues/78): Throw AssertionError only once
-* [#79](https://github.com/skuzzle/snapshot-tests/issues/79): Filter out internal stack frames from all AssertionErrors
+### Changes
 
-### Build
-[#75](https://github.com/skuzzle/snapshot-tests/issues/75): Use `Project.copy` instead of `Copy` task
+* [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
+* [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
+* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
+* [#87](https://github.com/skuzzle/snapshot-tests/issues/87): Allow to configure diff format
+* [#88](https://github.com/skuzzle/snapshot-tests/issues/88): Extract diff creation into own module
+* [#44](https://github.com/skuzzle/snapshot-tests/issues/44)/[#90](https://github.com/skuzzle/snapshot-tests/issues/90): Add possibility to normalize line endings (according to local git config)
+
+* Update to jsonassert `1.5.1` (coming from `1.5.0`)
+
+
+* List [notable changes](https://@github.user@.github.io/@github.name@/reference/latest/#_notable_changes_in_this_release) since last release in reference documentation
+
 
 ## Reference Documentation
 
@@ -86,56 +101,56 @@ testImplementation("@project.groupId@:snapshot-tests-junit4:@project.version@")
 ### Choose a snapshot format (optional)
 <details>
     <summary>Show supported snapshot format artifacts</summary>
-    
+
 If you want **JSON** based snapshots:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jackson/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jackson/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jackson:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-json:@project.version@")
 ```
 
-If you want **XML** based snapshots using jaxb and `javax.xml` legacy namespaces:
+If you want **XML** based snapshots using jaxb and legacy `javax.xml` namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jaxb</artifactId>
+    <artifactId>snapshot-tests-xml-legacy</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jaxb:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-xml-legacy:@project.version@")
 ```
 
 If you want **XML** based snapshots using jaxb new `jakarta.xml` namespaces:
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@)
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jaxb-jakarta</artifactId>
+    <artifactId>snapshot-tests-xml</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
 ```
 
 ```
-testImplementation("@project.groupId@:snapshot-tests-jaxb-jakarta:@project.version@")
+testImplementation("@project.groupId@:snapshot-tests-xml:@project.version@")
 ```
 
 If you want **HTML** based snapshots:
@@ -176,6 +191,23 @@ Directory Params
 
 ```
 testImplementation("@project.groupId@:snapshot-tests-directory-params:@project.version@")
+```
+
+Diff-Tool
+
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=@project.version@&color=blue)](https://search.maven.org/artifact/@project.groupId@/diff-tool/@project.version@/jar) [![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=@project.version@&color=orange)](http://www.javadoc.io/doc/@project.groupId@/diff-tool/@project.version@)
+
+```xml
+<dependency>
+    <groupId>@project.groupId@</groupId>
+    <artifactId>diff-tool</artifactId>
+    <version>@project.version@</version>
+    <scope>test</scope>
+</dependency>
+```
+
+```
+testImplementation("@project.groupId@:diff-tool:@project.version@")
 ```
 
 Object normalization (⚠️ Experimental⚠)

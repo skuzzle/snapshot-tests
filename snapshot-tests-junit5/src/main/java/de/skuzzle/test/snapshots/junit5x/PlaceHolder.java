@@ -6,7 +6,7 @@ import org.apiguardian.api.API.Status;
 /**
  * Presence of this class will be detected by the -core module in order to print a
  * migration warning. Will be removed with 2.0.0 release.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */

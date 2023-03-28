@@ -7,9 +7,9 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/ProjectPolly.svg?style=social)](https://twitter.com/ProjectPolly)
 
 # snapshot-tests
-Convenient snapshot testing for JUnit5 and JUnit4. 
+Convenient snapshot testing for JUnit5 and JUnit4.
 
-This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a 
+This library allows to conveniently assert on the structure and contents of complex objects. It does so by storing a
 serialized version of the object during the first test execution and during subsequent test executions, compare the
 actual object against the stored snapshot.
 
@@ -21,15 +21,15 @@ Supported test frameworks:
 
 Supported snapshot formats:
 - [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-core/@project.version@/jar))
-- [x] Json via [snapshot-tests-jackson](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jackson/@project.version@/jar)
-- [x] XML via [snapshot-tests-jaxb](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb/@project.version@/jar) xor [snapshot-tests-jaxb-jakarta](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-jaxb-jakarta/@project.version@/jar)
+- [x] Json via [snapshot-tests-json](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-json/@project.version@/jar)
+- [x] XML via [snapshot-tests-xml](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml/@project.version@/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-xml-legacy/@project.version@/jar)
 - [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/@project.groupId@/snapshot-tests-html/@project.version@/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
-Please check out the GitHub release page to find Maven & Gradle coordinates for the latest 
+Please check out the GitHub release page to find Maven & Gradle coordinates for the latest
 release [@project.version@](https://github.com/skuzzle/snapshot-tests/releases/tag/v@project.version@)
 
 ### Reference Documentation
@@ -37,11 +37,11 @@ Starting with release `1.8.0` we provide a new external reference documentation:
 * [Latest](https://@github.user@.github.io/@github.name@/reference/latest): Always points to the latest version
 * [@project.version@](https://@github.user@.github.io/@github.name@/reference/@project.version@): Points to a specific version
 
-Over the course of the next releases most of the contents of this README will be transitioned into the new reference 
+Over the course of the next releases most of the contents of this README will be transitioned into the new reference
 documentation.
 
 ## Quick start
-_(assumes using `maven`, `JUnit5` and `snapshot-tests-jackson` artifact)_
+_(assumes using `maven`, `JUnit5` and `snapshot-tests-json` artifact)_
 
 Add the following dependencies to your build
 
@@ -54,7 +54,7 @@ Add the following dependencies to your build
 </dependency>
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
 </dependency>
@@ -77,9 +77,9 @@ class ComplexTest {
 ```
 Snapshot testing workflow:
 1. Implement your test cases and add one ore more snapshot assertions as shown above.
-2. When you now execute these tests the first time, serialized snapshots of your test results will be persisted 
+2. When you now execute these tests the first time, serialized snapshots of your test results will be persisted
 **and the tests will fail**
-3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots. 
+3. Execute the same tests again. Now, the framework will compare the test results against the persisted snapshots.
 If your code under test produces deterministic results, tests should now be green
 4. Check in the persisted snapshots into your SCM
 
@@ -87,32 +87,32 @@ If your code under test produces deterministic results, tests should now be gree
 ## Notes on test framework support
 
 ### JUnit5
-Historically, JUnit5 is the preferred test framework and has always natively been supported. The preferred way of 
-configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your 
+Historically, JUnit5 is the preferred test framework and has always natively been supported. The preferred way of
+configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your
 preferred snapshot format (i.e. like `snapshot-tests-jackson`).
 
 ### JUnit5 legacy
-The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a 
-direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which 
-would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being 
+The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a
+direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which
+would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being
 printed to `System.err` stating the required migration steps.
 
 > **Warning**
 > Starting from version `2.0.0` this scenario will no longer be supported.
 
 ### JUnit4
-JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally 
+JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally
 add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
 
 > **Warning**
-> In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still 
-> transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you 
+> In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still
+> transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you
 > might want to add a respective exclusion to your dependency:
 
 ```xml
 <dependency>
     <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-jackson</artifactId>
+    <artifactId>snapshot-tests-json</artifactId>
     <version>@project.version@</version>
     <scope>test</scope>
     <exclusions>
@@ -127,7 +127,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 or
 
 ```
-testImplementation('@project.groupId@:snapshot-tests-jackson:@project.version@') {
+testImplementation('@project.groupId@:snapshot-tests-json:@project.version@') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ```
@@ -138,7 +138,7 @@ testImplementation('@project.groupId@:snapshot-tests-jackson:@project.version@')
 
 ### Configuring some more details
 **New**
-Since version `1.7.0` there is a new `@SnapshotTestOptions` annotation that can either be placed on a test method or 
+Since version `1.7.0` there is a new `@SnapshotTestOptions` annotation that can either be placed on a test method or
 test class. It allows to configure some details of the snapshot testing engine.
 
 #### Showing more context in unified diffs
@@ -147,8 +147,8 @@ detected change in the unified diffs. Per default, we will only print 5 lines ar
 
 
 #### Line number behavior in diffs
-By default, line numbers in the diffs that are rendered in our assertion failure messages reflect the physical line 
-number within the snapshot file. That number differs from the line number within the raw test result data because 
+By default, line numbers in the diffs that are rendered in our assertion failure messages reflect the physical line
+number within the snapshot file. That number differs from the line number within the raw test result data because
 snapshot files contain some header information at the beginning.
 If you want line numbers in the diffs to reflect the number within the raw data, you can use
 

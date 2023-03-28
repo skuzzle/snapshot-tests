@@ -3,6 +3,8 @@ package de.skuzzle.test.snapshots.junit5;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -13,8 +15,6 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestWatcher;
-
-import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 @API(status = Status.INTERNAL)
 class JUnit5SnapshotExtension implements

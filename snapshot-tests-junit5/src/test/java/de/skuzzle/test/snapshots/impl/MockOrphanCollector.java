@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.ListAssert;
-
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
+
+import org.assertj.core.api.ListAssert;
 
 final class MockOrphanCollector implements OrphanCollector {
 

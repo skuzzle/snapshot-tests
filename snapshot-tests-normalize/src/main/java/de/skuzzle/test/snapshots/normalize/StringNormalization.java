@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Simply collects multiple string modifications (for example as retrieved from

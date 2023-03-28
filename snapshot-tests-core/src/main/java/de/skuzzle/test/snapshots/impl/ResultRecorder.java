@@ -1,5 +1,7 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.util.function.Function;
+
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.validation.Arguments;
 
@@ -7,7 +9,7 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  * delegates the outcome of snapshot assertions to both the current
  * {@link SnapshotTestContext} and the {@link LocalResultCollector} so that
  * {@link SnapshotDslImpl} only needs a single dependency.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -22,7 +24,9 @@ final class ResultRecorder {
     }
 
     static ResultRecorder forFreshTestMethod(SnapshotTestContext context) {
-        return new ResultRecorder(new LocalResultCollector(), context);
+        final Function<String, Throwable> assumptionFailedConstructor = context
+                .testFrameworkSupport()::assumptionFailed;
+        return new ResultRecorder(new LocalResultCollector(assumptionFailedConstructor), context);
     }
 
     public void recordSnapshotTestResult(SnapshotTestResult result) {

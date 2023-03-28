@@ -1,14 +1,16 @@
 package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
-import de.skuzzle.test.snapshots.validation.Arguments;
-import org.w3c.dom.Node;
-import org.xmlunit.xpath.XPathEngine;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.w3c.dom.Node;
+import org.xmlunit.xpath.XPathEngine;
+
 /**
- * Collects and caches the matches of a single XPath within a single documents for fast access.
+ * Collects and caches the matches of a single XPath within a single documents for fast
+ * access.
  */
 final class CachedXPath {
 

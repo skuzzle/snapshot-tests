@@ -4,7 +4,7 @@ import de.skuzzle.test.snapshots.reflection.Classes;
 
 /**
  * Detects whether the new -junit5 module is on the class path and logs a warning if not.
- * 
+ *
  * @author Simon Taddiken
  */
 @Deprecated(since = "1.8.0", forRemoval = true)
@@ -18,7 +18,7 @@ final class DetectJunit5Module {
     public DetectJunit5Module() {
         if (!PLACEHOLDER_AVAILABLE && JUNIT5_AVAILABLE) {
             System.err.println(
-                    "WARNING: Starting from snapshot-tests version 1.8.0, you should depend on 'snapshot-tests-junit5' module.");
+                    "DEPRECATION WARNING: Starting from snapshot-tests version 1.8.0, you should depend on 'snapshot-tests-junit5' module.");
             System.err.println();
             System.err.println("To remove this warning message, follow these simple migration steps:");
             System.err.println();

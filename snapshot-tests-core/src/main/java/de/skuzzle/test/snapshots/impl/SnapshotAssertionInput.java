@@ -1,7 +1,9 @@
 package de.skuzzle.test.snapshots.impl;
 
+import de.skuzzle.difftool.DiffRenderer;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
 
 /**
  * Holds all the input that is required to execute a single terminal snapshot operation.
@@ -21,12 +23,13 @@ final class SnapshotAssertionInput {
     private final boolean softAssertions;
     private final boolean actualWasNull;
     private final boolean forceUpdateSnapshots;
-    private final boolean snapshotFileAreadyExists;
+    private final boolean snapshotFileAlreadyExists;
     private final boolean disableAssertion;
     private final boolean alwaysPersistActualResult;
     private final boolean alwaysPersistRawResult;
     private final int lineNumberOffset;
     private final int contextLines;
+    private final DiffRenderer diffRenderer;
 
     SnapshotAssertionInput(String snapshotName,
             ContextFiles contextFiles,
@@ -35,23 +38,25 @@ final class SnapshotAssertionInput {
             boolean actualWasNull,
             boolean disableAssertion,
             boolean forceUpdateSnapshots,
-            boolean snapshotFileAreadyExists,
+            boolean snapshotFileAlreadyExists,
             boolean alwaysPersistActualResult,
             boolean alwaysPersistRawResult,
             int lineNumberOffset,
-            int contextLines) {
+            int contextLines,
+            DiffRenderer diffRenderer) {
         this.snapshotName = snapshotName;
         this.contextFiles = contextFiles;
         this.softAssertions = softAssertions;
         this.actualWasNull = actualWasNull;
         this.forceUpdateSnapshots = forceUpdateSnapshots;
-        this.snapshotFileAreadyExists = snapshotFileAreadyExists;
+        this.snapshotFileAlreadyExists = snapshotFileAlreadyExists;
         this.disableAssertion = disableAssertion;
         this.alwaysPersistActualResult = alwaysPersistActualResult;
         this.alwaysPersistRawResult = alwaysPersistRawResult;
         this.actualSnapshotFile = actualSnapshotFile;
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
+        this.diffRenderer = diffRenderer;
     }
 
     @Deprecated
@@ -79,8 +84,8 @@ final class SnapshotAssertionInput {
         return forceUpdateSnapshots;
     }
 
-    public boolean isSnapshotFileAreadyExists() {
-        return snapshotFileAreadyExists;
+    public boolean isSnapshotFileAlreadyExists() {
+        return snapshotFileAlreadyExists;
     }
 
     public boolean isDisableAssertion() {
@@ -101,6 +106,10 @@ final class SnapshotAssertionInput {
 
     public int contextLines() {
         return contextLines;
+    }
+
+    public DiffRenderer diffRenderer() {
+        return diffRenderer;
     }
 
     enum TerminalOperation {

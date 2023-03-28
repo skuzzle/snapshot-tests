@@ -1,13 +1,13 @@
 package de.skuzzle.test.snapshots.reflection;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
-import de.skuzzle.test.snapshots.validation.Arguments;
-
 /**
  * Utilities for working with {@link Class classes}.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -17,7 +17,7 @@ public final class Classes {
     /**
      * Detects whether a class with given full qualified name is available on the
      * classpath of the given classloader.
-     * 
+     *
      * @param classloader The classloader.
      * @param classname The classname.
      * @return Whether the class is available.
@@ -36,7 +36,7 @@ public final class Classes {
     /**
      * Detects whether a class with given full qualified name is available on the
      * classpath of the current classloader.
-     * 
+     *
      * @param classname The classname.
      * @return Whether the class is available.
      */

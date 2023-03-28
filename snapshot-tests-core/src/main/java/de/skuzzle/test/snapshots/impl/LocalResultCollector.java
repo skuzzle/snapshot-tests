@@ -1,16 +1,17 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.reflection.StackTraces;
 import de.skuzzle.test.snapshots.validation.Arguments;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Collects the snapshot assertion results within a single test method.
@@ -20,6 +21,11 @@ import java.util.stream.Collectors;
 final class LocalResultCollector {
 
     private final List<SnapshotTestResult> results = new ArrayList<>();
+    private final Function<String, Throwable> assumptionFailedConstructor;
+
+    LocalResultCollector(Function<String, Throwable> assumptionFailedConstructor) {
+        this.assumptionFailedConstructor = assumptionFailedConstructor;
+    }
 
     public void recordSnapshotTestResult(SnapshotTestResult result) {
         this.results.add(Arguments.requireNonNull(result));
@@ -82,8 +88,7 @@ final class LocalResultCollector {
 
     private Throwable abortIfNoneFailedAndAtLeastOneWasDisabled() {
         if (wasAtLeastOneDisabledAndAllOthersSuccessful()) {
-            return AssumptionExceptionDetector.assumptionFailed("Assertion was disabled")
-                    .orElse(null);
+            return assumptionFailedConstructor.apply("Assertion was disabled");
         }
         return null;
     }

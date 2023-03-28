@@ -9,7 +9,7 @@ import de.skuzzle.test.snapshots.reflection.StackTraces;
 /**
  * Internal utility to work with exceptions. Kind of related to {@link StackTraces} in the
  * common package.
- * 
+ *
  * @author Simon Taddiken
  * @see StackTraces
  */

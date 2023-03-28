@@ -1,15 +1,16 @@
 package de.skuzzle.test.snapshots.data.xml.xmlunit;
 
+import java.util.Map;
+import java.util.function.Consumer;
+
 import de.skuzzle.test.snapshots.ComparisonRuleBuilder;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.xmlunit.assertj.CompareAssert;
 import org.xmlunit.assertj.XmlAssert;
-
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Configurable {@link StructuralAssertions} relying on xml-unit.

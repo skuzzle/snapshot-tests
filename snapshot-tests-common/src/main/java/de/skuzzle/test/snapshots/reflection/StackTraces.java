@@ -3,14 +3,14 @@ package de.skuzzle.test.snapshots.reflection;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
-import de.skuzzle.test.snapshots.validation.Arguments;
-
 /**
  * Utility for working with stacktraces.
- * 
+ *
  * @author Simon Taddiken
  * @since 1.9.0
  */
@@ -25,7 +25,7 @@ public final class StackTraces {
      * provided root exception.
      * <p>
      * It is allowed to pass null as throwable. In this case, nothing happens.
-     * 
+     *
      * @param throwable The throwable for which to clean the stack trace. Can be null.
      * @param elementsToRemove A predicate matching the elements to remove.
      * @since 1.9.0
@@ -51,7 +51,7 @@ public final class StackTraces {
     /**
      * Finds the immediate caller of the method which calls this method. Useful for
      * logging purposes.
-     * 
+     *
      * @return An object describing the caller.
      * @since 1.9.0
      */
@@ -74,7 +74,7 @@ public final class StackTraces {
     /**
      * Represents the call site of a method in which
      * {@link StackTraces#findImmediateCaller()} has been invoked.
-     * 
+     *
      * @author Simon Taddiken
      */
     @API(status = Status.INTERNAL, since = "1.9.0")

@@ -2,23 +2,24 @@ package de.skuzzle.test.snapshots.data.json;
 
 import java.util.function.Consumer;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.DefaultComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import de.skuzzle.test.snapshots.SnapshotSerializer;
+import de.skuzzle.test.snapshots.StructuralAssertions;
+import de.skuzzle.test.snapshots.StructuredData;
+import de.skuzzle.test.snapshots.StructuredDataProvider;
+import de.skuzzle.test.snapshots.reflection.Classes;
+import de.skuzzle.test.snapshots.validation.Arguments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import de.skuzzle.test.snapshots.SnapshotSerializer;
-import de.skuzzle.test.snapshots.StructuralAssertions;
-import de.skuzzle.test.snapshots.StructuredData;
-import de.skuzzle.test.snapshots.StructuredDataProvider;
-import de.skuzzle.test.snapshots.validation.Arguments;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.DefaultComparator;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 /**
  * Serializes snapshots as json using jackson. Use either the static factory methods or
@@ -39,6 +40,24 @@ import de.skuzzle.test.snapshots.validation.Arguments;
  */
 @API(status = Status.STABLE)
 public final class JsonSnapshot implements StructuredDataProvider {
+
+    @Deprecated(forRemoval = true)
+    static final boolean LEGACY_WARNING_PRINTED;
+    static {
+        final boolean placeHolderAvailable = Classes.isClassPresent("de.skuzzle.test.snapshots.data.jsonx.PlaceHolder");
+        if (!placeHolderAvailable) {
+            System.err.println(
+                    "DEPRECATION WARNING: Starting from snapshot-tests version 1.10.0, you should depend on 'snapshot-tests-json' module.");
+            System.err.println();
+            System.err.println("To remove this warning, follow these migration steps:");
+            System.err.println();
+            System.err.println("- Remove direct dependency to 'snapshot-tests-jackson'");
+            System.err.println("- Add direct dependency to 'snapshot-tests-json' instead");
+            LEGACY_WARNING_PRINTED = true;
+        } else {
+            LEGACY_WARNING_PRINTED = false;
+        }
+    }
 
     /**
      * Takes Snapshots using jackson {@link ObjectMapper} and compare the results using

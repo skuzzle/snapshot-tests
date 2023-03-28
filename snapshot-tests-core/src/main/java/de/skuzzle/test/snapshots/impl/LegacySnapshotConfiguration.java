@@ -3,10 +3,11 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
+import de.skuzzle.test.snapshots.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 
 /**
  * @author Simon Taddiken
@@ -70,6 +71,11 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
+    public SnapshotTestOptions.NormalizeLineEndings normalizeLineEndings(Method testMethod) {
+        return delegate.normalizeLineEndings(testMethod);
+    }
+
+    @Override
     public boolean alwaysPersistRawResult(Method testMethod) {
         return delegate.alwaysPersistRawResult(testMethod);
     }
@@ -82,5 +88,10 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     @Override
     public boolean addOffsetToReportedLinenumbers(Method testMethod) {
         return delegate.addOffsetToReportedLinenumbers(testMethod);
+    }
+
+    @Override
+    public SnapshotTestOptions.DiffFormat diffFormat(Method testMethod) {
+        return delegate.diffFormat(testMethod);
     }
 }

@@ -60,15 +60,14 @@ ext {
             projects.snapshotTestsJunit5,
             projects.snapshotTestsHtml,
             projects.snapshotTestsJackson,
+            projects.snapshotTestsJson,
             projects.snapshotTestsJaxb,
+            projects.snapshotTestsXmlLegacy,
+            projects.snapshotTestsXml,
             projects.snapshotTestsJaxbJakarta,
             projects.snapshotTestsNormalize,
-            projects.snapshotTestsDirectoryParams
+            projects.snapshotTestsDirectoryParams,
+            projects.diffTool
     );
-
-    allCodeProjects = Set.of(
-            projects.snapshotTestsCommon,
-            projects.snapshotTestsDocumentation,
-    )
 }
 

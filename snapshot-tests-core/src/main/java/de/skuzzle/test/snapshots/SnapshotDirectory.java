@@ -6,11 +6,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDirectory;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Drop in replacement for {@link EnableSnapshotTests#snapshotDirectory()}. Allows to

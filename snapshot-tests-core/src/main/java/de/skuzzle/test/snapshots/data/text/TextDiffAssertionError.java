@@ -1,9 +1,9 @@
 package de.skuzzle.test.snapshots.data.text;
 
+import de.skuzzle.test.snapshots.validation.Arguments;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-
-import de.skuzzle.test.snapshots.validation.Arguments;
 
 /**
  * Internal exception that is used to communicate the {@link TextDiff} instance created by

@@ -2,13 +2,13 @@ package de.skuzzle.test.snapshots.junit5;
 
 import java.util.Optional;
 
+import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
+import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
+
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-
-import de.skuzzle.test.snapshots.impl.SnapshotConfiguration;
-import de.skuzzle.test.snapshots.impl.SnapshotTestContext;
 
 /**
  * Manages the lifecycle of a {@link SnapshotTestContext} instance by attaching it to the
@@ -50,7 +50,8 @@ final class Junit5SnapshotTestContextProvider {
     public static SnapshotTestContext create(ExtensionContext extensionContext) {
         final var testClass = extensionContext.getRequiredTestClass();
         final var snapshotConfiguration = SnapshotConfiguration.defaultConfigurationFor(testClass);
-        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
+        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration,
+                JUnit5TestFrameworkSupport.INSTANCE);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;
     }
@@ -68,8 +69,9 @@ final class Junit5SnapshotTestContextProvider {
     @Deprecated(since = "1.7.0")
     public static SnapshotTestContext createLegacy(ExtensionContext extensionContext) {
         final var testClass = extensionContext.getRequiredTestClass();
-        final SnapshotConfiguration snapshotConfiguration = SnapshotConfiguration.legacyConfigurationFor(testClass);
-        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration);
+        final var snapshotConfiguration = SnapshotConfiguration.legacyConfigurationFor(testClass);
+        final var snapshotTestContext = SnapshotTestContext.forConfiguration(snapshotConfiguration,
+                JUnit5TestFrameworkSupport.INSTANCE);
         extensionContext.getStore(NAMESPACE).put(KEY_SELF, snapshotTestContext);
         return snapshotTestContext;
     }

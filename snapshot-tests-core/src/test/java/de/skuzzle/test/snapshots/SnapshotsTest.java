@@ -4,21 +4,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 @EnableSnapshotTests
 public class SnapshotsTest {
 
     @Test
+    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.CRLF)
+    void testNormalizeToWindows(Snapshot snapshot) {
+        final SnapshotTestResult testResult = snapshot.assertThat("line1\nline2").asText().matchesSnapshotText();
+        assertThat(testResult.serializedActual()).isEqualTo("line1\r\nline2");
+    }
+
+    @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
-    void testWriteContextFiles(Snapshot snapshot) throws Exception {
+    void testWriteContextFiles(Snapshot snapshot) {
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().matchesSnapshotText();
 
@@ -29,15 +36,14 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testDisabledWithNullInput(Snapshot snapshot) throws Exception {
+    void testDisabledWithNullInput(Snapshot snapshot) {
         final SnapshotTestResult testResult = snapshot.assertThat(null).asText().disabled();
         assertThat(testResult.serializedActual()).isEqualTo("<<unavailable because actual was null>>");
     }
 
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
-    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreatedWithContextFiles(Snapshot snapshot)
-            throws Exception {
+    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreatedWithContextFiles(Snapshot snapshot) {
 
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
@@ -50,8 +56,7 @@ public class SnapshotsTest {
 
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
-    void testWithOneDisabledAssertionForWhichSnapshotHasHasAlreadyBeenCreatedWithContextFiles(Snapshot snapshot)
-            throws Exception {
+    void testWithOneDisabledAssertionForWhichSnapshotHasHasAlreadyBeenCreatedWithContextFiles(Snapshot snapshot) {
 
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
@@ -63,7 +68,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) throws Exception {
+    void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated(Snapshot snapshot) {
         final Person simon = determinePerson();
         final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabledBecause("Reasons");
 
@@ -78,7 +83,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testWithOneDisabledAssertionForWhichSnapshotHasAlreadyBeenCreated(Snapshot snapshot) throws Exception {
+    void testWithOneDisabledAssertionForWhichSnapshotHasAlreadyBeenCreated(Snapshot snapshot) {
         final Person simon = determinePerson();
         final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
 
@@ -91,7 +96,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) throws Throwable {
+    void testMultipleSnapshotsInOneTestCase(Snapshot snapshot) {
         final Person simon = determinePerson();
         snapshot.assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
@@ -99,7 +104,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testWithExplicitSnapshotName(Snapshot snapshot) throws Exception {
+    void testWithExplicitSnapshotName(Snapshot snapshot) {
         final Person simon = determinePerson();
         snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
@@ -107,7 +112,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testMixExplicitAndAutomaticNaming(Snapshot snapshot) throws Exception {
+    void testMixExplicitAndAutomaticNaming(Snapshot snapshot) {
         final Person simon = determinePerson();
         snapshot.named("simon").assertThat(simon).asText().matchesSnapshotText();
         final Person phil = determinePerson().setName("Phil");
@@ -115,7 +120,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testCustomizeTextSnapshot(Snapshot snapshot) throws Exception {
+    void testCustomizeTextSnapshot(Snapshot snapshot) {
         final Person simon = determinePerson();
 
         snapshot.assertThat(simon).as(TextSnapshot.text()

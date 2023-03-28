@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
@@ -16,6 +13,9 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Context object that pertains to the execution of a whole test class which is annotated
@@ -42,22 +42,27 @@ public final class SnapshotTestContext {
 
     private final DynamicOrphanedSnapshotsDetector dynamicOrphanedSnapshotsDetector = new DynamicOrphanedSnapshotsDetector();
     private final SnapshotConfiguration snapshotConfiguration;
+    private final TestFrameworkSupport testFrameworkSupport;
 
     private SnapshotDslImpl currentSnapshotTest;
 
-    private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration) {
+    private SnapshotTestContext(SnapshotConfiguration snapshotConfiguration,
+            TestFrameworkSupport testFrameworkSupport) {
         this.snapshotConfiguration = Arguments.requireNonNull(snapshotConfiguration,
                 "snapshotConfiguration must not be null");
+        this.testFrameworkSupport = Arguments.requireNonNull(testFrameworkSupport,
+                "testFrameworkSupport must not be null");
     }
 
     @Deprecated(since = "1.7.0")
-    public static SnapshotTestContext forTestClass(Class<?> testClass) {
+    public static SnapshotTestContext forTestClass(Class<?> testClass, TestFrameworkSupport testFrameworkSupport) {
         final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
-        return new SnapshotTestContext(configuration);
+        return new SnapshotTestContext(configuration, testFrameworkSupport);
     }
 
-    public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration) {
-        return new SnapshotTestContext(snapshotConfiguration);
+    public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration,
+            TestFrameworkSupport testFrameworkSupport) {
+        return new SnapshotTestContext(snapshotConfiguration, testFrameworkSupport);
     }
 
     /**
@@ -69,6 +74,18 @@ public final class SnapshotTestContext {
     @API(status = Status.INTERNAL, since = "1.9.0")
     public SnapshotConfiguration snapshotConfiguration() {
         return snapshotConfiguration;
+    }
+
+    /**
+     * Returns the TestFrameworkSupport that encapsulates test framework specific
+     * behavior.
+     *
+     * @return Thes {@link TestFrameworkSupport}.
+     * @since 1.10.0
+     */
+    @API(status = Status.INTERNAL, since = "1.10.0")
+    public TestFrameworkSupport testFrameworkSupport() {
+        return testFrameworkSupport;
     }
 
     /**
@@ -158,7 +175,7 @@ public final class SnapshotTestContext {
                 .detectOrphans(globalSnapshotDirectory)
                 .peek(collector::addRawResult);
 
-        final Stream<OrphanDetectionResult> staticOrphans = new StaticOrphanedSnapshotDetector()
+        final Stream<OrphanDetectionResult> staticOrphans = new StaticOrphanedSnapshotDetector(testFrameworkSupport)
                 .detectOrphans(DirectoryResolver.BASE)
                 .peek(collector::addRawResult);
 

@@ -3,14 +3,14 @@ package de.skuzzle.test.snapshots.impl;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import org.apiguardian.api.API;
-import org.apiguardian.api.API.Status;
-
 import de.skuzzle.test.snapshots.DeleteOrphanedSnapshots;
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.validation.Arguments;
+
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 /**
  * Relevant configuration for executing snapshot tests in a test class that is annotated
@@ -22,12 +22,11 @@ import de.skuzzle.test.snapshots.validation.Arguments;
 @API(status = Status.INTERNAL, since = "1.1.0")
 final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
 
+    private static final SnapshotTestOptions DEFAULT_SNAPSHOT_TEST_OPTIONS = DefaultSnapshotTestOptions.class
+            .getAnnotation(SnapshotTestOptions.class);
+
     private static final String FORCE_UPDATE_SYSTEM_PROPERTY = "forceUpdateSnapshots";
     private static final String DELETE_ORPHANS_SYSTEM_PROPERTY = "deleteOrphanedSnapshots";
-
-    // default number of context lines that will be printed around changes in huge unified
-    // diffs
-    private static final int DEFAULT_CONTEXT_LINES = SnapshotTestOptions.DEFAULT_CONTEXT_LINES;
 
     private final TestClass testClass;
 
@@ -80,39 +79,51 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     private SnapshotTestOptions determineOptions(Method testMethod) {
-        final SnapshotTestOptions options = testMethod.getAnnotation(SnapshotTestOptions.class);
+        SnapshotTestOptions options = testMethod.getAnnotation(SnapshotTestOptions.class);
         if (options != null) {
             return options;
         }
-        return testClass.getAnnotation(SnapshotTestOptions.class);
+        options = testClass.getAnnotation(SnapshotTestOptions.class);
+        if (options != null) {
+            return options;
+        }
+        return DEFAULT_SNAPSHOT_TEST_OPTIONS;
     }
 
     @Override
     public boolean alwaysPersistActualResult(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
-        return snapshotTestOptions != null && snapshotTestOptions.alwaysPersistActualResult();
+        return snapshotTestOptions.alwaysPersistActualResult();
     }
 
     @Override
     public boolean alwaysPersistRawResult(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
-        return snapshotTestOptions != null && snapshotTestOptions.alwaysPersistRawResult();
+        return snapshotTestOptions.alwaysPersistRawResult();
     }
 
     @Override
     public int textDiffContextLines(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
-        return snapshotTestOptions == null
-                ? DEFAULT_CONTEXT_LINES
-                : snapshotTestOptions.textDiffContextLines();
+        return snapshotTestOptions.textDiffContextLines();
     }
 
     @Override
     public boolean addOffsetToReportedLinenumbers(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
-        return snapshotTestOptions == null
-                ? true
-                : snapshotTestOptions.renderLineNumbers() == DiffLineNumbers.ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
+        return snapshotTestOptions.renderLineNumbers() == DiffLineNumbers.ACCODRDING_TO_PERSISTED_SNAPSHOT_FILE;
+    }
+
+    @Override
+    public SnapshotTestOptions.NormalizeLineEndings normalizeLineEndings(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.normalizeLineEndings();
+    }
+
+    @Override
+    public SnapshotTestOptions.DiffFormat diffFormat(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.diffFormat();
     }
 
     @Override
@@ -125,4 +136,8 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
         return "DefaultSnapshotConfiguration[" + testClass.getName() + "]";
     }
 
+    @SnapshotTestOptions
+    private static class DefaultSnapshotTestOptions {
+
+    }
 }
