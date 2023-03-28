@@ -1,6 +1,5 @@
 package de.skuzzle.test.snapshots.directoryparams;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -49,12 +48,11 @@ class DirectoriesFromArgumentsProvider implements ArgumentsProvider, AnnotationC
         return ReflectionSupport.newInstance(directoryContents.filter());
     }
 
-    private Path determineDirectory() throws IOException {
-        final String legacyDir = directoryContents.directory();
+    private Path determineDirectory() {
         final String testResourcesDir = directoryContents.testResourcesDirectory();
         final String projectDir = directoryContents.projectDirectory();
 
-        return AnnotationDirectoryResolver.resolveDirectory(legacyDir, projectDir, testResourcesDir);
+        return AnnotationDirectoryResolver.resolveDirectory(projectDir, testResourcesDir);
     }
 
     @Override
