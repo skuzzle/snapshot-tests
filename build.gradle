@@ -59,12 +59,9 @@ ext {
             projects.snapshotTestsJunit4,
             projects.snapshotTestsJunit5,
             projects.snapshotTestsHtml,
-            projects.snapshotTestsJackson,
             projects.snapshotTestsJson,
-            projects.snapshotTestsJaxb,
             projects.snapshotTestsXmlLegacy,
             projects.snapshotTestsXml,
-            projects.snapshotTestsJaxbJakarta,
             projects.snapshotTestsNormalize,
             projects.snapshotTestsDirectoryParams,
             projects.diffTool

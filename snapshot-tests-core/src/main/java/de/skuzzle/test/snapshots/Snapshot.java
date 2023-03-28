@@ -7,8 +7,8 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
- * Allows to do snapshot assertions. An instance of this class can be injected into your
- * test case by just specifying a parameter of this type:
+ * Allows to do snapshot assertions. When using JUnit5 an instance of this class can be
+ * injected into your test case by just specifying a parameter of this type:
  *
  * <pre>
  * &#64;Test
@@ -18,9 +18,12 @@ import org.apiguardian.api.API.Status;
  * }
  * </pre>
  *
- * Note that the respective test class must be annotated with {@link EnableSnapshotTests},
- * otherwise the test framework will not be able to resolve the <code>Snapshot</code>
- * parameter of the test method.
+ * Note that the respective test class must be annotated with
+ * <code>@EnableSnapshotTests</code> otherwise the test framework will not be able to
+ * resolve the <code>Snapshot</code> parameter of the test method.
+ *
+ * When using JUnit4 you can use <code>SnapshotRule</code> instead of
+ * <code>@EnableSnapshotTests</code>.
  * <p>
  * Note that the Snapshot instance that is being injected into your test is stateful and
  * not thread safe. You should also refrain from using incomplete DSL usages. You must
@@ -45,6 +48,6 @@ import org.apiguardian.api.API.Status;
  * @author Simon Taddiken
  */
 @API(status = Status.STABLE, since = "1.8.0")
-public interface Snapshot extends SnapshotDsl.Snapshot {
+public interface Snapshot extends SnapshotDsl.ChooseActual, SnapshotDsl.ChooseName, SnapshotDsl.ChooseDirectory {
 
 }

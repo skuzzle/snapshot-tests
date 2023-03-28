@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.skuzzle.test.snapshots.ContextFiles;
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
@@ -18,8 +17,7 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
- * Context object that pertains to the execution of a whole test class which is annotated
- * with {@link EnableSnapshotTests}.
+ * Context object that pertains to the execution of a whole test that uses snapshot test.
  * <p>
  * In order to initiate the run of a test class which uses snapshot assertions, you need
  * to meet two requirements:

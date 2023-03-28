@@ -7,14 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDirectory;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
- * Drop in replacement for {@link EnableSnapshotTests#snapshotDirectory()}. Allows to
- * customize the snapshot directory globally for a test class.
+ * Allows to customize the snapshot directory globally for a test class.
  * <p>
  * If you don't customize the snapshot directory at all, then snapshots will by default be
  * stored in a directory structure according to the package name of the test class. If you

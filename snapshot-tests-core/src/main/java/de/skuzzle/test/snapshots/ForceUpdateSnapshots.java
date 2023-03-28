@@ -24,9 +24,6 @@ import org.apiguardian.api.API.Status;
  * Snapshot files for snapshot assertions that are {@link ChooseAssertions#disabled()
  * disabled} will not be updated.
  * <p>
- * This annotation replaces the {@link EnableSnapshotTests#forceUpdateSnapshots()} flag
- * because it is easier to use.
- * <p>
  * Besides using this annotations, snapshots can also be updated globally by passing the
  * system property <code>forceUpdateSnapshots</code> (case insensitive) to the JVM.
  *

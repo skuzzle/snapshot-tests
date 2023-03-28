@@ -23,13 +23,6 @@ import org.xmlunit.diff.DifferenceEvaluators;
 public class SnapshotsTest {
 
     @Test
-    @Deprecated
-    void testLegacyWarning() {
-        XmlSnapshot.xml();
-        assertThat(XmlSnapshot.LEGACY_WARNING_PRINTED).isFalse();
-    }
-
-    @Test
     void testXmlAlreadyAStringWithPrettyPrint(Snapshot snapshot) {
         final SnapshotTestResult snapshotResult = snapshot
                 .assertThat("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><node>text</node></root>").as(xml)

@@ -1,10 +1,14 @@
 /**
  * <h2>The main public snapshot-testing API.</h2>
  * <p>
- * Snapshot tests are enabled for a test class via
- * {@link de.skuzzle.test.snapshots.EnableSnapshotTests}. This will allow you to inject an
- * instance of {@link de.skuzzle.test.snapshots.SnapshotDsl.Snapshot} into any test method
- * within said test class.
+ * Snapshot tests are enabled for a test class either via
+ * <code>@EnableSnapshotTests</code> annotation when using JUnit5 or via
+ * <code>SnapshotRule</code> when using JUnit4.
+ *
+ * <p>
+ * The following is an example code for usage with JUnit5. Check out the documentation of
+ * the JUnit4 module for information about usage with JUnit4.
+ * </p>
  *
  * <pre>
  * &#64;EnableSnapshotTests
@@ -28,8 +32,7 @@
  * }
  * </pre>
  *
- * @see de.skuzzle.test.snapshots.EnableSnapshotTests
- * @see de.skuzzle.test.snapshots.SnapshotDsl.Snapshot
+ * @see de.skuzzle.test.snapshots.Snapshot
  */
 @API(status = Status.STABLE)
 package de.skuzzle.test.snapshots;

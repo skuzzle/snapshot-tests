@@ -8,6 +8,7 @@ dependencies {
     api(projects.snapshotTestsCore)
     api(projects.snapshotTestsXmlunit)
     implementation(projects.snapshotTestsCommon)
+    testImplementation(projects.snapshotTestsJunit5)
     api(libs.xmlunit.assertj)
     implementation(libs.jsoup)
 }

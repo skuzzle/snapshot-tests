@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
