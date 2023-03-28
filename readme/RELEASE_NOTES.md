@@ -29,7 +29,7 @@
 * Update to jsonassert `1.5.1` (coming from `1.5.0`)
 
 
-* List notable changes since last release in reference documentation
+* List [notable changes](https://@github.user@.github.io/@github.name@/reference/latest/#_notable_changes_in_this_release) since last release in reference documentation 
 
 
 ## Reference Documentation
