@@ -1,8 +1,8 @@
 <!-- This file is auto generated during release from readme/README.md -->
 
-[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.10.0&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.10.0/jar)
-[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.10.0&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.10.0)
-[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.10.0&color=orange)](https://skuzzle.github.io/snapshot-tests/reference/1.10.0)
+[![Maven Central](https://img.shields.io/static/v1?label=MavenCentral&message=1.10.1&color=blue)](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-bom/1.10.1/jar)
+[![JavaDoc](https://img.shields.io/static/v1?label=JavaDoc&message=1.10.1&color=orange)](http://www.javadoc.io/doc/de.skuzzle.test/snapshot-tests-core/1.10.1)
+[![Reference](https://img.shields.io/static/v1?label=Reference&message=1.10.1&color=orange)](https://skuzzle.github.io/snapshot-tests/reference/1.10.1)
 [![Coverage Status](https://coveralls.io/repos/github/skuzzle/snapshot-tests/badge.svg?branch=main)](https://coveralls.io/github/skuzzle/snapshot-tests?branch=main)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ProjectPolly.svg?style=social)](https://twitter.com/ProjectPolly)
 
@@ -16,26 +16,26 @@ actual object against the stored snapshot.
 - [x] Requires Java 11, supports Java 17
 
 Supported test frameworks:
-- [x] JUnit5  (tested against `5.9.2`) via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.10.0/jar)
-- [x] JUnit4 (tested against `4.13.2`) via [snapshot-tests-junit4](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.10.0/jar)
+- [x] JUnit5  (tested against `5.9.2`) via [snapshot-tests-junit5](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit5/1.10.1/jar)
+- [x] JUnit4 (tested against `4.13.2`) via [snapshot-tests-junit4](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-junit4/1.10.1/jar)
 
 Supported snapshot formats:
-- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.10.0/jar))
-- [x] Json via [snapshot-tests-json](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-json/1.10.0/jar)
-- [x] XML via [snapshot-tests-xml](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-xml/1.10.0/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-xml-legacy/1.10.0/jar)
-- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.10.0/jar)
+- [x] generic plain text (included by default via [snapshot-tests-core](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-core/1.10.1/jar))
+- [x] Json via [snapshot-tests-json](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-json/1.10.1/jar)
+- [x] XML via [snapshot-tests-xml](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-xml/1.10.1/jar) xor [snapshot-tests-xml-legacy](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-xml-legacy/1.10.1/jar)
+- [x] HTML via [snapshot-tests-html](https://search.maven.org/artifact/de.skuzzle.test/snapshot-tests-html/1.10.1/jar)
 
 Read more about snapshot testing in this accompanying [blog post](https://simon.taddiken.net/the-case-for-snapshot-testing/).
 
 ### Latest Maven Central coordinates
 
 Please check out the GitHub release page to find Maven & Gradle coordinates for the latest
-release [1.10.0](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.10.0)
+release [1.10.1](https://github.com/skuzzle/snapshot-tests/releases/tag/v1.10.1)
 
 ### Reference Documentation
 Starting with release `1.8.0` we provide a new external reference documentation:
 * [Latest](https://skuzzle.github.io/snapshot-tests/reference/latest): Always points to the latest version
-* [1.10.0](https://skuzzle.github.io/snapshot-tests/reference/1.10.0): Points to a specific version
+* [1.10.1](https://skuzzle.github.io/snapshot-tests/reference/1.10.1): Points to a specific version
 
 Over the course of the next releases most of the contents of this README will be transitioned into the new reference
 documentation.
@@ -49,13 +49,13 @@ Add the following dependencies to your build
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-junit5</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-json</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -113,7 +113,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 <dependency>
     <groupId>de.skuzzle.test</groupId>
     <artifactId>snapshot-tests-json</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
     <scope>test</scope>
     <exclusions>
         <exclusion>
@@ -127,7 +127,7 @@ add a dependency for your preferred snapshot format like `snapshot-tests-jackson
 or
 
 ```
-testImplementation('de.skuzzle.test:snapshot-tests-json:1.10.0') {
+testImplementation('de.skuzzle.test:snapshot-tests-json:1.10.1') {
     exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
 }
 ```
