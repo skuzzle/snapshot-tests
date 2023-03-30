@@ -38,7 +38,7 @@ public @interface SnapshotTestOptions {
      * @since 1.10.0
      */
     @API(status = Status.EXPERIMENTAL, since = "1.10.0")
-    NormalizeLineEndings DEFAULT_NORMALIZE_LINE_ENDINGS = NormalizeLineEndings.NEVER;
+    NormalizeLineEndings DEFAULT_NORMALIZE_LINE_ENDINGS = NormalizeLineEndings.GIT;
 
     /**
      * Default setting for {@link #diffFormat()}.
@@ -127,7 +127,7 @@ public @interface SnapshotTestOptions {
      * @since 1.10.0
      */
     @API(since = "1.10.0", status = Status.EXPERIMENTAL)
-    NormalizeLineEndings normalizeLineEndings() default NormalizeLineEndings.NEVER;
+    NormalizeLineEndings normalizeLineEndings() default NormalizeLineEndings.GIT;
 
     /**
      * Defines how the diffs within the assertion failure messages are rendered. Note that
