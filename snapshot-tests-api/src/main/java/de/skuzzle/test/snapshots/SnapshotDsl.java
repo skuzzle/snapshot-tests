@@ -2,8 +2,6 @@ package de.skuzzle.test.snapshots;
 
 import java.nio.file.Path;
 
-import de.skuzzle.test.snapshots.data.text.TextSnapshot;
-
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -151,7 +149,7 @@ public interface SnapshotDsl {
          * </tr>
          * </thead> <tbody>
          * <tr>
-         * <td>{@link TextSnapshot}</td>
+         * <td><code>TextSnapshot</code></td>
          * <td>included in <code>snapshot-tests-core</code></td>
          * </tr>
          * <tr>
@@ -278,7 +276,6 @@ public interface SnapshotDsl {
          *
          * @return Details about the snapshot.
          * @throws AssertionError If the serialized objects do not match.
-         * @see TextSnapshot
          */
         SnapshotTestResult matchesSnapshotText();
 

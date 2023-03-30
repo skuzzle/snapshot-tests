@@ -5,11 +5,12 @@ description = "Snapshot Tests Core"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.core"
 
 dependencies {
+    api(projects.snapshotTestsApi)
+    api(projects.snapshotTestsText)
     implementation(projects.snapshotTestsCommon)
     implementation(projects.diffTool)
     testImplementation(projects.snapshotTestsTestCommon)
     testImplementation(projects.snapshotTestsJunit5)
 
-    implementation(libs.javadiffutils)
     implementation(libs.opentest4j)
 }

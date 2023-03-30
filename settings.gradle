@@ -13,7 +13,9 @@ gradleEnterprise {
 rootProject.name = 'snapshot-tests'
 
 include (
+        'snapshot-tests-api',
         'snapshot-tests-core',
+        'snapshot-tests-text',
         'snapshot-tests-bom',
 
         // Internal utilities

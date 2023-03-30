@@ -55,6 +55,8 @@ nexusPublishing {
 
 ext {
     bomProjects = Set.of(
+            projects.snapshotTestsApi,
+            projects.snapshotTestsText,
             projects.snapshotTestsCore,
             projects.snapshotTestsJunit4,
             projects.snapshotTestsJunit5,

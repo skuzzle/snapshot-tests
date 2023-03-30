@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import de.skuzzle.test.snapshots.data.text.TextSnapshot;
-
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -52,13 +50,12 @@ public @interface SnapshotTestOptions {
      * Defines the number of context lines that are printed around a comparison failure.
      * Note that this setting only applies to unified diffs created for structural
      * comparisons. If you use text comparison, then you must control the amount of
-     * context lines using {@link TextSnapshot#withContextLines(int)}.
+     * context lines using <code>TextSnapshot#withContextLines(int)</code>.
      * <p>
      * Defaults to 5.
      *
      * @return The number of context lines to print in unified diffs within our structural
      *         assertion failures.
-     * @see TextSnapshot#withContextLines(int)
      */
     int textDiffContextLines() default DEFAULT_CONTEXT_LINES;
 
@@ -133,13 +130,12 @@ public @interface SnapshotTestOptions {
      * Defines how the diffs within the assertion failure messages are rendered. Note that
      * this setting only applies to diffs created for structural comparisons. If you use
      * text comparison, the diff format can be controlled using
-     * {@link TextSnapshot#withDiffFormat(TextSnapshot.DiffFormat)}.
+     * <code>TextSnapshot#withDiffFormat(TextSnapshot.DiffFormat)</code>.
      * <p>
      * Defaults to {@link DiffFormat#UNIFIED}.
      * </p>
      *
      * @return The diff format.
-     * @see TextSnapshot#withDiffFormat(TextSnapshot.DiffFormat)
      * @since 1.10.0
      */
     @API(status = Status.EXPERIMENTAL, since = "1.10.0")
