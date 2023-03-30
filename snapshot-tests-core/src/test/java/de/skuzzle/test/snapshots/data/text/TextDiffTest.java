@@ -2,9 +2,6 @@ package de.skuzzle.test.snapshots.data.text;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import de.skuzzle.difftool.LineSeparator;
 import de.skuzzle.difftool.SplitDiffRenderer;
 import de.skuzzle.test.snapshots.Snapshot;
@@ -20,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class TextDiffTest {
 
     private String join(String... lines) {
-        return Arrays.stream(lines).collect(Collectors.joining("\n"));
+        return String.join("\n", lines);
     }
 
     private final Settings settings = Settings.defaultSettings();
@@ -32,7 +29,7 @@ public class TextDiffTest {
         }
 
         @Test
-        void testMultipleLinesAdded() throws Exception {
+        void testMultipleLinesAdded() {
             final TextDiff textDiff = TextDiff.compare(settings,
                     join("line1", "line5"),
                     join("line1", "line2", "line3", "line4", "line5"));
@@ -46,7 +43,7 @@ public class TextDiffTest {
         }
 
         @Test
-        void testMultipleLinesDeleted() throws Exception {
+        void testMultipleLinesDeleted() {
             final TextDiff textDiff = TextDiff.compare(settings,
                     join("line1", "line2", "line3", "line4", "line5"),
                     join("line1", "line5"));
@@ -60,21 +57,21 @@ public class TextDiffTest {
         }
 
         @Test
-        void testSingleLineRemoved() throws Exception {
+        void testSingleLineRemoved() {
             final TextDiff textDiff = TextDiff.compare(settings, "Just a single line", "");
             assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("  1    - Just a single line");
         }
 
         @Test
-        void testSingleLineAdded() throws Exception {
+        void testSingleLineAdded() {
             final TextDiff textDiff = TextDiff.compare(settings, "", "Just a single line");
             assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("     1 + Just a single line");
         }
 
         @Test
-        void testLinebreakChangeIgnoreWhitespaces() throws Exception {
+        void testLinebreakChangeIgnoreWhitespaces() {
             final TextDiff textDiff = TextDiff.compare(settings, "line1\nline2", "line1\r\nline2");
             assertThat(textDiff.differencesDetected()).isFalse();
             assertThat(textDiff.toString()).isEqualTo("");
@@ -88,21 +85,21 @@ public class TextDiffTest {
         }
 
         @Test
-        void testSingleLineRemoved() throws Exception {
+        void testSingleLineRemoved() {
             final TextDiff textDiff = TextDiff.compare(settings, "Just a single line", "");
             assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("  1    - Just a single line");
         }
 
         @Test
-        void testSingleLineAdded() throws Exception {
+        void testSingleLineAdded() {
             final TextDiff textDiff = TextDiff.compare(settings, "", "Just a single line");
             assertThat(textDiff.differencesDetected()).isTrue();
             assertThat(textDiff.toString()).isEqualTo("     1 + Just a single line");
         }
 
         @Test
-        void testWhitespaceChangeWithinSingleLine() throws Exception {
+        void testWhitespaceChangeWithinSingleLine() {
             final TextDiff textDiff = TextDiff.compare(settings,
                     "Just a single     line", "Just a single line");
             assertThat(textDiff.differencesDetected()).isTrue();
@@ -112,7 +109,7 @@ public class TextDiffTest {
         }
 
         @Test
-        void testLinebreakChangeObeyWhitespaces() throws Exception {
+        void testLinebreakChangeObeyWhitespaces() {
             final TextDiff textDiff = TextDiff.compare(settings,
                     "line1\nline2", "line1\r\nline2");
             assertThat(textDiff.differencesDetected()).isTrue();
@@ -184,21 +181,21 @@ public class TextDiffTest {
             "Some unchanged lines24");
 
     @Test
-    void testRenderUnifiedDiffWithRawLinenumbers(Snapshot snapshot) throws Exception {
+    void testRenderUnifiedDiffWithRawLinenumbers(Snapshot snapshot) {
         final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings().withContextLines(3), expected, actual);
 
         snapshot.assertThat(textDiff).asText().matchesSnapshotText();
     }
 
     @Test
-    void testRenderUnifiedDiffWithLinenumberOffset(Snapshot snapshot) throws Exception {
+    void testRenderUnifiedDiffWithLinenumberOffset(Snapshot snapshot) {
         final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings(), expected, actual);
 
         snapshot.assertThat(textDiff).as(diffWithOffset(5, 3)).matchesSnapshotText();
     }
 
     @Test
-    void testRenderSplitDiffWithRawLinenumbers(Snapshot snapshot) throws Exception {
+    void testRenderSplitDiffWithRawLinenumbers(Snapshot snapshot) {
         final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings()
                 .withContextLines(3)
                 .withDiffRenderer(SplitDiffRenderer.INSTANCE), expected, actual);
@@ -207,7 +204,7 @@ public class TextDiffTest {
     }
 
     @Test
-    void testRenderSplitDiffWithLinenumberOffset(Snapshot snapshot) throws Exception {
+    void testRenderSplitDiffWithLinenumberOffset(Snapshot snapshot) {
         final TextDiff textDiff = TextDiff.compare(Settings.defaultSettings()
                 .withDiffRenderer(SplitDiffRenderer.INSTANCE), expected, actual);
 

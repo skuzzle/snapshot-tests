@@ -35,14 +35,8 @@ final class LocalResultCollector {
         return results.size();
     }
 
-    public void throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully(boolean softAssertions) throws Exception {
+    public void throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully() throws Exception {
         Throwable failures = null;
-        if (softAssertions) {
-            failures = Throwables.flattenThrowables(results.stream()
-                    .map(SnapshotTestResult::failure)
-                    .flatMap(Optional::stream));
-        }
-
         failures = Throwables.combine(failures, failIfCreatedInitially());
         failures = Throwables.combine(failures, failIfUpdatedForcefully());
         failures = Throwables.combine(failures, abortIfNoneFailedAndAtLeastOneWasDisabled());

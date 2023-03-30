@@ -10,7 +10,6 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
- *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -57,9 +56,7 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
             updatePersistedSnapshot(assertionInput);
         }
 
-        if (!assertionInput.isSoftAssertions()) {
-            this.resultRecorder.throwIfNotSuccessful();
-        }
+        this.resultRecorder.throwIfNotSuccessful();
     }
 
     private boolean decideAcceptNullAsActual(SnapshotAssertionInput assertionInput) {

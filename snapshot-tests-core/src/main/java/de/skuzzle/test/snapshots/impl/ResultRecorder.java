@@ -34,8 +34,8 @@ final class ResultRecorder {
         context.recordSnapshotTestResult(result);
     }
 
-    public void throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully(boolean softAssertions) throws Exception {
-        localResultCollector.throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully(softAssertions);
+    public void throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully() throws Exception {
+        localResultCollector.throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully();
     }
 
     public void throwIfNotSuccessful() throws Exception {

@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotFile;
 import de.skuzzle.test.snapshots.SnapshotFile.SnapshotHeader;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
@@ -43,7 +43,7 @@ public class ChangeSnapshotHeaderTest {
                 .matchesSnapshotText();
 
         assertThat(result.status()).isEqualTo(SnapshotStatus.ASSERTED);
-        final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(result.targetFile());
+        final SnapshotFile snapshotFile = SnapshotFile.fromSnapshotFile(result.contextFiles().snapshotFile());
         assertThat(snapshotFile.header()).isEqualTo(expectedHeader);
     }
 }

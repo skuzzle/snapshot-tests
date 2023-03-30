@@ -6,8 +6,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
-
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
@@ -41,10 +39,11 @@ import org.apiguardian.api.API.Status;
  * Besides using this annotations, orphans can also be deleted by passing the system
  * property <code>deleteOrphanedSnapshots</code> (case insensitive) to the JVM.
  *
- * @deprecated This annotation is <b>NOT</b> deprecated. Deprecation serves only to mark
- *             this annotation in your IDE as it should only ever be used temporarily.
- * @since 1.1.0
  * @author Simon Taddiken
+ * @since 1.1.0
+ * @deprecated This annotation is <b>NOT</b> deprecated. Deprecation serves only to mark
+ *             this annotation in your IDE as your IDE as it should only ever be used
+ *             temporarily.
  */
 @Retention(RUNTIME)
 @Target({ TYPE })

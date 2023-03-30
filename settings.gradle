@@ -31,11 +31,6 @@ include (
         'snapshot-tests-xml',
         'snapshot-tests-json',
 
-        // deprecated data module
-        'snapshot-tests-jaxb',
-        'snapshot-tests-jaxb-jakarta',
-        'snapshot-tests-jackson',
-
         // External utilities
         'snapshot-tests-directory-params',
         'snapshot-tests-normalize',

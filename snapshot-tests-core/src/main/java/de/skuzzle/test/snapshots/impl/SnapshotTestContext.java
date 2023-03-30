@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import de.skuzzle.test.snapshots.ContextFiles;
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.impl.OrphanCollectorHolder.OrphanCollector;
 import de.skuzzle.test.snapshots.io.DirectoryResolver;
@@ -18,8 +17,7 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
- * Context object that pertains to the execution of a whole test class which is annotated
- * with {@link EnableSnapshotTests}.
+ * Context object that pertains to the execution of a whole test that uses snapshot test.
  * <p>
  * In order to initiate the run of a test class which uses snapshot assertions, you need
  * to meet two requirements:
@@ -52,12 +50,6 @@ public final class SnapshotTestContext {
                 "snapshotConfiguration must not be null");
         this.testFrameworkSupport = Arguments.requireNonNull(testFrameworkSupport,
                 "testFrameworkSupport must not be null");
-    }
-
-    @Deprecated(since = "1.7.0")
-    public static SnapshotTestContext forTestClass(Class<?> testClass, TestFrameworkSupport testFrameworkSupport) {
-        final SnapshotConfiguration configuration = DefaultSnapshotConfiguration.forTestClass(testClass);
-        return new SnapshotTestContext(configuration, testFrameworkSupport);
     }
 
     public static SnapshotTestContext forConfiguration(SnapshotConfiguration snapshotConfiguration,

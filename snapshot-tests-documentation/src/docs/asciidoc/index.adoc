@@ -141,49 +141,9 @@ Historically JUnit5 is the preferred test framework and has always natively been
 configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your
 preferred snapshot format (i.e. like `snapshot-tests-json`).
 
-==== Use With JUnit5 (Legacy)
-The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a
-direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which
-would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being
-printed to `System.err` stating the required migration steps.
-
-WARNING: Starting from version `2.0.0` this scenario will no longer be supported.
-
 ==== Use With JUnit4
 JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally
 add a dependency for your preferred snapshot format like `snapshot-tests-json`.
-
-[WARNING]
-====
-In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still
- transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major version.
-
-[source,xml,subs="attributes+"]
-.Exclude JUnit5 dependencies from snapshot format artifacts (maven)
-----
-<dependency>
-    <groupId>{groupId}</groupId>
-    <artifactId>snapshot-tests-json</artifactId>
-    <version>{revnumber}</version>
-    <scope>test</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-----
-or
-
-[source,groovy,subs="attributes+"]
-.Exclude JUnit5 dependencies from snapshot format artifacts (gradle, groovy syntax)
-----
-testImplementation('{groupId}:snapshot-tests-json:{revnumber}') {
-    exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
-}
-----
-====
 
 === Quick Start Code Example
 
@@ -794,25 +754,6 @@ the directory on a common ancestor.
 ----
 include::{testIncludes}/de/skuzzle/test/snapshots/snippets/NestedTests.java[tags=nested-tests,indent=0]
 ----
-
-=== Soft Assertions (deprecated)
-
-IMPORTANT: Soft assertions are a deprecated feature and will be removed with version `2.0.0`.
-
-As learned in the previous section, you can easily have multiple snapshot assertions within the same test method.
-Naturally, if the first assertion fails, all subsequent assertions will not be executed, thus potentially hiding further
-problems.
-
-However, there is an option to enable _soft assertions_. That will advice the framework to collect all assertion
-failures and report them in a single stack trace at the end.
-
-[source,java]
-.Enable soft assertions
-----
-include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SoftAssertions.java[tags=softassertions,indent=0]
-----
-
-NOTE: _Soft assertions_ are currently only supported on a per-class basis.
 
 === Supported Structured Data Formats
 This library comes with out-of-the-box support for multiple structured data formats. The respective artifacts were

@@ -15,56 +15,8 @@ import org.apiguardian.api.API.Status;
 @API(status = Status.STABLE)
 public interface SnapshotDsl {
 
-    /**
-     * Allows to do snapshot assertions. An instance of this class can be injected into
-     * your test case by just specifying a parameter of this type:
-     *
-     * <pre>
-     * &#64;Test
-     * void test(Snapshot snapshot) throws Exception {
-     *     ...
-     *     snapshot.assertThat(...)...
-     * }
-     * </pre>
-     *
-     * Note that the respective test class must be annotated with
-     * {@link EnableSnapshotTests}, otherwise the test framework will not be able to
-     * resolve the <code>Snapshot</code> parameter of the test method.
-     * <p>
-     * Note that the Snapshot instance that is being injected into your test is stateful
-     * and not thread safe. You should also refrain from using incomplete DSL usages. You
-     * must always end the DSL call chain with any of the terminal operations
-     * {@link ChooseAssertions#disabled()},
-     * {@link ChooseAssertions#disabledBecause(String)},
-     * {@link ChooseAssertions#matchesAccordingTo(StructuralAssertions)},
-     * {@link ChooseAssertions#matchesSnapshotText()} or
-     * {@link ChooseStructure#matchesSnapshotStructure()}.
-     * <p>
-     * Each method in the DSL advances the Snapshot instance's internal state until a
-     * terminal operation has been called. So it is illegal to reuse DSL stages that have
-     * already been completed like in this example:
-     *
-     * <pre>
-     * snapshot.assertThat(actual);
-     * snapshot.assertThat(actual);
-     * </pre>
-     *
-     * This snippet does not only use two incomplete usages, but also tries to re-use the
-     * 'choose-actual' stage without having called a terminal operation.
-     *
-     * @author Simon Taddiken
-     * @see EnableSnapshotTests
-     * @deprecated Since 1.8.0 - Use the new top-level type
-     *             {@link de.skuzzle.test.snapshots.Snapshot Snapshot} instead.
-     */
-    @API(status = Status.DEPRECATED, since = "1.8.0")
-    @Deprecated(since = "1.8.0", forRemoval = true)
-    public interface Snapshot extends ChooseActual, ChooseName, ChooseDirectory {
-
-    }
-
     @API(status = Status.STABLE)
-    public interface ChooseActual {
+    interface ChooseActual {
         /**
          * Will create a serialized snapshot of the provided actual test result and store
          * it on disk. Note that the actual object is expected to be non-null. If it is
@@ -79,7 +31,7 @@ public interface SnapshotDsl {
     }
 
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
-    public interface ChooseDirectory {
+    interface ChooseDirectory {
 
         /**
          * Allows to choose the directory into which the snapshot will be persisted. The
@@ -104,7 +56,7 @@ public interface SnapshotDsl {
     }
 
     @API(status = Status.STABLE)
-    public interface ChooseName extends ChooseActual {
+    interface ChooseName extends ChooseActual {
         /**
          * Choose a name for the snapshot file. This overrides the default naming scheme
          * of using <code>method name + consecutive number</code>. Note that, when you
@@ -161,7 +113,7 @@ public interface SnapshotDsl {
      * @author Simon Taddiken
      */
     @API(status = Status.STABLE)
-    public interface ChooseDataFormat {
+    interface ChooseDataFormat {
 
         /**
          * "Serializes" the actual test result using {@link Object#toString()} and
@@ -241,7 +193,7 @@ public interface SnapshotDsl {
      * @author Simon Taddiken
      */
     @API(status = Status.STABLE)
-    public interface ChooseAssertions {
+    interface ChooseAssertions {
 
         /**
          * This method just updates the persisted snapshot with the current actual test
@@ -344,7 +296,7 @@ public interface SnapshotDsl {
     }
 
     @API(status = Status.STABLE)
-    public interface ChooseStructure extends ChooseAssertions {
+    interface ChooseStructure extends ChooseAssertions {
 
         /**
          * Asserts that the serialized actual test result structurally matches the
@@ -357,6 +309,5 @@ public interface SnapshotDsl {
          *             snapshots have been updated.
          */
         SnapshotTestResult matchesSnapshotStructure();
-
     }
 }

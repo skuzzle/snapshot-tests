@@ -8,9 +8,7 @@ dependencies {
     implementation(projects.snapshotTestsCommon)
     implementation(projects.diffTool)
     testImplementation(projects.snapshotTestsTestCommon)
-
-    api platform(libs.junit.bom)
-    api("org.junit.jupiter:junit-jupiter")
+    testImplementation(projects.snapshotTestsJunit5)
 
     implementation(libs.javadiffutils)
     implementation(libs.opentest4j)

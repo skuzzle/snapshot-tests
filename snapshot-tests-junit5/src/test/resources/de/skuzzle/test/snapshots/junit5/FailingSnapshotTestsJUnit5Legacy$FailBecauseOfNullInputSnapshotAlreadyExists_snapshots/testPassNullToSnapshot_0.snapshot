@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: testPassNullToSnapshot_0
-snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.junit5.FailingSnapshotTestsJUnit5Legacy$FailBecauseOfNullInputSnapshotAlreadyExists
-test-method: testPassNullToSnapshot
-
-snapshot text

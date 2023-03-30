@@ -127,11 +127,6 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
-    public boolean isSoftAssertions() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "DefaultSnapshotConfiguration[" + testClass.getName() + "]";
     }

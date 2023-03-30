@@ -7,7 +7,6 @@ import de.skuzzle.test.snapshots.SnapshotDsl.ChooseAssertions;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseDataFormat;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseName;
 import de.skuzzle.test.snapshots.SnapshotDsl.ChooseStructure;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
 
 import org.junit.jupiter.api.Test;
 

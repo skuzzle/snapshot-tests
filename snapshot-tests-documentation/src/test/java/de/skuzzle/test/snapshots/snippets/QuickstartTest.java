@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class QuickstartTest {
 
     @Test
-    void testCreateSnapshotAsText(Snapshot snapshot) throws Exception { // <2>
+    void testCreateSnapshotAsText(Snapshot snapshot) { // <2>
         final Person actual = Person.determinePerson();
         snapshot.assertThat(actual)
                 .asText() // <3>

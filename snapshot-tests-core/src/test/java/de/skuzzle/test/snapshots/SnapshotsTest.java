@@ -29,8 +29,6 @@ public class SnapshotsTest {
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().matchesSnapshotText();
 
-        assertThat(testResult.rawActualResultFile()).exists();
-        assertThat(testResult.actualResultFile()).exists();
         assertThat(testResult.contextFiles().rawActualResultFile()).exists();
         assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
@@ -48,8 +46,6 @@ public class SnapshotsTest {
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
 
-        assertThat(testResult.rawActualResultFile()).exists();
-        assertThat(testResult.actualResultFile()).exists();
         assertThat(testResult.contextFiles().rawActualResultFile()).exists();
         assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
@@ -61,8 +57,6 @@ public class SnapshotsTest {
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
 
-        assertThat(testResult.rawActualResultFile()).exists();
-        assertThat(testResult.actualResultFile()).exists();
         assertThat(testResult.contextFiles().rawActualResultFile()).exists();
         assertThat(testResult.contextFiles().actualResultFile()).exists();
     }
@@ -73,7 +67,6 @@ public class SnapshotsTest {
         final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabledBecause("Reasons");
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
-        assertThat(testResultDisabled.targetFile()).doesNotExist();
         assertThat(testResultDisabled.contextFiles().snapshotFile()).doesNotExist();
 
         final Person phil = determinePerson().setName("Phil");
@@ -88,7 +81,6 @@ public class SnapshotsTest {
         final SnapshotTestResult testResultDisabled = snapshot.assertThat(simon).asText().disabled();
 
         assertThat(testResultDisabled.status()).isEqualTo(SnapshotStatus.DISABLED);
-        assertThat(testResultDisabled.targetFile()).exists();
         assertThat(testResultDisabled.contextFiles().snapshotFile()).exists();
 
         final Person phil = determinePerson().setName("Phil");

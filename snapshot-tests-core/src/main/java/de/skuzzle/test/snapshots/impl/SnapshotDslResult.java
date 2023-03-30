@@ -144,13 +144,10 @@ final class SnapshotDslResult {
         final int contextLines = configuration.textDiffContextLines(testMethod);
         final DiffRenderer diffRenderer = determineDiffRenderer(configuration.diffFormat(testMethod));
 
-        final boolean softAssertions = configuration.isSoftAssertions();
-
         return new SnapshotAssertionInput(
                 snapshotName,
                 contextFilePaths,
                 actualSnapshotFile,
-                softAssertions,
                 actualWasNull,
                 disableAssertion,
                 forceUpdateSnapshots,
