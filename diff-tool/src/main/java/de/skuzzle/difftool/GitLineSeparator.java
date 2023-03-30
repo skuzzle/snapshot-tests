@@ -1,6 +1,10 @@
 package de.skuzzle.difftool;
 
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 final class GitLineSeparator {
 
@@ -38,12 +42,34 @@ final class GitLineSeparator {
 
         static final GitConfig DEFAULT = new GitConfig();
 
+        private final String fileParameter;
+
+        GitConfig() {
+            this(null);
+        }
+
+        // Used for testing
+        GitConfig(String fileParameter) {
+            this.fileParameter = fileParameter;
+        }
+
         String autocrlf() {
-            return execute("git config core.autocrlf");
+            final String gitConfigCommand = makeCommand("git", "config", fileParameter, "core.autocrlf");
+            return execute(gitConfigCommand);
+        }
+
+        void setAutoCrlf(String value) {
+            final String gitConfigCommand = makeCommand("git config", fileParameter, "core.autocrlf", value);
+            execute(gitConfigCommand);
         }
 
         String eol() {
-            return execute("git config core.eol");
+            final String gitConfigCommand = makeCommand("git", "config", fileParameter, "core.eol");
+            return execute(gitConfigCommand);
+        }
+
+        private String makeCommand(String... parts) {
+            return Arrays.stream(parts).filter(Objects::nonNull).collect(Collectors.joining(" "));
         }
 
         static String execute(String command) {
@@ -53,12 +79,24 @@ final class GitLineSeparator {
                 try (var err = exec.getErrorStream()) {
                     err.readAllBytes();
                 }
+                if (exec.exitValue() != 0) {
+                    return null;
+                }
                 try (var in = exec.getInputStream()) {
-                    return new String(in.readAllBytes());
+                    final String output = new String(in.readAllBytes());
+                    // https://github.com/skuzzle/snapshot-tests/issues/93
+                    // Result comes back with extra line break
+                    return trimWhitespaces(output.toLowerCase(Locale.ROOT));
                 }
             } catch (Exception e) {
                 return null;
             }
+        }
+
+        private static final Pattern WHITESPACES = Pattern.compile("\\s+");
+
+        static String trimWhitespaces(String s) {
+            return WHITESPACES.matcher(s).replaceAll("");
         }
     }
 

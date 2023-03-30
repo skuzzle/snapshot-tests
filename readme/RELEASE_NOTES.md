@@ -18,17 +18,7 @@
 
 ### Changes
 
-* [#67](https://github.com/skuzzle/snapshot-tests/issues/67): Fix inconsistent naming of structured data modules
-* [#60](https://github.com/skuzzle/snapshot-tests/issues/60): Internal API for plugging in test-framework specific behavior
-* [#80](https://github.com/skuzzle/snapshot-tests/issues/80): Use spotless and reformat whole code base
-* [#87](https://github.com/skuzzle/snapshot-tests/issues/87): Allow to configure diff format
-* [#88](https://github.com/skuzzle/snapshot-tests/issues/88): Extract diff creation into own module
-* [#44](https://github.com/skuzzle/snapshot-tests/issues/44)/[#90](https://github.com/skuzzle/snapshot-tests/issues/90): Add possibility to normalize line endings (according to local git config)
-
-* Update to jsonassert `1.5.1` (coming from `1.5.0`)
-
-
-* List [notable changes](https://@github.user@.github.io/@github.name@/reference/latest/#_notable_changes_in_this_release) since last release in reference documentation
+* [#93](https://github.com/skuzzle/snapshot-tests/issues/93): Fix bug in determining the line ending from _git_
 
 
 ## Reference Documentation
