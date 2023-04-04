@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 final class GitLineSeparator {
 
-    static final boolean gitEolDebugging = true;
+    private static final boolean gitEolDebugging = true;
 
     /*
      * static { gitEolDebugging =
