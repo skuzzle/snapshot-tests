@@ -15,7 +15,9 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './gradlew build'
+        withGradle {
+          sh './gradlew build'
+        }
       }
     }
     stage('Report Coverage') {
