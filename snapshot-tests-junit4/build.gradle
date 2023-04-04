@@ -5,9 +5,8 @@ description = "Snapshot Tests JUnit4 support"
 ext.automaticModuleName = "de.skuzzle.test.snapshots.junit4"
 
 dependencies {
-    api(projects.snapshotTestsCore) {
-        exclude group: "org.junit.jupiter", module: "junit-jupiter-api"
-    }
+    api(projects.snapshotTestsApi)
+    implementation(projects.snapshotTestsCore)
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsTestCommon)
     api(libs.junit4)
