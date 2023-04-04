@@ -92,7 +92,7 @@ final class GitLineSeparator {
         private static GitCallResult executeInternal(String command) {
             String systemErr = "<empty>";
             String systemOut = "<empty>";
-            int exitCode = -1337;
+            int exitCode = 0;
             Exception exception = null;
             try {
                 final Process exec = Runtime.getRuntime().exec(command);
@@ -125,14 +125,14 @@ final class GitLineSeparator {
                     Exception exception) {
                 this.command = command;
                 this.exitCode = exitCode;
-                this.systemOut = systemOut;
-                this.systemErr = systemErr;
+                this.systemOut = trimWhitespaces(systemOut);
+                this.systemErr = trimWhitespaces(systemErr);
                 this.exception = exception;
             }
 
             private static final Pattern WHITESPACES = Pattern.compile("\\s+");
 
-            static String trimWhitespaces(String s) {
+            private static String trimWhitespaces(String s) {
                 return WHITESPACES.matcher(s).replaceAll("");
             }
 
@@ -140,7 +140,7 @@ final class GitLineSeparator {
                 if (exitCode != 0 || exception != null) {
                     return null;
                 }
-                return trimWhitespaces(systemOut);
+                return systemOut;
             }
 
             @Override
