@@ -8,13 +8,11 @@ import java.util.stream.Collectors;
 
 final class GitLineSeparator {
 
-    private static final boolean gitEolDebugging = true;
-
-    /*
-     * static { gitEolDebugging =
-     * System.getProperties().keySet().stream().map(Object::toString)
-     * .anyMatch("giteoldebugging"::equalsIgnoreCase); }
-     */
+    private static final boolean gitEolDebugging;
+    static {
+        gitEolDebugging = System.getProperties().keySet().stream().map(Object::toString)
+                .anyMatch("giteoldebugging"::equalsIgnoreCase);
+    }
 
     static final LineSeparator GIT_LINE_SEPARATOR = determineGitLineSeparator(GitConfig.DEFAULT);
 
