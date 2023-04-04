@@ -39,18 +39,24 @@ pipeline {
     }
     stage('Build Release') {
       steps {
-        sh './gradlew build testAgainstJava17'
+        withGradle {
+          sh './gradlew build testAgainstJava17'
+        }
       }
     }
     stage('Perform release') {
       steps {
-        sh './gradlew release'
+        withGradle {
+          sh './gradlew release'
+        }
       }
     }
     stage('Create GitHub release') {
       steps {
-        sh 'git checkout main'
-        sh './gradlew githubRelease -Pgh_token=${GITHUB_RELEASE_TOKEN}'
+        withGradle {
+          sh 'git checkout main'
+          sh './gradlew githubRelease -Pgh_token=${GITHUB_RELEASE_TOKEN}'
+        }
       }
     }
   }

@@ -22,28 +22,38 @@ pipeline {
     }
     stage('Report Coverage') {
       steps {
-        sh './gradlew coveralls'
+        withGradle {
+          sh './gradlew coveralls'
+        }
       }
     }
     stage('Test against JDK 17') {
       steps {
-        sh './gradlew testAgainstJava17'
+        withGradle {
+          sh './gradlew testAgainstJava17'
+        }
       }
     }
     stage('javadoc') {
       steps {
-        sh './gradlew javadoc'
+        withGradle {
+          sh './gradlew javadoc'
+        }
       }
     }
     stage('asciidoc') {
       steps {
+        withGradle {
         // Note: 'deploy' here doesn't actually deploy anything
-        sh './gradlew deployDocsToRepositoryRoot'
+          sh './gradlew deployDocsToRepositoryRoot'
+        }
       }
     }
     stage('readme') {
       steps {
-        sh './gradlew generateReadmeAndReleaseNotes'
+        withGradle {
+          sh './gradlew generateReadmeAndReleaseNotes'
+        }
       }
     }
     stage('Deploy SNAPSHOT') {
@@ -51,7 +61,9 @@ pipeline {
         branch 'dev'
       }
       steps {
+        withGradle {
           sh './gradlew sign publishToSonatype'
+        }
       }
     }
   }
