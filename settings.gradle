@@ -1,5 +1,6 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.8.1'
+    id 'com.gradle.enterprise' version '3.12.6'
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.10'
 }
 
 gradleEnterprise {
@@ -8,6 +9,23 @@ gradleEnterprise {
         termsOfServiceUrl = 'https://gradle.com/terms-of-service'
         termsOfServiceAgree = 'yes'
     }
+}
+
+def isCi = System.getenv("CI")?.toBoolean() ?: false
+buildCache {
+    local {
+        enabled = true
+    }
+    remote(HttpBuildCache) {
+        url = "https://build-cache.taddiken.net"
+        push = isCi
+
+        credentials {
+            username = System.getenv("BUILD_CACHE_USR") ?: "public-read-only"
+            password = System.getenv("BUILD_CACHE_PSW") ?: "DgxvB!jfh:4Wqdx6Bw}t\$PCLGPENWB{K\$=~&J_%%BT:psBhY%{!bw{G=k&g>x-"
+        }
+    }
+
 }
 
 rootProject.name = 'snapshot-tests'
