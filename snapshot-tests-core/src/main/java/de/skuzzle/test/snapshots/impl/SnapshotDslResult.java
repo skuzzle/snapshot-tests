@@ -79,10 +79,9 @@ final class SnapshotDslResult {
     }
 
     private Path determineSnapshotDirectory() throws IOException {
-        final Path snapshotDirectory = this.directoryOverride != null
+        return this.directoryOverride != null
                 ? this.directoryOverride
                 : this.configuration.determineSnapshotDirectory();
-        return snapshotDirectory;
     }
 
     private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName) {
