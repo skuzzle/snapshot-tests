@@ -31,6 +31,7 @@ public class SnapshotsTest {
 
         assertThat(testResult.contextFiles().rawActualResultFile()).exists();
         assertThat(testResult.contextFiles().actualResultFile()).exists();
+        testResult.contextFiles().deleteContextFiles();
     }
 
     @Test
@@ -42,7 +43,6 @@ public class SnapshotsTest {
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
     void testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreatedWithContextFiles(Snapshot snapshot) {
-
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
 
@@ -53,7 +53,6 @@ public class SnapshotsTest {
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true, alwaysPersistRawResult = true)
     void testWithOneDisabledAssertionForWhichSnapshotHasHasAlreadyBeenCreatedWithContextFiles(Snapshot snapshot) {
-
         final Person simon = determinePerson();
         final SnapshotTestResult testResult = snapshot.assertThat(simon).asText().disabled();
 

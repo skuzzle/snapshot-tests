@@ -75,11 +75,55 @@ public final class ContextFiles {
     }
 
     /**
-     * Deletes all the context files that are existing.
+     * Deletes all the context files that are existing. This includes the snapshot file
+     * itself. If you want to delete only the additional context files, use
+     * {@link #deleteContextFiles()} instead.
+     *
+     * @see #deleteAll()
+     * @see #deleteContextFiles()
+     * @deprecated Since 2.0.0 - Use {@link #deleteAll()} instead.
      */
+    @Deprecated(since = "2.0.0", forRemoval = true)
+    @API(status = Status.DEPRECATED, since = "2.0.0")
     public void deleteFiles() {
+        deleteAll();
+    }
+
+    /**
+     * Deletes all the context files that are existing. This includes the snapshot file
+     * itself. If you want to delete only the additional context files, use
+     * {@link #deleteContextFiles()} instead.
+     *
+     * @see #deleteContextFiles()
+     * @since 2.0.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "2.0.0")
+    public void deleteAll() {
         UncheckedIO.deleteIfExists(snapshotFile);
+        deleteContextFiles();
+    }
+
+    /**
+     * Deletes only the additional context files but not the real snapshot file. If you
+     * want to delete all files, use {@link #deleteAll()} instead.
+     *
+     * @see #deleteAll()
+     * @since 2.0.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "2.0.0")
+    public void deleteContextFiles() {
         UncheckedIO.deleteIfExists(actualResultFile);
         UncheckedIO.deleteIfExists(rawActualResultFile);
+    }
+
+    /**
+     * Returns the path to the snapshot directory.
+     *
+     * @return The snapshot directory.
+     * @since 2.0.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "2.0.0")
+    public Path snapshotDirectory() {
+        return snapshotFile.getParent();
     }
 }

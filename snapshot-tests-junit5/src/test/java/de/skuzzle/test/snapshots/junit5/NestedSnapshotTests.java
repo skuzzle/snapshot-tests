@@ -45,6 +45,7 @@ public class NestedSnapshotTests {
                 void testWithSnapshot1(Snapshot snapshot, SnapshotTestContext context) {
                     final SnapshotTestResult result = snapshot.assertThat("123").asText().matchesSnapshotText();
                     assertThat(result.contextFiles().actualResultFile()).exists();
+                    result.contextFiles().deleteContextFiles();
                     final Class<?> testClass = context.snapshotConfiguration().testClass();
                     assertThat(testClass).isEqualTo(SecondLevelNest1.class);
                 }
@@ -71,6 +72,7 @@ public class NestedSnapshotTests {
             final SnapshotTestResult result = snapshot.assertThat("123").asText().matchesSnapshotText();
 
             assertThat(result.contextFiles().actualResultFile()).exists();
+            result.contextFiles().deleteContextFiles();
             final Class<?> testClass = context.snapshotConfiguration().testClass();
             assertThat(testClass).isEqualTo(SiblingNestedClassWithSnapshotTests.class);
         }

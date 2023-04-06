@@ -36,6 +36,7 @@ public class SnapshotsTest {
 
         assertThat(testResult.contextFiles().rawActualResultFile()).exists();
         assertThat(testResult.contextFiles().actualResultFile()).exists();
+        testResult.contextFiles().deleteContextFiles();
     }
 
     @Test

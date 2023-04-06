@@ -11,6 +11,7 @@ import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 import org.junit.AssumptionViolatedException;
@@ -372,7 +373,10 @@ public class FailingSnapshotTestsJUnit4 {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
-            snapshotResult.contextFiles().deleteFiles();
+            assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
 
@@ -383,7 +387,9 @@ public class FailingSnapshotTestsJUnit4 {
             snapshot.assertThat("xyz").asText().disabled();
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
-            snapshotResult.contextFiles().deleteFiles();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
     }
