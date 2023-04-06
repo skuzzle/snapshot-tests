@@ -82,12 +82,10 @@ final class SnapshotDslResult {
         final Path snapshotDirectory = this.directoryOverride != null
                 ? this.directoryOverride
                 : this.configuration.determineSnapshotDirectory();
-        Files.createDirectories(snapshotDirectory);
         return snapshotDirectory;
     }
 
-    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName)
-            throws IOException {
+    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName) {
         final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
         final String actualFileName = InternalSnapshotNaming.getSnapshotFileNameActual(snapshotName);
         final String rawFileName = InternalSnapshotNaming.getSnapshotFileNameRaw(snapshotName);

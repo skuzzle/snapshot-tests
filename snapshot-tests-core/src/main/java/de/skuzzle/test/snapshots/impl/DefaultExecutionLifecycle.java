@@ -84,14 +84,14 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
         final Path latestActualSnapshotFile = assertionInput.contextFiles().actualResultFile();
 
         if (assertionInput.alwaysPersistActualResult()) {
-            snapshotFile.writeTo(latestActualSnapshotFile);
+            SnapshotDirectoryWriter.INSTANCE.writeSnapshot(snapshotFile, latestActualSnapshotFile);
         } else {
             Files.deleteIfExists(latestActualSnapshotFile);
         }
 
         final Path rawSnapshotFile = assertionInput.contextFiles().rawActualResultFile();
         if (assertionInput.isAlwaysPersistRawResult()) {
-            Files.writeString(rawSnapshotFile, snapshotFile.snapshot(), StandardCharsets.UTF_8);
+            SnapshotDirectoryWriter.INSTANCE.writeString(snapshotFile.snapshot(), rawSnapshotFile);
         } else {
             Files.deleteIfExists(rawSnapshotFile);
         }
@@ -109,6 +109,6 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
 
     private void updatePersistedSnapshot(SnapshotAssertionInput assertionInput) throws IOException {
         final Path snapshotFilePath = assertionInput.contextFiles().snapshotFile();
-        assertionInput.actualSnapshotFile().writeTo(snapshotFilePath);
+        SnapshotDirectoryWriter.INSTANCE.writeSnapshot(assertionInput.actualSnapshotFile(), snapshotFilePath);
     }
 }
