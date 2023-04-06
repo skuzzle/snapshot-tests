@@ -3,18 +3,20 @@ plugins {
     id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.10'
 }
 
+def isCi = System.getenv("CI")?.toBoolean() ?: false
+
 gradleEnterprise {
     buildScan {
         publishAlways()
         termsOfServiceUrl = 'https://gradle.com/terms-of-service'
         termsOfServiceAgree = 'yes'
+        uploadInBackground = !isCi
     }
 }
 
-def isCi = System.getenv("CI")?.toBoolean() ?: false
 buildCache {
     local {
-        enabled = false
+        enabled = true
     }
     remote(HttpBuildCache) {
         enabled = true
