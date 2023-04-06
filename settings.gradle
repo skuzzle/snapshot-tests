@@ -1,12 +1,33 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.8.1'
+    id 'com.gradle.enterprise' version '3.12.6'
+    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.10'
 }
+
+def isCi = System.getenv("CI")?.toBoolean() ?: false
 
 gradleEnterprise {
     buildScan {
         publishAlways()
         termsOfServiceUrl = 'https://gradle.com/terms-of-service'
         termsOfServiceAgree = 'yes'
+        uploadInBackground = !isCi
+    }
+}
+
+buildCache {
+    local {
+        enabled = true
+    }
+    remote(HttpBuildCache) {
+        enabled = true
+        url = "https://build-cache.taddiken.net/cache"
+        if (isCi) {
+            push = true
+            credentials {
+                username = System.getenv("BUILD_CACHE_USR")
+                password = System.getenv("BUILD_CACHE_PSW")
+            }
+        }
     }
 }
 
