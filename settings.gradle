@@ -14,18 +14,19 @@ gradleEnterprise {
 def isCi = System.getenv("CI")?.toBoolean() ?: false
 buildCache {
     local {
-        enabled = true
+        enabled = false
     }
     remote(HttpBuildCache) {
-        url = "https://build-cache.taddiken.net"
-        push = isCi
-
-        credentials {
-            username = System.getenv("BUILD_CACHE_USR") ?: "public-read-only"
-            password = System.getenv("BUILD_CACHE_PSW") ?: "DgxvB!jfh:4Wqdx6Bw}t\$PCLGPENWB{K\$=~&J_%%BT:psBhY%{!bw{G=k&g>x-"
+        enabled = true
+        url = "https://build-cache.taddiken.net/cache"
+        if (isCi) {
+            push = true
+            credentials {
+                username = System.getenv("BUILD_CACHE_USR")
+                password = System.getenv("BUILD_CACHE_PSW")
+            }
         }
     }
-
 }
 
 rootProject.name = 'snapshot-tests'
