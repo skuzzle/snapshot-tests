@@ -577,6 +577,12 @@ file contains the serialized actual result of the most recent test execution as 
 the regular `.snapshot` file. This allows you to quickly replace the snapshot with the most recent test results without
 having to execute the test suite again. You can enable this feature via `@SnapshotTestOptions` annotation:
 
+[WARNING]
+====
+If context files contain random data that changes between every test execution you might run into cache-miss issues 
+if you are using _Gradle_ as a build tool.
+====
+
 [source,java]
 .Advise the framework to always persist latest test results.
 ----
