@@ -1,8 +1,7 @@
-import org.gradle.api.Project
 import java.util.Base64
 
 plugins {
-    id("snapshot-tests.base-conventions")
+    id("base-conventions")
     id("maven-publish")
     id("signing")
 }

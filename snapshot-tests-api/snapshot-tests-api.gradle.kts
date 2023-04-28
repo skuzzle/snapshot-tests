@@ -1,8 +1,11 @@
 plugins {
-    id("snapshot-tests.published-java-component")
+    `published-java-component`
 }
+
 description = "Snapshot Tests Public API"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.api"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.api")
+}
 
 dependencies {
     implementation(projects.snapshotTestsCommon)

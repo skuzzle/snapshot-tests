@@ -1,5 +1,5 @@
 plugins {
-    id("snapshot-tests.base-conventions")
+    id("base-conventions")
     id("java-library")
     id("jacoco")
 }

@@ -1,14 +1,15 @@
 plugins {
-    id("net.researchgate.release") version "3.0.2"
-    id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
-    id("com.github.breadmoirai.github-release") version "2.4.1"
+    id("net.researchgate.release")
+    id("io.github.gradle-nexus.publish-plugin")
+    id("com.github.breadmoirai.github-release")
+    `base-conventions`
 }
 
 tasks.named("afterReleaseBuild").configure {
     dependsOn(provider {
         subprojects
-            .filter { it.getPluginManager().hasPlugin("snapshot-tests.publishing-conventions") }
-            .map { it.getTasks().named("publishToSonatype") }
+            .filter { it.pluginManager.hasPlugin("snapshot-tests.publishing-conventions") }
+            .map { it.tasks.named("publishToSonatype") }
     })
     dependsOn("commitFilesToGit")
 }
@@ -42,12 +43,10 @@ githubRelease {
     body(provider { file("RELEASE_NOTES.md").readText(Charsets.UTF_8) })
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            username.set(property("sonatype_USR").toString())
-            password.set(property("sonatype_PSW").toString())
-        }
+nexusPublishing.repositories {
+    sonatype {
+        username.set(property("sonatype_USR").toString())
+        password.set(property("sonatype_PSW").toString())
     }
 }
 
@@ -64,7 +63,7 @@ val bomProjects by extra(listOf(
     projects.snapshotTestsNormalize,
     projects.snapshotTestsDirectoryParams,
     projects.diffTool
-))
+).map { it.dependencyProject }
+)
 
 val allJavaModules by extra(subprojects.filter { it.pluginManager.hasPlugin("java-library") })
-

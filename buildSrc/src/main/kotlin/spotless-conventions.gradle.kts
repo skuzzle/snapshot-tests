@@ -3,7 +3,6 @@ plugins {
 }
 
 spotless {
-
     format("misc") {
         target("*.gradle.kts", "*.gradle", "buildSrc/**/*.gradle", "buildSrc/**/*.gradle.kts", "*.gitignore")
         targetExclude("buildSrc/build/**")

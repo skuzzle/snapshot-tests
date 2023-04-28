@@ -3,9 +3,12 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        kotlin("jvm") version "1.8.10"
         id("com.gradle.enterprise") version "3.13"
         id("com.gradle.common-custom-user-data-gradle-plugin") version "1.8.2"
+        id("net.researchgate.release") version "3.0.2"
+        id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
+        id("com.github.breadmoirai.github-release") version "2.4.1"
+        id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
     }
 }
 
@@ -38,8 +41,8 @@ buildCache {
         if (isCi) {
             isPush = true
             credentials {
-                username = System.getenv("BUILD_CACHE_USR")
-                password = System.getenv("BUILD_CACHE_PSW")
+                username = System.getenv("BUILD_CACHE_USR")?.ifEmpty { null }
+                password = System.getenv("BUILD_CACHE_PSW")?.ifEmpty { null }
             }
         }
     }
@@ -47,7 +50,6 @@ buildCache {
 
 rootProject.name = "snapshot-tests"
 
-include("snapshot-tests-api")
 include("snapshot-tests-api")
 include("snapshot-tests-core")
 include("snapshot-tests-text")
@@ -77,6 +79,18 @@ include("diff-tool")
 include("snapshot-tests-documentation")
 include("readme")
 include("test-coverage")
+
+// check that every subproject has a custom build file
+// based on the project name
+rootProject.children.forEach { project ->
+    project.buildFileName = "${project.name}.gradle"
+    if (!project.buildFile.isFile) {
+        project.buildFileName = "${project.name}.gradle.kts"
+    }
+    require(project.buildFile.isFile) {
+        "${project.buildFile} must exist"
+    }
+}
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

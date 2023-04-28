@@ -1,5 +1,5 @@
 plugins {
-    id("snapshot-tests.base-conventions")
+    `base-conventions`
     id("jacoco-report-aggregation")
     id("com.github.kt3k.coveralls") version "2.12.0"
 }

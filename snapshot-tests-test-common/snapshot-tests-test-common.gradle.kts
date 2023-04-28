@@ -1,5 +1,5 @@
 plugins {
-    id("snapshot-tests.published-java-component")
+    `published-java-component`
 }
 ext.automaticModuleName = "de.skuzzle.test.snapshots.testcommon"
 

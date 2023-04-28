@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id("snapshot-tests.base-conventions")
+    `base-conventions`
 }
 
 // Don't use 'Copy' Task here, see https://github.com/skuzzle/snapshot-tests/issues/75
@@ -15,15 +15,14 @@ tasks.register("generateReadmeAndReleaseNotes") {
                 include("*.md")
             }
             into(project.rootDir)
-            val libs = project.rootProject.extensions.getByType(VersionCatalogsExtension.class).named("libs")
-            filter(ReplaceTokens, tokens: [
-                    "project.version": project.version,
-                    "project.groupId": project.group,
-                    "version.junit"  : libs.findLibrary("junit-bom").get().get().getVersion(),
-                    "version.junit4" : libs.findLibrary("junit4").get().get().getVersion(),
-                    "github.user"    : githubUser,
-                    "github.name"    : githubRepo
-            ])
+            filter(ReplaceTokens::class, "tokens" to mapOf(
+                    "project.version" to version as String,
+                    "project.groupId" to group as String,
+                    "version.junit"  to project.requiredVersionFromLibs("junit5"),
+                    "version.junit4" to project.requiredVersionFromLibs("junit4"),
+                    "github.user"    to property("githubUser") as String,
+                    "github.name"    to property("githubRepo") as String
+            ))
         }
     }
 }

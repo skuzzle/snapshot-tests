@@ -1,9 +1,11 @@
 plugins {
-    id("snapshot-tests.published-java-component")
+    `published-java-component`
 }
 
 description = "Snapshot Tests Common Utilities"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.common"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.common")
+}
 
 dependencies {
     implementation(libs.apiguardian)

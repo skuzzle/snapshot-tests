@@ -1,6 +1,6 @@
 plugins {
-    id("java-platform")
-    id("snapshot-tests.publishing-conventions")
+    `java-platform`
+    `publishing-conventions`
 }
 
 javaPlatform {
@@ -9,19 +9,16 @@ javaPlatform {
 
 dependencies {
     constraints {
-        bomProjects
-                .collect({ it.dependencyProject })
-                .collect({ "${it.group}:${it.name}:${it.version}" })
-                .each { api(it) }
+        val bomProjects: List<Project> by rootProject.extra
+        bomProjects.sorted()
+            .map({ "${it.group}:${it.name}:${it.version}" })
+            .forEach { api(it) }
     }
 }
 
-publishing {
-    publications.named("maven") {
-        from(components.javaPlatform)
-        pom {
-            packaging("pom")
-            description("Manages all child artifact versions in case you need to reference multiple in a client project")
-        }
+publishing.publications.named<MavenPublication>("maven") {
+    from(components["javaPlatform"])
+    pom {
+        description.set("Manages all child artifact versions in case you need to reference multiple in a client project")
     }
 }
