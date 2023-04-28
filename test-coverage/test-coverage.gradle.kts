@@ -5,8 +5,8 @@ plugins {
 }
 
 // TODO: check if still works
-def modulesWithoutJaxb = allJavaModules()
-        .findAll({ "project ':snapshot-tests-jaxb'" != it.toString() && "project ':snapshot-tests-xml-legacy'" != it.toString() })
+val modulesWithoutJaxb = allJavaModules
+        .filter({ "project ':snapshot-tests-jaxb'" != it.toString() && "project ':snapshot-tests-xml-legacy'" != it.toString() })
 
 
 dependencies {

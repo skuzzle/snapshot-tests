@@ -15,4 +15,11 @@ dependencies {
     implementation(libs.xmlunit.core)
     api(libs.xmlunit.assertj)
     testImplementation(projects.snapshotTestsJunit5)
+
+    implementation(libs.apiguardian)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }

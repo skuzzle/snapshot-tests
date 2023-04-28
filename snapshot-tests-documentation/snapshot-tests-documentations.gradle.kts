@@ -10,6 +10,13 @@ dependencies {
     testImplementation(projects.snapshotTestsJson)
     testImplementation(projects.snapshotTestsXmlLegacy)
     testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+    implementation(libs.apiguardian)
+
+    testImplementation platform (libs.junit.bom)
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }
 
 asciidoctor {

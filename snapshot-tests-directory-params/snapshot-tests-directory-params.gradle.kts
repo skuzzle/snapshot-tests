@@ -8,8 +8,13 @@ dependencies {
     testImplementation(projects.snapshotTestsCore)
     testImplementation(projects.snapshotTestsJunit5)
 
-    implementation platform(libs.junit.bom)
+    testImplementation(platform(libs.junit.bom))
     implementation("org.junit.platform:junit-platform-commons")
     implementation("org.junit.jupiter:junit-jupiter-params")
     implementation("org.junit.jupiter:junit-jupiter")
+
+    implementation(libs.apiguardian)
+
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }

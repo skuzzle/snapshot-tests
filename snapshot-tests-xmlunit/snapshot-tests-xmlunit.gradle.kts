@@ -9,4 +9,11 @@ dependencies {
 
     implementation(libs.xmlunit.core)
     implementation(libs.xmlunit.assertj)
+
+    implementation(libs.apiguardian)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }

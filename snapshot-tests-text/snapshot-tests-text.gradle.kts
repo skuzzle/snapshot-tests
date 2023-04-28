@@ -9,4 +9,11 @@ dependencies {
     implementation(projects.snapshotTestsCommon)
     implementation(projects.diffTool)
     testImplementation(projects.snapshotTestsJunit5)
+
+    implementation(libs.apiguardian)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }

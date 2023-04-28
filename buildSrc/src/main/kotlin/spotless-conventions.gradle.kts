@@ -5,7 +5,7 @@ plugins {
 spotless {
 
     format("misc") {
-        target("*.gradle", "buildSrc/**/*.gradle", "*.gitignore")
+        target("*.gradle.kts", "*.gradle", "buildSrc/**/*.gradle", "buildSrc/**/*.gradle.kts", "*.gitignore")
         targetExclude("buildSrc/build/**")
         trimTrailingWhitespace()
         indentWithSpaces()
@@ -19,9 +19,9 @@ spotless {
     }
 
     pluginManager.withPlugin("java") {
-        def configDir = rootProject.layout.projectDirectory.dir("gradle/config/eclipse")
-        def importOrderConfigFile = configDir.file("eclipse.importorder")
-        def javaFormatterConfigFile = configDir.file("formatter-settings.xml")
+        val configDir = rootProject.layout.projectDirectory.dir("gradle/config/eclipse")
+        val importOrderConfigFile = configDir.file("eclipse.importorder")
+        val javaFormatterConfigFile = configDir.file("formatter-settings.xml")
 
         java {
             toggleOffOn()
