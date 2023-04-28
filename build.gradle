@@ -35,11 +35,11 @@ release {
 }
 
 githubRelease {
-    token provider({ project.findProperty("gh_token") })
-    owner githubUser
-    repo githubRepo
-    draft true
-    body provider({
+    token = provider({ project.findProperty("gh_token") })
+    owner = githubUser
+    repo = githubRepo
+    draft = true
+    body = provider({
         file("RELEASE_NOTES.md").getText()
     })
 }
