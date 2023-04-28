@@ -8,7 +8,7 @@ fun String.execute(): Unit {
             .redirectError(ProcessBuilder.Redirect.PIPE)
             .start()
 
-        proc.waitFor(60, TimeUnit.MINUTES)
+        proc.waitFor(2, TimeUnit.MINUTES)
         val stdIn = proc.inputStream.bufferedReader().readText()
         val stdOut = proc.errorStream.bufferedReader().readText()
         System.out.println("out> $stdIn\nerr> $stdOut")
