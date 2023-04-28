@@ -8,14 +8,14 @@ val modulesWithoutJaxb = allJavaModules
 
 dependencies {
     modulesWithoutJaxb
-        .map({ it.path })
-        .filter({ ":snapshot-tests-jaxb" != it.toString() && ":snapshot-tests-xml-legacy" != it.toString() })
-        .forEach({ jacocoAggregation(it) })
+        .map { it.path }
+        .filter { ":snapshot-tests-jaxb" != it.toString() && ":snapshot-tests-xml-legacy" != it.toString() }
+        .forEach { jacocoAggregation(it) }
 }
 
 reporting {
     reports {
-        create<JacocoCoverageReport>("jacocoRootReport") {
+        create<JacocoCoverageReport>("testCodeCoverageReport") {
             testType.set(TestSuiteType.UNIT_TEST)
         }
     }
@@ -23,12 +23,15 @@ reporting {
 
 coveralls {
     //sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
+    sourceDirs = modulesWithoutJaxb
+        .map { it.sourceSets["main"].allSource.srcDirs }
+        .map { it.toString() }
     jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
 }
 
 tasks.named("check") {
-    dependsOn(tasks.named("testCodeCoverageReport"))
+dependsOn(tasks.named("testCodeCoverageReport"))
 }
 tasks.named("coveralls") {
-    dependsOn("testCodeCoverageReport")
+dependsOn("testCodeCoverageReport")
 }

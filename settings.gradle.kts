@@ -78,7 +78,7 @@ include("diff-tool")
 // Docs and build support
 include("snapshot-tests-documentation")
 include("readme")
-//include("test-coverage")
+include("test-coverage")
 
 // check that every subproject has a custom build file
 // based on the project name
