@@ -3,7 +3,9 @@ plugins {
 }
 
 description = "Snapshot Tests JUnit5 support"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.junit5"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.junit5")
+}
 
 dependencies {
     api(projects.snapshotTestsApi)

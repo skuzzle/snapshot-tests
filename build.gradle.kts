@@ -66,4 +66,6 @@ val bomProjects by extra(listOf(
 ).map { it.dependencyProject }
 )
 
-val allJavaModules by extra(subprojects.filter { it.pluginManager.hasPlugin("java-library") })
+val allJavaModules by extra(subprojects
+    .filter { it.pluginManager.hasPlugin("java-library") }
+)

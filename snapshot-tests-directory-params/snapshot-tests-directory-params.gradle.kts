@@ -12,7 +12,7 @@ dependencies {
     testImplementation(projects.snapshotTestsCore)
     testImplementation(projects.snapshotTestsJunit5)
 
-    testImplementation(platform(libs.junit.bom))
+    implementation(platform(libs.junit.bom))
     implementation("org.junit.platform:junit-platform-commons")
     implementation("org.junit.jupiter:junit-jupiter-params")
     implementation("org.junit.jupiter:junit-jupiter")

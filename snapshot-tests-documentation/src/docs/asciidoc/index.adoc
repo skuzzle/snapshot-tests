@@ -579,7 +579,7 @@ having to execute the test suite again. You can enable this feature via `@Snapsh
 
 [WARNING]
 ====
-If context files contain random data that changes between every test execution you might run into cache-miss issues 
+If context files contain random data that changes between every test execution you might run into cache-miss issues
 if you are using _Gradle_ as a build tool.
 ====
 

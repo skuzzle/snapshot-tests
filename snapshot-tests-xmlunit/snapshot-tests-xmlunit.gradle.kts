@@ -1,7 +1,10 @@
 plugins {
     `published-java-component`
 }
-ext.automaticModuleName = "de.skuzzle.test.snapshots.xmlunit"
+
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.xmlunit")
+}
 
 dependencies {
     api(projects.snapshotTestsCore)

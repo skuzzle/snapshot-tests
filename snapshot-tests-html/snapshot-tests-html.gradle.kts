@@ -3,7 +3,9 @@ plugins {
 }
 
 description = "Snapshot HTML Serialization"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.html"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.html")
+}
 
 dependencies {
     api(projects.snapshotTestsCore)

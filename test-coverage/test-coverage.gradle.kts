@@ -3,32 +3,31 @@ plugins {
     id("jacoco-report-aggregation")
     id("com.github.kt3k.coveralls") version "2.12.0"
 }
-
-// TODO: check if still works
+val allJavaModules: List<Project> by rootProject.extra
 val modulesWithoutJaxb = allJavaModules
-        .filter({ "project ':snapshot-tests-jaxb'" != it.toString() && "project ':snapshot-tests-xml-legacy'" != it.toString() })
-
 
 dependencies {
     modulesWithoutJaxb
-            .each({ jacocoAggregation it })
+        .map({ it.path })
+        .filter({ ":snapshot-tests-jaxb" != it.toString() && ":snapshot-tests-xml-legacy" != it.toString() })
+        .forEach({ jacocoAggregation(it) })
 }
 
 reporting {
     reports {
-        testCodeCoverageReport(JacocoCoverageReport) {
-            testType = TestSuiteType.UNIT_TEST
+        create<JacocoCoverageReport>("jacocoRootReport") {
+            testType.set(TestSuiteType.UNIT_TEST)
         }
     }
 }
 
 coveralls {
-    sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
+    //sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
     jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
 }
 
 tasks.named("check") {
-    dependsOn tasks.named("testCodeCoverageReport", JacocoReport)
+    dependsOn(tasks.named("testCodeCoverageReport"))
 }
 tasks.named("coveralls") {
     dependsOn("testCodeCoverageReport")

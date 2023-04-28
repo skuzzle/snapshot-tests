@@ -2,7 +2,9 @@ plugins {
     `published-java-component`
 }
 description = "Snapshot XML Serialization"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.data.xml"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.data.xml")
+}
 
 dependencies {
     api(projects.snapshotTestsCore)

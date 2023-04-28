@@ -3,7 +3,9 @@ plugins {
 }
 
 description = "Snapshot JSON Serialization"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.data.json"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.data.json")
+}
 
 dependencies {
     api(projects.snapshotTestsCore)

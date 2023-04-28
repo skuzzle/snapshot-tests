@@ -35,6 +35,7 @@ tasks.asciidoctor {
         "testIncludes" to sourceSets["test"].java.srcDirs.first()
     ))
 }
+
 val repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest")
 val repositoryDeployPathCurrent = project.rootProject.file("docs/reference/" + project.version)
 
@@ -57,7 +58,7 @@ tasks.register("deployDocsToRepositoryRootLatest") {
     dependsOn("asciidoctor", "wipeLatestDocsFolder")
     doLast {
         copy {
-            from(asciidoctor.get().outputs.files)
+            from(tasks.named("asciidoctor"))
             into(repositoryDeployPathLatest)
         }
     }
@@ -68,7 +69,7 @@ tasks.register("deployDocsToRepositoryRootCurrent") {
     dependsOn("asciidoctor")
     doLast {
         copy {
-            from(asciidoctor.get().outputs.files)
+            from(tasks.named("asciidoctor"))
             into(repositoryDeployPathCurrent)
         }
     }

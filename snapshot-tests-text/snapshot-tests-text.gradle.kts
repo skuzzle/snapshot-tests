@@ -1,8 +1,12 @@
 plugins {
     `published-java-component`
 }
+
 description = "Snapshot Tests Text Snapshot"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.data.text"
+
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.data.text")
+}
 
 dependencies {
     implementation(projects.snapshotTestsApi)

@@ -3,7 +3,9 @@ plugins {
 }
 
 description = "Snapshot Object Normalization"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.normalize"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.normalize")
+}
 
 dependencies {
     implementation(projects.snapshotTestsCommon)
