@@ -27,8 +27,8 @@ tasks.register("commitFilesToGit") {
 }
 
 release {
-    pushReleaseVersionBranch = 'main'
-    tagTemplate = 'v$version'
+    pushReleaseVersionBranch = "main"
+    tagTemplate = "v$version"
     git {
         requireBranch.set("dev")
     }

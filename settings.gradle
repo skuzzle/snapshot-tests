@@ -1,6 +1,6 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.12.6'
-    id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.10'
+    id "com.gradle.enterprise" version "3.12.6"
+    id "com.gradle.common-custom-user-data-gradle-plugin" version "1.10"
 }
 
 def isCi = System.getenv("CI")?.toBoolean() ?: false
@@ -8,8 +8,8 @@ def isCi = System.getenv("CI")?.toBoolean() ?: false
 gradleEnterprise {
     buildScan {
         publishAlways()
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
         uploadInBackground = !isCi
         capture {
             taskInputFiles = true
@@ -34,36 +34,36 @@ buildCache {
     }
 }
 
-rootProject.name = 'snapshot-tests'
+rootProject.name = "snapshot-tests"
 
 include (
-        'snapshot-tests-api',
-        'snapshot-tests-core',
-        'snapshot-tests-text',
-        'snapshot-tests-bom',
+        "snapshot-tests-api",
+        "snapshot-tests-core",
+        "snapshot-tests-text",
+        "snapshot-tests-bom",
 
         // Internal utilities
-        'snapshot-tests-xmlunit',
-        'snapshot-tests-common',
-        'snapshot-tests-test-common',
+        "snapshot-tests-xmlunit",
+        "snapshot-tests-common",
+        "snapshot-tests-test-common",
 
         // Test Framework support
-        'snapshot-tests-junit5',
-        'snapshot-tests-junit4',
+        "snapshot-tests-junit5",
+        "snapshot-tests-junit4",
 
         // Supported data formats
-        'snapshot-tests-html',
-        'snapshot-tests-xml-legacy',
-        'snapshot-tests-xml',
-        'snapshot-tests-json',
+        "snapshot-tests-html",
+        "snapshot-tests-xml-legacy",
+        "snapshot-tests-xml",
+        "snapshot-tests-json",
 
         // External utilities
-        'snapshot-tests-directory-params',
-        'snapshot-tests-normalize',
-        'diff-tool',
+        "snapshot-tests-directory-params",
+        "snapshot-tests-normalize",
+        "diff-tool",
 
         // Docs and build support
-        'snapshot-tests-documentation',
+        "snapshot-tests-documentation",
         "readme",
         "test-coverage"
 )
@@ -74,30 +74,29 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
-            version('xmlunit', '2.9.1')
-            library('xmlunit-core', 'org.xmlunit', 'xmlunit-core').versionRef('xmlunit')
-            library('xmlunit-assertj', 'org.xmlunit', 'xmlunit-assertj').versionRef('xmlunit')
-            library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'xmlunit-jakarta-jaxb-impl').versionRef('xmlunit')
+            version("xmlunit", "2.9.1")
+            library("xmlunit-core", "org.xmlunit", "xmlunit-core").versionRef("xmlunit")
+            library("xmlunit-assertj", "org.xmlunit", "xmlunit-assertj").versionRef("xmlunit")
+            library("xmlunit-jakarta-jaxb-impl", "org.xmlunit", "xmlunit-jakarta-jaxb-impl").versionRef("xmlunit")
 
-            library('jaxb-api-legacy', 'javax.xml.bind:jaxb-api:2.3.1')
-            library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.3')
+            library("jaxb-api-legacy", "javax.xml.bind:jaxb-api:2.3.1")
+            library("jaxb-runtime-legacy", "org.glassfish.jaxb:jaxb-runtime:2.3.3")
 
-            library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0')
-            library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
+            library("jaxb-api-jakarta", "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
+            library("jaxb-runtime-jakarta", "org.glassfish.jaxb:jaxb-runtime:4.0.1")
 
-            library('junit-bom', 'org.junit:junit-bom:5.9.2')
-            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.14.2')
-            library('assertj-core', 'org.assertj:assertj-core:3.24.2')
-            library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.9')
-            library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
-            library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
-            library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')
-            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
-            library('opentest4j', 'org.opentest4j:opentest4j:1.2.0')
-            library('jsoup', 'org.jsoup:jsoup:1.15.3')
-            library('junit4', 'junit:junit:4.13.2')
+            library("junit-bom", "org.junit:junit-bom:5.9.2")
+            library("jackson-bom", "com.fasterxml.jackson:jackson-bom:2.14.2")
+            library("assertj-core", "org.assertj:assertj-core:3.24.2")
+            library("equalsverifier", "nl.jqno.equalsverifier:equalsverifier:3.9")
+            library("apiguardian", "org.apiguardian:apiguardian-api:1.1.2")
+            library("javadiffutils", "io.github.java-diff-utils:java-diff-utils:4.12")
+            library("bytebuddy", "net.bytebuddy:byte-buddy:1.12.22")
+            library("jsonassert", "org.skyscreamer:jsonassert:1.5.1")
+            library("opentest4j", "org.opentest4j:opentest4j:1.2.0")
+            library("jsoup", "org.jsoup:jsoup:1.15.3")
+            library("junit4", "junit:junit:4.13.2")
         }
     }
 }
-include 'diff-tool'
 

@@ -4,6 +4,7 @@ plugins {
     id("com.github.kt3k.coveralls") version "2.12.0"
 }
 
+// TODO: check if still works
 def modulesWithoutJaxb = allJavaModules()
         .findAll({ "project ':snapshot-tests-jaxb'" != it.toString() && "project ':snapshot-tests-xml-legacy'" != it.toString() })
 
@@ -26,8 +27,8 @@ coveralls {
     jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
 }
 
-tasks.named('check') {
-    dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+tasks.named("check") {
+    dependsOn tasks.named("testCodeCoverageReport", JacocoReport)
 }
 tasks.named("coveralls") {
     dependsOn("testCodeCoverageReport")

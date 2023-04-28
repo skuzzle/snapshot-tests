@@ -36,7 +36,7 @@ publishing {
             pom {
                 name = provider { project.description ?: "${project.group}:${project.name}" }
                 description = provider { project.name }
-                url = 'https://github.com/skuzzle/snapshot-tests'
+                url = "https://github.com/skuzzle/snapshot-tests"
                 scm {
                     connection = "scm:git:git://github.com/skuzzle/snapshot-tests"
                     developerConnection = "scm:git:git://github.com/skuzzle/snapshot-tests"
