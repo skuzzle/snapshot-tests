@@ -22,7 +22,6 @@ reporting {
 }
 
 coveralls {
-    //sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
     sourceDirs = modulesWithoutXmlLegacy
         .map { it.sourceSets["main"].allSource.srcDirs }
         .map { it.toString() }
@@ -30,8 +29,9 @@ coveralls {
 }
 
 tasks.named("check") {
-dependsOn(tasks.named("testCodeCoverageReport"))
+    dependsOn(tasks.named("testCodeCoverageReport"))
 }
+
 tasks.named("coveralls") {
-dependsOn("testCodeCoverageReport")
+    dependsOn("testCodeCoverageReport")
 }
