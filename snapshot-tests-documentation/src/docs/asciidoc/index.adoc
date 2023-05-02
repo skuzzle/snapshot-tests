@@ -396,21 +396,24 @@ how to handle and convert different line endings. You might run into the followi
 line endings. Snapshot tests might fail if the `StructuralAssertions` instance in place puts significance to line breaks.
 * You force-updated some snapshots and all of them are marked as modified in git, even if there are no visible changes.
 
-In case you don't care about line endings you should advise the framework to normalize line endings before writing
-snapshot files. You can do that with the following annotation on either the test method or test class:
+By default, we try to determine the proper line break character from you local git configuration and then normalize
+all line breaks when serializing your test outcome. This is the recommended behavior in case you are using git and line
+breaks are not significant for your tests. Otherwise, you might want to change line break normalization.
 
 [source,java]
-.Normalize line endings according to local git config
+.Change behavior of line ending normalization per test case/test class
 ----
 include::{testIncludes}/de/skuzzle/test/snapshots/snippets/SnapshotTestOptionsTest.java[tags=normalizeLineEndingsGit,indent=0]
 ----
 
+TIP: If you want to debug issues with determining the values from git config, you can pass `-DenableEolDebugging` to
+the JVM. Otherwise by default, errors will be ignored and we silently fall back to the default system line break character.
 
-In case you _do_ care about line endings and you are using git, you can use a `.gitattributes` file to signify the
+In case you _do_ care about line endings *and* you are using git, you can use a `.gitattributes` file to signify the
 intended line ending to git during checkout.
 
 IMPORTANT: Line endings are only normalized when producing the _actual_ snapshot. Line endings are _not_ normalized when
-reading the _expected_ snapshot result from disc.
+reading the _expected_ snapshot result from disk. Take care when manually editing snapshot files.
 
 === Updating Snapshots
 One aspect that makes _snapshot testing_ so powerful is that you can generate the _expected output_ from your

@@ -11,7 +11,7 @@ class SnapshotTestOptionsTest {
 
     @Test
     // tag::normalizeLineEndingsGit[]
-    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.GIT)
+    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.NEVER)
     // end::normalizeLineEndingsGit[]
     void normalizeLineEndingsGit(Snapshot snapshot) {
 
