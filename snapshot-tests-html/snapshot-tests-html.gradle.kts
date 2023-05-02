@@ -4,7 +4,7 @@ plugins {
 
 description = "Snapshot HTML Serialization"
 extra.apply {
-    set("automaticModuleName", "de.skuzzle.test.snapshots.html")
+    set("automaticModuleName", "de.skuzzle.test.snapshots.data.html")
 }
 
 dependencies {
