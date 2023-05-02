@@ -1,9 +1,23 @@
+import gradle.kotlin.dsl.accessors._ddc08fae9aa4b8c57a8699665b39f0d1.jar
 import java.util.Base64
 
 plugins {
     id("base-conventions")
     id("maven-publish")
     id("signing")
+}
+
+tasks.withType<Jar>().configureEach {
+    manifest {
+        attributes(
+            "Automatic-Module-Name" to provider { requireNotNull(project.findProperty("automaticModuleName")) },
+            "Created-By" to "${System.getProperty("java.version")} (${System.getProperty("java.vendor")} ${System.getProperty("java.vm.version")})",
+            "Specification-Title" to project.name,
+            "Specification-Version" to (project.version as String).substringBefore('-'),
+            "Implementation-Title" to project.name,
+            "Implementation-Version" to project.version
+        )
+    }
 }
 
 tasks.withType<Sign>().configureEach {

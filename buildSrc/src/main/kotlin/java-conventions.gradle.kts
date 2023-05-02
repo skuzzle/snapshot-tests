@@ -32,19 +32,6 @@ repositories {
     mavenCentral()
 }
 
-tasks.jar {
-    manifest {
-        attributes(
-            "Automatic-Module-Name" to provider { requireNotNull(project.findProperty("automaticModuleName")) },
-            "Created-By" to "${System.getProperty("java.version")} (${System.getProperty("java.vendor")} ${System.getProperty("java.vm.version")})",
-            "Specification-Title" to project.name,
-            "Specification-Version" to (project.version as String).substringBefore('-'),
-            "Implementation-Title" to project.name,
-            "Implementation-Version" to project.version
-        )
-    }
-}
-
 if (project.getPluginManager().hasPlugin("maven-publish")) {
     configure<PublishingExtension> {
         publications {
