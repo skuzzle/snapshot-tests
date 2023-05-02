@@ -16,8 +16,8 @@ tasks.register("generateReadmeAndReleaseNotes") {
             }
             into(project.rootDir)
             filter(ReplaceTokens::class, "tokens" to mapOf(
-                "project.version" to version as String,
-                "project.groupId" to group as String,
+                "project.version" to project.version as String,
+                "project.groupId" to project.group as String,
                 "version.junit" to project.requiredVersionFromLibs("junit5"),
                 "version.junit4" to project.requiredVersionFromLibs("junit4"),
                 "github.user" to project.property("githubUser") as String,
