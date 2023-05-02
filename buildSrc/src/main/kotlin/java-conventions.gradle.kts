@@ -35,7 +35,7 @@ repositories {
 tasks.jar {
     manifest {
         attributes(
-            "Automatic-Module-Name" to provider { project.findProperty("automaticModuleName") },
+            "Automatic-Module-Name" to provider { requireNotNull(project.findProperty("automaticModuleName")) },
             "Created-By" to "${System.getProperty("java.version")} (${System.getProperty("java.vendor")} ${System.getProperty("java.vm.version")})",
             "Specification-Title" to project.name,
             "Specification-Version" to (project.version as String).substringBefore('-'),
