@@ -2,6 +2,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.the
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import java.lang.IllegalStateException
 
 val Project.isSnapshot: Boolean
     get() = (project.version as String).contains("SNAPSHOT")
@@ -18,3 +19,9 @@ private val Project.libsVersionCatalog: VersionCatalog
 
 fun Project.allJavaModules() =
     project.rootProject.subprojects.filter { it.pluginManager.hasPlugin("java-library") }
+
+fun Project.checkThat(condition : Boolean, message : String) {
+    if (!condition) {
+        throw IllegalStateException(message)
+    }
+}

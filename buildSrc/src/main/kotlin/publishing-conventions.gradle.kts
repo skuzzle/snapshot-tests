@@ -66,10 +66,9 @@ publishing {
     }
 }
 
-// TODO: check pom
-/*tasks.withType(GenerateMavenPom).configureEach {
+tasks.withType<GenerateMavenPom>().configureEach {
     doLast {
-        def pomXml = destination.getText();
+        val pomXml = destination.readText();
         checkThat(pomXml.indexOf("<name>") >= 0, "POM must have a name element: " + destination)
         checkThat(pomXml.indexOf("<url>") >= 0, "POM must have a url element: " + destination)
         checkThat(pomXml.indexOf("<description>") >= 0, "POM must have a description element" + destination)
@@ -77,4 +76,4 @@ publishing {
         checkThat(pomXml.indexOf("<scm>") >= 0, "POM must have a scm element" + destination)
     }
 }
-*/
+
