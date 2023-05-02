@@ -1,8 +1,11 @@
 plugins {
-    id("snapshot-tests.published-java-component")
+    `published-java-component`
 }
+
 description = "Snapshot XML Serialization"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.data.xml"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.data.xml")
+}
 
 dependencies {
     api(projects.snapshotTestsCore)
@@ -14,5 +17,11 @@ dependencies {
     implementation(libs.xmlunit.jakarta.jaxb.impl)
     implementation(libs.xmlunit.core)
     api(libs.xmlunit.assertj)
+
+    implementation(libs.apiguardian)
+
     testImplementation(projects.snapshotTestsJunit5)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.assertj.core)
 }

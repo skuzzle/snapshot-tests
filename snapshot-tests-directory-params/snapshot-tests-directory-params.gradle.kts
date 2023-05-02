@@ -1,15 +1,24 @@
 plugins {
-    id("snapshot-tests.published-java-component")
+    `published-java-component`
 }
+
 description = "Directory Contents Parameters"
-ext.automaticModuleName = "de.skuzzle.test.snapshots.directoryparams"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.directoryparams")
+}
+
 dependencies {
     implementation(projects.snapshotTestsCommon)
     testImplementation(projects.snapshotTestsCore)
     testImplementation(projects.snapshotTestsJunit5)
 
-    implementation platform(libs.junit.bom)
+    implementation(platform(libs.junit.bom))
     implementation("org.junit.platform:junit-platform-commons")
     implementation("org.junit.jupiter:junit-jupiter-params")
     implementation("org.junit.jupiter:junit-jupiter")
+
+    implementation(libs.apiguardian)
+
+    testImplementation(libs.equalsverifier)
+    testImplementation(libs.assertj.core)
 }
