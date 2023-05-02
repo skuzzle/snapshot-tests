@@ -6,6 +6,7 @@ plugins {
 val modulesWithoutXmlLegacy = rootProject.allJavaModules()
     // filtered out because it contains classes with identical full qualified names as the non-legacy project
     .filter { projects.snapshotTestsXmlLegacy.dependencyProject != it }
+    .onEach { println(it.toString()) }
 
 dependencies {
     modulesWithoutXmlLegacy
@@ -13,9 +14,10 @@ dependencies {
         .forEach { jacocoAggregation(project(it)) }
 }
 
+val coverageReportName = "testCodeCoverageReport"
 reporting {
     reports {
-        create<JacocoCoverageReport>("testCodeCoverageReport") {
+        create<JacocoCoverageReport>(coverageReportName) {
             testType.set(TestSuiteType.UNIT_TEST)
         }
     }
@@ -24,12 +26,12 @@ reporting {
 coveralls {
     sourceDirs = modulesWithoutXmlLegacy
         .map { it.sourceSets["main"].allSource.srcDirs }
-        .map { it.toString() }
-    jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
+        .map { it.toString() }.onEach { println("xxx $it") }
+    jacocoReportPath = "${buildDir}/reports/jacoco/${coverageReportName}/${coverageReportName}.xml"
 }
 
 tasks.named("check") {
-    dependsOn(tasks.named("testCodeCoverageReport"))
+    dependsOn(tasks.named<JacocoCoverageReport>(coverageReportName))
 }
 
 tasks.named("coveralls") {
