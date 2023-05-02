@@ -65,7 +65,3 @@ val bomProjects by extra(listOf(
     projects.diffTool
 ).map { it.dependencyProject }
 )
-
-val allJavaModules by extra(subprojects
-    .filter { it.pluginManager.hasPlugin("java-library") }
-)

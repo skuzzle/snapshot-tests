@@ -3,14 +3,14 @@ plugins {
     id("jacoco-report-aggregation")
     id("com.github.kt3k.coveralls") version "2.12.0"
 }
-val allJavaModules: List<Project> by rootProject.extra
-val modulesWithoutJaxb = allJavaModules
+val modulesWithoutXmlLegacy = rootProject.allJavaModules()
+    // filtered out because it contains classes with identical full qualified names as the non-legacy project
+    .filter { projects.snapshotTestsXmlLegacy.dependencyProject != it }
 
 dependencies {
-    modulesWithoutJaxb
+    modulesWithoutXmlLegacy
         .map { it.path }
-        .filter { ":snapshot-tests-jaxb" != it.toString() && ":snapshot-tests-xml-legacy" != it.toString() }
-        .forEach { jacocoAggregation(it) }
+        .forEach { jacocoAggregation(project(it)) }
 }
 
 reporting {
@@ -23,7 +23,7 @@ reporting {
 
 coveralls {
     //sourceDirs = modulesWithoutJaxb.sourceSets.main.allSource.srcDirs.flatten()
-    sourceDirs = modulesWithoutJaxb
+    sourceDirs = modulesWithoutXmlLegacy
         .map { it.sourceSets["main"].allSource.srcDirs }
         .map { it.toString() }
     jacocoReportPath = "${buildDir}/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
