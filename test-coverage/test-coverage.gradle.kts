@@ -25,8 +25,8 @@ reporting {
 
 coveralls {
     sourceDirs = modulesWithoutXmlLegacy
-        .map { it.sourceSets["main"].allSource.srcDirs }
-        .map { it.toString() }.onEach { println("xxx $it") }
+        .flatMap { it.sourceSets["main"].allSource.srcDirs }
+        .map { it.toString() }
     jacocoReportPath = "${buildDir}/reports/jacoco/${coverageReportName}/${coverageReportName}.xml"
 }
 
