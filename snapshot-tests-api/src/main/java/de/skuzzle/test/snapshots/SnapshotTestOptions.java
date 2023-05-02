@@ -116,8 +116,7 @@ public @interface SnapshotTestOptions {
      * Advises the framework to convert the line endings after snapshot serialization to
      * the given value.
      * <p>
-     * By default, line endings are not normalized but when using GIT it is advisable to
-     * set this to {@link NormalizeLineEndings#GIT}
+     * Defaults to {@link NormalizeLineEndings#GIT}.
      * </p>
      *
      * @return How to normalize line endings.
