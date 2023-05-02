@@ -31,7 +31,7 @@ coveralls {
 }
 
 tasks.named("check") {
-    dependsOn(tasks.named<JacocoCoverageReport>(coverageReportName))
+    dependsOn(tasks.named(coverageReportName))
 }
 
 tasks.named("coveralls") {
