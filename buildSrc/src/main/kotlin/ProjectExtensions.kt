@@ -19,9 +19,3 @@ private val Project.libsVersionCatalog: VersionCatalog
 
 fun Project.allJavaModules() =
     project.rootProject.subprojects.filter { it.pluginManager.hasPlugin("java-library") }
-
-fun Project.checkThat(condition : Boolean, message : String) {
-    if (!condition) {
-        throw IllegalStateException(message)
-    }
-}

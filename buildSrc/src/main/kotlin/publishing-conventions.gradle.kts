@@ -69,10 +69,10 @@ publishing {
 tasks.withType<GenerateMavenPom>().configureEach {
     doLast {
         val pomXml = destination.readText();
-        checkThat(pomXml.indexOf("<name>") >= 0, "POM must have a name element: " + destination)
-        checkThat(pomXml.indexOf("<url>") >= 0, "POM must have a url element: " + destination)
-        checkThat(pomXml.indexOf("<description>") >= 0, "POM must have a description element" + destination)
-        checkThat(pomXml.indexOf("<license>") >= 0, "POM must have a license element" + destination)
-        checkThat(pomXml.indexOf("<scm>") >= 0, "POM must have a scm element" + destination)
+        require(pomXml.indexOf("<name>") >= 0, { "POM must have a name element: " + destination })
+        require(pomXml.indexOf("<url>") >= 0, { "POM must have a url element: " + destination })
+        require(pomXml.indexOf("<description>") >= 0, { "POM must have a description element" + destination })
+        require(pomXml.indexOf("<license>") >= 0, { "POM must have a license element" + destination })
+        require(pomXml.indexOf("<scm>") >= 0, { "POM must have a scm element" + destination })
     }
 }
