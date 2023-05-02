@@ -6,7 +6,6 @@ plugins {
 val modulesWithoutXmlLegacy = rootProject.allJavaModules()
     // filtered out because it contains classes with identical full qualified names as the non-legacy project
     .filter { projects.snapshotTestsXmlLegacy.dependencyProject != it }
-    .onEach { println(it.toString()) }
 
 dependencies {
     modulesWithoutXmlLegacy
