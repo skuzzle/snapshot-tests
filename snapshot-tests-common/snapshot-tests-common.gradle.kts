@@ -12,6 +12,5 @@ dependencies {
 
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)
 }

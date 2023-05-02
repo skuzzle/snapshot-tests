@@ -9,9 +9,6 @@ extra.apply {
 
 dependencies {
     implementation(projects.snapshotTestsCommon)
-
-    implementation(libs.opentest4j)
-
     implementation(libs.apiguardian)
 
     testImplementation(platform(libs.junit.bom))

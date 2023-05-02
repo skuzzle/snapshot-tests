@@ -16,7 +16,6 @@ dependencies {
     testImplementation(projects.snapshotTestsJunit5)
 
     implementation(libs.opentest4j)
-
     implementation(libs.apiguardian)
 
     testImplementation(platform(libs.junit.bom))

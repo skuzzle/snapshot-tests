@@ -76,4 +76,3 @@ tasks.withType<GenerateMavenPom>().configureEach {
         checkThat(pomXml.indexOf("<scm>") >= 0, "POM must have a scm element" + destination)
     }
 }
-

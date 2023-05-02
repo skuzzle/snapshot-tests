@@ -17,6 +17,5 @@ dependencies {
 
     implementation(libs.apiguardian)
 
-    testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)
 }

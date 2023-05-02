@@ -13,10 +13,9 @@ dependencies {
     implementation(projects.snapshotTestsCommon)
     api(platform(libs.junit.bom))
     api("org.junit.jupiter:junit-jupiter")
-    testImplementation(projects.snapshotTestsTestCommon)
 
     implementation(libs.apiguardian)
 
-    testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)
+    testImplementation(projects.snapshotTestsTestCommon)
 }

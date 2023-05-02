@@ -11,7 +11,7 @@ dependencies {
     constraints {
         val bomProjects: List<Project> by rootProject.extra
         bomProjects.sorted()
-            .map({ "${it.group}:${it.name}:${it.version}" })
+            .map { "${it.group}:${it.name}:${it.version}" }
             .forEach { api(it) }
     }
 }

@@ -11,14 +11,13 @@ dependencies {
     api(projects.snapshotTestsCore)
     api(projects.snapshotTestsXmlunit)
     implementation(projects.snapshotTestsCommon)
-    testImplementation(projects.snapshotTestsJunit5)
     api(libs.xmlunit.assertj)
     implementation(libs.jsoup)
     implementation(libs.apiguardian)
 
+    testImplementation(projects.snapshotTestsJunit5)
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation(libs.equalsverifier)
     testImplementation(libs.assertj.core)
 
 }

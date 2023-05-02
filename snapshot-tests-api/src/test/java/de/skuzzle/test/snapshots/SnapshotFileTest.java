@@ -71,12 +71,12 @@ public class SnapshotFileTest {
     }
 
     @Test
-    void testSnapshotFileEquals() throws Exception {
+    void testSnapshotFileEquals() {
         EqualsVerifier.forClass(SnapshotFile.class).verify();
     }
 
     @Test
-    void testHeaderEquals() throws Exception {
+    void testHeaderEquals() {
         EqualsVerifier.forClass(SnapshotHeader.class).verify();
     }
 
