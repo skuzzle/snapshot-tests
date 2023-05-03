@@ -59,7 +59,9 @@ pipeline {
     }
     stage('Deploy SNAPSHOT') {
       when {
-        branch 'dev'
+        expression {
+            return env.BRANCH_NAME = 'dev' || env.BRANCH_NAME = '2.0-dev';
+        }
       }
       steps {
         withGradle {
