@@ -1,13 +1,18 @@
-package de.skuzzle.test.snapshots;
+package de.skuzzle.test.snapshots.junit5;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 
+import de.skuzzle.test.snapshots.Snapshot;
+import de.skuzzle.test.snapshots.SnapshotNaming;
+import de.skuzzle.test.snapshots.SnapshotTestOptions;
+import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +20,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 @EnableSnapshotTests
 public class SnapshotsTest {
+
+    @Test
+    @SnapshotTestOptions(allowMultipleSnapshotsWithSameName = true)
+    void testMultipleSnapshotsWithSameName(Snapshot snapshot) {
+        snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+        snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+    }
 
     @Test
     @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.CRLF)

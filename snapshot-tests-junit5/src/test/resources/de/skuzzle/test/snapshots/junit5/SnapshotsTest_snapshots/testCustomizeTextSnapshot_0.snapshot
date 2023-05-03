@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: testWriteContextFiles_0
+snapshot-name: testCustomizeTextSnapshot_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
-test-method: testWriteContextFiles
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
+test-method: testCustomizeTextSnapshot
 
 Name: Simon
 Surname: Taddiken

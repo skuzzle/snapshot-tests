@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: phil
+snapshot-name: testMixExplicitAndAutomaticNaming_1
 snapshot-number: 1
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
-test-method: testWithExplicitSnapshotName
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
+test-method: testMixExplicitAndAutomaticNaming
 
 Name: Phil
 Surname: Taddiken

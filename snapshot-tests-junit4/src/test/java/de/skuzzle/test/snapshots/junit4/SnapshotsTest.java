@@ -10,6 +10,7 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot.DiffFormat;
+import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -20,6 +21,13 @@ public class SnapshotsTest {
     @Rule
     @ClassRule
     public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
+
+    @Test
+    @SnapshotTestOptions(allowMultipleSnapshotsWithSameName = true)
+    public void testMultipleSnapshotsWithSameName() {
+        snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+        snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+    }
 
     @Test
     @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.CRLF)

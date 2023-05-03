@@ -23,6 +23,24 @@ public class FailingSnapshotTestsJUnit5 {
     private final MetaTest frameworkTest = MetaTest.junit5();
 
     @Test
+    void testMultipleSnapshotsWithSameName() {
+        frameworkTest.expectTestcase(OverwriteSnapshotTests.class).toFailWithExceptionWhich()
+                .hasMessageContaining("Test produced multiple results with same snapshot file path:");
+    }
+
+    @EnableSnapshotTests
+    static class OverwriteSnapshotTests {
+
+        @Test
+        void testMultipleSnapshotsWithSameName(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+            snapshot.named("snapshot").assertThat("2").asText().matchesSnapshotText();
+        }
+    }
+
+    @Test
     void testDetectIncompleteDSLReuse() {
         frameworkTest.expectTestcase(DetectIncompleteDslReuse.class)
                 .toAllFailWithExceptionWhich(matches -> matches
