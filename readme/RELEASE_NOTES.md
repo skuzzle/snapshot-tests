@@ -1,24 +1,19 @@
 **Migration Info**:
 
 > **Warning**
-> The following modules have been removed: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
-> `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
-> `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also:
-> [#67](https://github.com/skuzzle/snapshot-tests/issues/67))
->
-> Important: These new modules come with slightly different Automatic-Module-Name. If you are using JPMS you need to
-> adjust your `module-info.java` when upgrading.
->
-> The deprecated modules will be removed with the next major version!
-
-> **Warning**
-> When upgrading from `1.x`, instead of depending directly on `snapshot-tests-core` you must now
-> either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`.
+> This is a new major version which comes with breaking changes.
+> Please read the notable changes section in the reference documentation for details about upgrading from `1.x` versions.
 
 
 ### Changes
 
-* [#93](https://github.com/skuzzle/snapshot-tests/issues/93): Fix bug in determining the line ending from _git_
+* [#17](https://github.com/skuzzle/snapshot-tests/issues/17): Remove JUnit 5 dependency from core package
+* [#62](https://github.com/skuzzle/snapshot-tests/issues/62): Detect when a snapshot is overridden in same test execution
+* [#91](https://github.com/skuzzle/snapshot-tests/issues/91): Normalize to `git` line endings by default
+* [#98](https://github.com/skuzzle/snapshot-tests/issues/98): Fix `Automatic-Module-Name` of `-html` module
+* Remove deprecated modules (see reference docs for details)
+* Remove deprecated methods (see reference docs for details)
+* Deprecate `ContextFiles.delete()` in favor of `.deleteAll()` and `.deleteContextFiles()`
 
 
 ## Reference Documentation

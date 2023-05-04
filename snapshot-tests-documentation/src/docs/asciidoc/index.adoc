@@ -41,23 +41,23 @@ doesn't pose a problem and you can safely update the files in your SCM.
 
 === Notable Changes in this Release
 This documentation pertains to version {revnumber} of snapshot-tests. The following notable changes have been made
-since the previous _minor_ version:
+since the previous _major_ version:
 
-* The modules `snapshot-tests-jackson`, `snapshot-tests-jaxb` and `snapshot-tests-jaxb-jakarta` have been deprecated in
+* The modules `snapshot-tests-jackson`, `snapshot-tests-jaxb` and `snapshot-tests-jaxb-jakarta` have been removed in
 favor of their respective drop-in replacement `snapshot-tests-json`, `snapshot-tests-xml-legacy` and
 `snapshot-tests-xml`.
 
 CAUTION: The drop-ins come with a slightly different `Automatic-Module-Name`. If you are using JPMS you need to adjust
 the respective `requires` clause in your `module-info.java`.
 
-* The logic of creating and rendering diffs has been moved into its own separate module so that it can be reused on its
-own: https://search.maven.org/artifact/{groupId}/diff-tool/{revnumber}/jar[`diff-tool`].
+* We now use line endings determined from the local git configuration by default. See
+<<_dealing_with_line_breaks, Dealing With Line Breaks>> for details about how to configure line ending normalization.
 
-* The framework can be advised to normalize line endings used in snapshot files. This is especially useful when using
-git and you do not care about which actual line ending is used in your snapshots. See <<_dealing_with_line_breaks, Dealing With Line Breaks>>.
+* By default we will now throw an _assertion failure_ if a single snapshot test produces two ore more snapshots with
+the same name. As it is sometimes desirable to use the same name twice, this behavior can now be configured per test
+via a new setting in `@SnapshotTestOptions`
 
-* Allow to customize the diff format used when rendering failures during structure compare via
-`@SnapshotTestOptions(diffFormat = DiffFormat.SPLIT)`
+* `Automatic-Module-Name` of the `-html` module has been fixed to comply with the other data modules.
 
 == Getting Started
 
