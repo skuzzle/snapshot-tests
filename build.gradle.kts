@@ -11,19 +11,18 @@ tasks.named("afterReleaseBuild").configure {
             .filter { it.pluginManager.hasPlugin("snapshot-tests.publishing-conventions") }
             .map { it.tasks.named("publishToSonatype") }
     })
-    dependsOn("commitFilesToGit")
+    dependsOn("addFilesToGit")
 }
 
-tasks.register("commitFilesToGit") {
+tasks.register("addFilesToGit") {
     onlyIf("not a snapshot version") { !project.isSnapshot }
-    dependsOn(":snapshot-tests-documentation:deployDocsToRepositoryRoot", ":readme:generateReadmeAndReleaseNotes")
+    dependsOn()
     group = "release"
     description = "Commit changed/generated files during release"
     doLast {
         // NOTE: .execute() extension function defined in buildSrc
         "git add README.md RELEASE_NOTES.md".execute()
         "git add --force docs/*".execute()
-        "git commit -m \"Update README and RELEASE_NOTES\"".execute()
     }
 }
 
