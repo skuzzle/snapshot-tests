@@ -123,4 +123,13 @@ public interface SnapshotConfiguration {
     @API(status = Status.INTERNAL, since = "1.10.0")
     DiffFormat diffFormat(Method testMethod);
 
+    /**
+     * Whether the method is allowed to produce multiple snapshots with same name.
+     *
+     * @param testMethod The test method
+     * @return Whether the method is allowed to produce multiple snapshots with same name.
+     * @since 2.0.0
+     */
+    boolean allowMultipleSnapshotsWithSameName(Method testMethod);
+
 }

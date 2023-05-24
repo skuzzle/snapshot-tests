@@ -47,6 +47,14 @@ public @interface SnapshotTestOptions {
     DiffFormat DEFAULT_DIFF_FORMAT = DiffFormat.UNIFIED;
 
     /**
+     * Default for {@link #allowMultipleSnapshotsWithSameName()}
+     *
+     * @since 2.0.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "2.0.0")
+    boolean DEFAULT_ALLOW_MULTIPLE_SNAPSHOTS_WITH_SAME_NAME = false;
+
+    /**
      * Defines the number of context lines that are printed around a comparison failure.
      * Note that this setting only applies to unified diffs created for structural
      * comparisons. If you use text comparison, then you must control the amount of
@@ -141,6 +149,18 @@ public @interface SnapshotTestOptions {
     DiffFormat diffFormat() default DiffFormat.UNIFIED;
 
     /**
+     * Whether a test method is allowed to produce multiple snapshots with identical name.
+     * Enabling this is useful if you have a parameterized test for which you expect the
+     * identical output for each parameter value.
+     * <p>
+     * Defaults to false.
+     *
+     * @return Whether multiple snapshots with same name are allowed.
+     */
+    @API(status = Status.EXPERIMENTAL, since = "2.0.0")
+    boolean allowMultipleSnapshotsWithSameName() default DEFAULT_ALLOW_MULTIPLE_SNAPSHOTS_WITH_SAME_NAME;
+
+    /**
      * Defines whether an offset is added to the line numbers when rendering diffs in
      * assertion failure messages.
      *
@@ -181,11 +201,17 @@ public @interface SnapshotTestOptions {
          * significant for the test outcome.
          */
         NEVER,
-        /** All line endings will be converted to LF (\n). */
+        /**
+         * All line endings will be converted to LF (\n).
+         */
         LF,
-        /** All line endings will be converted to CRLF (\r\n). */
+        /**
+         * All line endings will be converted to CRLF (\r\n).
+         */
         CRLF,
-        /** All line endings will be converted to the system's default line separator. */
+        /**
+         * All line endings will be converted to the system's default line separator.
+         */
         SYSTEM,
         /**
          * Line endings will be converted according to the local git's

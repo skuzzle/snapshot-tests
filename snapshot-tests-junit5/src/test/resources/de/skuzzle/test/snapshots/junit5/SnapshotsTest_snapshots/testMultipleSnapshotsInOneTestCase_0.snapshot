@@ -1,8 +1,8 @@
 dynamic-directory: false
-snapshot-name: simon
+snapshot-name: testMultipleSnapshotsInOneTestCase_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
-test-method: testWithExplicitSnapshotName
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
+test-method: testMultipleSnapshotsInOneTestCase
 
 Name: Simon
 Surname: Taddiken

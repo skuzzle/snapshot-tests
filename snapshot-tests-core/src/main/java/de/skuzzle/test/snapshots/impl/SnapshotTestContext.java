@@ -108,7 +108,7 @@ public final class SnapshotTestContext {
         if (currentSnapshotTest != null) {
             throw new IllegalStateException("There is already a current snapshot test");
         }
-        final ResultRecorder resultRecorder = ResultRecorder.forFreshTestMethod(this);
+        final ResultRecorder resultRecorder = ResultRecorder.forFreshTestMethod(this, testMethod);
         currentSnapshotTest = new SnapshotDslImpl(resultRecorder, snapshotConfiguration, testMethod);
         return currentSnapshotTest;
     }

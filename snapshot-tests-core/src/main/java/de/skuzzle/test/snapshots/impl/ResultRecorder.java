@@ -1,5 +1,6 @@
 package de.skuzzle.test.snapshots.impl;
 
+import java.lang.reflect.Method;
 import java.util.function.Function;
 
 import de.skuzzle.test.snapshots.SnapshotTestResult;
@@ -23,10 +24,16 @@ final class ResultRecorder {
         this.context = Arguments.requireNonNull(context);
     }
 
-    static ResultRecorder forFreshTestMethod(SnapshotTestContext context) {
+    static ResultRecorder forFreshTestMethod(SnapshotTestContext context, Method testMethod) {
         final Function<String, Throwable> assumptionFailedConstructor = context
                 .testFrameworkSupport()::assumptionFailed;
-        return new ResultRecorder(new LocalResultCollector(assumptionFailedConstructor), context);
+        final boolean allowMultipleSnapshotsWithSameName = context.snapshotConfiguration()
+                .allowMultipleSnapshotsWithSameName(testMethod);
+
+        final LocalResultCollector localResultCollector = new LocalResultCollector(
+                assumptionFailedConstructor,
+                allowMultipleSnapshotsWithSameName);
+        return new ResultRecorder(localResultCollector, context);
     }
 
     public void recordSnapshotTestResult(SnapshotTestResult result) {

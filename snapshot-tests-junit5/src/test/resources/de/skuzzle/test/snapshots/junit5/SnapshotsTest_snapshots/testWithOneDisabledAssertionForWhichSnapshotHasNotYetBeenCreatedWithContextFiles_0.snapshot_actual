@@ -1,7 +1,7 @@
 dynamic-directory: false
 snapshot-name: testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreatedWithContextFiles_0
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
 test-method: testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreatedWithContextFiles
 
 Name: Simon

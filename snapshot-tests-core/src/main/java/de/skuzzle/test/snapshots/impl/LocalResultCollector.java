@@ -3,6 +3,7 @@ package de.skuzzle.test.snapshots.impl;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,9 +23,12 @@ final class LocalResultCollector {
 
     private final List<SnapshotTestResult> results = new ArrayList<>();
     private final Function<String, Throwable> assumptionFailedConstructor;
+    private final boolean allowMultipleSnapshotsWithSameName;
 
-    LocalResultCollector(Function<String, Throwable> assumptionFailedConstructor) {
+    LocalResultCollector(Function<String, Throwable> assumptionFailedConstructor,
+            boolean allowMultipleSnapshotsWithSameName) {
         this.assumptionFailedConstructor = assumptionFailedConstructor;
+        this.allowMultipleSnapshotsWithSameName = allowMultipleSnapshotsWithSameName;
     }
 
     public void recordSnapshotTestResult(SnapshotTestResult result) {
@@ -47,11 +51,17 @@ final class LocalResultCollector {
     }
 
     public void throwIfNotSuccessful() throws Exception {
+        final String internalPackage = SnapshotDslResult.class.getPackageName();
+        if (!allowMultipleSnapshotsWithSameName) {
+            final Throwable t = failOnDuplicatedResult();
+            StackTraces.filterStackTrace(t, element -> element.getClassName().startsWith(internalPackage));
+            Throwables.throwIfNotNull(t);
+        }
+
         final Throwable failures = Throwables.flattenThrowables(results.stream()
                 .map(SnapshotTestResult::failure)
                 .flatMap(Optional::stream));
 
-        final String internalPackage = SnapshotDslResult.class.getPackageName();
         StackTraces.filterStackTrace(failures, element -> element.getClassName().startsWith(internalPackage));
         Throwables.throwIfNotNull(failures);
     }
@@ -76,6 +86,20 @@ final class LocalResultCollector {
             return new AssertionError(String.format(
                     "Snapshots have been updated forcefully.%n"
                             + "Remove '@ForceUpdateSnapshots' annotation from your test class and calls to 'justUpdateSnapshot()' then run the tests again."));
+        }
+        return null;
+    }
+
+    private Throwable failOnDuplicatedResult() {
+        final Map<String, List<SnapshotTestResult>> fileToResults = results.stream()
+                .collect(Collectors.groupingBy(
+                        result -> result.contextFiles().snapshotFile().normalize().toAbsolutePath().toString()));
+
+        for (Map.Entry<String, List<SnapshotTestResult>> entry : fileToResults.entrySet()) {
+            if (entry.getValue().size() > 1) {
+                return new AssertionError(
+                        "Test produced multiple results with same snapshot file path: " + entry.getValue());
+            }
         }
         return null;
     }

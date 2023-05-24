@@ -1,7 +1,7 @@
 dynamic-directory: false
 snapshot-name: testParameterized_0_string2
 snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
 test-method: testParameterized
 
 string2

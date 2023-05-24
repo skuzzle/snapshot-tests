@@ -1,7 +1,7 @@
 dynamic-directory: false
 snapshot-name: testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated_1
 snapshot-number: 1
-test-class: de.skuzzle.test.snapshots.SnapshotsTest
+test-class: de.skuzzle.test.snapshots.junit5.SnapshotsTest
 test-method: testWithOneDisabledAssertionForWhichSnapshotHasNotYetBeenCreated
 
 Name: Phil
