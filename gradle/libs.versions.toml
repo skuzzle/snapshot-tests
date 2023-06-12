@@ -1,0 +1,47 @@
+[versions]
+xmlunit = "2.9.1"
+jaxb-api-legacy = "2.3.1"
+jaxb-api = "4.0.0"
+jaxb-runtime = "4.0.1"
+jaxb-runtime-legacy = "2.3.3"
+junit5 = "5.9.2"
+jackson = "2.14.2"
+assertj = "3.24.2"
+equalsverifier = "3.9"
+apiguardian = "1.1.2"
+javadiffutils = "4.12"
+bytebuddy = "1.12.22"
+jsonassert = "1.5.1"
+opentest4j = "1.2.0"
+jsoup = "1.15.3"
+junit4 = "4.13.2"
+
+[libraries]
+xmlunit-core = { module = "org.xmlunit:xmlunit-core", version.ref = "xmlunit" }
+xmlunit-assertj = { module = "org.xmlunit:xmlunit-assertj", version.ref = "xmlunit" }
+xmlunit-jakarta-jaxb-impl = { module = "org.xmlunit:xmlunit-jakarta-jaxb-impl", version.ref = "xmlunit" }
+jaxb-api-legacy = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb-api-legacy" }
+jaxb-runtime-legacy = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb-runtime-legacy" }
+jaxb-api-jakarta = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jaxb-api" }
+jaxb-runtime-jakarta = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb-runtime" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
+apiguardian = { module = "org.apiguardian:apiguardian-api", version.ref = "apiguardian" }
+javadiffutils = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "javadiffutils" }
+bytebuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "bytebuddy" }
+jsonassert = { module = "org.skyscreamer:jsonassert", version.ref = "jsonassert" }
+opentest4j = { module = "org.opentest4j:opentest4j", version.ref = "opentest4j" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+
+[plugins]
+gradle-enterprise = { id = "com.gradle.enterprise", version = "3.13" }
+custom-user-data = { id = "com.gradle.common-custom-user-data-gradle-plugin", version = "1.8.2" }
+researchgate-release = { id = "net.researchgate.release", version = "3.0.2" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.2.0" }
+github-release = { id = "com.github.breadmoirai.github-release", version = "2.4.1" }
+foojay-resolver = { id = "org.gradle.toolchains.foojay-resolver-convention", version = "0.4.0" }
+ascii-doctor = { id = "org.asciidoctor.jvm.convert", version = "3.3.2" }
+coveralls = { id = "com.github.kt3k.coveralls", version = "2.12.0" }

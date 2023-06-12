@@ -5,10 +5,6 @@ pluginManagement {
     plugins {
         id("com.gradle.enterprise") version "3.13"
         id("com.gradle.common-custom-user-data-gradle-plugin") version "1.8.2"
-        id("net.researchgate.release") version "3.0.2"
-        id("io.github.gradle-nexus.publish-plugin") version "1.2.0"
-        id("com.github.breadmoirai.github-release") version "2.4.1"
-        id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
     }
 }
 
@@ -93,57 +89,3 @@ rootProject.children.forEach { project ->
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            version("xmlunit", "2.9.1")
-            library("xmlunit-core", "org.xmlunit", "xmlunit-core").versionRef("xmlunit")
-            library("xmlunit-assertj", "org.xmlunit", "xmlunit-assertj").versionRef("xmlunit")
-            library("xmlunit-jakarta-jaxb-impl", "org.xmlunit", "xmlunit-jakarta-jaxb-impl").versionRef("xmlunit")
-
-            version("jaxb-api-legacy", "2.3.1")
-            version("jaxb-runtime-legacy", "2.3.3")
-            library("jaxb-api-legacy", "javax.xml.bind", "jaxb-api").versionRef("jaxb-api-legacy")
-            library("jaxb-runtime-legacy", "org.glassfish.jaxb", "jaxb-runtime").versionRef("jaxb-runtime-legacy")
-
-            version("jaxb-api", "4.0.0")
-            version("jaxb-runtime", "4.0.1")
-            library("jaxb-api-jakarta", "jakarta.xml.bind", "jakarta.xml.bind-api").versionRef("jaxb-api")
-            library("jaxb-runtime-jakarta", "org.glassfish.jaxb", "jaxb-runtime").versionRef("jaxb-runtime")
-
-            version("junit5", "5.9.2")
-            library("junit-bom", "org.junit", "junit-bom").versionRef("junit5")
-
-            version("jackson", "2.14.2")
-            library("jackson-bom", "com.fasterxml.jackson", "jackson-bom").versionRef("jackson")
-
-            version("assertj", "3.24.2")
-            library("assertj-core", "org.assertj", "assertj-core").versionRef("assertj")
-
-            version("equalsverifier", "3.9")
-            library("equalsverifier", "nl.jqno.equalsverifier", "equalsverifier").versionRef("equalsverifier")
-
-            version("apiguardian", "1.1.2")
-            library("apiguardian", "org.apiguardian", "apiguardian-api").versionRef("apiguardian")
-
-            version("javadiffutils", "4.12")
-            library("javadiffutils", "io.github.java-diff-utils", "java-diff-utils").versionRef("javadiffutils")
-
-            version("bytebuddy", "1.12.22")
-            library("bytebuddy", "net.bytebuddy", "byte-buddy").versionRef("bytebuddy")
-
-            version("jsonassert", "1.5.1")
-            library("jsonassert", "org.skyscreamer", "jsonassert").versionRef("jsonassert")
-
-            version("opentest4j", "1.2.0")
-            library("opentest4j", "org.opentest4j", "opentest4j").versionRef("opentest4j")
-
-            version("jsoup", "1.15.3")
-            library("jsoup", "org.jsoup", "jsoup").versionRef("jsoup")
-
-            version("junit4", "4.13.2")
-            library("junit4", "junit", "junit").versionRef("junit4")
-        }
-    }
-}

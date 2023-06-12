@@ -1,7 +1,7 @@
 plugins {
-    id("net.researchgate.release")
-    id("io.github.gradle-nexus.publish-plugin")
-    id("com.github.breadmoirai.github-release")
+    alias(libs.plugins.researchgate.release)
+    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.github.release)
     `base-conventions`
 }
 

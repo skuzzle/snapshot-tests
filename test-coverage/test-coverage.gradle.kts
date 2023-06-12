@@ -1,7 +1,7 @@
 plugins {
     `base-conventions`
     id("jacoco-report-aggregation")
-    id("com.github.kt3k.coveralls") version "2.12.0"
+    alias(libs.plugins.coveralls)
 }
 val modulesWithoutXmlLegacy = rootProject.allJavaModules()
     // filtered out because it contains classes with identical full qualified names as the non-legacy project
