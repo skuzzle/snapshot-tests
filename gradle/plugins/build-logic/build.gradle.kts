@@ -10,7 +10,9 @@ repositories {
 
 dependencies {
     implementation(kotlin("gradle-plugin"))
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.15.0")
+    implementation(libs.gradle.spotless)
+    implementation(libs.gradle.commonCustomUserData)
+    implementation(libs.gradle.enterprise)
 }
 
 tasks {

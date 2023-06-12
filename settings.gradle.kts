@@ -1,16 +1,12 @@
 pluginManagement {
+    includeBuild("gradle/plugins")
     repositories {
         gradlePluginPortal()
-    }
-    plugins {
-        id("com.gradle.enterprise") version "3.13"
-        id("com.gradle.common-custom-user-data-gradle-plugin") version "1.8.2"
     }
 }
 
 plugins {
-    id("com.gradle.enterprise")
-    id("com.gradle.common-custom-user-data-gradle-plugin")
+    id("settings-conventions")
 }
 
 var isCi = System.getenv("CI")?.toBoolean() ?: false

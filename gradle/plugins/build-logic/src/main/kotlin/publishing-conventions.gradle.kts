@@ -1,4 +1,3 @@
-import gradle.kotlin.dsl.accessors._ddc08fae9aa4b8c57a8699665b39f0d1.jar
 import java.util.Base64
 
 plugins {

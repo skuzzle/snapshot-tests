@@ -2,7 +2,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.the
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import java.lang.IllegalStateException
 
 val Project.isSnapshot: Boolean
     get() = (project.version as String).contains("SNAPSHOT")

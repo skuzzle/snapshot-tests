@@ -35,10 +35,13 @@ jsonassert = { module = "org.skyscreamer:jsonassert", version.ref = "jsonassert"
 opentest4j = { module = "org.opentest4j:opentest4j", version.ref = "opentest4j" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
+# can't update to latest because its writing to illegal places on jenkins
+gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.15.0" }
+gradle-enterprise = { module = "com.gradle:gradle-enterprise-gradle-plugin", version = "3.13.3" }
+gradle-commonCustomUserData = { module = "com.gradle:common-custom-user-data-gradle-plugin", version = "1.11" }
+
 
 [plugins]
-gradle-enterprise = { id = "com.gradle.enterprise", version = "3.13" }
-custom-user-data = { id = "com.gradle.common-custom-user-data-gradle-plugin", version = "1.8.2" }
 researchgate-release = { id = "net.researchgate.release", version = "3.0.2" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.2.0" }
 github-release = { id = "com.github.breadmoirai.github-release", version = "2.4.1" }
