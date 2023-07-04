@@ -7,6 +7,7 @@
 
 ### Changes
 
+* [#16](https://github.com/skuzzle/snapshot-tests/issues/16): Remove JSONAssert from public interface
 * [#17](https://github.com/skuzzle/snapshot-tests/issues/17): Remove JUnit 5 dependency from core package
 * [#62](https://github.com/skuzzle/snapshot-tests/issues/62): Detect when a snapshot is overridden in same test execution
 * [#91](https://github.com/skuzzle/snapshot-tests/issues/91): Normalize to `git` line endings by default

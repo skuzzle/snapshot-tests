@@ -117,7 +117,7 @@ public final class JsonSnapshot implements StructuredDataProvider {
      * @return This instance.
      */
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
-    public JsonSnapshot withComparisonRules(Consumer<de.skuzzle.test.snapshots.ComparisonRuleBuilder> rules) {
+    public JsonSnapshot withComparisonRules(Consumer<ComparisonRuleBuilder> rules) {
         Arguments.requireNonNull(rules, "rules consumer must not be null");
         final JsonComparisonRuleBuilder comparatorCustomizerImpl = new JsonComparisonRuleBuilder();
         rules.accept(comparatorCustomizerImpl);
