@@ -1,6 +1,6 @@
 **Migration Info**:
 
-> **Note**
+> [!NOTE]
 > The following modules have been deprecated: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
 > `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
 > `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also:
@@ -11,7 +11,7 @@
 >
 > The deprecated modules will be removed with the next major version!
 
-> **Note**
+> [!NOTE]
 > When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now
 > either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`.
 > This will become mandatory with the next major version!
@@ -19,8 +19,13 @@
 
 ### Changes
 
-* [#93](https://github.com/skuzzle/snapshot-tests/issues/93): Fix bug in determining the line ending from _git_
-
+* Update to JUnit `5.10.1` (coming from `5.9.2`)
+* Update to opentest4j `1.3.0` (coming from `1.3.0`)
+* Update to jackson `2.16.1` (coming from `2.14.2`)
+* Update to assertj `3.25.1` (coming from `3.24.2`)
+* Update to jakarta.xml.bind-api `4.0.1` (coming from `4.0.0`)
+* Update to jaxb-runtime `2.3.9` (coming from `2.3.3`)
+* (Jakarta) Update to jaxb-runtime `4.0.4` (coming from `4.0.1`)
 
 ## Reference Documentation
 
