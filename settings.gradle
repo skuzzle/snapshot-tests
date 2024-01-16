@@ -59,15 +59,15 @@ dependencyResolutionManagement {
             library('xmlunit-jakarta-jaxb-impl', 'org.xmlunit', 'xmlunit-jakarta-jaxb-impl').versionRef('xmlunit')
 
             library('jaxb-api-legacy', 'javax.xml.bind:jaxb-api:2.3.1')
-            library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.3')
+            library('jaxb-runtime-legacy', 'org.glassfish.jaxb:jaxb-runtime:2.3.9')
 
-            library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0')
-            library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
+            library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.1')
+            library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.4')
 
             library('junit-bom', 'org.junit:junit-bom:5.10.1')
-            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.14.2')
-            library('assertj-core', 'org.assertj:assertj-core:3.24.2')
-            library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.9')
+            library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.16.1')
+            library('assertj-core', 'org.assertj:assertj-core:3.25.1')
+            library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.15.6')
             library('apiguardian', 'org.apiguardian:apiguardian-api:1.1.2')
             library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
             library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')

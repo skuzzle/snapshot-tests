@@ -21,7 +21,11 @@
 
 * Update to JUnit `5.10.1` (coming from `5.9.2`)
 * Update to opentest4j `1.3.0` (coming from `1.3.0`)
-
+* Update to jackson `2.16.1` (coming from `2.14.2`)
+* Update to assertj `3.25.1` (coming from `3.24.2`)
+* Update to jakarta.xml.bind-api `4.0.1` (coming from `4.0.0`)
+* Update to jaxb-runtime `2.3.9` (coming from `2.3.3`)
+* (Jakarta) Update to jaxb-runtime `4.0.4` (coming from `4.0.1`)
 
 ## Reference Documentation
 
