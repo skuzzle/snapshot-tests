@@ -1,6 +1,6 @@
 **Migration Info**:
 
-> **Note**
+> [!NOTE]
 > The following modules have been deprecated: `snapshot-tests-jackson`, `snapshot-tests-jaxb` and
 > `snapshot-tests-jaxb-jakarta`. New drop-in replacements are provided via `snapshot-tests-json`,
 > `snapshpt-tests-xml-legacy` and `snapshot-tests-xml`. (See also:
@@ -11,7 +11,7 @@
 >
 > The deprecated modules will be removed with the next major version!
 
-> **Note**
+> [!NOTE]
 > When upgrading from a version prior to `1.8.0`, instead of depending on `snapshot-tests-core` you should now
 > either depend on `snapshot-tests-junit5` or `snapshot-tests-junit4`.
 > This will become mandatory with the next major version!
