@@ -19,7 +19,8 @@
 
 ### Changes
 
-* [#93](https://github.com/skuzzle/snapshot-tests/issues/93): Fix bug in determining the line ending from _git_
+* Update to JUnit `5.10.1` (coming from `5.9.2`)
+* Update to opentest4j `1.3.0` (coming from `1.3.0`)
 
 
 ## Reference Documentation

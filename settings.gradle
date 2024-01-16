@@ -64,7 +64,7 @@ dependencyResolutionManagement {
             library('jaxb-api-jakarta', 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0')
             library('jaxb-runtime-jakarta', 'org.glassfish.jaxb:jaxb-runtime:4.0.1')
 
-            library('junit-bom', 'org.junit:junit-bom:5.9.2')
+            library('junit-bom', 'org.junit:junit-bom:5.10.1')
             library('jackson-bom', 'com.fasterxml.jackson:jackson-bom:2.14.2')
             library('assertj-core', 'org.assertj:assertj-core:3.24.2')
             library('equalsverifier', 'nl.jqno.equalsverifier:equalsverifier:3.9')
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
             library('javadiffutils', 'io.github.java-diff-utils:java-diff-utils:4.12')
             library('bytebuddy', 'net.bytebuddy:byte-buddy:1.12.22')
             library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
-            library('opentest4j', 'org.opentest4j:opentest4j:1.2.0')
+            library('opentest4j', 'org.opentest4j:opentest4j:1.3.0')
             library('jsoup', 'org.jsoup:jsoup:1.15.3')
             library('junit4', 'junit:junit:4.13.2')
         }
