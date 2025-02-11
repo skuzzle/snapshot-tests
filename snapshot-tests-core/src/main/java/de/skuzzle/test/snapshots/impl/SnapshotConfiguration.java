@@ -145,4 +145,21 @@ public interface SnapshotConfiguration {
     @API(status = Status.DEPRECATED, since = "1.7.0")
     boolean isSoftAssertions();
 
+    /**
+     * Whether to persist the actual snapshot if the assertion failed.
+     *
+     * @param testMethod The test method.
+     * @return Whether to persist the actual snapshot on failure.
+     */
+    @API(since = "1.12.0", status = Status.INTERNAL)
+    boolean persistActualResultOnFailure(Method testMethod);
+
+    /**
+     * Whether to persist the raw result file if the assertion failed.
+     *
+     * @param testMethod The test method.
+     * @return Whether to persist the actual raw result on failure.
+     */
+    @API(since = "1.12.0", status = Status.INTERNAL)
+    boolean persistRawResultOnFailure(Method testMethod);
 }
