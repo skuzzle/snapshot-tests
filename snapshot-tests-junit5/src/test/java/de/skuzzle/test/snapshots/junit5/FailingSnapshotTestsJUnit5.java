@@ -22,6 +22,29 @@ public class FailingSnapshotTestsJUnit5 {
     private final MetaTest frameworkTest = MetaTest.junit5();
 
     @Test
+    void testWriteContextFilesOnFailure() throws Throwable {
+        frameworkTest.expectTestcase(WriteContextFilesOnFailure.class)
+                .toAllFailWithExceptionWhich(matches -> matches
+                        .isInstanceOf(AssertionError.class));
+
+        // note this test lacks an actual assertion for whether the context files are
+        // written
+    }
+
+    @EnableSnapshotTests
+    @SnapshotTestOptions(persistActualResultOnFailure = true, persistRawResultOnFailure = true)
+    static class WriteContextFilesOnFailure {
+
+        @Test
+        void randomFailingSnapshotTest(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+
+            // always failing snapshot assertion
+            snapshot.assertThat(Math.random()).as(TextSnapshot.text()).matchesSnapshotText();
+        }
+    }
+
+    @Test
     void testDetectIncompleteDSLReuse() throws Exception {
         frameworkTest.expectTestcase(DetectIncompleteDslReuse.class)
                 .toAllFailWithExceptionWhich(matches -> matches

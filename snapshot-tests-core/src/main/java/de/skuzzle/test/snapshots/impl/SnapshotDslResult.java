@@ -121,6 +121,8 @@ final class SnapshotDslResult {
         final boolean snapshotFileAlreadyExists = Files.exists(contextFilePaths.snapshotFile());
         final boolean alwaysPersistActualResult = configuration.alwaysPersistActualResult(testMethod);
         final boolean alwaysPersistRawResult = configuration.alwaysPersistRawResult(testMethod);
+        final boolean persistActualResultOnFailure = configuration.persistActualResultOnFailure(testMethod);
+        final boolean persistRawResultOnFailure = configuration.persistRawResultOnFailure(testMethod);
 
         final SnapshotHeader snapshotHeader = determineNextSnapshotHeader(snapshotName, snapshotNumber);
 
@@ -157,6 +159,8 @@ final class SnapshotDslResult {
                 snapshotFileAlreadyExists,
                 alwaysPersistActualResult,
                 alwaysPersistRawResult,
+                persistActualResultOnFailure,
+                persistRawResultOnFailure,
                 lineNumberOffset,
                 contextLines,
                 diffRenderer);

@@ -93,8 +93,30 @@ public @interface SnapshotTestOptions {
      * Defaults to false.
      *
      * @return Whether to always persist the latest actual test result.
+     * @see #persistActualResultOnFailure()
      */
     boolean alwaysPersistActualResult() default false;
+
+    /**
+     * Whether to persist the latest actual test result in a parallel file next to the
+     * <code>.snapshot</code> file whenever a snapshot assertion failed. The actual result
+     * will be persisted in a file with identical name but with
+     * <code>.snapshot_actual</code> file extension.
+     *
+     * <p>
+     * Note: If you opt into enabling this option, you should add the
+     * <code>.snapshot_actual</code> to your <code>.gitignore</code> file. Other than the
+     * normal <code>.snapshot</code> files, the <code>..._actual</code> files are not
+     * intended to be checked into the SCM.
+     *
+     * Defaults to false.
+     *
+     * @return Whether to persist the latest actual test result on snapshot assertion
+     *         failure.
+     * @since 1.12.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.12.0")
+    boolean persistActualResultOnFailure() default false;
 
     /**
      * When enabled, the framework will persist the raw actual result without snapshot
@@ -112,8 +134,30 @@ public @interface SnapshotTestOptions {
      * Defaults to false.
      *
      * @return Whether to additionally persist the raw snapshot results.
+     * @see #persistRawResultOnFailure()
      */
     boolean alwaysPersistRawResult() default false;
+
+    /**
+     * When enabled, the framework will persist the raw actual result without snapshot
+     * header as a sibling file to the real <code>.snapshot</code> file with the extension
+     * <code>.snapshot_raw</code> when, but only when the snapshot assertion failed.
+     *
+     * <p>
+     * Note: If you opt into enabling this option, you should add the
+     * <code>.snapshot_actual</code> to your <code>.gitignore</code> file. Other than the
+     * normal <code>.snapshot</code> files, the <code>..._actual</code> files are not
+     * intended to be checked into the SCM.
+     *
+     * Defaults to false.
+     *
+     * @return Whether to persist the latest actual raw test result on snapshot assertion
+     *         failure.
+     * @see #alwaysPersistRawResult()
+     * @since 1.12.0
+     */
+    @API(status = Status.EXPERIMENTAL, since = "1.12.0")
+    boolean persistRawResultOnFailure() default false;
 
     /**
      * Advises the framework to convert the line endings after snapshot serialization to
@@ -186,11 +230,17 @@ public @interface SnapshotTestOptions {
          * significant for the test outcome.
          */
         NEVER,
-        /** All line endings will be converted to LF (\n). */
+        /**
+         * All line endings will be converted to LF (\n).
+         */
         LF,
-        /** All line endings will be converted to CRLF (\r\n). */
+        /**
+         * All line endings will be converted to CRLF (\r\n).
+         */
         CRLF,
-        /** All line endings will be converted to the system's default line separator. */
+        /**
+         * All line endings will be converted to the system's default line separator.
+         */
         SYSTEM,
         /**
          * Line endings will be converted according to the local git's

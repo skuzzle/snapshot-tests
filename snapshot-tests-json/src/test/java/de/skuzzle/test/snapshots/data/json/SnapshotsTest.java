@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
-import de.skuzzle.test.snapshots.data.json.JsonSnapshot;
 import de.skuzzle.test.snapshots.junit5.EnableSnapshotTests;
 
 import org.junit.jupiter.api.Test;

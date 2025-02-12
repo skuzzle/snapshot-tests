@@ -3,7 +3,6 @@ package de.skuzzle.test.snapshots.impl;
 import de.skuzzle.difftool.DiffRenderer;
 import de.skuzzle.test.snapshots.ContextFiles;
 import de.skuzzle.test.snapshots.SnapshotFile;
-import de.skuzzle.test.snapshots.SnapshotTestOptions;
 
 /**
  * Holds all the input that is required to execute a single terminal snapshot operation.
@@ -27,6 +26,8 @@ final class SnapshotAssertionInput {
     private final boolean disableAssertion;
     private final boolean alwaysPersistActualResult;
     private final boolean alwaysPersistRawResult;
+    private final boolean persistActualResultOnFailure;
+    private final boolean persistRawResultOnFailure;
     private final int lineNumberOffset;
     private final int contextLines;
     private final DiffRenderer diffRenderer;
@@ -41,6 +42,8 @@ final class SnapshotAssertionInput {
             boolean snapshotFileAlreadyExists,
             boolean alwaysPersistActualResult,
             boolean alwaysPersistRawResult,
+            boolean persistActualResultOnFailure,
+            boolean persistRawResultOnFailure,
             int lineNumberOffset,
             int contextLines,
             DiffRenderer diffRenderer) {
@@ -54,6 +57,8 @@ final class SnapshotAssertionInput {
         this.alwaysPersistActualResult = alwaysPersistActualResult;
         this.alwaysPersistRawResult = alwaysPersistRawResult;
         this.actualSnapshotFile = actualSnapshotFile;
+        this.persistActualResultOnFailure = persistActualResultOnFailure;
+        this.persistRawResultOnFailure = persistRawResultOnFailure;
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
         this.diffRenderer = diffRenderer;
@@ -92,8 +97,16 @@ final class SnapshotAssertionInput {
         return disableAssertion;
     }
 
-    public boolean alwaysPersistActualResult() {
+    public boolean isAlwaysPersistActualResult() {
         return alwaysPersistActualResult;
+    }
+
+    public boolean isPersistActualResultOnFailure() {
+        return persistActualResultOnFailure;
+    }
+
+    public boolean isPersistRawResultOnFailure() {
+        return persistRawResultOnFailure;
     }
 
     public boolean isAlwaysPersistRawResult() {

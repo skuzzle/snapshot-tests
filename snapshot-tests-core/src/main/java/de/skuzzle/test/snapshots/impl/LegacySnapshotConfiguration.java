@@ -66,6 +66,16 @@ final class LegacySnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
+    public boolean persistActualResultOnFailure(Method testMethod) {
+        return delegate.persistActualResultOnFailure(testMethod);
+    }
+
+    @Override
+    public boolean persistRawResultOnFailure(Method testMethod) {
+        return delegate.persistRawResultOnFailure(testMethod);
+    }
+
+    @Override
     public boolean alwaysPersistActualResult(Method testMethod) {
         return delegate.alwaysPersistActualResult(testMethod);
     }

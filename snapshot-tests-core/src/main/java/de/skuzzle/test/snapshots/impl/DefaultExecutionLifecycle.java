@@ -10,7 +10,6 @@ import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.StructuralAssertions;
 
 /**
- *
  * @author Simon Taddiken
  * @since 1.8.0
  */
@@ -35,10 +34,6 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
         if (!decideAcceptNullAsActual(assertionInput) && assertionInput.actualWasNull()) {
             throw new AssertionError("Expected actual not to be null in order to take snapshot");
         }
-
-        if (decideWriteContextFiles(assertionInput)) {
-            writeAdditionalContextFiles(assertionInput);
-        }
     }
 
     @Override
@@ -55,6 +50,15 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
 
         if (decideUpdatePersistedSnapshot(result)) {
             updatePersistedSnapshot(assertionInput);
+        }
+
+        if (decideWriteContextFiles(assertionInput)) {
+            final boolean assertionFailed = result.failure().isPresent();
+            writeAdditionalContextFiles(assertionInput,
+                    assertionFailed && assertionInput.isPersistActualResultOnFailure()
+                            || assertionInput.isAlwaysPersistActualResult(),
+                    assertionFailed && assertionInput.isPersistRawResultOnFailure()
+                            || assertionInput.isAlwaysPersistRawResult());
         }
 
         if (!assertionInput.isSoftAssertions()) {
@@ -81,19 +85,20 @@ final class DefaultExecutionLifecycle implements ExecutionLifecycle {
         result.snapshotFile().changeHeader(assertionInput.actualSnapshotFile().header()).writeTo(snapshotFilePath);
     }
 
-    private void writeAdditionalContextFiles(SnapshotAssertionInput assertionInput)
+    private void writeAdditionalContextFiles(SnapshotAssertionInput assertionInput, boolean writeActualResult,
+            boolean writeRawResult)
             throws IOException {
         final SnapshotFile snapshotFile = assertionInput.actualSnapshotFile();
         final Path latestActualSnapshotFile = assertionInput.contextFiles().actualResultFile();
 
-        if (assertionInput.alwaysPersistActualResult()) {
+        if (writeActualResult) {
             snapshotFile.writeTo(latestActualSnapshotFile);
         } else {
             Files.deleteIfExists(latestActualSnapshotFile);
         }
 
         final Path rawSnapshotFile = assertionInput.contextFiles().rawActualResultFile();
-        if (assertionInput.isAlwaysPersistRawResult()) {
+        if (writeRawResult) {
             Files.writeString(rawSnapshotFile, snapshotFile.snapshot(), StandardCharsets.UTF_8);
         } else {
             Files.deleteIfExists(rawSnapshotFile);
