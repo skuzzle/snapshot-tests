@@ -103,6 +103,18 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
+    public boolean persistActualResultOnFailure(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.persistActualResultOnFailure();
+    }
+
+    @Override
+    public boolean persistRawResultOnFailure(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.persistRawResultOnFailure();
+    }
+
+    @Override
     public int textDiffContextLines(Method testMethod) {
         final var snapshotTestOptions = determineOptions(testMethod);
         return snapshotTestOptions.textDiffContextLines();
