@@ -69,7 +69,7 @@ class ComplexTest {
     private WhatEverService classUnderTest = ...;
 
     @Test
-    void testCreateComplexObject(Snapshot snapshot) throws Exception {
+    void testCreateComplexObject(Snapshot snapshot) {
         ComplexObject actual = classUnderTest.createComplexObject();
         snapshot.assertThat(actual).as(JsonSnapshot.json).matchesSnapshotStructure();
     }
@@ -91,46 +91,9 @@ Historically, JUnit5 is the preferred test framework and has always natively bee
 configuring the build is to add a dependency to `snapshot-tests-junit5` and optionally add a dependency for your
 preferred snapshot format (i.e. like `snapshot-tests-jackson`).
 
-### JUnit5 legacy
-The `snapshot-tests-junit5` module has been introduced with version `1.8.0`. Prior to that, you would either add a
-direct dependency to `snapshot-tests-core` or just use a single dependency to you preferred snapshot format which
-would pull in the `-core` module transitively. This setup still works but is discouraged. You will see a warning being
-printed to `System.err` stating the required migration steps.
-
-> **Warning**
-> Starting from version `2.0.0` this scenario will no longer be supported.
-
 ### JUnit4
 JUnit4 support was introduced with version `1.8.0`. Add a dependency to  `snapshot-tests-junit4` and optionally
 add a dependency for your preferred snapshot format like `snapshot-tests-jackson`.
-
-> **Warning**
-> In order to seamlessly support the JUnit5 legacy scenario described above, all snapshot format modules will still
-> transitively pull in a JUnit5 dependency. Unfortunately this can only be fixed with the next major release. So long you
-> might want to add a respective exclusion to your dependency:
-
-```xml
-<dependency>
-    <groupId>@project.groupId@</groupId>
-    <artifactId>snapshot-tests-json</artifactId>
-    <version>@project.version@</version>
-    <scope>test</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-
-or
-
-```
-testImplementation('@project.groupId@:snapshot-tests-json:@project.version@') {
-    exclude group: 'org.junit.jupiter', module: 'junit-jupiter-api'
-}
-```
 
 ## Usage
 > NOTE: Most parts of this readme have been migrated to the new [reference documentation](#reference-documentation)

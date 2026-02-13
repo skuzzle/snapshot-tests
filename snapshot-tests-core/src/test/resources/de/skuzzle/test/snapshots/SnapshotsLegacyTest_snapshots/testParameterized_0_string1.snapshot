@@ -1,7 +1,0 @@
-dynamic-directory: false
-snapshot-name: testParameterized_0_string1
-snapshot-number: 0
-test-class: de.skuzzle.test.snapshots.SnapshotsLegacyTest
-test-method: testParameterized
-
-string1

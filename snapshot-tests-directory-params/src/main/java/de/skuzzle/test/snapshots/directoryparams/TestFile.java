@@ -46,7 +46,7 @@ public final class TestFile {
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
     public TestFile sibling(String fileName) {
         Arguments.requireNonNull(fileName, "sibling fileName must not be null");
-        return new TestFile(directory().resolve(fileName));
+        return testDirectory().resolve(fileName);
     }
 
     /**
@@ -69,18 +69,6 @@ public final class TestFile {
      */
     public Path file() {
         return this.file;
-    }
-
-    /**
-     * The directory that contains this file.
-     *
-     * @return This file's directory.
-     * @deprecated Since 1.2.0 - use {@link #testDirectory()} instead.
-     */
-    @Deprecated(forRemoval = true, since = "1.2.0")
-    @API(status = Status.DEPRECATED, since = "1.2.0")
-    public Path directory() {
-        return this.file.getParent();
     }
 
     /**

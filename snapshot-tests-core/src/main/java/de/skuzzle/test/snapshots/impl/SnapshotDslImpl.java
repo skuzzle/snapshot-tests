@@ -180,6 +180,6 @@ final class SnapshotDslImpl implements Snapshot, ChooseActual, ChooseDataFormat,
                         + "If you want to temporarily disable a snapshot assertion, use the disabled() terminal operation.");
 
         resultRecorder
-                .throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully(snapshotConfiguration.isSoftAssertions());
+                .throwIfNotSuccessfulOrCreatedInitiallyOrUpdatedForcefully();
     }
 }

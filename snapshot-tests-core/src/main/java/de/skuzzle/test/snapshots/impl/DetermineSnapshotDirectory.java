@@ -2,7 +2,6 @@ package de.skuzzle.test.snapshots.impl;
 
 import java.nio.file.Path;
 
-import de.skuzzle.test.snapshots.EnableSnapshotTests;
 import de.skuzzle.test.snapshots.SnapshotDirectory;
 import de.skuzzle.test.snapshots.SnapshotDirectoryStrategy;
 import de.skuzzle.test.snapshots.SnapshotException;
@@ -12,14 +11,7 @@ import de.skuzzle.test.snapshots.validation.State;
 final class DetermineSnapshotDirectory {
 
     static Path forTestclass(TestClass testClass) {
-        final Path testDirectoryLegacy = snapshotDirectoryLegacy(testClass.testClass());
         final SnapshotDirectory annotation = testClass.getAnnotation(SnapshotDirectory.class);
-        if (testDirectoryLegacy != null) {
-            State.check(annotation == null,
-                    "Please use either legacy mode of specifying snapshot directory or the new @SnapshotDirectory annotation but not both");
-            return testDirectoryLegacy;
-        }
-
         if (annotation == null) {
             // default behavior if no annotation is present
             final String dirName = testClass.getName().replace('.', '/') + "_snapshots";
@@ -60,16 +52,6 @@ final class DetermineSnapshotDirectory {
         } catch (final Exception e) {
             throw new IllegalStateException("Error creating an instance of " + type.getName(), e);
         }
-    }
-
-    private static Path snapshotDirectoryLegacy(Class<?> testClass) {
-        final EnableSnapshotTests snapshotAssertions = testClass.getAnnotation(EnableSnapshotTests.class);
-
-        if (snapshotAssertions == null || snapshotAssertions.snapshotDirectory().isEmpty()) {
-            return null;
-        }
-        final String testDirName = snapshotAssertions.snapshotDirectory();
-        return DirectoryResolver.resolve(testDirName);
     }
 
     private DetermineSnapshotDirectory() {

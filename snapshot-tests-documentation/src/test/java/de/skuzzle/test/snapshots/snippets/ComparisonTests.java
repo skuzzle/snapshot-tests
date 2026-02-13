@@ -25,7 +25,7 @@ public class ComparisonTests {
 
     // tag::disabled-assertions[]
     @Test
-    void testWithDisabledAssertions(Snapshot snapshot) throws Exception {
+    void testWithDisabledAssertions(Snapshot snapshot) {
         final Person person1 = person();
         final Person person2 = person();
         final Person person3 = person();
@@ -37,7 +37,7 @@ public class ComparisonTests {
 
     // tag::multiple-assertions[]
     @Test
-    void testWithMultipleAssertions(Snapshot snapshot) throws Exception {
+    void testWithMultipleAssertions(Snapshot snapshot) {
         final Person person1 = person();
         final Person person2 = person();
         snapshot.assertThat(person1).asText().matchesSnapshotText();
@@ -46,7 +46,7 @@ public class ComparisonTests {
     // end::multiple-assertions[]
 
     @Test
-    void testCreateSnapshotAsText(Snapshot snapshot) throws Exception {
+    void testCreateSnapshotAsText(Snapshot snapshot) {
         final Person actual = person();
 
         // tag::text-compare[]
@@ -57,7 +57,7 @@ public class ComparisonTests {
     }
 
     @Test
-    void testCreateSnapshotAsJson(Snapshot snapshot) throws Exception {
+    void testCreateSnapshotAsJson(Snapshot snapshot) {
         final Person actual = person();
 
         // tag::structure-compare-json[]
@@ -68,7 +68,7 @@ public class ComparisonTests {
     }
 
     @Test
-    void testCreateSnapshotAsXml(Snapshot snapshot) throws Exception {
+    void testCreateSnapshotAsXml(Snapshot snapshot) {
         final Person actual = person();
 
         // tag::structure-compare-xml[]

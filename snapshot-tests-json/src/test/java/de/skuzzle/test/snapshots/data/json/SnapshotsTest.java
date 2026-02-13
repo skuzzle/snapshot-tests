@@ -20,19 +20,13 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator;
 public class SnapshotsTest {
 
     @Test
-    void testLegacyWarning() {
-        JsonSnapshot.json();
-        assertThat(JsonSnapshot.LEGACY_WARNING_PRINTED).isFalse();
-    }
-
-    @Test
-    void testAsJsonTextCompare(Snapshot snapshot) throws Exception {
+    void testAsJsonTextCompare(Snapshot snapshot) {
         final Person myself = determinePerson();
         snapshot.assertThat(myself).as(json).matchesSnapshotText();
     }
 
     @Test
-    void testAsJsonStructureCompare(Snapshot snapshot) throws Exception {
+    void testAsJsonStructureCompare(Snapshot snapshot) {
         final Person myself = determinePerson();
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(json)
@@ -41,18 +35,7 @@ public class SnapshotsTest {
     }
 
     @Test
-    void testAsJsonStructureCompareCustom(Snapshot snapshot) throws Exception {
-        final Person myself = determinePerson();
-        final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
-                .as(JsonSnapshot.json()
-                        .withComparator(new CustomComparator(JSONCompareMode.STRICT,
-                                new Customization("address.city", (o1, o2) -> true))))
-                .matchesSnapshotStructure();
-        assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.ASSERTED);
-    }
-
-    @Test
-    void testAsJsonStructureCompareCustomNew(Snapshot snapshot) throws Exception {
+    void testAsJsonStructureCompareCustomNew(Snapshot snapshot) {
         final Person myself = determinePerson().setName("0000-02-02");
         final SnapshotTestResult snapshotResult = snapshot.assertThat(myself)
                 .as(JsonSnapshot.json()

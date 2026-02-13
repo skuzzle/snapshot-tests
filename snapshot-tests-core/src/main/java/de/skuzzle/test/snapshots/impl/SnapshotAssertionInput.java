@@ -19,7 +19,6 @@ final class SnapshotAssertionInput {
     private final String snapshotName;
     private final ContextFiles contextFiles;
     private final SnapshotFile actualSnapshotFile;
-    private final boolean softAssertions;
     private final boolean actualWasNull;
     private final boolean forceUpdateSnapshots;
     private final boolean snapshotFileAlreadyExists;
@@ -35,7 +34,6 @@ final class SnapshotAssertionInput {
     SnapshotAssertionInput(String snapshotName,
             ContextFiles contextFiles,
             SnapshotFile actualSnapshotFile,
-            boolean softAssertions,
             boolean actualWasNull,
             boolean disableAssertion,
             boolean forceUpdateSnapshots,
@@ -49,7 +47,6 @@ final class SnapshotAssertionInput {
             DiffRenderer diffRenderer) {
         this.snapshotName = snapshotName;
         this.contextFiles = contextFiles;
-        this.softAssertions = softAssertions;
         this.actualWasNull = actualWasNull;
         this.forceUpdateSnapshots = forceUpdateSnapshots;
         this.snapshotFileAlreadyExists = snapshotFileAlreadyExists;
@@ -62,11 +59,6 @@ final class SnapshotAssertionInput {
         this.lineNumberOffset = lineNumberOffset;
         this.contextLines = contextLines;
         this.diffRenderer = diffRenderer;
-    }
-
-    @Deprecated
-    public boolean isSoftAssertions() {
-        return softAssertions;
     }
 
     public boolean actualWasNull() {

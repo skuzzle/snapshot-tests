@@ -10,20 +10,13 @@ final class AnnotationDirectoryResolver {
         // hidden
     }
 
-    public static Path resolveDirectory(String legacyDir, String projectDir, String testResourcesDir) {
-        if (!legacyDir.isEmpty()) {
-            de.skuzzle.test.snapshots.validation.Arguments.check(testResourcesDir.isEmpty() && projectDir.isEmpty(),
-                    "You have to specify only one root directory");
-
-            return DirectoryResolver.resolve(legacyDir);
-        } else if (!testResourcesDir.isEmpty()) {
-            de.skuzzle.test.snapshots.validation.Arguments.check(legacyDir.isEmpty() && projectDir.isEmpty(),
+    public static Path resolveDirectory(String projectDir, String testResourcesDir) {
+        if (!testResourcesDir.isEmpty()) {
+            de.skuzzle.test.snapshots.validation.Arguments.check(projectDir.isEmpty(),
                     "You have to specify only one root directory");
 
             return DirectoryResolver.resolve(testResourcesDir);
         } else if (!projectDir.isEmpty()) {
-            de.skuzzle.test.snapshots.validation.Arguments.check(legacyDir.isEmpty() && testResourcesDir.isEmpty(),
-                    "You have to specify only one root directory");
             return Path.of(projectDir);
         }
         throw new IllegalArgumentException(

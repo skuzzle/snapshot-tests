@@ -79,15 +79,12 @@ final class SnapshotDslResult {
     }
 
     private Path determineSnapshotDirectory() throws IOException {
-        final Path snapshotDirectory = this.directoryOverride != null
+        return this.directoryOverride != null
                 ? this.directoryOverride
                 : this.configuration.determineSnapshotDirectory();
-        Files.createDirectories(snapshotDirectory);
-        return snapshotDirectory;
     }
 
-    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName)
-            throws IOException {
+    private ContextFiles determineContextFiles(Path snapshotDirectory, String snapshotName) {
         final String snapshotFileName = InternalSnapshotNaming.getSnapshotFileName(snapshotName);
         final String actualFileName = InternalSnapshotNaming.getSnapshotFileNameActual(snapshotName);
         final String rawFileName = InternalSnapshotNaming.getSnapshotFileNameRaw(snapshotName);
@@ -146,13 +143,10 @@ final class SnapshotDslResult {
         final int contextLines = configuration.textDiffContextLines(testMethod);
         final DiffRenderer diffRenderer = determineDiffRenderer(configuration.diffFormat(testMethod));
 
-        final boolean softAssertions = configuration.isSoftAssertions();
-
         return new SnapshotAssertionInput(
                 snapshotName,
                 contextFilePaths,
                 actualSnapshotFile,
-                softAssertions,
                 actualWasNull,
                 disableAssertion,
                 forceUpdateSnapshots,

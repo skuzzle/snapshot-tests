@@ -51,12 +51,11 @@ class FilesFromArgumentsProvider implements ArgumentsProvider, AnnotationConsume
         return ReflectionSupport.newInstance(filesFrom.filter());
     }
 
-    private Path determineDirectory() throws IOException {
-        final String legacyDir = filesFrom.directory();
+    private Path determineDirectory() {
         final String testResourcesDir = filesFrom.testResourcesDirectory();
         final String projectDir = filesFrom.projectDirectory();
 
-        return AnnotationDirectoryResolver.resolveDirectory(legacyDir, projectDir, testResourcesDir);
+        return AnnotationDirectoryResolver.resolveDirectory(projectDir, testResourcesDir);
     }
 
     @Override

@@ -6,12 +6,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
-import de.skuzzle.test.snapshots.SnapshotDsl.Snapshot;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,25 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testDetectIncompleteDSLReuse() throws Exception {
+    void testMultipleSnapshotsWithSameName() {
+        frameworkTest.expectTestcase(OverwriteSnapshotTests.class).toFailWithExceptionWhich()
+                .hasMessageContaining("Test produced multiple results with same snapshot file path:");
+    }
+
+    @EnableSnapshotTests
+    static class OverwriteSnapshotTests {
+
+        @Test
+        void testMultipleSnapshotsWithSameName(Snapshot snapshot) {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+            snapshot.named("snapshot").assertThat("2").asText().matchesSnapshotText();
+        }
+    }
+
+    @Test
+    void testDetectIncompleteDSLReuse() {
         frameworkTest.expectTestcase(DetectIncompleteDslReuse.class)
                 .toAllFailWithExceptionWhich(matches -> matches
                         .isInstanceOf(IllegalStateException.class)
@@ -56,7 +75,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class DetectIncompleteDslReuse {
 
         @Test
-        void testIllegalReuseOfAssertThat(Snapshot snapshot) throws Exception {
+        void testIllegalReuseOfAssertThat(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("");
@@ -64,7 +83,7 @@ public class FailingSnapshotTestsJUnit5 {
         }
 
         @Test
-        void testIllegalReuseOfNamed(Snapshot snapshot) throws Exception {
+        void testIllegalReuseOfNamed(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.named("");
@@ -72,7 +91,7 @@ public class FailingSnapshotTestsJUnit5 {
         }
 
         @Test
-        void testIllegalReuseOfIn(Snapshot snapshot) throws Exception {
+        void testIllegalReuseOfIn(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.in(Paths.get("egal"));
@@ -81,7 +100,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testDetectIncompleteDSLUsage() throws Exception {
+    void testDetectIncompleteDSLUsage() {
         frameworkTest.expectTestcase(DetectIncompleteDslUsage.class)
                 .toAllFailWithExceptionWhich(matches -> matches
                         .isInstanceOf(IllegalStateException.class)
@@ -92,28 +111,28 @@ public class FailingSnapshotTestsJUnit5 {
     static class DetectIncompleteDslUsage {
 
         @Test
-        void testOnlyAssert(Snapshot snapshot) throws Exception {
+        void testOnlyAssert(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("");
         }
 
         @Test
-        void testOnlyDirectory(Snapshot snapshot) throws Exception {
+        void testOnlyDirectory(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.in(Paths.get("/"));
         }
 
         @Test
-        void testOnlyName(Snapshot snapshot) throws Exception {
+        void testOnlyName(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.named("whatever");
         }
 
         @Test
-        void testNoTerminalOp(Snapshot snapshot) throws Exception {
+        void testNoTerminalOp(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.in(Paths.get("/"))
@@ -124,7 +143,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseOfNullInputSnapshotAlreadyExists() throws Throwable {
+    void testFailBecauseOfNullInputSnapshotAlreadyExists() {
         frameworkTest.expectTestcase(FailBecauseOfNullInputSnapshotAlreadyExists.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -135,7 +154,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseOfNullInputSnapshotAlreadyExists {
 
         @Test
-        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+        void testPassNullToSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat(null).asText().matchesSnapshotText();
@@ -143,7 +162,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseOfNullInputJustUpdateSnapshot() throws Throwable {
+    void testFailBecauseOfNullInputJustUpdateSnapshot() {
         frameworkTest.expectTestcase(FailBecauseOfNullInputJustUpdateSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -154,7 +173,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseOfNullInputJustUpdateSnapshot {
 
         @Test
-        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+        void testPassNullToSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat(null).asText().justUpdateSnapshot();
@@ -162,7 +181,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseOfNullInputInitialSnapshot() throws Throwable {
+    void testFailBecauseOfNullInputInitialSnapshot() {
         frameworkTest.expectTestcase(FailBecauseOfNullInputInitialSnapshot.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -173,7 +192,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseOfNullInputInitialSnapshot {
 
         @Test
-        void testPassNullToSnapshot(Snapshot snapshot) throws Exception {
+        void testPassNullToSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat(null).asText().matchesSnapshotText();
@@ -181,7 +200,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseForceUpdateFromAnnotationOnTestClass() throws Throwable {
+    void testFailBecauseForceUpdateFromAnnotationOnTestClass() {
         frameworkTest
                 .expectTestcase(FailBecauseForceUpdateFromAnnotationOnTestClass.class)
                 .toFailWithExceptionWhich()
@@ -195,7 +214,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseForceUpdateFromAnnotationOnTestClass {
 
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
@@ -204,7 +223,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseJustUpdate() throws Exception {
+    void testFailBecauseJustUpdate() {
         frameworkTest
                 .expectTestcase(FailBecauseJustUpdate.class)
                 .toFailWithExceptionWhich()
@@ -218,7 +237,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseJustUpdate {
 
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().justUpdateSnapshot();
@@ -227,7 +246,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseForceUpdateAnnotationOnTestMethod() throws Exception {
+    void testFailBecauseForceUpdateAnnotationOnTestMethod() {
         frameworkTest.expectTestcase(FailBecauseForceUpdateAnnotationOnTestMethod.class)
                 .toFailWithExceptionWhich()
                 .isInstanceOf(AssertionError.class)
@@ -241,7 +260,7 @@ public class FailingSnapshotTestsJUnit5 {
 
         @Test
         @ForceUpdateSnapshots
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
@@ -250,7 +269,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseSnapshotMismatch() throws Throwable {
+    void testFailBecauseSnapshotMismatch() {
         frameworkTest
                 .expectTestcase(FailBecauseSnapshotMismatch.class)
                 .toFailWithExceptionWhich()
@@ -269,7 +288,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseSnapshotMismatch {
 
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
@@ -278,7 +297,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseSnapshotMismatchWithRawLinenumbers() throws Throwable {
+    void testFailBecauseSnapshotMismatchWithRawLinenumbers() {
         frameworkTest
                 .expectTestcase(FailBecauseSnapshotMismatchWithRawLinenumbers.class)
                 .toFailWithExceptionWhich()
@@ -298,7 +317,7 @@ public class FailingSnapshotTestsJUnit5 {
 
         @Test
         @SnapshotTestOptions(renderLineNumbers = DiffLineNumbers.ACCORDING_TO_RAW_DATA)
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("NOT test").asText().matchesSnapshotText();
@@ -307,7 +326,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseSnapshotMismatchWithWhitespaces() throws Throwable {
+    void testFailBecauseSnapshotMismatchWithWhitespaces() {
         frameworkTest
                 .expectTestcase(FailBecauseSnapshotMismatchWithWhitespaces.class)
                 .toFailWithExceptionWhich()
@@ -330,7 +349,7 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseSnapshotMismatchWithWhitespaces {
 
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("line4\nline5")
@@ -341,7 +360,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailBecauseInitial() throws Throwable {
+    void testFailBecauseInitial() {
         frameworkTest
                 .expectTestcase(FailBecauseInitial.class)
                 .toAllFailWithExceptionWhich(matches -> matches
@@ -354,28 +373,32 @@ public class FailingSnapshotTestsJUnit5 {
     static class FailBecauseInitial {
 
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
-            snapshotResult.contextFiles().deleteFiles();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
 
         @Test
-        void testDisabledAssertionAndInitialAssertion(Snapshot snapshot) throws Throwable {
+        void testDisabledAssertionAndInitialAssertion(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("xyz").asText().disabled();
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
-            snapshotResult.contextFiles().deleteFiles();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
     }
 
     @Test
-    void testMultipleAssertions() throws Exception {
+    void testMultipleAssertions() {
         frameworkTest
                 .expectTestcase(MultipleAssertions.class)
                 .toFailWithExceptionWhich()
@@ -385,7 +408,7 @@ public class FailingSnapshotTestsJUnit5 {
     @EnableSnapshotTests
     static class MultipleAssertions {
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("test").asText().matchesSnapshotText();
@@ -394,7 +417,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testWhitespacesDuringTextCompare() throws Exception {
+    void testWhitespacesDuringTextCompare() {
         frameworkTest
                 .expectTestcase(WhitespacesDuringTextCompare.class)
                 .toFailWithExceptionWhich()
@@ -404,7 +427,7 @@ public class FailingSnapshotTestsJUnit5 {
     @EnableSnapshotTests
     static class WhitespacesDuringTextCompare {
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("   test   ").as(TextSnapshot.text().withIgnoreWhitespaces(false))
@@ -413,7 +436,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testWhitespacesDuringStructureTextCompare() throws Exception {
+    void testWhitespacesDuringStructureTextCompare() {
         frameworkTest
                 .expectTestcase(WhitespacesDuringStructureTextCompare.class)
                 .toFailWithExceptionWhich()
@@ -423,7 +446,7 @@ public class FailingSnapshotTestsJUnit5 {
     @EnableSnapshotTests
     static class WhitespacesDuringStructureTextCompare {
         @Test
-        void testWithSnapshot(Snapshot snapshot) throws Throwable {
+        void testWithSnapshot(Snapshot snapshot) {
             MetaTest.assumeMetaTest();
 
             snapshot.assertThat("   test   ").as(TextSnapshot.text().withIgnoreWhitespaces(false))
@@ -432,7 +455,7 @@ public class FailingSnapshotTestsJUnit5 {
     }
 
     @Test
-    void testFailWithAssumptionFailed() throws Exception {
+    void testFailWithAssumptionFailed() {
         frameworkTest.expectTestcase(ClassWithDisabledTest.class)
                 .toAllFailWithExceptionWhich(matches -> matches
                         .isInstanceOf(TestAbortedException.class));
@@ -441,12 +464,12 @@ public class FailingSnapshotTestsJUnit5 {
     @EnableSnapshotTests
     static class ClassWithDisabledTest {
         @Test
-        void testWithDisabledAssertion(Snapshot snapshot) throws Exception {
+        void testWithDisabledAssertion(Snapshot snapshot) {
             snapshot.assertThat("xyz").asText().disabled();
         }
 
         @Test
-        void testWithDisabledAndSuccessfulAssertion(Snapshot snapshot) throws Exception {
+        void testWithDisabledAndSuccessfulAssertion(Snapshot snapshot) {
             snapshot.assertThat("xyz").asText().disabled();
             snapshot.assertThat("xyz").asText().matchesSnapshotText();
         }

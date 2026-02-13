@@ -11,16 +11,16 @@ class SnapshotTestOptionsTest {
 
     @Test
     // tag::normalizeLineEndingsGit[]
-    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.GIT)
+    @SnapshotTestOptions(normalizeLineEndings = SnapshotTestOptions.NormalizeLineEndings.NEVER)
     // end::normalizeLineEndingsGit[]
-    void normalizeLineEndingsGit(Snapshot snapshot) throws Exception {
+    void normalizeLineEndingsGit(Snapshot snapshot) {
 
     }
 
     // tag::alwaysPersistActualResult[]
     @Test
     @SnapshotTestOptions(alwaysPersistActualResult = true)
-    void testAlwaysPersistActual(Snapshot snapshot) throws Exception {
+    void testAlwaysPersistActual(Snapshot snapshot) {
 
     }
     // end::alwaysPersistActualResult[]
@@ -28,7 +28,7 @@ class SnapshotTestOptionsTest {
     // tag::alwaysPersistActualRawResult[]
     @Test
     @SnapshotTestOptions(alwaysPersistRawResult = true)
-    void testAlwaysPersistActualRaw(Snapshot snapshot) throws Exception {
+    void testAlwaysPersistActualRaw(Snapshot snapshot) {
 
     }
     // end::alwaysPersistActualRawResult[]

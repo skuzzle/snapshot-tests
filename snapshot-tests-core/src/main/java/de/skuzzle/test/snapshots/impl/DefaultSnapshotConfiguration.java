@@ -139,8 +139,9 @@ final class DefaultSnapshotConfiguration implements SnapshotConfiguration {
     }
 
     @Override
-    public boolean isSoftAssertions() {
-        return false;
+    public boolean allowMultipleSnapshotsWithSameName(Method testMethod) {
+        final var snapshotTestOptions = determineOptions(testMethod);
+        return snapshotTestOptions.allowMultipleSnapshotsWithSameName();
     }
 
     @Override

@@ -6,11 +6,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import de.skuzzle.test.snapshots.ForceUpdateSnapshots;
+import de.skuzzle.test.snapshots.Snapshot;
 import de.skuzzle.test.snapshots.SnapshotTestOptions;
 import de.skuzzle.test.snapshots.SnapshotTestOptions.DiffLineNumbers;
 import de.skuzzle.test.snapshots.SnapshotTestResult;
 import de.skuzzle.test.snapshots.SnapshotTestResult.SnapshotStatus;
 import de.skuzzle.test.snapshots.data.text.TextSnapshot;
+import de.skuzzle.test.snapshots.io.UncheckedIO;
 import de.skuzzle.test.snapshots.testcommons.MetaTest;
 
 import org.junit.AssumptionViolatedException;
@@ -21,6 +23,27 @@ import org.junit.Test;
 public class FailingSnapshotTestsJUnit4 {
 
     private final MetaTest frameworkTest = MetaTest.junit4();
+
+    @Test
+    public void testMultipleSnapshotsWithSameName() {
+        frameworkTest.expectTestcase(OverwriteSnapshotTests.class).toFailWithExceptionWhich()
+                .hasMessageContaining("Test produced multiple results with same snapshot file path:");
+    }
+
+    public static class OverwriteSnapshotTests {
+
+        @Rule
+        @ClassRule
+        public static final SnapshotRule snapshot = SnapshotRule.enableSnapshotTests();
+
+        @Test
+        public void testMultipleSnapshotsWithSameName() {
+            MetaTest.assumeMetaTest();
+
+            snapshot.named("snapshot").assertThat("1").asText().matchesSnapshotText();
+            snapshot.named("snapshot").assertThat("2").asText().matchesSnapshotText();
+        }
+    }
 
     @Test
     public void testDetectIncompleteDSLReuse() throws Exception {
@@ -372,7 +395,10 @@ public class FailingSnapshotTestsJUnit4 {
             MetaTest.assumeMetaTest();
 
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
-            snapshotResult.contextFiles().deleteFiles();
+            assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
 
@@ -383,7 +409,9 @@ public class FailingSnapshotTestsJUnit4 {
             snapshot.assertThat("xyz").asText().disabled();
             final SnapshotTestResult snapshotResult = snapshot.assertThat("test").asText().matchesSnapshotText();
             assertThat(snapshotResult.contextFiles().snapshotFile()).exists();
-            snapshotResult.contextFiles().deleteFiles();
+
+            snapshotResult.contextFiles().deleteAll();
+            UncheckedIO.delete(snapshotResult.contextFiles().snapshotDirectory());
             assertThat(snapshotResult.status()).isEqualTo(SnapshotStatus.CREATED_INITIALLY);
         }
     }

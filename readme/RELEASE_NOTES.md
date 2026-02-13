@@ -1,9 +1,20 @@
 **Migration Info**:
 
+> **Warning**
+> This is a new major version which comes with breaking changes.
+> Please read the notable changes section in the reference documentation for details about upgrading from `1.x` versions.
+
 
 ### Changes
 
-* [#104](https://github.com/skuzzle/snapshot-tests/issues/104): Only store raw/actual results if tests fail - remove when test succeeds
+* [#16](https://github.com/skuzzle/snapshot-tests/issues/16): Remove JSONAssert from public interface
+* [#17](https://github.com/skuzzle/snapshot-tests/issues/17): Remove JUnit 5 dependency from core package
+* [#62](https://github.com/skuzzle/snapshot-tests/issues/62): Detect when a snapshot is overridden in same test execution
+* [#91](https://github.com/skuzzle/snapshot-tests/issues/91): Normalize to `git` line endings by default
+* [#98](https://github.com/skuzzle/snapshot-tests/issues/98): Fix `Automatic-Module-Name` of `-html` module
+* Remove deprecated modules (see reference docs for details)
+* Remove deprecated methods (see reference docs for details)
+* Deprecate `ContextFiles.delete()` in favor of `.deleteAll()` and `.deleteContextFiles()`
 
 
 ## Reference Documentation

@@ -50,16 +50,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 public @interface FilesFrom {
 
     /**
-     * The directory, relative to src/test/resources, from which to list the files.
-     *
-     * @deprecated Since 1.6.0 - Use {@link #testResourcesDirectory()} instead for a 1:1
-     *             replacement or {@link #projectDirectory()} to specify a directoy
-     *             relative to the current project.
-     */
-    @Deprecated(since = "1.6.0", forRemoval = true)
-    String directory() default "";
-
-    /**
      * The directory, relative to src/test/resources, from which to list the files. Mutual
      * exclusive to {@link #projectDirectory()} but having one of those properties set is
      * mandatory.
@@ -80,7 +70,7 @@ public @interface FilesFrom {
     String projectDirectory() default "";
 
     /**
-     * Whether to also include files from all sub directories of {@link #directory()}.
+     * Whether to also include files from all sub directories of the specified directory.
      * <p>
      * Defaults to false.
      */
@@ -92,7 +82,7 @@ public @interface FilesFrom {
      * leading '.' and filtering for extensions is <em>not</em> case sensitive.
      * <p>
      * If you need more fine grained control over which files are to be listed, you can
-     * implement {@link PathFilter} and use the {@link #filter()} option.
+     * implement {@link TestFileFilter} and use the {@link #filter()} option.
      *
      * @return The extensions to include.
      * @see #filter()
@@ -108,8 +98,8 @@ public @interface FilesFrom {
      * {@link #extensions()} is configured with a non empty array.
      *
      * @return The path filter to use.
-     * @since 1.2.0
      * @see #extensions()
+     * @since 1.2.0
      */
     @API(status = Status.EXPERIMENTAL, since = "1.2.0")
     Class<? extends TestFileFilter> filter() default TestFileFilterAll.class;

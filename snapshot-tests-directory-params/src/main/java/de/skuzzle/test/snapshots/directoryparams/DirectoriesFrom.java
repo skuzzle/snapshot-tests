@@ -51,16 +51,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 public @interface DirectoriesFrom {
 
     /**
-     * The directory, relative to src/test/resources, from which to list the directories.
-     *
-     * @deprecated Since 1.6.0 - Use {@link #testResourcesDirectory()} instead for a 1:1
-     *             replacement or {@link #projectDirectory()} to specify a directory
-     *             relative to the current project.
-     */
-    @Deprecated(since = "1.6.0", forRemoval = true)
-    String directory() default "";
-
-    /**
      * The directory, relative to src/test/resources, from which to list the files. Mutual
      * exclusive to {@link #projectDirectory()} but having one of those properties set is
      * mandatory.

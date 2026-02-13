@@ -32,15 +32,6 @@ public interface SnapshotConfiguration {
     }
 
     /**
-     * @deprecated Since 1.7.0 - Only introduced for backward compatibility.
-     */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.7.0")
-    static SnapshotConfiguration legacyConfigurationFor(Class<?> testClass) {
-        return LegacySnapshotConfiguration.forTestClass(testClass);
-    }
-
-    /**
      * Determines the directory into which the snapshot files for the currently executed
      * test class are persisted.
      *
@@ -133,17 +124,13 @@ public interface SnapshotConfiguration {
     DiffFormat diffFormat(Method testMethod);
 
     /**
-     * Whether soft assertions shall be used. When set to true, a failing snapshot
-     * assertion will not make the test immediately fail. Instead, all snapshot test
-     * results are collected and processed at once when the test method finishes.
+     * Whether the method is allowed to produce multiple snapshots with same name.
      *
-     * @return Whether to use soft assertions.
-     * @deprecated Since 1.7.0 - Soft assertion will no longer be supported with version
-     *             2.0
+     * @param testMethod The test method
+     * @return Whether the method is allowed to produce multiple snapshots with same name.
+     * @since 2.0.0
      */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @API(status = Status.DEPRECATED, since = "1.7.0")
-    boolean isSoftAssertions();
+    boolean allowMultipleSnapshotsWithSameName(Method testMethod);
 
     /**
      * Whether to persist the actual snapshot if the assertion failed.

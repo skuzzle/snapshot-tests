@@ -1,0 +1,32 @@
+dynamic-directory: false
+snapshot-name: testRenderSplitDiffWithLinenumberOffset_0
+snapshot-number: 0
+test-class: de.skuzzle.test.snapshots.data.text.TextDiffTest
+test-method: testRenderSplitDiffWithLinenumberOffset
+
+[...]
+ 11   Some unchanged lines6                                                                                                              | 11   Some unchanged lines6
+ 12   Some unchanged lines7                                                                                                              | 12   Some unchanged lines7
+ 13   Some unchanged lines8                                                                                                              | 13   Some unchanged lines8
+ 14 ! This is a test <<senctence>>.                                                                                                      | 14 ! This is a test <<for diffutils>>.
+ 15   This is the second line.                                                                                                           | 15   This is the second line.
+ 16   Some unchanged lines9                                                                                                              | 16   Some unchanged lines9
+ 17   Some unchanged lines10                                                                                                             | 17   Some unchanged lines10
+ 18   Some unchanged lines11                                                                                                             | 18   Some unchanged lines11
+ 19   Some unchanged lines12                                                                                                             | 19   Some unchanged lines12
+ 20 - And here is the finish with way more than 80 characters and I'm very curious how this is going to be displayed in split view diff. |      
+ 21   This line is unchanged                                                                                                             | 20   This line is unchanged
+                                                                                                                                         | 21 + This line has been added
+ 22   Some unchanged lines13                                                                                                             | 22   Some unchanged lines13
+ 23   Some unchanged lines14                                                                                                             | 23   Some unchanged lines14
+ 24   Some unchanged lines15                                                                                                             | 24   Some unchanged lines15
+[...]
+[...]
+ 27   Some unchanged lines18                                                                                                             | 27   Some unchanged lines18
+ 28   Some unchanged lines19                                                                                                             | 28   Some unchanged lines19
+ 29   Some unchanged lines20                                                                                                             | 29   Some unchanged lines20
+ 30 ! <<Another>> <<difference>>                                                                                                         | 30 ! <<This>> <<has changed>>
+ 31   Some unchanged lines21                                                                                                             | 31   Some unchanged lines21
+ 32   Some unchanged lines22                                                                                                             | 32   Some unchanged lines22
+ 33   Some unchanged lines23                                                                                                             | 33   Some unchanged lines23
+[...]

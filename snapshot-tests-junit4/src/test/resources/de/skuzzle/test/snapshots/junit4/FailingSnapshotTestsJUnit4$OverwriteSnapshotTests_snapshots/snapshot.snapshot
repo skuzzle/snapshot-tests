@@ -1,0 +1,7 @@
+dynamic-directory: false
+snapshot-name: snapshot
+snapshot-number: 1
+test-class: de.skuzzle.test.snapshots.junit4.FailingSnapshotTestsJUnit4$OverwriteSnapshotTests
+test-method: testMultipleSnapshotsWithSameName
+
+1
