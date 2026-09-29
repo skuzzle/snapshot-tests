@@ -31,7 +31,7 @@ tasks.asciidoctor {
 val repositoryDeployPathLatest = project.rootProject.file("docs/reference/latest")
 val repositoryDeployPathCurrent = project.rootProject.file("docs/reference/" + project.version)
 
-tasks.register("deployDocsToRepositoryRoot") {
+val deployDocsToRepositoryRoot = tasks.register("deployDocsToRepositoryRoot") {
     group = "release"
     description = "Generates AsciiDoc documentation and copies it to the respective folders in the project root"
     dependsOn("deployDocsToRepositoryRootLatest", "deployDocsToRepositoryRootCurrent")
@@ -66,3 +66,5 @@ tasks.register("deployDocsToRepositoryRootCurrent") {
         }
     }
 }
+
+tasks.prepareRelease.configure { dependsOn(deployDocsToRepositoryRoot) }
