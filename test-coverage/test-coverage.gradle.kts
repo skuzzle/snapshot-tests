@@ -23,18 +23,24 @@ reporting {
     }
 }
 
-coveralls {
-    sourceDirs = modulesWithoutJaxb
+coverallsJacoco {
+    reportPath = layout.buildDirectory.file("reports/jacoco/${coverageReportName}/${coverageReportName}.xml").get().asFile.absolutePath
+    reportSourceSets = modulesWithoutJaxb
         .flatMap { it.extensions.getByType<SourceSetContainer>()["main"].allSource.srcDirs }
-        .map { it.toString() }
-    jacocoReportPath =
-        "${layout.buildDirectory.asFile.get().absolutePath}/reports/jacoco/${coverageReportName}/${coverageReportName}.xml"
+    dryRun = providers.gradleProperty("coverallsDryRun").isPresent
 }
 
 tasks.named("check") {
     dependsOn(tasks.named(coverageReportName))
 }
 
-tasks.named("coveralls") {
+tasks.named("coverallsJacoco") {
     dependsOn(coverageReportName)
+}
+
+// Keeps the task name that CI invokes stable
+tasks.register("coveralls") {
+    group = "verification"
+    description = "Uploads the aggregated coverage report to coveralls.io"
+    dependsOn("coverallsJacoco")
 }
