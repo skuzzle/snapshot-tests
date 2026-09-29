@@ -1,0 +1,16 @@
+plugins {
+    id("build-logic.published-java-component")
+}
+
+description = "Snapshot Tests JUnit5 support"
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.junit5")
+}
+
+dependencies {
+    api(projects.snapshotTestsCore)
+    implementation(projects.snapshotTestsCommon)
+    testImplementation(platform(libs.junit.bom))
+
+    testImplementation(projects.snapshotTestsTestCommon)
+}

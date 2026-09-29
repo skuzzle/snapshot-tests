@@ -27,3 +27,4 @@ out
 *.snapshot_actual
 bin
 .git-askpass
+.kotlin

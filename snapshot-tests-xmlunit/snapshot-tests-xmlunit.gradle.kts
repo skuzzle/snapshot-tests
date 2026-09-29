@@ -1,0 +1,15 @@
+plugins {
+    id("build-logic.published-java-component")
+}
+
+extra.apply {
+    set("automaticModuleName", "de.skuzzle.test.snapshots.xmlunit")
+}
+
+dependencies {
+    api(projects.snapshotTestsCore)
+    implementation(projects.snapshotTestsCommon)
+
+    implementation(libs.xmlunit.core)
+    implementation(libs.xmlunit.assertj)
+}
