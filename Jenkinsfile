@@ -1,14 +1,17 @@
 pipeline {
+    // The Gradle cache lives in a named Docker volume, which Docker creates on first use. It
+    // must be mounted at /home/gradle/.gradle: Docker seeds a new volume with the ownership of
+    // the image's directory at the mount point, which there belongs to the image's uid 1000 user.
     agent {
         docker {
             image 'gradle:jdk21'
-            args '-v /home/jenkins/caches/snapshot-tests/.gradle:/tmp/gradle-user-home:rw -v /home/jenkins/.gnupg:/.gnupg:ro'
+            args '-v snapshot-tests-gradle-cache:/home/gradle/.gradle:rw -v /home/jenkins/.gnupg:/.gnupg:ro'
         }
     }
     environment {
         CI = 'true'
         COVERALLS_REPO_TOKEN = credentials('coveralls_repo_token_snapshot_tests')
-        GRADLE_CACHE = '/tmp/gradle-user-home'
+        GRADLE_CACHE = '/home/gradle/.gradle'
         GRADLE_USER_HOME = '/tmp/gradle-home'
         ORG_GRADLE_PROJECT_sonatype = credentials('SONATYPE_NEXUS')
         ORG_GRADLE_PROJECT_signingPassword = credentials('gpg_password')
