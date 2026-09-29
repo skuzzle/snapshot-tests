@@ -34,7 +34,13 @@ rootProject.allprojects { this.version = calculatedVersion }
 
 fun calculateVersion(): String {
     val git = Git(providers, releaseExtension.dryRun, releaseExtension.verbose)
-    git.fetchTags()
+    try {
+        git.fetchTags()
+    } catch (e: IllegalStateException) {
+        // Don't fail every build when the remote is unreachable (offline, locked SSH agent, ...).
+        // The version is then calculated from the tags that are available locally.
+        logger.warn("Could not fetch tags, calculating the version from local tags: ${e.message}")
+    }
     val latestTagValue = git.lastReleaseTag()
     val latestVersion = latestTagValue.substring(1)
     return releaseExtension.releaseVersion
