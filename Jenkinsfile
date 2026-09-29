@@ -5,7 +5,7 @@ pipeline {
     agent {
         docker {
             image 'gradle:jdk21'
-            args '-v snapshot-tests-gradle-cache:/home/gradle/.gradle:rw -v /home/jenkins/.gnupg:/.gnupg:ro'
+            args '-v snapshot-tests-gradle-cache:/home/gradle/.gradle:rw'
         }
     }
     environment {
