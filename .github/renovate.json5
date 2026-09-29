@@ -1,0 +1,28 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    "schedule:weekly",
+  ],
+  // Dependency updates target the integration branch, not the release branch.
+  baseBranchPatterns: ["dev"],
+  // Read the config file from `dev` too and merge it over this one, so that rule
+  // changes take effect when they are merged to dev rather than waiting for the next
+  // release to reach the default branch. `baseBranchPatterns` and this option itself are
+  // always resolved from the default branch, so those two lines can only change there.
+  useBaseBranchConfig: "merge",
+  packageRules: [
+    {
+      // "version must match the one shipped with gradle" - bumping this independently of
+      // the Gradle wrapper is always wrong.
+      matchPackageNames: ["org.apache.groovy:*"],
+      enabled: false,
+    },
+    {
+      // Only ever the groovy-4.0 variant; Renovate would otherwise happily offer
+      // 2.4-groovy-3.0 or a future -groovy-5.0 as an "update".
+      matchPackageNames: ["org.spockframework:*"],
+      allowedVersions: "/-groovy-4\\.0$/",
+    },
+  ],
+}
